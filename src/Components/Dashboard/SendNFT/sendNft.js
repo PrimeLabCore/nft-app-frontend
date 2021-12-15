@@ -36,6 +36,12 @@ const responsive = {
     items: 1.5,
   },
 };
+const checkAllContacts = (data)=> data.map(item=>({checked:true,email:item.email}))
+
+const findIfChecked = (email,array)=> {
+  const foundItem = array.find(item=>item.email===email)
+  return foundItem.checked
+}
 
 const SendNft = () => {
   let navigate = useNavigate();
@@ -65,15 +71,15 @@ const SendNft = () => {
     setOpenPreview(false);
   };
   const [checkedState, setCheckedState] = useState(
-    new Array(giftNFT__contactData.length).fill(true)
-  );
+  checkAllContacts(giftNFT__contactData || [])
+);
   // for checked and unchecked items
-  const HandleClick = (position) => {
+  const HandleClick = (email) => {
     // const find_index_of_clicked_item = (data.findIndex(value => Number(value.id) === Number(id)))
     // data[find_index_of_clicked_item] = { ...data[find_index_of_clicked_item], checked: !data[find_index_of_clicked_item].checked }
     // setdata([...data])
-    const updatedCheckedState = checkedState.map((item, index) =>
-      index === position ? !item : item
+    const updatedCheckedState = checkedState.map((item) =>
+      item.email === email ? {...item,checked:!item.checked} : {...item,checked:item.checked}
     );
     setCheckedState(updatedCheckedState);
   };
@@ -89,12 +95,13 @@ const SendNft = () => {
 
   const handleNftPreview = async () => {
     const fd = new FormData();
+    const email_array = filteredData.filter(item=>findIfChecked(item.email,checkedState)).map(item=>item.email)
     // fd.append("email", [sendGiftEmail].toString());
 
     const resp = await axios.post(
       `http://147.182.199.116/api/v1/user_images/send_image?uuid=${
         selected.uuid
-      }&emails=${[sendGiftEmail].toString()}`,
+      }&emails=${[email_array].toString()}`,
       fd
     );
 
@@ -138,7 +145,6 @@ const SendNft = () => {
       return data.title.toLowerCase().search(value) !== -1;
     });
     setFilteredData(result);
-
     setSendGiftEmail(event.target.value.toLowerCase());
   };
 
@@ -154,13 +160,13 @@ const SendNft = () => {
       return;
     }
     if (data) {
-      setFilteredData(data);
       dispatch({
         type: "getGoogleContactData",
         payload: data,
       });
-      setCheckedState(new Array(data.length).fill(true));
+      setCheckedState(checkAllContacts(data));
       setimportContactDialog(false);
+      setFilteredData(data);
     }
   };
 
@@ -336,9 +342,9 @@ const SendNft = () => {
                   {/* ICONS */}
                   <div
                     className={styles.icon}
-                    onClick={() => HandleClick(index)}
+                    onClick={() => HandleClick(value.email)}
                   >
-                    {checkedState[index] ? (
+                    {findIfChecked(value.email,checkedState) ? (
                       <BsCheckCircleFill className={styles.checked} />
                     ) : (
                       <GoPrimitiveDot className={styles.unchecked} />
