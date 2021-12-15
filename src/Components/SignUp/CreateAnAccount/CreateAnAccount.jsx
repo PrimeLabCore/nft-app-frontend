@@ -163,7 +163,7 @@ const CreateAnAccount = () => {
             label="ACCOUNT ID"
             variant="outlined"
             // InputValue={details.id}
-            InputValue={signupEmail?.replace(".", "") + ".near"}
+            InputValue={signupEmail?.split("@")[0]?.replace(".", "") + ".near"}
             name="id"
             HandleInputChange={inputEvent}
             placeholder="yourname.near"

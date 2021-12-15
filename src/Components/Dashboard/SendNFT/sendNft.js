@@ -80,6 +80,7 @@ const SendNft = () => {
   const closegiftNft = () => {
     setOpenGift(false);
   };
+
   const handleNftGift = () => {
     dispatch({ type: "sendnft__close" });
     setOpenGift(true);

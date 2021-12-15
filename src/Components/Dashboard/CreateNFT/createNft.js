@@ -350,6 +350,7 @@ const CreateNft = () => {
                 {formValues.map((val, index) => (
                   <div className={styles.form__group__inner} key={index}>
                     <input
+                      style={{ width: "200px" }}
                       type="text"
                       value={val[`size_${val.id}`]}
                       placeholder="Ex. Size"
@@ -358,6 +359,7 @@ const CreateNft = () => {
 
                     <input
                       type="text"
+                      style={{ width: "200px" }}
                       value={val[`extension_${val.id}`]}
                       placeholder="Ex. 40"
                       onChange={handleChange(val.id, "extension")}
@@ -409,7 +411,7 @@ const CreateNft = () => {
           </div>
         </Modal.Body>
       </Modal>
-      
+
       {/* NFT Preview Modal */}
       <Modal
         className={`${styles.initial__nft__modal} ${styles.nft__form__modal} initial__modal nft__mobile__modal`}

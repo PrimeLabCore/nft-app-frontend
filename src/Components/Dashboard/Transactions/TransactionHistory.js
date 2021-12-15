@@ -42,7 +42,7 @@ const TransactionHistory = () => {
       let sent = sendersResponse.data?.data?.map(
         (el) => (el = { ...el, transaction: "sent" })
       );
-      console.log(`response`, [...receives, ...sent]);
+      console.log(`transactions`, [...receives, ...sent]);
 
       setTransactions([...receives, ...sent]);
       dispatch({ type: "fetch_transactions", payload: [...receives, ...sent] });
@@ -95,8 +95,9 @@ const TransactionHistory = () => {
     dispatch({ type: "sendnft__open" });
   };
 
-  const openClaim = () => {
+  const openClaim = (data) => {
     // navigate("/nft/claim");
+    dispatch({ type: "nft__detail", payload: data });
     navigate("/nft/detail/claim");
   };
   return (
@@ -179,7 +180,7 @@ const TransactionHistory = () => {
                         data.transaction === "received" ? "pointer" : null,
                     }}
                     onClick={() =>
-                      data.transaction === "received" && openClaim()
+                      data.transaction === "received" && openClaim(data)
                     }
                   >
                     <div className={styles.transaction__action}>

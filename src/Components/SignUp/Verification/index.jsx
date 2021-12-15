@@ -100,7 +100,7 @@ const Verification = () => {
             }}
             length={6}
             // value={details.verification}
-            value={"111111"}
+            value={"123456"}
             inputProps={{
               value: details.verification,
               name: "verification",
