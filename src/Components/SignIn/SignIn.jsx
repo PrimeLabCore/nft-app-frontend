@@ -36,7 +36,10 @@ const SignIn = () => {
     //   fd.append("user[password]", 11223344);
     // }
 
-    const response = await axios.post("https://nftmaker.algorepublic.com/login", fd);
+    const response = await axios.post(
+      "https://nftmaker.algorepublic.com/login",
+      fd
+    );
     const { status } = response;
 
     if (status === 200 || status === 201) {
@@ -55,6 +58,7 @@ const SignIn = () => {
         type: "login_Successfully",
         payload: { ...data, token: authorization },
       });
+      localStorage.setItem("user", JSON.stringify({ ...data, token: authorization }));
       navigate("/");
     } else {
       navigate("verification");

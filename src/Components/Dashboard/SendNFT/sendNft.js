@@ -401,7 +401,7 @@ const SendNft = () => {
               </h1>
               <h6>
                 {sendGiftEmail?.length > 5
-                  ? 1
+                  ? sendGiftEmail.split(",").length
                   : filteredData.filter((item) =>
                       findIfChecked(item.email, checkedState)
                     ).length}{" "}

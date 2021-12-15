@@ -1,5 +1,4 @@
-import React from "react";
-
+import React, { useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-toastify/dist/ReactToastify.css";
 import "react-multi-carousel/lib/styles.css";
@@ -31,6 +30,7 @@ import GiftAnNftDialog from "./Components/GiftAnNftDialog/GiftAnNft";
 import SignIn from "./Components/SignIn/SignIn";
 import Settings from "./Components/Dashboard/Settings";
 import TagManager from "react-gtm-module";
+import axios from "axios";
 
 const tagManagerArgs = {
   gtmId: "GTM-TJSWG5R",
@@ -40,6 +40,24 @@ TagManager.initialize(tagManagerArgs);
 function App() {
   let dispatch = useDispatch();
   let navigate = useNavigate();
+
+  useEffect(() => {
+    let data = JSON.parse(localStorage.getItem("user"));
+    console.log(`data`, data);
+    if (data) {
+      axios.interceptors.request.use(function (config) {
+        // const token = store.getState().session.token;
+        config.headers.Authorization = data.token;
+
+        return config;
+      });
+      dispatch({
+        type: "login_Successfully",
+        payload: data,
+      });
+      navigate("/");
+    }
+  }, []);
 
   window.dataLayer.push({
     event: "pageview",
