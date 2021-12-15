@@ -88,7 +88,7 @@ const Details = () => {
                       target="_blank"
                       rel="noreferrer"
                     >
-                      38493
+                      {nft__detail?.token_id ? nft__detail?.token_id : ""}
                     </a>
                   </div>
                   <div className={styles.nft__info}>
@@ -98,7 +98,7 @@ const Details = () => {
                       target="_blank"
                       rel="noreferrer"
                     >
-                      d0xkedek..89reke
+                      {nft__detail?.explorer_url ? nft__detail?.explorer_url : ""}
                     </a>
                   </div>
                 </Accordion.Body>
