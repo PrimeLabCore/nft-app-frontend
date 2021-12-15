@@ -25,6 +25,7 @@ const CreateAnAccount = () => {
     id: `${accId ? accId : ""}`,
   });
   const [fullname, setFullname] = useState("");
+  const [accountId, setAccountId] = useState("");
   const [windowstate, setWindow] = useState(window.innerWidth < 767);
   useEffect(() => {
     window.addEventListener(
@@ -38,6 +39,10 @@ const CreateAnAccount = () => {
   }, [windowstate]);
   // const dispatch = useDispatch()
   const [info, setinfo] = useState("");
+
+  useEffect(() => {
+    setAccountId(signupEmail?.split("@")[0]?.replace(".", "") + ".near");
+  }, [signupEmail]);
 
   const createAccount = () => {
     // navigate("/signup/gift-nft")
@@ -71,12 +76,13 @@ const CreateAnAccount = () => {
   const inputEvent = (e) => {
     const { name, value } = e.target;
 
-    setDetails((preValue) => {
-      return {
-        ...preValue,
-        [name]: value,
-      };
-    });
+    // setDetails((preValue) => {
+    //   return {
+    //     ...preValue,
+    //     [name]: value,
+    //   };
+    // });
+    setAccountId(e.target.value);
   };
 
   const hadleFullname = (e) => {
@@ -169,13 +175,13 @@ const CreateAnAccount = () => {
             label="ACCOUNT ID"
             variant="outlined"
             // InputValue={details.id}
-            InputValue={signupEmail?.split("@")[0]?.replace(".", "") + ".near"}
+            InputValue={accountId}
             name="id"
             HandleInputChange={inputEvent}
             placeholder="yourname.near"
             type="text"
             HandleFocus={() => HandleFocus("id")}
-            disabled
+            // disabled
           />
         </div>
 
