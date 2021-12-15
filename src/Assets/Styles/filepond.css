@@ -1,0 +1,95 @@
+.file__wrapper {
+  border: 1.2px dashed #808080;
+  padding: 50px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  border-radius: 7.2px;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin: 0px 30px;
+}
+
+.file__wrapper .filepond--file-wrapper {
+  width: 150px;
+}
+
+.file__wrapper .filepond--file-wrapper::-webkit-file-upload-button {
+  visibility: hidden;
+}
+
+.file__wrapper .filepond--file-wrapper:hover::before {
+  border-color: black;
+}
+
+.file__wrapper .filepond--file-wrapper:active ::before {
+  background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9);
+}
+
+.file__wrapper .filepond--file-wrapper::before {
+  content: 'Choose Files';
+  display: inline-block;
+  color: #323232;
+  font-weight: 600;
+  font-size: 16px;
+  background: -webkit-gradient(linear, left bottom, left top, from(rgba(255, 255, 255, 0.11)), to(rgba(255, 255, 255, 0.11))), -webkit-gradient(linear, left bottom, left top, from(#FFFFFF), to(#FFFFFF)), -webkit-gradient(linear, left bottom, left top, from(#FFFFFF), to(#FFFFFF)), #FFFFFF;
+  background: linear-gradient(0deg, rgba(255, 255, 255, 0.11), rgba(255, 255, 255, 0.11)), linear-gradient(0deg, #FFFFFF, #FFFFFF), linear-gradient(0deg, #FFFFFF, #FFFFFF), #FFFFFF;
+  border: 1.2px solid #C4C4C4;
+  border-radius: 9.6px;
+  padding: 10px;
+  outline: none;
+  white-space: nowrap;
+  cursor: pointer;
+  text-shadow: 1px 1px #fff;
+}
+
+.file__wrapper .file__upload__wrapper {
+  background: -webkit-gradient(linear, left bottom, left top, from(rgba(255, 255, 255, 0.11)), to(rgba(255, 255, 255, 0.11))), -webkit-gradient(linear, left bottom, left top, from(#FFFFFF), to(#FFFFFF)), -webkit-gradient(linear, left bottom, left top, from(#FFFFFF), to(#FFFFFF)), #FFFFFF;
+  background: linear-gradient(0deg, rgba(255, 255, 255, 0.11), rgba(255, 255, 255, 0.11)), linear-gradient(0deg, #FFFFFF, #FFFFFF), linear-gradient(0deg, #FFFFFF, #FFFFFF), #FFFFFF;
+  border: 1.2px solid #C4C4C4;
+  padding: 10px 25px;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  border-radius: 9.6px;
+  text-align: center;
+}
+
+.file__wrapper .file__upload__wrapper label {
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 17px;
+  color: #323232;
+}
+
+.file__wrapper p {
+  text-align: center;
+  padding-top: 22px;
+  font-weight: normal;
+  font-size: 15.6px;
+  margin-bottom: 0px;
+  color: #808080;
+}
+
+.uploaded__file {
+  margin: 10px 30px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.uploaded__file img {
+  width: 50%;
+}
+/*# sourceMappingURL=filepond.css.map */

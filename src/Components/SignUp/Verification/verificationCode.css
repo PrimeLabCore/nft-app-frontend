@@ -1,0 +1,32 @@
+.verification__container {
+  height: 60px !important;
+  width: 400px !important;
+}
+
+.character {
+  min-width: 56.24px !important;
+  height: 55.18px !important;
+  background: rgba(0, 0, 0, 0.03) !important;
+  border: 1.2px solid #cfcfcf !important;
+  border-radius: 7.2px !important;
+}
+
+.character--selected {
+  border: 2px solid #2f80ed !important;
+  outline: none !important;
+}
+
+@media screen and (max-width: 400px) {
+  .verification__container {
+    height: 60px !important;
+    width: 300px !important;
+  }
+  .character {
+    min-width: 26.24px !important;
+    height: 55.18px !important;
+    background: rgba(0, 0, 0, 0.03) !important;
+    border: 1.2px solid #cfcfcf !important;
+    border-radius: 7.2px !important;
+  }
+}
+/*# sourceMappingURL=verificationCode.css.map */

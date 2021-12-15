@@ -1,0 +1,61 @@
+@import "../Assets/Styles/mixins";
+@import "../Assets/Styles/partials";
+
+@media only screen and (max-width:"991px") {
+  .background{
+    .detail__1,.detail__2{
+      width: 350px !important;
+    }
+  }
+}
+@media only screen and (max-width:"767px"){
+  .background{
+    .nft__image__outer__wrapper{
+      position: relative !important;
+      width: 100% !important;
+      .nft__image__wrapper{
+        img{
+          border-radius: 0px !important;
+        }
+      }
+    }
+  }
+}
+.lightbg{
+  background-color: #CBB9FF !important;
+}
+.background {
+    background-color: #93C1FF;
+    width: 100%;
+    min-height: 100vh;
+    position: relative;
+    .detail__1 {
+      position: absolute;
+      top: 0;
+      width: 450px;
+    }
+    .detail__2 {
+      position: absolute;
+      bottom: 0;
+      left:0;
+      width: 450px;
+    }
+    .nft__image__outer__wrapper{
+      position: absolute;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 50%;
+      .nft__image__wrapper{
+        width: inherit;
+        img{
+            border-radius: 25px;
+            width: 100%;
+        }
+    }
+    }
+    
+    
+  }
+  

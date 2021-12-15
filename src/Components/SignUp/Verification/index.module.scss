@@ -1,0 +1,113 @@
+@import "../../../Assets/Styles/_mixins.scss";
+@import "../../../Assets/Styles/_partials.scss";
+.progress{
+  div{
+      height: 0.2rem;
+  }
+}
+.cross {
+  position: absolute;
+  right: 15px;
+  top: 27px;
+  font-size: 25px;
+  color: #c2c4c6;
+  cursor: pointer;
+}
+.half_container {
+  max-width: 50%;
+  background-color: white;
+  min-height: 100vh;
+  margin-left: auto;
+  text-align: center;
+}
+
+.childContainer {
+  min-height: 90vh;
+  @include HorizontalAndVerticalCenter;
+  flex-direction: column;
+  p {
+    font-size: 19.2px;
+    text-align: center;
+  }
+  h2 {
+    margin-top: -10px;
+    color: $primary__color;
+    font-size: 23.2px;
+  }
+  h4 {
+    margin-top: 20px;
+    margin-bottom: 30px;
+    cursor: pointer;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16.8px;
+    color: #000000;
+  }
+  .verficationContainer {
+    margin-bottom: 25px;
+    h4 {
+      color: #808080;
+      font-weight: normal;
+      font-size: 16.8px;
+      font-weight: normal;
+    }
+  }
+  hr {
+    margin-top: 20px;
+    background-color: #e3e3e3;
+    width: 40%;
+  }
+  .link {
+    text-decoration: none;
+    list-style: none;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    color: black;
+    cursor: pointer;
+    font-size: 17px;
+    color: $primary__color;
+  }
+}
+
+.button {
+  @include defaultButton($primary__color);
+  color: white;
+  margin: 0px 5px;
+  &:disabled{
+    background-color: $secondary__color !important;
+    cursor:default;
+  }
+}
+.container__header{
+  margin-bottom: 15px;
+}
+.verification {
+  font-size: 21px;
+  display: inline-block;
+  margin: 15px auto;
+  margin-top: 25px;
+  font-weight: 600;
+}
+
+.enterCode {
+  margin-top: 20px auto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16.8px;
+  color: #808080;
+  margin: 30px;
+}
+
+@media screen and (max-width: 800px) {
+  .half_container {
+    position: absolute;
+    top: 5vh;
+    max-width: 100%;
+    min-height: 100vh;
+    margin-left: 0;
+    right: 0;
+    left: 0;
+    border-top-right-radius: 30px;
+    border-top-left-radius: 30px;
+  }
+}

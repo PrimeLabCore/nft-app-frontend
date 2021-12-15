@@ -1,0 +1,29 @@
+@mixin HorizontalAndVerticalCenter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin defaultButton($bg_color) {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: white;
+  background-color: $bg_color;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-size: 17px;
+  cursor: pointer;
+  border: none;
+  &:focus {
+    outline: none;
+  }
+  span {
+    color: white;
+    padding-left: 10px;
+    display: flex;
+    svg {
+      height: 100%;
+    }
+  }
+}

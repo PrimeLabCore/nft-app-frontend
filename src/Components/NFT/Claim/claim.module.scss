@@ -1,0 +1,214 @@
+@import "../../../Assets/Styles/mixins";
+@import "../../../Assets/Styles/partials";
+
+@media only screen and (max-width:"767px"){
+    .details__wrapper{
+        width: 100% !important;
+        padding-top: 10px !important;
+        margin-left: 0px !important;
+        .details__back{
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            button{
+                color: white !important;
+                background: rgba(255, 255, 255, 0.3)!important;
+            }
+        }
+        .details__head{
+            margin-top: 20px !important;
+            .details__cat{
+                position: absolute;
+                top: 20%;
+                background:white !important;
+                h6{
+                    color: black !important;
+                }
+            }
+        }
+        .details__info{
+            flex-direction: column;
+            align-items: flex-start !important;
+            button{
+                margin-top: 18px;
+                width: 100% !important;
+            }
+        }
+    }
+}
+
+
+.details__wrapper{
+    width: 50%;
+    background-color: #fff;
+    margin-left: auto;
+    min-height: 100vh;
+    padding: 50px 20px;
+    .details__back{
+        float: right;
+        button{
+            background-color: #F0F1F3;
+                        padding: 3px;
+                        color: #818C99;
+                        font-size: 12px;
+                        border-radius: 50%;
+                        width: 28px;
+                        height: 28px;
+                        border: none;
+            
+            &:focus{
+                outline: none;
+            }
+        }
+    }
+    .details__head{
+        margin-top: 50px;
+        margin-bottom: 30px;
+        .details__cat{
+            background: #000000;
+            padding: 5px 10px; 
+            width: fit-content;
+            border-radius: 7.2px;
+            margin-bottom: 15px;
+            a,h6{
+                margin-bottom: 0px;
+                color: white;
+                font-weight: 600;
+                font-size: 16.8px;
+                text-decoration: none;
+                &:hover{
+                    color: white;
+                }
+            }
+        }
+        h1{
+            font-weight: 600;
+            font-size: 25.2px;
+            margin-bottom: 0px;
+            color: #000000;
+            padding-bottom: 6px;
+        }
+        a,h6{
+            font-weight: 500;
+            font-size: 17.2px;
+            color: #2F80ED;
+            text-decoration: none;
+                &:hover{
+                    color: #2F80ED;
+                }
+        }
+    }
+    .details__info{
+        display:flex;
+        justify-content:space-between;
+        align-items: center;
+        margin-bottom: 50px;
+        .details__profile{
+            display:flex;
+            align-items: center;
+            .details__profile__picture{
+                background-image: url("../../../Assets/Images/placeholder.png");
+                background-repeat: no-repeat;
+                background-size: 100% auto;
+                background-position: center top;
+                background-color: white;
+                border-radius: 50%;
+                height: 48px;
+                width: 48px;
+                margin-right: 10px;
+            }
+            .details__user__info{
+                p{
+                    margin-bottom: 0px;
+                    font-weight: normal;
+                    font-size: 14.4px;
+                    color: #808080;
+                    padding-bottom: 2px;
+                }
+                h6{
+                    margin-bottom: 0px;
+                    font-weight: 600;
+                    font-size: 16.8px;
+                }
+            }
+        }
+        
+    }
+    .claim__btn{
+        @include defaultButton($primary__color);
+        width: 100%;
+        justify-content: center;
+        margin-bottom: 25px;
+        span{
+            position:absolute !important;
+            right: 35px !important;
+        }
+    }
+    .details__accords{
+        .accord{
+            margin-bottom: 20px;
+            button{
+                font-weight: 600;
+                font-size: 19.2px;
+                &:focus{
+                    outline: none;
+                    border:none;
+                }
+            }
+        }
+        .accord__body{
+            padding: 35px;
+            p{
+                font-weight: normal;
+                font-size: 16px;
+                margin-bottom: 0px;
+                color: #808080;
+            }
+            .nft__info{
+                display:flex;
+                align-items: center;
+                justify-content:space-between;
+                margin-bottom: 25px;
+                padding-bottom: 25px;
+                border-bottom: 1.2px solid #EFEFEF;
+                p{
+                    margin-bottom: 0px;
+                }
+                a{
+                    margin-bottom: 0px;
+                    font-weight: normal;
+                    font-size: 16.8px;
+                    color: #0072CE;
+                    text-decoration: none;
+                }
+            }
+            .nft__info:nth-last-child(1){
+                border: none !important;
+                padding-bottom: 0px;
+                margin-bottom:0px;
+            }
+        }
+    }
+}
+
+
+.claim__modal{
+    .btn__wrapper{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 5px 0px;
+        .primary__btn {
+            @include defaultButton($primary__color);
+            width: fit-content;
+            justify-content: center !important;
+        }
+        .secondary__btn {
+            @include defaultButton(#000);
+            width: fit-content;
+            justify-content: center !important;
+            margin-bottom: 20px;
+        }
+    }
+    
+}

@@ -1,0 +1,195 @@
+@media only screen and (max-width: 400px) {
+  .small__screen__transaction__wrapper .small__screen__transaction button {
+    font-size: 12px !important;
+    width: 90px !important;
+    padding: 5px !important;
+  }
+  .transaction__list__wrapper .transaction__list .transaction__action div {
+    width: 40px !important;
+    height: 40px !important;
+  }
+}
+
+.transaction__wrapper {
+  margin-bottom: 25px;
+}
+
+.transaction__wrapper .transaction__header {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  margin-bottom: 23px;
+}
+
+.transaction__wrapper .transaction__header h5 {
+  font-weight: bold;
+  font-size: 22px;
+  margin-bottom: 0px;
+}
+
+.transaction__wrapper .transaction__header .transaction__tab button {
+  border: 1px solid #2f80ed;
+  background-color: transparent;
+  color: #2f80ed;
+  width: 120px;
+  padding: 8px;
+  font-weight: 500;
+  font-size: 16.8px;
+  text-align: center;
+}
+
+.transaction__wrapper .transaction__header .transaction__tab button:focus {
+  outline: none;
+}
+
+.transaction__wrapper .transaction__header .transaction__tab .active {
+  background-color: #2f80ed;
+  color: white;
+}
+
+.transaction__wrapper .transaction__header .transaction__tab button:nth-child(1) {
+  border-top-left-radius: 15px;
+  border-bottom-left-radius: 15px;
+}
+
+.transaction__wrapper .transaction__header .transaction__tab button:nth-last-child(1) {
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
+}
+
+.transaction__wrapper .transaction__header button {
+  text-decoration: none;
+  font-size: 20px;
+  color: #2f80ed;
+  background-color: transparent;
+  border: none;
+}
+
+.transaction__wrapper .transaction__header button span {
+  margin-right: 10px;
+}
+
+.transaction__wrapper .transaction__header button:focus {
+  outline: none;
+}
+
+.transaction__wrapper .small__screen__transaction__wrapper {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  margin-bottom: 23px;
+}
+
+.transaction__wrapper .small__screen__transaction__wrapper .small__screen__transaction button {
+  border: 1px solid #2f80ed;
+  background-color: transparent;
+  color: #2f80ed;
+  width: 120px;
+  padding: 8px;
+  font-weight: 500;
+  font-size: 16.8px;
+  text-align: center;
+}
+
+.transaction__wrapper .small__screen__transaction__wrapper .small__screen__transaction button:focus {
+  outline: none;
+}
+
+.transaction__wrapper .small__screen__transaction__wrapper .small__screen__transaction .active {
+  background-color: #2f80ed;
+  color: white;
+}
+
+.transaction__wrapper .small__screen__transaction__wrapper .small__screen__transaction button:nth-child(1) {
+  border-top-left-radius: 15px;
+  border-bottom-left-radius: 15px;
+}
+
+.transaction__wrapper .small__screen__transaction__wrapper .small__screen__transaction button:nth-last-child(1) {
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
+}
+
+.transaction__wrapper .transaction__list__wrapper .transaction__list {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: 100%;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+.transaction__wrapper .transaction__list__wrapper .transaction__list .transaction__action {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.transaction__wrapper .transaction__list__wrapper .transaction__list .transaction__action div {
+  background: #FFFFFF;
+  border: 1.2px solid #DEDEDE;
+  -webkit-box-shadow: 0px 4.8px 4.8px rgba(0, 0, 0, 0.04);
+          box-shadow: 0px 4.8px 4.8px rgba(0, 0, 0, 0.04);
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+  padding: 5px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.transaction__wrapper .transaction__list__wrapper .transaction__list .transaction__action div svg {
+  font-weight: bold;
+}
+
+.transaction__wrapper .transaction__list__wrapper .transaction__list .transaction__action h6 {
+  padding-left: 15px;
+  margin-bottom: 0px;
+  font-weight: 600;
+  font-size: 16.8px;
+}
+
+.transaction__wrapper .transaction__list__wrapper .transaction__list .transaction__action h6 span {
+  color: #2f80ed;
+}
+
+.transaction__wrapper .transaction__list__wrapper .transaction__list .transaction__action h6 .transaction__name {
+  font-weight: normal;
+  color: #2f80ed;
+  text-decoration: none;
+}
+
+.transaction__wrapper .transaction__list__wrapper .transaction__list .transaction__time p {
+  font-weight: normal;
+  font-size: 15.6px;
+  color: #808080;
+  margin-bottom: 0px;
+}
+/*# sourceMappingURL=transactions.module.css.map */

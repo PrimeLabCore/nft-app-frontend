@@ -1,0 +1,42 @@
+@import "../../Assets/Styles/mixins";
+@import "../../Assets/Styles/partials";
+
+.notfound__wrapper{
+    border-radius: 10px;
+    padding: 30px;
+    background-color: #fff;
+    width: 100%;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.04);
+    margin-top: 25px;
+    position:relative;
+    .notfound__content{
+        display:flex;
+        align-items: center;
+        justify-content:center;
+        h1{
+            text-align: center;
+        }
+        .btn__wrapper{
+            margin-top: 25px;
+            display:flex;
+            align-items: center;
+            justify-content: center;
+            button{
+                @include defaultButton($primary__color);
+            }
+        }
+        
+    }
+    .create_nft_left{
+        position:absolute;
+        z-index: 1;
+        top: 0;
+        left:0;
+    }
+    .create_nft_right{
+        position:absolute;
+        z-index: 1;
+        bottom: 0;
+        right:0;
+    }
+}

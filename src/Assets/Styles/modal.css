@@ -1,0 +1,138 @@
+@media only screen and (max-width: 767px) {
+  .nft__mobile__modal {
+    padding: 0px !important;
+  }
+  .nft__mobile__modal .modal-dialog {
+    margin: 0px !important;
+  }
+  .nft__mobile__modal .modal-dialog .modal-content {
+    border-radius: 0px !important;
+  }
+  .send__nft__mobile__modal {
+    padding: 0px !important;
+  }
+  .send__nft__mobile__modal .modal-dialog {
+    margin: 0px !important;
+    max-width: 100%;
+  }
+  .send__nft__mobile__modal .modal-dialog .modal-content {
+    border-radius: 0px !important;
+    min-height: 100vh !important;
+  }
+  .nft__final__mobile__modal .modal-dialog {
+    position: fixed;
+    bottom: 0;
+    left: 48%;
+    -webkit-transform: translate(-50%) !important;
+            transform: translate(-50%) !important;
+    width: -webkit-fit-content;
+    width: -moz-fit-content;
+    width: fit-content;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .claim__modal .modal-dialog {
+    -webkit-transform: translate(-51%) !important;
+            transform: translate(-51%) !important;
+    width: 80% !important;
+  }
+}
+
+.claim__modal .modal-dialog {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  -webkit-transform: translate(-50%) !important;
+          transform: translate(-50%) !important;
+  width: 100%;
+}
+
+.initial__modal .modal-content {
+  border-radius: 20px;
+  border: none !important;
+}
+
+.initial__modal .modal-content .modal-header {
+  border: none !important;
+}
+
+.initial__modal .modal-content .modal-header .modal__title__wrapper {
+  width: 100%;
+  text-align: center;
+}
+
+.initial__modal .modal-content .modal-header .modal__multiple__wrapper {
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.initial__modal .modal-content .modal-header .modal__multiple__wrapper .back__btn {
+  color: #2f80ed;
+  font-weight: 500;
+  font-size: 17px;
+  background-color: transparent;
+  position: relative;
+  z-index: 1;
+  border: none;
+}
+
+.initial__modal .modal-content .modal-header .modal__multiple__wrapper .back__btn:focus {
+  outline: none;
+}
+
+.initial__modal .modal-content .modal-header .modal__multiple__wrapper .modal-title {
+  width: 100%;
+  position: absolute;
+  left: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.initial__modal .modal-content .modal-header .btn-close {
+  background-color: #F0F1F3;
+  padding: 7px;
+  color: #818C99;
+  font-size: 10px;
+  border-radius: 50%;
+  position: relative;
+  z-index: 1;
+}
+
+.initial__modal .modal-content .last__modal__header {
+  -webkit-box-pack: end !important;
+      -ms-flex-pack: end !important;
+          justify-content: flex-end !important;
+}
+
+.initial__modal .modal-content .last__modal__header .btnclose {
+  background-color: #F0F1F3;
+  padding: 7px;
+  color: #818C99;
+  font-size: 10px;
+  border-radius: 50%;
+  position: relative;
+  z-index: 1;
+  width: 28px;
+  height: 28px;
+  border: none;
+}
+
+.initial__modal .modal-content .last__modal__header .btnclose:focus {
+  outline: none;
+}
+
+.initial__modal .modal-content .modal__settings__wrapper .btn-close {
+  padding: 10px !important;
+  font-size: 12px !important;
+}
+/*# sourceMappingURL=modal.css.map */

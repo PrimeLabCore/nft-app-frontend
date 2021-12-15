@@ -1,0 +1,152 @@
+@import "../../../Assets/Styles/mixins";
+@import "../../../Assets/Styles/partials";
+
+.settings__header__top{
+    background:white;
+    padding: 15px 0px;
+    .backArrow{
+        position:absolute;
+        left: 5px;
+        button{
+            background-color: transparent;
+            border: none;
+            &:focus{
+                outline: none;
+            }
+            svg{
+                color: $primary__color;
+                font-size: 22px;
+            }
+        }
+        
+    }
+    h1{
+        text-align: center;
+        font-weight: 500;
+        font-size: 21px;
+        margin-bottom: 0px;
+    }
+}
+
+
+.settings__wrapper{
+    .settings__acc__wrapper{
+        margin: 50px 0px;
+        .settings__acc__inner{
+            margin-bottom: 20px;
+            h5{
+                color: #808080;
+                margin-bottom: 0px;
+                padding-bottom: 12px;
+                font-weight: 500;
+                font-size: 16px;
+            }
+            .settings__acc{
+                display:flex;
+                justify-content:space-between;
+                background: #FFFFFF;
+                border: 1px solid #DEDEDE;
+                border-radius: 8px;
+                padding: 25px 22px;
+                cursor: pointer;
+                .settings__name__info{
+                    display: flex;
+                    align-items: center;
+                    img{
+                        margin-right:13px;
+                    }
+                    h6{
+                        margin-bottom: 0px;
+                        font-weight: 600;
+                        font-size: 16px;
+                    }
+                }
+                .personal__settings{
+                    p{
+                        margin-bottom: 0px;
+                        color: #808080;
+                        font-weight: normal;
+                        font-size: 12px;
+                        padding-bottom: 5px;
+                    }
+                    h6{
+                        margin-bottom: 0px;
+                        font-weight: 600;
+                        font-size: 16px;
+                    }
+                }
+                button{
+                    border: none;
+                    background-color: transparent;
+                    &:focus{
+                        outline: none;
+                    }
+                    svg{
+                        color: #808080;
+                    }
+                }
+                .settings__acc__content{
+                    display:flex;
+                    justify-content:space-between;
+                    align-items: center;
+                    width: 100%;
+                    margin-bottom: 20px;
+                    &:nth-last-child(1){
+                        margin-bottom: 0px;
+                    }
+                }
+
+            }
+        }
+    }
+
+    
+}
+.connection__modal{
+    .modal__header{
+        h2{
+            font-size: 24px;
+        }
+    }
+    .modal__body__wrapper{
+        margin: 25px 40px 40px 40px; 
+        .name__wrapper{
+            cursor: pointer;
+            display: flex;
+            justify-content:space-between;
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+            border-bottom: 1.2px solid #DEDEDE;
+            h6{
+                font-weight: 600;
+                font-size: 19.2px;
+            }
+            .checked{
+                background: #2f80ed;
+                border-radius: 50%;
+                width: 28px;
+                height: 28px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                svg {
+                    color: white;
+                }
+            }
+            &:nth-last-child(1){
+                padding-bottom:0px;
+                border: none;
+            }
+        }
+    }
+    .btn__wrapper{
+        display: flex;
+        margin: 5px 0px;
+        .next__btn {
+            @include defaultButton($primary__color);
+            width: 100%;
+            justify-content: center !important;
+        }
+    }
+    
+}

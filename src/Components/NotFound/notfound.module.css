@@ -1,0 +1,89 @@
+.notfound__wrapper {
+  border-radius: 10px;
+  padding: 30px;
+  background-color: #fff;
+  width: 100%;
+  -webkit-box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.04);
+          box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.04);
+  margin-top: 25px;
+  position: relative;
+}
+
+.notfound__wrapper .notfound__content {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.notfound__wrapper .notfound__content h1 {
+  text-align: center;
+}
+
+.notfound__wrapper .notfound__content .btn__wrapper {
+  margin-top: 25px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.notfound__wrapper .notfound__content .btn__wrapper button {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  color: white;
+  background-color: #2f80ed;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-size: 17px;
+  cursor: pointer;
+  border: none;
+}
+
+.notfound__wrapper .notfound__content .btn__wrapper button:focus {
+  outline: none;
+}
+
+.notfound__wrapper .notfound__content .btn__wrapper button span {
+  color: white;
+  padding-left: 10px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.notfound__wrapper .notfound__content .btn__wrapper button span svg {
+  height: 100%;
+}
+
+.notfound__wrapper .create_nft_left {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 0;
+}
+
+.notfound__wrapper .create_nft_right {
+  position: absolute;
+  z-index: 1;
+  bottom: 0;
+  right: 0;
+}
+/*# sourceMappingURL=notfound.module.css.map */

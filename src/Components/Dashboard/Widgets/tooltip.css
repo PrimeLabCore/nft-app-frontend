@@ -1,0 +1,7 @@
+#tooltip-top > .tooltip-inner {
+  border-radius: 24px !important;
+  padding-top: 25px;
+  padding-bottom: 25px;
+  min-width: 250px !important;
+}
+/*# sourceMappingURL=tooltip.css.map */

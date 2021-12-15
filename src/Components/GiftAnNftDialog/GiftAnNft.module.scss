@@ -1,0 +1,141 @@
+@import "../../Assets/Styles/_mixins.scss";
+@import "../../Assets/Styles/_partials.scss";
+.cross {
+  position: absolute;
+  right: 10px;
+  top: 25px;
+  font-size: 25px;
+  color: #c2c4c6;
+  cursor: pointer;
+}
+.dataContainer {
+  height: 400px;
+  margin: 15px auto;
+  overflow: scroll;
+  overflow-x: hidden;
+}
+.dashboardContainer{
+  height: 350px ;
+  margin: 15px auto;
+  overflow: scroll;
+  overflow-x: hidden;
+}
+
+.data_row_container {
+  display: flex;
+  align-items: center;
+  margin: 25px auto;
+  max-height: 50px;
+  .avatar {
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    background: #ebedf0;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(0, 0, 0, 0.55);
+    font-size: 16.8px;
+    img{
+      width: 100%;
+      border-radius: 50%;
+    }
+  }
+  .textContainer {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: 2vw;
+    h6,
+    p {
+      margin: 0;
+      padding: 0;
+    }
+    h6 {
+      font-weight: 500;
+      font-size: 16.68px;
+    }
+  }
+  .icon {
+    margin-left: auto;
+    margin-right: 13px;
+    margin-bottom: 20px;
+    margin-top: 10px;
+    cursor: pointer;
+  }
+  .checked {
+    color: #2f80ed;
+    font-size: 25px;
+    margin-right: 13px;
+  }
+  .unchecked {
+    font-size: 50px;
+    color: #ebedf0;
+  }
+}
+
+.primary_button {
+  @include defaultButton($primary__color);
+  color: white;
+  margin: 0px 5px;
+}
+
+.footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  p {
+    color: $primary__color;
+    padding: 5px 0px;
+    cursor: pointer;
+    margin-bottom: 0px;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .textContainer {
+    margin-left: 10px;
+    h6 {
+      font-weight: 500;
+      font-size: 14px;
+    }
+    p {
+      font-weight: 500;
+      font-size: 10px;
+    }
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .textContainer {
+    margin-left: 8px;
+    h6 {
+      font-weight: 500;
+      font-size: 11.68px !important;
+    }
+    p {
+      font-weight: 500;
+      font-size: 9px;
+    }
+  }
+  .primary_button {
+    margin: 15px 5px;
+  }
+  .data_row_container {
+    .avatar {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: #ebedf0;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(0, 0, 0, 0.55);
+      font-size: 12.8px;
+    }
+  }
+}

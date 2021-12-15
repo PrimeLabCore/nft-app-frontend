@@ -1,0 +1,35 @@
+.background {
+  background-color: #000000;
+  width: 100%;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+.background .vector {
+  position: absolute;
+  bottom: 0;
+  left: -7px;
+  max-height: 80vh;
+}
+
+.background .logo {
+  position: absolute;
+  top: 5%;
+  left: 2%;
+}
+
+@media screen and (max-width: 800px) {
+  .vector {
+    top: -120px;
+    left: -25px !important;
+    -webkit-transform: rotate(60deg);
+            transform: rotate(60deg);
+    max-height: 60vh !important;
+  }
+  .logo {
+    top: 40% !important;
+    left: 30% !important;
+  }
+}
+/*# sourceMappingURL=PublicRoute.module.css.map */

@@ -1,0 +1,32 @@
+.background {
+  background-color: #000000;
+  width: 100%;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+  .vector {
+    position: absolute;
+    bottom: 0;
+    left: -7px;
+    max-height: 80vh;
+  }
+  .logo {
+    position: absolute;
+    top: 5%;
+    left: 2%;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .vector {
+    top: -120px;
+    left: -25px !important;
+    transform: rotate(60deg);
+    max-height: 60vh !important;
+    
+  }
+  .logo {
+    top: 40% !important;
+    left: 30% !important;
+  }
+}

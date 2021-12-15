@@ -1,0 +1,214 @@
+.cross {
+  position: absolute;
+  right: 10px;
+  top: 25px;
+  font-size: 25px;
+  color: #c2c4c6;
+  cursor: pointer;
+}
+
+.dataContainer {
+  height: 400px;
+  margin: 15px auto;
+  overflow: scroll;
+  overflow-x: hidden;
+}
+
+.dashboardContainer {
+  height: 350px;
+  margin: 15px auto;
+  overflow: scroll;
+  overflow-x: hidden;
+}
+
+.data_row_container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin: 25px auto;
+  max-height: 50px;
+}
+
+.data_row_container .avatar {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: #ebedf0;
+  text-transform: uppercase;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  color: rgba(0, 0, 0, 0.55);
+  font-size: 16.8px;
+}
+
+.data_row_container .avatar img {
+  width: 100%;
+  border-radius: 50%;
+}
+
+.data_row_container .textContainer {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  margin-left: 2vw;
+}
+
+.data_row_container .textContainer h6,
+.data_row_container .textContainer p {
+  margin: 0;
+  padding: 0;
+}
+
+.data_row_container .textContainer h6 {
+  font-weight: 500;
+  font-size: 16.68px;
+}
+
+.data_row_container .icon {
+  margin-left: auto;
+  margin-right: 13px;
+  margin-bottom: 20px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.data_row_container .checked {
+  color: #2f80ed;
+  font-size: 25px;
+  margin-right: 13px;
+}
+
+.data_row_container .unchecked {
+  font-size: 50px;
+  color: #ebedf0;
+}
+
+.primary_button {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  color: white;
+  background-color: #2f80ed;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-size: 17px;
+  cursor: pointer;
+  border: none;
+  color: white;
+  margin: 0px 5px;
+}
+
+.primary_button:focus {
+  outline: none;
+}
+
+.primary_button span {
+  color: white;
+  padding-left: 10px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.primary_button span svg {
+  height: 100%;
+}
+
+.footer {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.footer p {
+  color: #2f80ed;
+  padding: 5px 0px;
+  cursor: pointer;
+  margin-bottom: 0px;
+}
+
+@media screen and (max-width: 800px) {
+  .textContainer {
+    margin-left: 10px;
+  }
+  .textContainer h6 {
+    font-weight: 500;
+    font-size: 14px;
+  }
+  .textContainer p {
+    font-weight: 500;
+    font-size: 10px;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .textContainer {
+    margin-left: 8px;
+  }
+  .textContainer h6 {
+    font-weight: 500;
+    font-size: 11.68px !important;
+  }
+  .textContainer p {
+    font-weight: 500;
+    font-size: 9px;
+  }
+  .primary_button {
+    margin: 15px 5px;
+  }
+  .data_row_container .avatar {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: #ebedf0;
+    text-transform: uppercase;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    color: rgba(0, 0, 0, 0.55);
+    font-size: 12.8px;
+  }
+}
+/*# sourceMappingURL=GiftAnNft.module.css.map */

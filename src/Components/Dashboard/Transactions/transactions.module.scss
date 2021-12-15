@@ -1,0 +1,167 @@
+@import "../../../Assets/Styles/mixins";
+@import "../../../Assets/Styles/partials";
+
+@media only screen and (max-width: 400px) {
+    .small__screen__transaction__wrapper{
+        .small__screen__transaction{
+            button{
+                font-size: 12px !important;
+                width: 90px !important;
+                padding: 5px !important;
+            }
+        }
+        
+    }
+    .transaction__list__wrapper{
+        .transaction__list{
+            .transaction__action{
+                div{
+                    width: 40px !important;
+                    height:40px !important;
+                }
+            }
+        }
+    }
+    
+  }
+
+
+
+.transaction__wrapper{
+    margin-bottom: 25px;
+    .transaction__header{
+        display:flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 23px;
+        h5{
+            font-weight: bold;
+            font-size: 22px;
+            margin-bottom: 0px;
+        }
+        .transaction__tab{
+            button{
+                border: 1px solid $primary__color;
+                background-color: transparent;
+                color: $primary__color;
+                width: 120px;
+                padding: 8px;
+                font-weight: 500;
+                font-size: 16.8px;
+                text-align: center;
+                &:focus{
+                    outline: none;
+                }
+            }
+            .active{
+                background-color: $primary__color;
+                color: white;
+            }
+            button:nth-child(1){
+                border-top-left-radius: 15px;
+                border-bottom-left-radius: 15px;
+            }
+            button:nth-last-child(1){
+                border-top-right-radius: 15px;
+                border-bottom-right-radius: 15px;
+            }
+        }
+        button{
+            text-decoration: none;
+            font-size: 20px;
+            color: $primary__color;
+            background-color: transparent;
+            border: none;
+            span{
+                margin-right: 10px;
+            }
+            &:focus{
+                outline: none;
+            }
+        }
+    }
+    .small__screen__transaction__wrapper{
+        display:flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 23px;
+        .small__screen__transaction{
+            button{
+                border: 1px solid $primary__color;
+                background-color: transparent;
+                color: $primary__color;
+                width: 120px;
+                padding: 8px;
+                font-weight: 500;
+                font-size: 16.8px;
+                text-align: center;
+                &:focus{
+                    outline: none;
+                }
+            }
+            .active{
+                background-color: $primary__color;
+                color: white;
+            }
+            button:nth-child(1){
+                border-top-left-radius: 15px;
+                border-bottom-left-radius: 15px;
+            }
+            button:nth-last-child(1){
+                border-top-right-radius: 15px;
+                border-bottom-right-radius: 15px;
+            }
+        }
+    }
+    .transaction__list__wrapper{
+        .transaction__list{
+            display:flex;
+            align-items: center;
+            width: 100%;
+            justify-content:space-between;
+            margin-bottom: 15px;
+            .transaction__action{
+                display:flex;
+                align-items: center;
+
+                div{
+                    background: #FFFFFF;
+                    border: 1.2px solid #DEDEDE;
+                    box-shadow: 0px 4.8px 4.8px rgba(0, 0, 0, 0.04);
+                    border-radius: 50%;
+                    width: 45px;
+                    height: 45px;
+                    padding: 5px;
+                    display:flex;
+                    align-items: center;
+                    justify-content:center;
+                    svg{
+                        font-weight: bold;
+                    }
+                }
+                h6{
+                    padding-left: 15px;
+                    margin-bottom: 0px;
+                    font-weight: 600;
+                    font-size: 16.8px;
+                    span{
+                        color: $primary__color;
+                    }
+                    .transaction__name{
+                        font-weight: normal;
+                        color: $primary__color;
+                        text-decoration: none;
+                    }
+                }
+            }
+            .transaction__time{
+                p{
+                    font-weight: normal;
+                    font-size: 15.6px;
+                    color: #808080;
+                    margin-bottom: 0px;
+                }
+            }
+        }   
+    }
+}
