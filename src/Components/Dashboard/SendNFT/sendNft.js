@@ -131,12 +131,12 @@ const SendNft = () => {
   console.log(`selected`, selected);
 
   const handleSearch = (event) => {
-    // let value = event.target.value.toLowerCase();
-    // let result = [];
-    // result = giftNFT__contactData.filter((data) => {
-    //   return data.names[0].displayName.toLowerCase().search(value) !== -1;
-    // });
-    // setFilteredData(result);
+    let value = event.target.value.toLowerCase();
+    let result = [];
+    result = giftNFT__contactData.filter((data) => {
+      return data.title.toLowerCase().search(value) !== -1;
+    });
+    setFilteredData(result);
 
     setSendGiftEmail(event.target.value.toLowerCase());
   };
@@ -321,16 +321,16 @@ const SendNft = () => {
               {filteredData.map((value, index) => (
                 <div className={styles.data_row_container} key={nanoid()}>
                   {/* AVATAR */}
-                  <div className={styles.avatar}>
+                  {/* <div className={styles.avatar}>
                     <img
                       src={value.photos[0].url}
                       alt={value.names[0].displayName}
                     />
-                  </div>
+                  </div> */}
                   {/* TEXT */}
                   <div className={styles.textContainer}>
-                    <h6>{value.names[0].displayName}</h6>
-                    <p>@{value.names[0].givenName}</p>
+                    <h6>{value.title}</h6>
+                    <p>@{value.email}</p>
                   </div>
                   {/* ICONS */}
                   <div

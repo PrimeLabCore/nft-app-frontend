@@ -45,7 +45,7 @@ const ImportGoogleContactsDialog = ({ status, callback, onImport }) => {
     onImport(null, error);
   };
   return (
-    <div onClick={onImport}>
+    <div>
       <Dialog
         open={status}
         TransitionComponent={Transition}
