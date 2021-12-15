@@ -1,18 +1,22 @@
-import SearchIcon from "@material-ui/icons/Search";
-import { nanoid } from "nanoid";
 import React, { Fragment, useEffect, useState } from "react";
+import { nanoid } from "nanoid";
+import styles from "./sendNft.module.css";
+import { useNavigate } from "react-router-dom";
 import { Modal } from "react-bootstrap";
+import Carousel from "react-multi-carousel";
+import { IoIosArrowForward } from "react-icons/io";
+import GiftAnNft from "../../GiftAnNftDialog/GiftAnNft";
+import { useSelector, useDispatch } from "react-redux";
+import dummy__img from "../../../Assets/Images/dummy-card1.png";
 import { AiOutlineCheck } from "react-icons/ai";
+import SearchIcon from "@material-ui/icons/Search";
 import { BsCheckCircleFill } from "react-icons/bs";
 import { GoPrimitiveDot } from "react-icons/go";
-import { IoIosArrowForward } from "react-icons/io";
-import Carousel from "react-multi-carousel";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
-import dummy__img from "../../../Assets/Images/dummy-card1.png";
 import ImportGoogleContactsDialog from "../../ImportGoogleContactsDialog/ImportGoogleContactsDialog";
-import styles from "./sendNft.module.css";
+import axios from "axios";
+import Cookies from "js-cookie";
+import { googleAccess } from "../../../Utils/config";
+import { toast } from "react-toastify";
 const responsive = {
   superLargeDesktop: {
     // the naming can be any, depends on you.
@@ -47,6 +51,7 @@ const SendNft = () => {
   const [openPreview, setOpenPreview] = useState(false);
   const [openGift, setOpenGift] = useState(false);
   const [selected, setSelected] = useState("");
+  const [sendGiftEmail, setSendGiftEmail] = useState("");
   // const [selected,setSelected] = useState({
   //     value:false,
   //     id:""
@@ -80,12 +85,26 @@ const SendNft = () => {
     setOpenGift(true);
     setOpenPreview(false);
   };
-  const handleNftPreview = () => {
+
+  const handleNftPreview = async () => {
+    const fd = new FormData();
+    // fd.append("email", [sendGiftEmail].toString());
+
+    const resp = await axios.post(
+      `http://147.182.199.116/api/v1/user_images/send_image?uuid=${
+        selected.uuid
+      }&emails=${[sendGiftEmail].toString()}`,
+      fd
+    );
+
+    console.log(`resp`, resp);
+
     dispatch({ type: "sendnft__close" });
     dispatch({ type: "close_dialog_gift_nft" });
     setOpenGift(false);
     setOpenPreview(true);
   };
+
   const openInitialSendNft = () => {
     dispatch({ type: "sendnft__open" });
     setOpenGift(false);
@@ -101,41 +120,64 @@ const SendNft = () => {
     if (selected === i) {
       setSelected("");
     } else {
-      setSelected(i);
+      setSelected(e);
     }
   };
+
   useEffect(() => {
     dispatch({ type: "close_dialog_gift_nft" });
   }, []);
 
-  const handleSearch = (event) => {
-    let value = event.target.value.toLowerCase();
-    let result = [];
+  console.log(`selected`, selected);
 
-    result = giftNFT__contactData.filter((data) => {
-      return data.title.toLowerCase().search(value) !== -1;
-    });
-    setFilteredData(result);
+  const handleSearch = (event) => {
+    // let value = event.target.value.toLowerCase();
+    // let result = [];
+    // result = giftNFT__contactData.filter((data) => {
+    //   return data.names[0].displayName.toLowerCase().search(value) !== -1;
+    // });
+    // setFilteredData(result);
+
+    setSendGiftEmail(event.target.value.toLowerCase());
   };
+
   const [importContactDialog, setimportContactDialog] = useState(false);
   const HandleDialogClose = () => {
     setimportContactDialog(false);
   };
-  const importGoogleContact = (data, error) => {
-    if (error) {
-      toast.error("Something Went Wrong Fetching Contacts From Google");
-      setimportContactDialog(false);
-      return;
-    }
-    if (data) {
-      setFilteredData(data);
-      dispatch({
-        type: "getGoogleContactData",
-        payload: data,
+  const importGoogleContact = () => {
+    var instance = axios.create();
+    instance.defaults.headers.common["Content-Type"] = "application/json";
+    instance.defaults.headers.common["Authorization"] =
+      "Bearer " + "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";
+
+    instance
+      .get(
+        `https://content-people.googleapis.com/v1/people/me/connections?personFields=names`,
+        // `https://www.googleapis.com/auth/contacts.readonly`,
+        {
+          headers: {
+            // Authorization: "Bearer " + Cookies.get(googleAccess),
+            // Authorization: "Bearer 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",
+          },
+        }
+      )
+      .then((response) => {
+        if (response.status === 200) {
+          setFilteredData(response.data.connections);
+          dispatch({
+            type: "getGoogleContactData",
+            payload: response.data.connections,
+          });
+          setCheckedState(
+            new Array(response.data.connections.length).fill(true)
+          );
+          setimportContactDialog(false);
+        }
+      })
+      .catch(() => {
+        toast.error("Something Went Wrong Fetching Contacts From Google");
       });
-      setCheckedState(new Array(data.length).fill(true));
-      setimportContactDialog(false);
-    }
   };
   const HandleDialogOpen = () => {
     setimportContactDialog(true);
@@ -183,9 +225,11 @@ const SendNft = () => {
                     <Fragment key={nanoid()}>
                       <div
                         className={`${styles.mynft__box} ${
-                          selected === i ? styles.selected__nft : ""
+                          selected.uuid === data.uuid
+                            ? styles.selected__nft
+                            : ""
                         }`}
-                        onClick={(e) => nftClicked(e, i)}
+                        onClick={(e) => nftClicked(data, i)}
                       >
                         <div className={styles.mynft__box__image__wrapper}>
                           <div className={styles.mynft__box__image}>
@@ -196,7 +240,7 @@ const SendNft = () => {
                           </div>
                         </div>
 
-                        {selected === i ? (
+                        {selected.uuid === data.uuid ? (
                           <>
                             <div
                               className={
@@ -293,16 +337,16 @@ const SendNft = () => {
               {filteredData.map((value, index) => (
                 <div className={styles.data_row_container} key={nanoid()}>
                   {/* AVATAR */}
-                  {/* <div className={styles.avatar}>
+                  <div className={styles.avatar}>
                     <img
                       src={value.photos[0].url}
                       alt={value.names[0].displayName}
                     />
-                  </div> */}
+                  </div>
                   {/* TEXT */}
                   <div className={styles.textContainer}>
-                    <h6>{value.title}</h6>
-                    <p>@{value.email}</p>
+                    <h6>{value.names[0].displayName}</h6>
+                    <p>@{value.names[0].givenName}</p>
                   </div>
                   {/* ICONS */}
                   <div
@@ -347,12 +391,12 @@ const SendNft = () => {
           <div className={styles.modal__body__wrapper}>
             <div className={styles.mint__info__wrapper}>
               <div className={styles.mint__image}>
-                <img src={dummy__img} alt="NFT Vecotry Illustartion" />
+                <img src={selected.image} alt="NFT Vecotry Illustartion" />
               </div>
               <h1>
-                NFT Vecotry Illustartion <br /> sent successfully to
+                {selected.name} <br /> sent successfully to
               </h1>
-              <h6>23 contacts</h6>
+              <h6>1 contacts</h6>
             </div>
           </div>
           <div

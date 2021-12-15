@@ -1,11 +1,11 @@
-import React from "react";
+import React from "react"
 import Home from "../Components/Dashboard/Home";
 
 const Dashboard = () => {
-  return (
-    <>
-      <Home />
-    </>
-  );
-};
+    return(
+        <>
+        <Home/>
+        </>
+    )
+}
 export default Dashboard;

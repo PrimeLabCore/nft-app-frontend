@@ -6,18 +6,22 @@ import styles from "./createNft.module.css";
 import { useNavigate } from "react-router-dom";
 import { IoIosArrowForward } from "react-icons/io";
 import { AiOutlinePlus } from "react-icons/ai";
-
-import {toast} from "react-toastify"
-
+import { toast } from "react-toastify";
+import axios from "axios";
 
 const CreateNft = () => {
   let navigate = useNavigate();
 
   const [selectedFile, setSelectedFile] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [createNftResponse, setCreateNftResponse] = useState({
+    name: "",
+  });
+  const { user } = useSelector((state) => state.authReducer);
   const [details, setDetails] = useState({
     title: "",
     description: "",
-    category: "",
+    category: "Digital Arts",
   });
 
   const [formValues, setFormValues] = useState([
@@ -59,20 +63,26 @@ const CreateNft = () => {
 
   const allNft = () => {
     dispatch({ type: "createnft__close" });
-        setNftForm(false);
-        setNftPreview(false);
-        setNftMint(false);
-    navigate("/all-nft")
-  }
-  const openNftDetail = () => {
-    navigate(`/nft/${nanoid()}`)
-  }
+    setNftForm(false);
+    setNftPreview(false);
+    setNftMint(false);
+    navigate("/all-nft");
+  };
 
-    let removeFormFields = (i) => {
-      let newFormValues = [...formValues];
-      newFormValues.splice(i, 1);
-      setFormValues(newFormValues);
-    };
+  const openNftDetail = () => {
+    // navigate(`/nft/${nanoid()}`);
+    dispatch({
+      type: "nft__detail",
+      payload: createNftResponse,
+    });
+    navigate(`/nft/${createNftResponse.uuid}`);
+  };
+
+  let removeFormFields = (i) => {
+    let newFormValues = [...formValues];
+    newFormValues.splice(i, 1);
+    setFormValues(newFormValues);
+  };
 
   const dispatch = useDispatch();
   const createnft__popup = useSelector((state) => state.createnft__popup); //Defined in reducer function
@@ -93,53 +103,84 @@ const CreateNft = () => {
   const [nftMint, setNftMint] = useState(false);
 
   const handleNftForm = () => {
-      if(selectedFile){
-        dispatch({ type: "createnft__close" });
-        setNftForm(true);
-        setNftPreview(false);
-        setNftMint(false);
-      }
-      else{
-        toast.error("File Cannot Be Empty")
-      }
-    
+    if (selectedFile) {
+      dispatch({ type: "createnft__close" });
+      setNftForm(true);
+      setNftPreview(false);
+      setNftMint(false);
+    } else {
+      toast.error("File Cannot Be Empty");
+    }
   };
   const handleNftPreview = () => {
-      if(details.title && details.description && details.category ){
-        if(formValues.length <= 5){
-          for(let i=0;i<formValues.length;i++){
-            let extension = `extension_${formValues[i].id}`;
-            let size = `size_${formValues[i].id}`
-            var count=0;
-            if(!formValues[i][extension] && !formValues[i][size]){
-              count+=1;
-            }
-          }
-          if(count===0){
-            dispatch({ type: "createnft__close" });
-            setNftForm(false);
-            setNftPreview(true);
-            setNftMint(false);
-          }
-          else{
-            toast.error("All fields are required")
+    if (details.title && details.description && details.category) {
+      if (formValues.length <= 5) {
+        for (let i = 0; i < formValues.length; i++) {
+          let extension = `extension_${formValues[i].id}`;
+          let size = `size_${formValues[i].id}`;
+          var count = 0;
+          if (!formValues[i][extension] && !formValues[i][size]) {
+            count += 1;
           }
         }
-        else{
-          toast.error("Too Many Property Fields")
+        if (count === 0) {
+          dispatch({ type: "createnft__close" });
+          setNftForm(false);
+          setNftPreview(true);
+          setNftMint(false);
+        } else {
+          toast.error("All fields are required");
         }
+      } else {
+        toast.error("Too Many Property Fields");
       }
-      else{
-          toast.error("All fields are required")
-      }
+    } else {
+      toast.error("All fields are required");
+    }
   };
 
-  const handleNftMint = () => {
-    dispatch({ type: "createnft__close" });
-    setNftForm(false);
-    setNftPreview(false);
-    setNftMint(true);
+  const handleNftMint = async () => {
+    setLoading(true);
+    let fd = new FormData();
+    fd.append("user_image[name]", details.title);
+    fd.append("user_image[pic]", selectedFile);
+    fd.append("user_image[description]", details.description);
+    fd.append("user_image[category]", details.category);
+    fd.append("user_image[properties]", "");
+
+    const response = await axios.post(
+      "http://147.182.199.116/api/v1/user_images",
+      fd,
+      {
+        headers: {
+          "Content-type": "multipart/form-data",
+        },
+      }
+    );
+    console.log(`response`, response);
+    const { data, success } = response.data;
+    // setSelectedFile(data);
+    console.log(`data`, data);
+    setCreateNftResponse(data);
+    dispatch({ type: "addNewNft", payload: data });
+    if (success) {
+      dispatch({ type: "createnft__close" });
+      setNftForm(false);
+      setNftPreview(false);
+      setNftMint(true);
+      setDetails({});
+      setSelectedFile("");
+      setFormValues([
+        {
+          [`size_12345`]: "",
+          [`extension_12345`]: "",
+          id: "12345",
+        },
+      ]);
+    }
+    setLoading(false);
   };
+
   const goBack = (modalName) => {
     if (modalName === "initalForm") {
       dispatch({ type: "createnft__open" });
@@ -157,20 +198,42 @@ const CreateNft = () => {
   // const openNftDesc = () => {
   //   navigate("/nft-details");
   // };
-  const changeHandler = (event) => {
-    let target = event.target || window.event.srcElement,
-    files = target.files;
+
+  const changeHandler = async (event) => {
+    // console.log(`event.target.files`, event.target.files[0]?.name);
+
+    // let fd = new FormData();
+    // fd.append("user_image[name]", "name");
+    // fd.append("user_image[pic]", event.target.files[0]);
+
+    // const response = await axios.post(
+    //   "http://147.182.199.116/api/v1/user_images",
+    //   fd,
+    //   {
+    //     headers: {
+    //       "Content-type": "multipart/form-data",
+    //     },
+    //   }
+    // );
+    // console.log(`response`, response);
+    // const { data } = response.data;
+    // setSelectedFile(data);
 
     // FileReader support
+    let target = event.target || window.event.srcElement,
+      files = target.files;
     if (FileReader && files && files.length) {
-        let file__reader = new FileReader();
-        file__reader.onload = function () {
-          setSelectedFile(file__reader.result);
-          toast.success("File Uploaded")
-        }
-        file__reader.readAsDataURL(files[0]);
+      // console.log(`files[0]`, files[0]);
+      let file__reader = new FileReader();
+      file__reader.onload = function () {
+        setSelectedFile(files[0]);
+        toast.success("File Uploaded");
+      };
+      file__reader.readAsDataURL(files[0]);
     }
-	};
+  };
+  console.log(`details`, details);
+  console.log(`selectedFile`, selectedFile);
   return (
     <>
       {/* Initial Modal  */}
@@ -196,18 +259,32 @@ const CreateNft = () => {
         <Modal.Body>
           <div className={styles.modal__body__wrapper}>
             <h3>Upload Files</h3>
-            
-                <div className="file__wrapper">
-                  <input type="file" id="files"  name="file" onChange={changeHandler} accept="image/png, image/jpg, image/jpeg" style={{display:"none"}} required/>
-                  <div className="file__upload__wrapper">
-                    <label for="files">{selectedFile ? "Upload Another File" : "Choose File"}</label>
-                  </div>
-                  <p>PNG, JPEG, JPG, SVG. Max 50mb.</p>
-                </div>
-                {selectedFile && <div className="uploaded__file">
-                  <img src={selectedFile} alt="Uploaded File"/>
-                </div>}
 
+            <div className="file__wrapper">
+              <input
+                type="file"
+                id="files"
+                name="file"
+                onChange={changeHandler}
+                accept="image/png, image/jpg, image/jpeg"
+                style={{ display: "none" }}
+                required
+              />
+              <div className="file__upload__wrapper">
+                <label for="files">
+                  {selectedFile ? "Upload Another File" : "Choose File"}
+                </label>
+              </div>
+              <p>PNG, JPEG, JPG, SVG. Max 50mb.</p>
+            </div>
+            {selectedFile && (
+              <div className="uploaded__file">
+                <img
+                  src={URL.createObjectURL(selectedFile)}
+                  alt="Uploaded File"
+                />
+              </div>
+            )}
           </div>
           <div className={styles.next__btn__wrapper}>
             <button onClick={handleNftForm} className={styles.next__btn}>
@@ -230,10 +307,7 @@ const CreateNft = () => {
       >
         <Modal.Header className={styles.modal__header__wrapper} closeButton>
           <div className="modal__multiple__wrapper">
-            <button
-              onClick={() => goBack("initalForm")}
-              className="back__btn"
-            >
+            <button onClick={() => goBack("initalForm")} className="back__btn">
               Back
             </button>
             <Modal.Title>
@@ -242,7 +316,6 @@ const CreateNft = () => {
               </div>
             </Modal.Title>
           </div>
-         
         </Modal.Header>
         <div className={styles.progress}>
           <ProgressBar now={(2 / 3) * 100} />
@@ -290,7 +363,15 @@ const CreateNft = () => {
                       onChange={handleChange(val.id, "extension")}
                     />
 
-                    {index ? <button type="button" className={styles.remove__btn} onClick={() => removeFormFields(index)}>X</button> :null}
+                    {index ? (
+                      <button
+                        type="button"
+                        className={styles.remove__btn}
+                        onClick={() => removeFormFields(index)}
+                      >
+                        X
+                      </button>
+                    ) : null}
                   </div>
                 ))}
                 <button
@@ -310,6 +391,7 @@ const CreateNft = () => {
                   name="category"
                   value={details.category}
                   onChange={inputEvent}
+                  defaultValue={"Digital Arts"}
                 >
                   <option></option>
                   <option value="Digital Arts">Digital Arts</option>
@@ -327,7 +409,7 @@ const CreateNft = () => {
           </div>
         </Modal.Body>
       </Modal>
-
+      
       {/* NFT Preview Modal */}
       <Modal
         className={`${styles.initial__nft__modal} ${styles.nft__form__modal} initial__modal nft__mobile__modal`}
@@ -338,10 +420,7 @@ const CreateNft = () => {
       >
         <Modal.Header className={styles.modal__header__wrapper} closeButton>
           <div className="modal__multiple__wrapper">
-            <button
-              onClick={() => goBack("nftForm")}
-              className="back__btn"
-            >
+            <button onClick={() => goBack("nftForm")} className="back__btn">
               Back
             </button>
             <Modal.Title>
@@ -349,7 +428,6 @@ const CreateNft = () => {
                 <h2>Create an Nft</h2>
               </div>
             </Modal.Title>
-            
           </div>
         </Modal.Header>
         <div className={styles.progress}>
@@ -361,27 +439,36 @@ const CreateNft = () => {
             <div className={styles.mynft__box}>
               <div className={styles.mynft__box__image__wrapper}>
                 <div className={styles.mynft__box__image}>
-                  <img src={formInfo.selectedFile} alt={formInfo.title} />
+                  <img
+                    src={selectedFile ? URL.createObjectURL(selectedFile) : ""}
+                    alt={formInfo.title}
+                  />
                 </div>
                 <div className={styles.mynft__box__cat}>
-                  <h6>{formInfo.category}</h6>
+                  <h6>{details?.category}</h6>
                 </div>
               </div>
               <div className={styles.mynft__box__description__wrapper}>
-                <h2>{formInfo.title}</h2>
-                <p>#17372</p>
+                <h2>{details?.title}</h2>
+                <p>{details.title}</p>
+                <h2>{details?.description}</h2>
+                <p>{details?.description}</p>
                 <div className={styles.mynft__box__profile__info}>
                   <div className={styles.details__profile__picture}></div>
-                    <div className={styles.details__user__info}>
-                        <p>Creater</p>
-                        <h6>john_doe</h6>
-                    </div>
+                  <div className={styles.details__user__info}>
+                    <p>Creater</p>
+                    <h6>{user && user?.email?.split("@")[0]}</h6>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
           <div className={styles.multiple__btn__wrapper}>
-            <button onClick={handleNftMint} className={styles.next__btn}>
+            <button
+              onClick={handleNftMint}
+              disabled={loading}
+              className={styles.next__btn}
+            >
               Mint NFT
               <span>
                 <IoIosArrowForward />
@@ -401,22 +488,28 @@ const CreateNft = () => {
         centered
       >
         <Modal.Header
-          className={`${styles.modal__header__wrapper}  ${styles.modal__header__bottom} last__modal__header`} closeButton
+          className={`${styles.modal__header__wrapper}  ${styles.modal__header__bottom} last__modal__header`}
+          closeButton
         ></Modal.Header>
         {/* <button onClick={allNft} className="btnclose">X</button> */}
         <Modal.Body className={styles.modal__body__top}>
           <div className={`${styles.modal__body__wrapper}`}>
             <div className={styles.mint__info__wrapper}>
               <div className={styles.mint__image}>
-                <img src={formInfo.selectedFile} alt={formInfo.title} />
+                <img
+                  src={createNftResponse?.image ? createNftResponse.image : ""}
+                  alt={""}
+                />
               </div>
               <h1>
-                {formInfo.title} <br /> Successfully Minted
+                {createNftResponse.name} <br /> Successfully Minted
               </h1>
               <h6>NFT ID #27283</h6>
             </div>
           </div>
-          <div className={`${styles.multiple__btn__wrapper} ${styles.last__modal__btn}`}>
+          <div
+            className={`${styles.multiple__btn__wrapper} ${styles.last__modal__btn}`}
+          >
             <button onClick={openNftDetail} className={styles.next__btn}>
               Open
             </button>

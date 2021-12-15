@@ -1,90 +1,130 @@
-import React from 'react'
-import styles from './SignIn.module.css'
-import {useNavigate,Link} from "react-router-dom"
+import React, { useState } from "react";
+import styles from "./SignIn.module.css";
+import { useNavigate } from "react-router-dom";
 import { BsArrowLeftRight } from "react-icons/bs";
-import TextField from '@material-ui/core/TextField';
-import MenuItem from '@material-ui/core/MenuItem';
-import { makeStyles } from '@material-ui/core/styles';
+import TextField from "@material-ui/core/TextField";
+// import MenuItem from "@material-ui/core/MenuItem";
+import { makeStyles } from "@material-ui/core/styles";
+import { useDispatch } from "react-redux";
+import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
-    inputfield: {
-        margin: '10px 0px',
-        width: '100%',
-    },
-    inputStyles: {
-        textAlign: 'left',
-        fontWeight: 600,
-        fontSize: '19.2px',
-        lineHeight: '23px',
-        color: 'rgba(0, 0, 0, 0.91)'
-    },
+  inputfield: {
+    margin: "10px 0px",
+    width: "100%",
+  },
+  inputStyles: {
+    textAlign: "left",
+    fontWeight: 600,
+    fontSize: "19.2px",
+    lineHeight: "23px",
+    color: "rgba(0, 0, 0, 0.91)",
+  },
 }));
 
-
 const SignIn = () => {
-    let navigate = useNavigate()
-    const classes = useStyles();
+  let navigate = useNavigate();
+  const classes = useStyles();
+  const [email, setemail] = useState("");
+  const dispatch = useDispatch();
 
-    return (
+  const handleLogin = async () => {
+    const fd = new FormData();
+    // if (loginForm === "email") {
+    fd.append("user[email]", email);
+    // } else {
+    //   fd.append("user[password]", 11223344);
+    // }
 
-        <>
-            <div className={styles.half_container}>
-                <div className={styles.childContainer}>
-                    <BsArrowLeftRight className={styles.icon} />
-                    <div className={styles.requestText}>
-                        NEAR Labs<br />
-                        is requesting to<br />
-                        access your account.
-                    </div>
-                    <p className={styles.para}>
-                        This does not allow the app to transfer<br /> any tokens.
-                    </p>
-                    <div className={styles.MoreInfo}>
-                        More Info
-                    </div>
+    const response = await axios.post("http://147.182.199.116/login", fd);
+    const { status } = response;
 
-                    {/* TEXT FIELD */}
+    if (status === 200 || status === 201) {
+      const {
+        headers: { authorization },
+        data: { data },
+      } = response;
 
-                    <div className={styles.textField}>
-                        <TextField
-                            id="outlined-select-currency"
-                            select
-                            variant="outlined"
-                            value='Johndoe.near'
-                            className={classes.inputfield}
-                            fullWidth={true}
-                            inputProps={{
-                                className: classes.inputStyles,
-                            }}
+      axios.interceptors.request.use(function (config) {
+        // const token = store.getState().session.token;
+        config.headers.Authorization = authorization;
 
-                        >
-                            {/* this will be mapped by using map function */}
-                            <MenuItem value={'Johndoe.near'}>
-                                Johndoe.near
-                            </MenuItem>
-                            <MenuItem value={'Johndoe.near'}>
-                                Johndoe.near
-                            </MenuItem>
-                            <MenuItem value={'Johndoe.near'}>
-                                Johndoe.near
-                            </MenuItem>
-                        </TextField>
-                    </div>
+        return config;
+      });
+      dispatch({
+        type: "login_Successfully",
+        payload: { ...data, token: authorization },
+      });
+      navigate("/");
+    } else {
+      navigate("verification");
+    }
+  };
 
-                    {/* BUTTON CONTAINER */}
-                    <div className={styles.buttonContainer}>
-                        <button onClick={() => navigate("/signup")} className={styles.secondary_button}>
-                            Deny
-                        </button>
+  return (
+    <>
+      <div className={styles.half_container}>
+        <div className={styles.childContainer}>
+          <BsArrowLeftRight className={styles.icon} />
+          <div className={styles.requestText}>
+            NEAR Labs
+            <br />
+            is requesting to
+            <br />
+            access your account.
+          </div>
+          <p className={styles.para}>
+            This does not allow the app to transfer
+            <br /> any tokens.
+          </p>
+          <div className={styles.MoreInfo}>More Info</div>
 
-                        <Link to={`/signup/create-account/${'Johndoe.near'}`} className={styles.primary_button}>
-                            Allow
-                        </Link>
-                    </div>
+          {/* TEXT FIELD */}
 
-                </div>
-            </div>
-        </>
-    );
-}
+          <div className={styles.textField}>
+            <TextField
+              id="outlined-select-currency"
+              //   select
+              variant="outlined"
+              //   placeholder="Johndoe.near"
+              placeholder="johndoe@gmail.com"
+              value={email}
+              className={classes.inputfield}
+              fullWidth={true}
+              inputProps={{
+                className: classes.inputStyles,
+              }}
+              onChange={(e) => setemail(e.target.value)}
+            >
+              {/* this will be mapped by using map function */}
+              {/* <MenuItem value={"Johndoe.near"}>Johndoe.near</MenuItem>
+              <MenuItem value={"Johndoe.near"}>Johndoe.near</MenuItem>
+              <MenuItem value={"Johndoe.near"}>Johndoe.near</MenuItem> */}
+            </TextField>
+          </div>
+
+          {/* BUTTON CONTAINER */}
+          <div className={styles.buttonContainer}>
+            <button
+              onClick={() => navigate("/signup")}
+              className={styles.secondary_button}
+            >
+              Deny
+            </button>
+
+            <button className={styles.primary_button} onClick={handleLogin}>
+              Allow
+            </button>
+            {/* <Link
+              to={`/signup/create-account/${"Johndoe.near"}`}
+              className={styles.primary_button}
+            >
+              Allow
+            </Link> */}
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
 export default SignIn;
