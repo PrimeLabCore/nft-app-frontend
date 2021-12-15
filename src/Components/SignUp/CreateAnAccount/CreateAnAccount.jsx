@@ -90,8 +90,14 @@ const CreateAnAccount = () => {
     } else {
       fd.append("user[phone_no]", signupPhone);
     }
-    // fd.append("user[password]", 11223344);
-    const response = await axios.post("http://147.182.199.116/signup", fd);
+    fd.append(
+      "user[account_id]",
+      signupEmail?.split("@")[0]?.replace(".", "") + ".near"
+    );
+    const response = await axios.post(
+      "https://nftmaker.algorepublic.com/signup",
+      fd
+    );
     console.log(`response`, response);
     const { status } = response;
 

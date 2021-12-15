@@ -9,8 +9,13 @@ import { useNavigate } from "react-router-dom";
 const Details = () => {
   let dispatch = useDispatch();
   const { email } = useSelector((state) => state.authReducer.user);
+
   const sendNft = () => {
     dispatch({ type: "sendnft__open" });
+    dispatch({
+      type: "current_selected_nft",
+      payload: nft__detail,
+    });
     navigate("/");
     window.dataLayer.push({
       event: "event",
@@ -23,8 +28,11 @@ const Details = () => {
     });
   };
   let navigate = useNavigate();
+
   const nft__detail = useSelector((state) => state.nft__detail);
+
   console.log(`nft__detail`, nft__detail);
+
   return (
     <>
       <div className={styles.details__wrapper}>

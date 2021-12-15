@@ -44,7 +44,7 @@ const MyNft = ({ isLink }) => {
 
   const getAllImages = async () => {
     const response = await axios.get(
-      "http://147.182.199.116/api/v1/user_images"
+      "https://nftmaker.algorepublic.com/api/v1/user_images"
     );
     console.log(`response.data`, response.data);
     const { success, data } = response.data;

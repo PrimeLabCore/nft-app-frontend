@@ -30,10 +30,10 @@ const TransactionHistory = () => {
   useEffect(() => {
     async function fetchTransactions() {
       let sendersResponse = await axios.get(
-        "http://147.182.199.116/api/v1/nft_histories/sender_list"
+        "https://nftmaker.algorepublic.com/api/v1/nft_histories/sender_list"
       );
       let receiverResponse = await axios.get(
-        "http://147.182.199.116/api/v1/nft_histories/receiver_list"
+        "https://nftmaker.algorepublic.com/api/v1/nft_histories/receiver_list"
       );
 
       let receives = receiverResponse?.data?.data?.map(

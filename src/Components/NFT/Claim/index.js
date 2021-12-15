@@ -20,7 +20,7 @@ const Claim = () => {
 
   const hitClaim = async () => {
     const response = await axios.post(
-      `http://147.182.199.116/api/v1/user_images/claim_image?uuid=${nft__detail.uuid}`
+      `https://nftmaker.algorepublic.com/api/v1/user_images/claim_image?uuid=${nft__detail.uuid}`
     );
     const { status } = response;
     const { success, message } = response.data;

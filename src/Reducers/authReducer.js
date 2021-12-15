@@ -2,6 +2,7 @@ let initialvalue = {
   user: null,
   signupEmail: "",
   signupPhone: "",
+  nft: null,
 };
 
 const authReducer = (state = initialvalue, action) => {
@@ -21,6 +22,11 @@ const authReducer = (state = initialvalue, action) => {
       return {
         ...state,
         signupPhone: action.payload,
+      };
+    case "current_selected_nft":
+      return {
+        ...state,
+        nft: action.payload,
       };
     default:
       return state;

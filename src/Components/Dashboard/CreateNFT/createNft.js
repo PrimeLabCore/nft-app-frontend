@@ -149,7 +149,7 @@ const CreateNft = () => {
     fd.append("user_image[properties]", "");
 
     const response = await axios.post(
-      "http://147.182.199.116/api/v1/user_images",
+      "https://nftmaker.algorepublic.com/api/v1/user_images",
       fd,
       {
         headers: {
@@ -207,7 +207,7 @@ const CreateNft = () => {
     // fd.append("user_image[pic]", event.target.files[0]);
 
     // const response = await axios.post(
-    //   "http://147.182.199.116/api/v1/user_images",
+    //   "https://nftmaker.algorepublic.com/api/v1/user_images",
     //   fd,
     //   {
     //     headers: {

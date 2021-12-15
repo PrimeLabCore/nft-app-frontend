@@ -66,6 +66,7 @@ const SendNft = () => {
   const sendnft__popup = useSelector((state) => state.sendnft__popup); //Defined in reducer function
   const home__allnft = useSelector((state) => state.home__allnft); //Defined in reducer function
   // let updatedNFT = useSelector((state) => state.home__allnft); //Defined in reducer function
+  let { nft } = useSelector((state) => state.authReducer);
   const closeSendNft = () => {
     dispatch({ type: "sendnft__close" });
     setOpenPreview(false);
@@ -87,6 +88,11 @@ const SendNft = () => {
     setOpenGift(false);
   };
 
+  useEffect(() => {
+    console.log(`nft`, nft)
+    nft && setSelected(nft);
+  }, [nft]);
+
   const handleNftGift = () => {
     dispatch({ type: "sendnft__close" });
     setOpenGift(true);
@@ -99,7 +105,7 @@ const SendNft = () => {
     // fd.append("email", [sendGiftEmail].toString());
 
     const resp = await axios.post(
-      `http://147.182.199.116/api/v1/user_images/send_image?uuid=${
+      `https://nftmaker.algorepublic.com/api/v1/user_images/send_image?uuid=${
         selected.uuid
       }&emails=${[email_array].toString()}`,
       fd
@@ -387,7 +393,7 @@ const SendNft = () => {
               <h1>
                 {selected.name} <br /> sent successfully to
               </h1>
-              <h6>1 contacts</h6>
+              <h6>{filteredData.filter(item=>findIfChecked(item.email,checkedState)).length} contacts</h6>
             </div>
           </div>
           <div
