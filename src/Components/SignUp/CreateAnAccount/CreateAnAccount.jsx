@@ -115,8 +115,12 @@ const CreateAnAccount = () => {
       });
       dispatch({
         type: "login_Successfully",
-        payload: data,
+        payload: { ...data, token: authorization },
       });
+      localStorage.setItem(
+        "user",
+        JSON.stringify({ ...data, token: authorization })
+      );
       navigate("/");
     }
     // else {

@@ -114,26 +114,26 @@ const CreateNft = () => {
   };
   const handleNftPreview = () => {
     if (details.title && details.description && details.category) {
-      if (formValues.length <= 5) {
-        for (let i = 0; i < formValues.length; i++) {
-          let extension = `extension_${formValues[i].id}`;
-          let size = `size_${formValues[i].id}`;
-          var count = 0;
-          if (!formValues[i][extension] && !formValues[i][size]) {
-            count += 1;
-          }
-        }
-        if (count === 0) {
-          dispatch({ type: "createnft__close" });
-          setNftForm(false);
-          setNftPreview(true);
-          setNftMint(false);
-        } else {
-          toast.error("All fields are required");
-        }
-      } else {
-        toast.error("Too Many Property Fields");
-      }
+      // if (formValues.length <= 5) {
+      //   for (let i = 0; i < formValues.length; i++) {
+      //     let extension = `extension_${formValues[i].id}`;
+      //     let size = `size_${formValues[i].id}`;
+      //     var count = 0;
+      //     if (!formValues[i][extension] && !formValues[i][size]) {
+      //       count += 1;
+      //     }
+      //   }
+      //   if (count === 0) {
+      dispatch({ type: "createnft__close" });
+      setNftForm(false);
+      setNftPreview(true);
+      setNftMint(false);
+      //   } else {
+      //     toast.error("All fields are required");
+      //   }
+      // } else {
+      //   toast.error("Too Many Property Fields");
+      // }
     } else {
       toast.error("All fields are required");
     }
@@ -168,7 +168,11 @@ const CreateNft = () => {
       setNftForm(false);
       setNftPreview(false);
       setNftMint(true);
-      setDetails({});
+      setDetails({
+        title: "",
+        description: "",
+        category: "Digital Arts",
+      });
       setSelectedFile("");
       setFormValues([
         {
@@ -287,7 +291,15 @@ const CreateNft = () => {
             )}
           </div>
           <div className={styles.next__btn__wrapper}>
-            <button onClick={handleNftForm} className={styles.next__btn}>
+            <button
+              onClick={() =>
+                selectedFile
+                  ? handleNftForm()
+                  : toast.error("Please upload files.")
+              }
+              disabled={selectedFile ? false : true}
+              className={styles.next__btn}
+            >
               Next
               <span>
                 <IoIosArrowForward />
