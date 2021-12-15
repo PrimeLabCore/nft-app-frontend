@@ -1,6 +1,7 @@
 import React from "react";
 import Dialog from "@material-ui/core/Dialog";
 import Slide from "@material-ui/core/Slide";
+import GoogleContacts from "react-google-contacts";
 import { makeStyles } from "@material-ui/core/styles";
 import { AiFillGoogleCircle } from "react-icons/ai";
 import { IoIosArrowForward } from "react-icons/io";
@@ -36,6 +37,13 @@ const useStyles = makeStyles((theme) => ({
 
 const ImportGoogleContactsDialog = ({ status, callback, onImport }) => {
   const classes = useStyles();
+  const responseCallback = (response) => {
+    onImport(response);
+  };
+
+  const errorCallback = (error) => {
+    onImport(null, error);
+  };
   return (
     <div onClick={onImport}>
       <Dialog
@@ -49,11 +57,20 @@ const ImportGoogleContactsDialog = ({ status, callback, onImport }) => {
         }}
         onClose={callback}
       >
-        <div className={classes.mainContainer}>
-          <AiFillGoogleCircle className={classes.googleicon} />
-          <p> Import Google Contacts</p>
-          <IoIosArrowForward className={classes.googleicon} />
-        </div>
+        <GoogleContacts
+            clientId="186127410269-2ctc6ce3u984u025dmgnnq8etitupnu6.apps.googleusercontent.com"
+            onSuccess={responseCallback}
+            onFailure={errorCallback}
+            render={(renderProps) => (
+                <button onClick={renderProps.onClick}>
+                  <div className={classes.mainContainer}>
+                    <AiFillGoogleCircle className={classes.googleicon} />
+                    <p> Import Gooogle Contacts</p>
+                    <IoIosArrowForward className={classes.googleicon} />
+                  </div>
+                </button>
+            )}
+        />
       </Dialog>
     </div>
   );

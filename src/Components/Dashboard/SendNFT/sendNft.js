@@ -145,40 +145,24 @@ const SendNft = () => {
   const HandleDialogClose = () => {
     setimportContactDialog(false);
   };
-  const importGoogleContact = () => {
-    var instance = axios.create();
-    instance.defaults.headers.common["Content-Type"] = "application/json";
-    instance.defaults.headers.common["Authorization"] =
-      "Bearer " + "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";
 
-    instance
-      .get(
-        `https://content-people.googleapis.com/v1/people/me/connections?personFields=names`,
-        // `https://www.googleapis.com/auth/contacts.readonly`,
-        {
-          headers: {
-            // Authorization: "Bearer " + Cookies.get(googleAccess),
-            // Authorization: "Bearer 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",
-          },
-        }
-      )
-      .then((response) => {
-        if (response.status === 200) {
-          setFilteredData(response.data.connections);
-          dispatch({
-            type: "getGoogleContactData",
-            payload: response.data.connections,
-          });
-          setCheckedState(
-            new Array(response.data.connections.length).fill(true)
-          );
-          setimportContactDialog(false);
-        }
-      })
-      .catch(() => {
-        toast.error("Something Went Wrong Fetching Contacts From Google");
+  const importGoogleContact = (data, error) => {
+    if (error) {
+      toast.error("Something Went Wrong Fetching Contacts From Google");
+      setimportContactDialog(false);
+      return;
+    }
+    if (data) {
+      setFilteredData(data);
+      dispatch({
+        type: "getGoogleContactData",
+        payload: data,
       });
+      setCheckedState(new Array(data.length).fill(true));
+      setimportContactDialog(false);
+    }
   };
+
   const HandleDialogOpen = () => {
     setimportContactDialog(true);
   };
