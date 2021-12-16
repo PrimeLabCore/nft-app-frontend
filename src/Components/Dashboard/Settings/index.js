@@ -83,7 +83,8 @@ const Settings = () => {
                   >
                     <div className={styles.settings__name__info}>
                       <img src={user_icon} alt="User Name" />
-                      <h6>{user?.email?.split("@")[0] + ".near"}</h6>
+                      {/* <h6>{user?.email?.split("@")[0] + ".near"}</h6> */}
+                      {user?.account_id}
                     </div>
                     <button>
                       <IoIosArrowForward />
@@ -103,7 +104,8 @@ const Settings = () => {
                       >
                         <div className={styles.personal__settings}>
                           <p>Name</p>
-                          <h6>{user.email.split("@")[0]}</h6>
+                          {/* <h6>{user.email.split("@")[0]}</h6> */}
+                          <h6>{user?.full_name}</h6>
                         </div>
                         <button>
                           <IoIosArrowForward />
@@ -115,7 +117,7 @@ const Settings = () => {
                       >
                         <div className={styles.personal__settings}>
                           <p>Email Address</p>
-                          <h6>{user.email}</h6>
+                          <h6>{user?.email}</h6>
                         </div>
                         <button>
                           <IoIosArrowForward />
@@ -127,7 +129,7 @@ const Settings = () => {
                       >
                         <div className={styles.personal__settings}>
                           <p>Phone number</p>
-                          <h6>{user.phone}</h6>
+                          <h6>{user?.phone_no}</h6>
                         </div>
                         <button>
                           <IoIosArrowForward />
@@ -181,21 +183,22 @@ const Settings = () => {
           <Modal.Body>
             <div className={styles.modal__body__wrapper}>
               <div className={styles.name__wrapper} onClick={() => check(0)}>
-                <h6>{user?.email?.split("@")[0] + ".near"}</h6>
+                {/* <h6>{user?.email?.split("@")[0] + ".near"}</h6> */}
+                <h6>{user?.account_id}</h6>
                 {checked === 0 && (
                   <div className={styles.checked}>
                     <AiOutlineCheck />
                   </div>
                 )}
               </div>
-              <div className={styles.name__wrapper} onClick={() => check(1)}>
+              {/* <div className={styles.name__wrapper} onClick={() => check(1)}>
                 <h6>demo.near</h6>
                 {checked === 1 && (
                   <div className={styles.checked}>
                     <AiOutlineCheck />
                   </div>
                 )}
-              </div>
+              </div> */}
             </div>
             <div className={styles.btn__wrapper}>
               <button onClick={addNewWallet} className={styles.next__btn}>

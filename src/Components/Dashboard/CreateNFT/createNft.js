@@ -504,20 +504,20 @@ const CreateNft = () => {
           <div className={styles.multiple__btn__wrapper}>
             <button
               onClick={handleNftMint}
-              disabled={loading}
+              // disabled={loading}
               className={styles.next__btn}
             >
-              Mint NFT
+              Mine NFT
               <span>
                 <IoIosArrowForward />
               </span>
             </button>
             <button
               onClick={()=>handleNftMint('create')}
-              disabled={loading}
+              // disabled={loading}
               className={styles.next__btn}
             >
-              Create NFT
+              Sent NFT
               <span>
                 <IoIosArrowForward />
               </span>
@@ -550,7 +550,7 @@ const CreateNft = () => {
                 />
               </div>
               <h1>
-                {createNftResponse.name} <br /> Successfully Minted
+                {createNftResponse.name} <br /> Successfully Mined
               </h1>
               <h6>NFT ID #27283</h6>
             </div>

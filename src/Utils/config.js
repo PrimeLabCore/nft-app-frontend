@@ -10,6 +10,7 @@ let cookieData = "general"; //Name for user data cookie
 let cookieAuth = "protected"; //Name for JWT cookie
 let googleAccess = "googleAccess";
 let googleRefresh = "googleRefresh";
+let base_url = "https://nftmaker.nearapps.net/";
 export {
   baseurl,
   imagebaseurl,
@@ -21,4 +22,5 @@ export {
   googleRedirectUrl,
   googleAccess,
   googleRefresh,
+  base_url,
 };

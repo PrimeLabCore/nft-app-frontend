@@ -48,9 +48,9 @@ const LayoutRoute = () => {
   // let navigate = useNavigate()
   // let isAuth = Cookies.get(cookieAuth) || false // => 'value'
   // let isAuth = true; // => 'value'
-  // const { user } = useSelector((state) => state.authReducer); //Defined in reducer function
-  let isAuth = JSON.parse(localStorage.getItem("user")) ? true : false;
-
+  const { user } = useSelector((state) => state.authReducer); //Defined in reducer function
+  // let isAuth = JSON.parse(localStorage.getItem("user")) ? true : false;
+  let isAuth = user ? true : false;
   return (
     <>
       <Layout>{isAuth ? <Outlet /> : <Navigate replace to="/signup" />}</Layout>

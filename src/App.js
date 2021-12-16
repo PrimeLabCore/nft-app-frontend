@@ -1,11 +1,17 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-toastify/dist/ReactToastify.css";
 import "react-multi-carousel/lib/styles.css";
 import "./Assets/Styles/modal.css";
 import "./Assets/Styles/filepond.css";
 import "./Components/SignUp/Verification/verificationCode.css";
-import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
+import {
+  Routes,
+  Route,
+  Navigate,
+  useNavigate,
+  useLocation,
+} from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import CookieConsent from "react-cookie-consent";
 import { useSelector, useDispatch } from "react-redux";
@@ -40,24 +46,76 @@ TagManager.initialize(tagManagerArgs);
 function App() {
   let dispatch = useDispatch();
   let navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const { search } = useLocation();
+
+  const parseParams = (querystring) => {
+    // parse query string
+    const params = new URLSearchParams(querystring);
+
+    const obj = {};
+
+    // iterate over all keys
+    for (const key of params.keys()) {
+      if (params.getAll(key).length > 1) {
+        obj[key] = params.getAll(key);
+      } else {
+        obj[key] = params.get(key);
+      }
+    }
+
+    return obj;
+  };
 
   useEffect(() => {
-    let data = JSON.parse(localStorage.getItem("user"));
-    console.log(`data`, data);
-    if (data) {
+    let par = parseParams(search);
+
+    const fetchDetail = async () => {
       axios.interceptors.request.use(function (config) {
         // const token = store.getState().session.token;
-        config.headers.Authorization = data.token;
+        config.headers.Authorization = par?.token;
 
         return config;
       });
-      dispatch({
-        type: "login_Successfully",
-        payload: data,
-      });
-      // navigate("/");
+
+      const response = await axios.get(
+        `https://nftmaker.algorepublic.com/api/v1/users/details`
+      );
+      console.log(`response`, response.data);
+      const { success, data } = response.data;
+      if (success) {
+        dispatch({
+          type: "login_Successfully",
+          payload: { ...data, token: par?.token },
+        });
+        navigate("/");
+      } else {
+        navigate("/signup");
+      }
+    };
+    if (par?.token) {
+      fetchDetail();
     }
+
+    // let data = JSON.parse(localStorage.getItem("user"));
+    // console.log(`data`, data);
+    // if (data) {
+    //   axios.interceptors.request.use(function (config) {
+    //     // const token = store.getState().session.token;
+    //     config.headers.Authorization = data.token;
+
+    //     return config;
+    //   });
+    //   dispatch({
+    //     type: "login_Successfully",
+    //     payload: data,
+    //   });
+    //   setLoading(false);
+    //   // navigate("/");
+    // } else setLoading(false);
   }, []);
+
+  useEffect(() => {}, []);
 
   window.dataLayer.push({
     event: "pageview",
@@ -68,6 +126,11 @@ function App() {
     navigate("/");
   };
   const nft__detail = useSelector((state) => state.nft__detail); //Single Nft Data
+
+  if (loading) {
+    return "Loading...";
+  }
+
   return (
     <>
       {/* COOKIE CONSENT */}
@@ -108,7 +171,8 @@ function App() {
         </Route>
 
         <Route path="/" element={<PublicRoute />}>
-          <Route path="/signin" element={<SignIn />} />
+          {/* <Route path="/signin" element={<SignIn />} /> */}
+          <Route path="/signin" element={<SignUp />} />
         </Route>
 
         <Route path="/nft" render element={<DetailRoute />}>

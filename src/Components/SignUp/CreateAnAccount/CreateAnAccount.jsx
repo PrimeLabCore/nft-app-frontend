@@ -11,11 +11,15 @@ import { googleClientId, googleRedirectUrl } from "../../../Utils/config";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { InputAdornment } from "@material-ui/core";
 
 const CreateAnAccount = () => {
   const { signupEmail, signupPhone } = useSelector(
     (state) => state.authReducer
   );
+
+  const loginForm = useSelector((state) => state.LoginFormMethod);
+
   const { LoginFormMethod } = useSelector((state) => state);
 
   const { accId } = useParams();
@@ -43,8 +47,18 @@ const CreateAnAccount = () => {
   const [info, setinfo] = useState("");
 
   useEffect(() => {
-    setAccountId(signupEmail?.split("@")[0]?.replace(".", "") + ".near");
-  }, [signupEmail]);
+    if (LoginFormMethod === "email") {
+      setAccountId(
+        signupEmail?.split("@")[0]?.replace(".", "")
+        // + ".near"
+      );
+    } else {
+      setAccountId(
+        signupPhone
+        //  + ".near"
+      );
+    }
+  }, [signupEmail, signupPhone]);
 
   const createAccount = () => {
     // navigate("/signup/gift-nft")
@@ -92,24 +106,30 @@ const CreateAnAccount = () => {
   };
 
   const handleSignup = async () => {
+    // try {
     const fd = new FormData();
     if (LoginFormMethod === "email") {
       fd.append("user[email]", signupEmail);
+      fd.append("user[account_id]", accountId?.replace(".", "") + ".near");
+
+      fd.append("user[full_name]", fullname);
     } else {
       fd.append("user[phone_no]", signupPhone);
+      fd.append("user[account_id]", signupPhone + ".near");
+      fd.append("user[full_name]", fullname);
     }
-    fd.append(
-      "user[account_id]",
-      signupEmail?.split("@")[0]?.replace(".", "") + ".near"
-    );
+
     const response = await axios.post(
       "https://nftmaker.algorepublic.com/signup",
       fd
     );
     console.log(`response`, response);
-    const { status } = response;
+    const { status, success, errors } = response.data;
 
-    if (status === 200 || status === 201) {
+    if (
+      success
+      // && status === 200 || status === 201
+    ) {
       const {
         headers: { authorization },
         data: { data },
@@ -125,14 +145,19 @@ const CreateAnAccount = () => {
         type: "login_Successfully",
         payload: { ...data, token: authorization },
       });
-      localStorage.setItem(
-        "user",
-        JSON.stringify({ ...data, token: authorization })
-      );
+      // localStorage.setItem(
+      //   "user",
+      //   JSON.stringify({ ...data, token: authorization })
+      // );
       navigate(redirectUrl ? redirectUrl : "/");
+    } else {
+      toast.error(errors[0]);
+      // navigate("verification");
+      // toast.error("Already Taken");
     }
-    // else {
-    //   navigate("verification");
+    // } catch (e) {
+    //   console.log("Error", e);
+    //   // toast.error("Already Taken");
     // }
   };
 
@@ -186,6 +211,16 @@ const CreateAnAccount = () => {
             HandleInputChange={inputEvent}
             placeholder="yourname.near"
             type="text"
+            InputProps={{
+              endAdornment: (
+                <InputAdornment
+                  position="start"
+                  className={`${styles.button} ${styles.secondary} ${styles.active}`}
+                >
+                  <span>.near</span>
+                </InputAdornment>
+              ),
+            }}
             HandleFocus={() => HandleFocus("id")}
             // disabled
           />
