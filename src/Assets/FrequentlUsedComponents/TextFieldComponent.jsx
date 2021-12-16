@@ -53,6 +53,7 @@ const TextFieldComponent = ({
   HandleInputChange,
   name,
   disabled,
+  InputProps,
 }) => {
   const classes = useStyles();
   return (
@@ -72,7 +73,7 @@ const TextFieldComponent = ({
         disabled={disabled ? disabled : false}
         name={name}
         onFocus={HandleFocus}
-        InputProps={{ className: classes.input }}
+        InputProps={{ ...InputProps, className: classes.input }}
       />
     </>
   );

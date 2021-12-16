@@ -4,6 +4,7 @@ import TextFieldComponent from "../../../Assets/FrequentlUsedComponents/TextFiel
 import { IoIosArrowForward } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { InputAdornment } from "@material-ui/core";
 
 const SignUpWith = () => {
   const dispatch = useDispatch();
@@ -87,6 +88,16 @@ const SignUpWith = () => {
             placeholder="Ex. johdoe@gmail.com"
             type={"email"}
             InputValue={inputFields.email}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment
+                  position="start"
+                  className={`${styles.button} ${styles.secondary} ${styles.active}`}
+                >
+                  .near
+                </InputAdornment>
+              ),
+            }}
             HandleInputChange={HandleInputChange("email")}
           />
         )}
