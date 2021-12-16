@@ -47,7 +47,7 @@ const findIfChecked = (email, array) => {
 const SendNft = () => {
   let navigate = useNavigate();
   const dispatch = useDispatch();
-  const { autoSelectedNFT } = useSelector((state) => state.authReducer);
+  const { nft } = useSelector((state) => state.authReducer);
   const giftNFT__contactData = useSelector(
     (state) => state.giftNFT__contactData
   );
@@ -59,7 +59,7 @@ const SendNft = () => {
 
   const [openPreview, setOpenPreview] = useState(false);
   const [openGift, setOpenGift] = useState(false);
-  const [selected, setSelected] = useState(autoSelectedNFT ? autoSelectedNFT : "");
+  const [selected, setSelected] = useState(nft ? nft : "");
   const [sendGiftEmail, setSendGiftEmail] = useState("");
   // const [selected,setSelected] = useState({
   //     value:false,
@@ -69,7 +69,6 @@ const SendNft = () => {
   const sendnft__popup = useSelector((state) => state.sendnft__popup); //Defined in reducer function
   const home__allnft = useSelector((state) => state.home__allnft); //Defined in reducer function
   // let updatedNFT = useSelector((state) => state.home__allnft); //Defined in reducer function
-  let { nft } = useSelector((state) => state.authReducer);
   const closeSendNft = () => {
     dispatch({ type: "sendnft__close" });
     setOpenPreview(false);
@@ -187,6 +186,8 @@ const SendNft = () => {
   const HandleDialogOpen = () => {
     setimportContactDialog(true);
   };
+
+  console.log(home__allnft)
   return (
     <>
       {/* NFT Selection Modal */}

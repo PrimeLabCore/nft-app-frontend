@@ -199,7 +199,7 @@ const CreateNft = () => {
     if(comingFrom==='create'){
       if (data){
         dispatch({
-          type: "auto_select_nft",
+          type: "current_selected_nft",
           payload: data,
         });
       }

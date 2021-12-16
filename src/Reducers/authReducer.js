@@ -4,7 +4,6 @@ let initialvalue = {
   signupPhone: "",
   nft: null,
   redirectUrl: null,
-  autoSelectedNFT: null,
 };
 
 const authReducer = (state = initialvalue, action) => {
@@ -36,11 +35,6 @@ const authReducer = (state = initialvalue, action) => {
         redirectUrl: action.payload,
       };
 
-    case "auto_select_nft":
-      return {
-        ...state,
-        autoSelectedNFT: action.payload,
-      };
     default:
       return state;
   }
