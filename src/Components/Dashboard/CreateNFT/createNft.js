@@ -97,6 +97,19 @@ const CreateNft = () => {
     });
   };
 
+  const sendNftModal = () => {
+    dispatch({ type: "sendnft__open" });
+    dispatch({ type: "handleTooltipClick__close" });
+    window.dataLayer.push({
+      event: "event",
+      eventProps: {
+        category: "Menu",
+        action: "Send NFT Modal Opened",
+        label: "Menu",
+        value: "Menu",
+      },
+    });
+  };
   //Rest Of the Modals
   const [nftForm, setNftForm] = useState(false);
   const [nftPreview, setNftPreview] = useState(false);
@@ -139,7 +152,7 @@ const CreateNft = () => {
     }
   };
 
-  const handleNftMint = async () => {
+  const handleNftMint = async (comingFrom) => {
     setLoading(true);
     let fd = new FormData();
     fd.append("user_image[name]", details.title);
@@ -182,6 +195,17 @@ const CreateNft = () => {
         },
       ]);
     }
+
+    if(comingFrom==='create'){
+      if (data){
+        dispatch({
+          type: "auto_select_nft",
+          payload: data,
+        });
+      }
+      sendNftModal()
+    }
+
     setLoading(false);
   };
 
@@ -484,6 +508,16 @@ const CreateNft = () => {
               className={styles.next__btn}
             >
               Mint NFT
+              <span>
+                <IoIosArrowForward />
+              </span>
+            </button>
+            <button
+              onClick={()=>handleNftMint('create')}
+              disabled={loading}
+              className={styles.next__btn}
+            >
+              Create NFT
               <span>
                 <IoIosArrowForward />
               </span>

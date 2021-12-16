@@ -47,9 +47,11 @@ const findIfChecked = (email, array) => {
 const SendNft = () => {
   let navigate = useNavigate();
   const dispatch = useDispatch();
+  const { autoSelectedNFT } = useSelector((state) => state.authReducer);
   const giftNFT__contactData = useSelector(
     (state) => state.giftNFT__contactData
   );
+
   // const [data, setdata] = useState(dummyContacts)
   const [filteredData, setFilteredData] = useState(
     giftNFT__contactData ? giftNFT__contactData : []
@@ -57,7 +59,7 @@ const SendNft = () => {
 
   const [openPreview, setOpenPreview] = useState(false);
   const [openGift, setOpenGift] = useState(false);
-  const [selected, setSelected] = useState("");
+  const [selected, setSelected] = useState(autoSelectedNFT ? autoSelectedNFT : "");
   const [sendGiftEmail, setSendGiftEmail] = useState("");
   // const [selected,setSelected] = useState({
   //     value:false,
