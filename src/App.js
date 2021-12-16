@@ -55,7 +55,7 @@ function App() {
         type: "login_Successfully",
         payload: data,
       });
-      navigate("/");
+      // navigate("/");
     }
   }, []);
 
@@ -111,7 +111,7 @@ function App() {
           <Route path="/signin" element={<SignIn />} />
         </Route>
 
-        <Route path="/nft" element={<DetailRoute />}>
+        <Route path="/nft" render element={<DetailRoute />}>
           <Route
             path=":nftid"
             element={
@@ -125,7 +125,15 @@ function App() {
               <NFTClaim />
               // nft__detail.image ? <NFTClaim /> : <Navigate replace to="/" />
             }
-          />{" "}
+          />
+          <Route
+            path="detail/claim/:invoiceId"
+            element={
+              <NFTClaim />
+              // nft__detail.image ? <NFTClaim /> : <Navigate replace to="/" />
+            }
+            // render={props => <NFTClaim {...props} />}
+          />
           {/* Checking if nft detail image exists if not the detail page will redirect */}
         </Route>
         <Route path="*" element={<Notfound />} />

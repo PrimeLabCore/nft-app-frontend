@@ -1,22 +1,56 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./claim.module.css";
 import { Modal } from "react-bootstrap";
 // import {BiArrowBack} from "react-icons/bi"
 import { BsArrowUpRight } from "react-icons/bs";
 import { Accordion } from "react-bootstrap";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { IoIosArrowForward } from "react-icons/io";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useParams } from "react-router-dom";
 
 // import {MdCancel} from "react-icons/md"
+// dispatch({ type: "nft__detail", payload: data });
+//     navigate("/nft/detail/claim");
 
 const Claim = () => {
   const [claimModal, setClaimModal] = useState(false);
-  let navigate = useNavigate();
   const nft__detail = useSelector((state) => state.nft__detail);
   const { user } = useSelector((state) => state.authReducer);
+  const [nftDetail, setNftDetail] = useState();
+  const [loading, setLoading] = useState(true);
+  let navigate = useNavigate();
+  let params = useParams();
+  const dispatch = useDispatch();
+
+  console.log(`invoiceId`, params?.invoiceId);
+
+  const fetchNft = async () => {
+    setLoading(true);
+    const response = await axios.get(
+      `https://nftmaker.algorepublic.com/api/v1/user_images/fetch_user_image?uuid=${params?.invoiceId}`
+    );
+    const { data, success } = response.data;
+    console.log(`response`, data);
+    if (success) {
+      setNftDetail(data);
+      dispatch({
+        type: "nft__detail",
+        payload: data,
+      });
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    params?.invoiceId && fetchNft();
+  }, [params?.invoiceId]);
+
+  useEffect(() => {
+    !params?.invoiceId && setNftDetail(nftDetail);
+  }, [nftDetail]);
 
   const hitClaim = async () => {
     const response = await axios.post(
@@ -51,7 +85,13 @@ const Claim = () => {
         value: "Claim NFT",
       },
     });
+    dispatch({
+      type: "update_redirectUrl",
+      payload: `/nft/detail/claim/${params?.invoiceId}`,
+    });
+    navigate("/signin");
   };
+
   const createNewWallet = () => {
     window.dataLayer.push({
       event: "event",
@@ -62,9 +102,14 @@ const Claim = () => {
         value: "Claim NFT",
       },
     });
+    dispatch({
+      type: "update_redirectUrl",
+      payload: `/nft/detail/claim/${params?.invoiceId}`,
+    });
+    navigate("/signup");
   };
 
-  console.log(`nft__detail`, nft__detail);
+  console.log(`nftDetail`, nftDetail);
   return (
     <>
       <div className={styles.details__wrapper}>
@@ -75,11 +120,11 @@ const Claim = () => {
         </div>
         <div className={styles.details__head}>
           <div className={styles.details__cat}>
-            <h6>{nft__detail.category}</h6>
+            <h6>{nftDetail?.category}</h6>
           </div>
-          <h1>{nft__detail.title}</h1>
+          <h1>{nftDetail?.title}</h1>
           <a href="https://explorer.near.org/" target="_blank" rel="noreferrer">
-            {nft__detail.nftid}
+            {nftDetail?.nftid}
           </a>
         </div>
         <div className={styles.details__info}>
@@ -87,7 +132,7 @@ const Claim = () => {
             <div className={styles.details__profile__picture}></div>
             <div className={styles.details__user__info}>
               <p>Creater</p>
-              <h6>{nft__detail.name}</h6>
+              <h6>{nftDetail?.name}</h6>
             </div>
           </div>
         </div>
@@ -103,7 +148,7 @@ const Claim = () => {
               <Accordion.Item eventKey="0">
                 <Accordion.Header>Descriptions</Accordion.Header>
                 <Accordion.Body className={styles.accord__body}>
-                  <p>{nft__detail.description}</p>
+                  <p>{nftDetail?.description}</p>
                 </Accordion.Body>
               </Accordion.Item>
             </div>
@@ -120,7 +165,7 @@ const Claim = () => {
                       target="_blank"
                       rel="noreferrer"
                     >
-                      38493
+                      {nftDetail?.token_id ? nftDetail?.token_id : ""}
                     </a>
                   </div>
                   <div className={styles.nft__info}>
@@ -130,7 +175,7 @@ const Claim = () => {
                       target="_blank"
                       rel="noreferrer"
                     >
-                      d0xkedek..89reke
+                      {nftDetail?.explorer_url ? nftDetail?.explorer_url : ""}
                     </a>
                   </div>
                 </Accordion.Body>

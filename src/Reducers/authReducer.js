@@ -3,6 +3,7 @@ let initialvalue = {
   signupEmail: "",
   signupPhone: "",
   nft: null,
+  redirectUrl: null,
 };
 
 const authReducer = (state = initialvalue, action) => {
@@ -27,6 +28,11 @@ const authReducer = (state = initialvalue, action) => {
       return {
         ...state,
         nft: action.payload,
+      };
+    case "update_redirectUrl":
+      return {
+        ...state,
+        redirectUrl: action.payload,
       };
     default:
       return state;

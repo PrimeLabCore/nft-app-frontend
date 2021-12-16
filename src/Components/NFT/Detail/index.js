@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 // import {MdCancel} from "react-icons/md"
 const Details = () => {
   let dispatch = useDispatch();
-  const { email } = useSelector((state) => state.authReducer.user);
+  const { user } = useSelector((state) => state.authReducer);
 
   const sendNft = () => {
     dispatch({ type: "sendnft__open" });
@@ -55,7 +55,7 @@ const Details = () => {
             <div className={styles.details__profile__picture}></div>
             <div className={styles.details__user__info}>
               <p>Creater</p>
-              <h6>{email?.split("@")[0]}</h6>
+              <h6>{user?.email &&user?.email?.split("@")[0]}</h6>
             </div>
           </div>
           <button onClick={() => sendNft()}>

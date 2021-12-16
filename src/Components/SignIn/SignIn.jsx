@@ -5,7 +5,7 @@ import { BsArrowLeftRight } from "react-icons/bs";
 import TextField from "@material-ui/core/TextField";
 // import MenuItem from "@material-ui/core/MenuItem";
 import { makeStyles } from "@material-ui/core/styles";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
@@ -27,6 +27,7 @@ const SignIn = () => {
   const classes = useStyles();
   const [email, setemail] = useState("");
   const dispatch = useDispatch();
+  const { redirectUrl } = useSelector((state) => state.authReducer);
 
   const handleLogin = async () => {
     const fd = new FormData();
@@ -58,8 +59,11 @@ const SignIn = () => {
         type: "login_Successfully",
         payload: { ...data, token: authorization },
       });
-      localStorage.setItem("user", JSON.stringify({ ...data, token: authorization }));
-      navigate("/");
+      localStorage.setItem(
+        "user",
+        JSON.stringify({ ...data, token: authorization })
+      );
+      navigate(redirectUrl ? redirectUrl : "/");
     } else {
       navigate("verification");
     }

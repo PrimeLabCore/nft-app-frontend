@@ -201,7 +201,7 @@ const SendNft = () => {
           <div className="modal__title__wrapper">
             <Modal.Title>
               <div className={styles.modal__header}>
-                <h2>Send Nft</h2>
+                <h2>Send NFT</h2>
               </div>
             </Modal.Title>
           </div>
@@ -314,7 +314,7 @@ const SendNft = () => {
             </button>
             <Modal.Title>
               <div className={styles.modal__header}>
-                <h2>Send Nft</h2>
+                <h2>Send NFT</h2>
               </div>
             </Modal.Title>
           </div>

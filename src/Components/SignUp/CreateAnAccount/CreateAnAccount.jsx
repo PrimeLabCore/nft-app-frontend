@@ -27,6 +27,8 @@ const CreateAnAccount = () => {
   const [fullname, setFullname] = useState("");
   const [accountId, setAccountId] = useState("");
   const [windowstate, setWindow] = useState(window.innerWidth < 767);
+  const { redirectUrl } = useSelector((state) => state.authReducer);
+
   useEffect(() => {
     window.addEventListener(
       "resize",
@@ -127,7 +129,7 @@ const CreateAnAccount = () => {
         "user",
         JSON.stringify({ ...data, token: authorization })
       );
-      navigate("/");
+      navigate(redirectUrl ? redirectUrl : "/");
     }
     // else {
     //   navigate("verification");

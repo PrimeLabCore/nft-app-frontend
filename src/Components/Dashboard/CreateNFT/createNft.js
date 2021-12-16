@@ -252,7 +252,7 @@ const CreateNft = () => {
           <div className="modal__title__wrapper">
             <Modal.Title>
               <div className={styles.modal__header}>
-                <h2>Create an Nft</h2>
+                <h2>Create an NFT</h2>
               </div>
             </Modal.Title>
           </div>
@@ -324,7 +324,7 @@ const CreateNft = () => {
             </button>
             <Modal.Title>
               <div className={styles.modal__header}>
-                <h2>Create an Nft</h2>
+                <h2>Create an NFT</h2>
               </div>
             </Modal.Title>
           </div>
@@ -439,7 +439,7 @@ const CreateNft = () => {
             </button>
             <Modal.Title>
               <div className={styles.modal__header}>
-                <h2>Create an Nft</h2>
+                <h2>Create an NFT</h2>
               </div>
             </Modal.Title>
           </div>
