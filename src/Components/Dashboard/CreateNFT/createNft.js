@@ -180,7 +180,9 @@ const CreateNft = () => {
       dispatch({ type: "createnft__close" });
       setNftForm(false);
       setNftPreview(false);
-      setNftMint(true);
+      if (comingFrom !== "create") {
+        setNftMint(true);
+      }
       setDetails({
         title: "",
         description: "",
@@ -196,14 +198,14 @@ const CreateNft = () => {
       ]);
     }
 
-    if(comingFrom==='create'){
-      if (data){
+    if (comingFrom === "create") {
+      if (data) {
         dispatch({
           type: "current_selected_nft",
           payload: data,
         });
       }
-      sendNftModal()
+      sendNftModal();
     }
 
     setLoading(false);
@@ -513,7 +515,7 @@ const CreateNft = () => {
               </span>
             </button>
             <button
-              onClick={()=>handleNftMint('create')}
+              onClick={() => handleNftMint("create")}
               disabled={loading}
               className={styles.next__btn}
             >
