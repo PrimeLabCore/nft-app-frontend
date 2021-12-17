@@ -110,7 +110,6 @@ const SignUpWith = () => {
             placeholder="Ex. johdoe@gmail.com"
             type={"email"}
             InputValue={inputFields.email}
-            helperText={errors.email}
             InputProps={{
               error: !!errors.email,
               endAdornment: (

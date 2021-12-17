@@ -54,14 +54,12 @@ const TextFieldComponent = ({
   name,
   disabled,
   InputProps,
-  helperText,
 }) => {
   const classes = useStyles();
   return (
     <>
       <CssTextField
         variant={variant}
-        helperText={helperText}
         label={label}
         placeholder={placeholder}
         type={type}
