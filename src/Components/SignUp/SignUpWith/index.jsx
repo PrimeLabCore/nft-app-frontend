@@ -6,10 +6,19 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { InputAdornment } from "@material-ui/core";
 
+const validateEmail = (email) => {
+  return String(email)
+    .toLowerCase()
+    .match(
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    );
+};
+
 const SignUpWith = () => {
   const dispatch = useDispatch();
   const loginForm = useSelector((state) => state.LoginFormMethod);
   const [inputFields, setinputFields] = useState({ email: "", phone: "" });
+  const [errors, setErrors] = useState({});
   let navigate = useNavigate();
   // HANDLE CHANGE
 
@@ -22,7 +31,21 @@ const SignUpWith = () => {
     navigate("/signin");
   };
 
+  const handleValidation = () => {
+    let errors = {};
+    let formIsValid = true;
+    if (!validateEmail(inputFields.email)) {
+      formIsValid = false;
+      errors["email"] = "Email is not valid";
+    }
+    setErrors(errors);
+    return formIsValid;
+  };
+
   const oldHandleSignup = () => {
+    if (!handleValidation()) {
+      return;
+    }
     loginForm === "email"
       ? dispatch({ type: "set_signup_email", payload: inputFields.email })
       : dispatch({ type: "set_signup_phone", payload: inputFields.phone });
@@ -58,7 +81,6 @@ const SignUpWith = () => {
         >
           Email
         </button>
-
         <button
           value="phone"
           className={`${styles.button} ${styles.secondary} ${
@@ -88,7 +110,9 @@ const SignUpWith = () => {
             placeholder="Ex. johdoe@gmail.com"
             type={"email"}
             InputValue={inputFields.email}
+            helperText={errors.email}
             InputProps={{
+              error: !!errors.email,
               endAdornment: (
                 <InputAdornment
                   position="start"
