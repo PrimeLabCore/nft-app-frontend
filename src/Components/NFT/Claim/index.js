@@ -10,6 +10,7 @@ import { IoIosArrowForward } from "react-icons/io";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
+import { API_BASE_URL } from "../../../Utils/config";
 
 // import {MdCancel} from "react-icons/md"
 // dispatch({ type: "nft__detail", payload: data });
@@ -30,7 +31,7 @@ const Claim = () => {
   const fetchNft = async () => {
     setLoading(true);
     const response = await axios.get(
-      `https://nftmaker.algorepublic.com/api/v1/user_images/fetch_user_image?uuid=${params?.invoiceId}`
+      `${API_BASE_URL}/api/v1/user_images/fetch_user_image?uuid=${params?.invoiceId}`
     );
     const { data, success } = response.data;
     console.log(`response`, data);
@@ -54,7 +55,7 @@ const Claim = () => {
 
   const hitClaim = async () => {
     const response = await axios.post(
-      `https://nftmaker.algorepublic.com/api/v1/user_images/claim_image?uuid=${nft__detail.uuid}`
+      `${API_BASE_URL}/api/v1/user_images/claim_image?uuid=${nft__detail.uuid}`
     );
     const { status } = response;
     const { success, message } = response.data;
@@ -76,20 +77,22 @@ const Claim = () => {
   };
 
   const Login = () => {
-    window.dataLayer.push({
-      event: "event",
-      eventProps: {
-        category: "Claim NFT",
-        action: "Redirected To Login",
-        label: "Claim NFT",
-        value: "Claim NFT",
-      },
-    });
-    dispatch({
-      type: "update_redirectUrl",
-      payload: `/nft/detail/claim/${params?.invoiceId}`,
-    });
-    navigate("/signin");
+    // window.dataLayer.push({
+    //   event: "event",
+    //   eventProps: {
+    //     category: "Claim NFT",
+    //     action: "Redirected To Login",
+    //     label: "Claim NFT",
+    //     value: "Claim NFT",
+    //   },
+    // });
+    // dispatch({
+    //   type: "update_redirectUrl",
+    //   payload: `/nft/detail/claim/${params?.invoiceId}`,
+    // });
+    // navigate("/signin");
+
+    window.open(`${API_BASE_URL}/near_login/login.html`, "_self");
   };
 
   const createNewWallet = () => {
@@ -136,12 +139,14 @@ const Claim = () => {
             </div>
           </div>
         </div>
-        <button className={styles.claim__btn} onClick={handleClaim}>
-          Claim{" "}
-          <span>
-            <BsArrowUpRight />
-          </span>
-        </button>
+        {nftDetail?.is_nft_claimed === false && (
+          <button className={styles.claim__btn} onClick={handleClaim}>
+            Claim{" "}
+            <span>
+              <BsArrowUpRight />
+            </span>
+          </button>
+        )}
         <div className={styles.details__accords}>
           <Accordion>
             <div className={styles.accord}>
@@ -161,7 +166,7 @@ const Claim = () => {
                   <div className={styles.nft__info}>
                     <p>Token ID</p>
                     <a
-                      href="https://explorer.near.org/"
+                      href={nftDetail?.token_id ? nftDetail?.token_id : ""}
                       target="_blank"
                       rel="noreferrer"
                     >
@@ -171,7 +176,9 @@ const Claim = () => {
                   <div className={styles.nft__info}>
                     <p>Contract Address</p>
                     <a
-                      href="https://explorer.near.org/"
+                      href={
+                        nftDetail?.explorer_url ? nftDetail?.explorer_url : ""
+                      }
                       target="_blank"
                       rel="noreferrer"
                     >

@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { InputAdornment } from "@material-ui/core";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { API_BASE_URL } from "../../../Utils/config";
 
 const SignUpWith = () => {
   const dispatch = useDispatch();
@@ -50,7 +51,7 @@ const SignUpWith = () => {
 
     const validate = async () => {
       const response = await axios.get(
-        `https://nftmaker.algorepublic.com/check_account_id?account_id=${par.account_id}`
+        `${API_BASE_URL}/check_account_id?account_id=${par.account_id}`
       );
 
       console.log(`response`, response.data);
@@ -85,10 +86,7 @@ const SignUpWith = () => {
       );
     }
 
-    const response = await axios.post(
-      "https://nftmaker.algorepublic.com/signup",
-      fd
-    );
+    const response = await axios.post(`${API_BASE_URL}/signup`, fd);
     console.log(`response`, response);
     const { status } = response;
 
@@ -126,7 +124,7 @@ const SignUpWith = () => {
   //   if (!par?.account_id && loginForm === "email") {
   //     const validate = async () => {
   //       const response = await axios.get(
-  //         `https://nftmaker.algorepublic.com/check_account_id?account_id=${inputFields.email?.replace(
+  //         `${API_BASE_URL}/check_account_id?account_id=${inputFields.email?.replace(
   //           ".",
   //           ""
   //         )}.near`
@@ -151,7 +149,7 @@ const SignUpWith = () => {
   // HandleLogin
   const HandleLoginWithNear = () => {
     // navigate("/signin");
-    window.open("https://nftmaker.algorepublic.com/near_login/login.html");
+    window.open(`${API_BASE_URL}/near_login/login.html`, "_self");
   };
 
   const handleLogin = async (email) => {
@@ -162,10 +160,7 @@ const SignUpWith = () => {
       fd.append("user[phone]", inputFields.phone);
     }
 
-    const response = await axios.post(
-      "https://nftmaker.algorepublic.com/login",
-      fd
-    );
+    const response = await axios.post(`${API_BASE_URL}/login`, fd);
     const { status } = response;
 
     if (status === 200 || status === 201) {

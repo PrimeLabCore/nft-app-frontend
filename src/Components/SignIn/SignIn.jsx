@@ -7,6 +7,7 @@ import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/core/styles";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
+import { API_BASE_URL } from "../../Utils/config";
 
 const useStyles = makeStyles((theme) => ({
   inputfield: {
@@ -37,10 +38,7 @@ const SignIn = () => {
     //   fd.append("user[password]", 11223344);
     // }
 
-    const response = await axios.post(
-      "https://nftmaker.algorepublic.com/login",
-      fd
-    );
+    const response = await axios.post(`${API_BASE_URL}/login`, fd);
     const { status } = response;
 
     if (status === 200 || status === 201) {

@@ -15,7 +15,7 @@ import { GoPrimitiveDot } from "react-icons/go";
 import ImportGoogleContactsDialog from "../../ImportGoogleContactsDialog/ImportGoogleContactsDialog";
 import axios from "axios";
 import Cookies from "js-cookie";
-import { googleAccess } from "../../../Utils/config";
+import { API_BASE_URL, googleAccess } from "../../../Utils/config";
 import { toast } from "react-toastify";
 const responsive = {
   superLargeDesktop: {
@@ -37,7 +37,7 @@ const responsive = {
   },
 };
 const checkAllContacts = (data) =>
-  data.map((item) => ({ checked: true, email: item.email }));
+  data.map((item) => ({ checked: false, email: item.email }));
 
 const findIfChecked = (email, array) => {
   const foundItem = array.find((item) => item.email === email);
@@ -112,7 +112,7 @@ const SendNft = () => {
 
     let final = sendGiftEmail?.length > 5 ? sendGiftEmail : email_array;
     const resp = await axios.post(
-      `https://nftmaker.algorepublic.com/api/v1/user_images/send_image?uuid=${
+      `${API_BASE_URL}/api/v1/user_images/send_image?uuid=${
         selected.uuid
       }&emails=${[final].toString()}`,
       fd
@@ -187,7 +187,6 @@ const SendNft = () => {
     setimportContactDialog(true);
   };
 
-  console.log(home__allnft)
   return (
     <>
       {/* NFT Selection Modal */}
@@ -281,8 +280,13 @@ const SendNft = () => {
               </Carousel>
             </div>
           </div>
+
           <div className={styles.multiple__btn__wrapper}>
-            <button onClick={handleNftGift} className={styles.next__btn}>
+            <button
+              onClick={handleNftGift}
+              disabled={!selected}
+              className={styles.next__btn}
+            >
               {" "}
               {/*handleNftGift*/}
               Next

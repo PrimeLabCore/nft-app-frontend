@@ -7,7 +7,11 @@ import { AiFillCloseCircle } from "react-icons/ai";
 import { useDispatch } from "react-redux";
 import { BsInfoCircleFill } from "react-icons/bs";
 import { ProgressBar } from "react-bootstrap";
-import { googleClientId, googleRedirectUrl } from "../../../Utils/config";
+import {
+  API_BASE_URL,
+  googleClientId,
+  googleRedirectUrl,
+} from "../../../Utils/config";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -81,7 +85,8 @@ const CreateAnAccount = () => {
 
   // HandleLogin
   const HandleLogin = () => {
-    navigate("/signin");
+    window.open(`${API_BASE_URL}/near_login/login.html`, "_self");
+    // navigate("/signin");
   };
 
   // HandleFocus for input
@@ -115,16 +120,12 @@ const CreateAnAccount = () => {
       fd.append("user[full_name]", fullname);
     } else {
       fd.append("user[phone_no]", signupPhone);
-      fd.append("user[account_id]", signupPhone + ".near");
+      fd.append("user[account_id]", accountId + ".near");
       fd.append("user[full_name]", fullname);
     }
 
-    const response = await axios.post(
-      "https://nftmaker.algorepublic.com/signup",
-      fd
-    );
-    console.log(`response`, response);
-    const { status, success, errors } = response.data;
+    const response = await axios.post(`${API_BASE_URL}/signup`, fd);
+    const { success, errors } = response.data;
 
     if (
       success

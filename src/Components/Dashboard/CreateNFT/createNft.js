@@ -8,6 +8,7 @@ import { IoIosArrowForward } from "react-icons/io";
 import { AiOutlinePlus } from "react-icons/ai";
 import { toast } from "react-toastify";
 import axios from "axios";
+import { API_BASE_URL } from "../../../Utils/config";
 
 const CreateNft = () => {
   let navigate = useNavigate();
@@ -162,7 +163,7 @@ const CreateNft = () => {
     fd.append("user_image[properties]", "");
 
     const response = await axios.post(
-      "https://nftmaker.algorepublic.com/api/v1/user_images",
+      `${API_BASE_URL}/api/v1/user_images`,
       fd,
       {
         headers: {
@@ -196,14 +197,14 @@ const CreateNft = () => {
       ]);
     }
 
-    if(comingFrom==='create'){
-      if (data){
+    if (comingFrom === "create") {
+      if (data) {
         dispatch({
           type: "current_selected_nft",
           payload: data,
         });
       }
-      sendNftModal()
+      sendNftModal();
     }
 
     setLoading(false);
@@ -235,7 +236,7 @@ const CreateNft = () => {
     // fd.append("user_image[pic]", event.target.files[0]);
 
     // const response = await axios.post(
-    //   "https://nftmaker.algorepublic.com/api/v1/user_images",
+    //   `${API_BASE_URL}/api/v1/user_images`,
     //   fd,
     //   {
     //     headers: {
@@ -487,15 +488,15 @@ const CreateNft = () => {
                 </div>
               </div>
               <div className={styles.mynft__box__description__wrapper}>
-                <h2>{details?.title}</h2>
+                <h2>Title</h2>
                 <p>{details.title}</p>
-                <h2>{details?.description}</h2>
+                <h2>description</h2>
                 <p>{details?.description}</p>
                 <div className={styles.mynft__box__profile__info}>
                   <div className={styles.details__profile__picture}></div>
                   <div className={styles.details__user__info}>
                     <p>Creater</p>
-                    <h6>{user && user?.email?.split("@")[0]}</h6>
+                    <h6>{user?.account_id}</h6>
                   </div>
                 </div>
               </div>
@@ -513,7 +514,7 @@ const CreateNft = () => {
               </span>
             </button>
             <button
-              onClick={()=>handleNftMint('create')}
+              onClick={() => handleNftMint("create")}
               // disabled={loading}
               className={styles.next__btn}
             >
@@ -550,9 +551,9 @@ const CreateNft = () => {
                 />
               </div>
               <h1>
-                {createNftResponse.name} <br /> Successfully Mined
+                {createNftResponse.name} <br /> Successfully Mint
               </h1>
-              <h6>NFT ID #27283</h6>
+              <h6>NFT ID {createNftResponse?.nft_id}</h6>
             </div>
           </div>
           <div

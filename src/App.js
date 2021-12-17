@@ -37,6 +37,7 @@ import SignIn from "./Components/SignIn/SignIn";
 import Settings from "./Components/Dashboard/Settings";
 import TagManager from "react-gtm-module";
 import axios from "axios";
+import { API_BASE_URL } from "./Utils/config";
 
 const tagManagerArgs = {
   gtmId: "GTM-TJSWG5R",
@@ -78,9 +79,7 @@ function App() {
         return config;
       });
 
-      const response = await axios.get(
-        `https://nftmaker.algorepublic.com/api/v1/users/details`
-      );
+      const response = await axios.get(`${API_BASE_URL}/api/v1/users/details`);
       console.log(`response`, response.data);
       const { success, data } = response.data;
       if (success) {

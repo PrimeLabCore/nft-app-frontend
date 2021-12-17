@@ -8,12 +8,10 @@ import { AiOutlinePlus } from "react-icons/ai";
 import { Row, Col } from "react-bootstrap";
 import Carousel from "react-multi-carousel";
 
-import image1 from "../../../Assets/Images/dummy-card1.png";
-import image2 from "../../../Assets/Images/dummy-card2.png";
-
 import { useDispatch } from "react-redux";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import { API_BASE_URL } from "../../../Utils/config";
 
 const responsive = {
   superLargeDesktop: {
@@ -43,9 +41,7 @@ const MyNft = ({ isLink }) => {
   const allNft = useSelector((state) => state.home__allnft);
 
   const getAllImages = async () => {
-    const response = await axios.get(
-      "https://nftmaker.algorepublic.com/api/v1/user_images"
-    );
+    const response = await axios.get(`${API_BASE_URL}/api/v1/user_images`);
     console.log(`response.data`, response.data);
     const { success, data } = response.data;
 
@@ -161,14 +157,14 @@ const MyNft = ({ isLink }) => {
                             <img src={data.image} alt={data.title} />
                           </div>
                           <div className={styles.mynft__box__cat}>
-                            <h6>{data.cat}</h6>
+                            <h6>{data?.category}</h6>
                           </div>
                         </div>
                         <div
                           className={styles.mynft__box__description__wrapper}
                         >
-                          <h2>{data.title}</h2>
-                          <p>{data.id}</p>
+                          <h2>{data?.name}</h2>
+                          <p>{data?.nft_id}</p>
                         </div>
                       </div>
                     </Fragment>
@@ -199,14 +195,14 @@ const MyNft = ({ isLink }) => {
                               <img src={data.image} alt={data.title} />
                             </div>
                             <div className={styles.mynft__box__cat}>
-                              <h6>{data.cat}</h6>
+                              <h6>{data?.category}</h6>
                             </div>
                           </div>
                           <div
                             className={styles.mynft__box__description__wrapper}
                           >
-                            <h2>{data.title}</h2>
-                            <p>{data.id}</p>
+                            <h2>{data?.name}</h2>
+                            <p>{data?.nft_id}</p>
                           </div>
                         </div>
                       </Col>

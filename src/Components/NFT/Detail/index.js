@@ -55,15 +55,18 @@ const Details = () => {
             <div className={styles.details__profile__picture}></div>
             <div className={styles.details__user__info}>
               <p>Creater</p>
-              <h6>{user?.email &&user?.email?.split("@")[0]}</h6>
+              <h6>{user?.account_id}</h6>
             </div>
           </div>
-          <button onClick={() => sendNft()}>
-            Send{" "}
-            <span>
-              <BsArrowUpRight />
-            </span>
-          </button>
+
+          {!nft__detail?.is_nft_claimed && (
+            <button onClick={() => sendNft()}>
+              Send{" "}
+              <span>
+                <BsArrowUpRight />
+              </span>
+            </button>
+          )}
         </div>
         <div className={styles.details__accords}>
           <Accordion>
@@ -98,7 +101,9 @@ const Details = () => {
                       target="_blank"
                       rel="noreferrer"
                     >
-                      {nft__detail?.explorer_url ? nft__detail?.explorer_url : ""}
+                      {nft__detail?.explorer_url
+                        ? nft__detail?.explorer_url
+                        : ""}
                     </a>
                   </div>
                 </Accordion.Body>

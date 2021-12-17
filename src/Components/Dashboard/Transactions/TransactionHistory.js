@@ -7,6 +7,7 @@ import { BsArrowUpRight, BsArrowDownLeft } from "react-icons/bs";
 import axios from "axios";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
+import { API_BASE_URL } from "../../../Utils/config";
 
 const TransactionHistory = () => {
   const [tabs, setTabs] = useState("all");
@@ -30,10 +31,10 @@ const TransactionHistory = () => {
   useEffect(() => {
     async function fetchTransactions() {
       let sendersResponse = await axios.get(
-        "https://nftmaker.algorepublic.com/api/v1/nft_histories/sender_list"
+        `${API_BASE_URL}/api/v1/nft_histories/sender_list`
       );
       let receiverResponse = await axios.get(
-        "https://nftmaker.algorepublic.com/api/v1/nft_histories/receiver_list"
+        `${API_BASE_URL}/api/v1/nft_histories/receiver_list`
       );
 
       let receives = receiverResponse?.data?.data?.map(
@@ -127,12 +128,16 @@ const TransactionHistory = () => {
               </button>
             </div>
           )}
-          <button onClick={SendNft}>
-            <span>
-              <BsArrowUpRight />
-            </span>
-            Send NFT
-          </button>
+          {tabs !== "received" ? (
+            <button onClick={SendNft}>
+              <span>
+                <BsArrowUpRight />
+              </span>
+              Send NFT
+            </button>
+          ) : (
+            <span>{" "}</span>
+          )}
         </div>
         {windowstate && (
           <div className={styles.small__screen__transaction__wrapper}>
