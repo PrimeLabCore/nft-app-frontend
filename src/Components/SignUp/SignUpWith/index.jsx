@@ -9,6 +9,14 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { API_BASE_URL } from "../../../Utils/config";
 
+const validateEmail = (email) => {
+  return String(email)
+    .toLowerCase()
+    .match(
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    );
+};
+
 const SignUpWith = () => {
   const dispatch = useDispatch();
   const loginForm = useSelector((state) => state.LoginFormMethod);
@@ -17,6 +25,7 @@ const SignUpWith = () => {
   const [isUserIDAvailable, setIsUserIDAvailable] = useState(false);
   const { redirectUrl } = useSelector((state) => state.authReducer);
 
+  const [errors, setErrors] = useState({});
   let navigate = useNavigate();
   // HANDLE CHANGE
 
@@ -189,8 +198,28 @@ const SignUpWith = () => {
     }
   };
 
+  const handleValidation = () => {
+    let errors = {};
+    let formIsValid = true;
+    console.log(`inputFields.email.length`, inputFields.email.length < 1);
+    if (!validateEmail(inputFields.email)) {
+      formIsValid = false;
+      errors["email"] = "Email is not valid";
+    }
+    setErrors(errors);
+    return formIsValid;
+  };
+
   const oldHandleSignup = () => {
-    dispatch({ type: "set_signup_email", payload: inputFields.email });
+    if (inputFields.email.length < 1) {
+      toast.error("Required");
+      return false;
+    } else if (!handleValidation()) {
+      return toast.error("Email is not valid");
+    }
+    loginForm === "email"
+      ? dispatch({ type: "set_signup_email", payload: inputFields.email })
+      : dispatch({ type: "set_signup_phone", payload: inputFields.phone });
     window.dataLayer.push({
       event: "event",
       // eventProps: {
@@ -250,7 +279,6 @@ const SignUpWith = () => {
         >
           Email
         </button>
-
         <button
           value="phone"
           className={`${styles.button} ${styles.secondary} ${
@@ -281,6 +309,7 @@ const SignUpWith = () => {
             type={"email"}
             InputValue={inputFields.email}
             // InputProps={{
+            //   error: !!errors.email,
             //   endAdornment: (
             //     <InputAdornment
             //       position="start"
@@ -303,7 +332,7 @@ const SignUpWith = () => {
           }`}
           disabled={
             loginForm === "email"
-              ? inputFields.email.length < 5
+              ? inputFields.email.length < 0
               : inputFields.phone.length < 2
           }
         >

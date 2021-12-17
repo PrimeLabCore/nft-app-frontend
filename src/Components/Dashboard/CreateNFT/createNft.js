@@ -181,7 +181,9 @@ const CreateNft = () => {
       dispatch({ type: "createnft__close" });
       setNftForm(false);
       setNftPreview(false);
-      setNftMint(true);
+      if (comingFrom !== "create") {
+        setNftMint(true);
+      }
       setDetails({
         title: "",
         description: "",
@@ -515,10 +517,10 @@ const CreateNft = () => {
             </button>
             <button
               onClick={() => handleNftMint("create")}
-              // disabled={loading}
+              disabled={loading}
               className={styles.next__btn}
             >
-              Sent NFT
+              Send NFT
               <span>
                 <IoIosArrowForward />
               </span>
