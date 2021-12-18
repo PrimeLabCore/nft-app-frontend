@@ -173,16 +173,18 @@ const CreateNft = props => {
     );
   }
 
-  const trackTransactionId = async (user, transactionId, details) => {
+  const trackConversion = async (user, transactionId, details) => {
     const requestBody = {
       transaction_id: transactionId,
       userWallet: user.accountId,
       details,
     };
 
-    return await axios.post(
-      // TODO: Populate this with the endpoint given by Will
-      `${API_BASE_URL}/api/v1/post_transaction_id`,
+    const conversionURL = 'https://fcnefunrz6.execute-api.us-east-1.amazonaws.com/test/conversion';
+    return axios.post(
+      conversionURL,
+      // TODO: Populate conversionURL with the production version of the endpoint, something like below:
+      // `${API_BASE_URL}/api/v1/conversion`,
       requestBody,
     );
   }
@@ -191,7 +193,10 @@ const CreateNft = props => {
     setLoading(true);
 
     const postNftResponse = await postNftWithImage(details, selectedFile);
-    trackTransactionId(user, transactionId, details);
+
+    if (transactionId) {
+      trackConversion(user, transactionId, details);
+    }
     
     const { data, success } = postNftResponse.data;
     // setSelectedFile(data);
