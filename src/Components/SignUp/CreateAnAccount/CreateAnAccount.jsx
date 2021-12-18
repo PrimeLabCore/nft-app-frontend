@@ -96,13 +96,17 @@ const CreateAnAccount = () => {
   };
 
   const isValidAccountString = accountString => {
-    return /^[a-z_0-9-]+$/i.test(accountString);
+    const matchesCharacterRequirements = /^[a-z_0-9-]+$/i.test(accountString);
+    const hasUppercaseLetter = /[A-Z]+?/.test(accountString);
+    const matchesLengthRequirements = accountString.length <= 64;
+
+    return matchesCharacterRequirements && matchesLengthRequirements && !hasUppercaseLetter;
   };
 
   const onAccountChange = (e) => {
     const { value } = e.target;
 
-    if (isValidAccountString(value) && value.length <= 64) {
+    if (!value.length || isValidAccountString(value)) {
       setAccountId(value);
     }
 
