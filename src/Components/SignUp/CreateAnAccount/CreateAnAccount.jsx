@@ -95,18 +95,19 @@ const CreateAnAccount = () => {
     setinfo(ClickedInput);
   };
 
-  const isValidAccountString = accountString => {
+  const doesAccountStringHaveValidCharacters = accountString => {
     const matchesCharacterRequirements = /^[a-z_0-9-]+$/i.test(accountString);
     const hasUppercaseLetter = /[A-Z]+?/.test(accountString);
-    const matchesLengthRequirements = accountString.length <= 64;
 
-    return matchesCharacterRequirements && matchesLengthRequirements && !hasUppercaseLetter;
+    return matchesCharacterRequirements && !hasUppercaseLetter;
   };
+
+  const doesAccountIdHaveValidLength = accountString => accountString.length > 1 && accountString <= 64;
 
   const onAccountChange = (e) => {
     const { value } = e.target;
 
-    if (!value.length || isValidAccountString(value)) {
+    if (!value || doesAccountStringHaveValidCharacters(value)) {
       setAccountId(value);
     }
 
@@ -123,8 +124,8 @@ const CreateAnAccount = () => {
   };
 
   const handleSignup = async () => {
-    if (accountId.length < 2) {
-      toast.warn('Please enter an account ID of 2 or more characters');
+    if (!doesAccountIdHaveValidLength(accountId)) {
+      toast.warn('Please enter an account ID of between 2 and 64 characters.');
       return;
     }
 
