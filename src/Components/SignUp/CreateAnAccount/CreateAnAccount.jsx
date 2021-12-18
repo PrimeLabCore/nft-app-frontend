@@ -123,6 +123,11 @@ const CreateAnAccount = () => {
   };
 
   const handleSignup = async () => {
+    if (accountId.length < 2) {
+      toast.warn('Please enter an account ID of 2 or more characters');
+      return;
+    }
+
     // try {
     const fd = new FormData();
     if (LoginFormMethod === "email") {
