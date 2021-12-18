@@ -10,8 +10,9 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import { API_BASE_URL } from "../../../Utils/config";
 
-const CreateNft = () => {
+const CreateNft = props => {
   let navigate = useNavigate();
+  const { transactionId } = props;
 
   const [selectedFile, setSelectedFile] = useState("");
   const [loading, setLoading] = useState(false);
@@ -153,16 +154,15 @@ const CreateNft = () => {
     }
   };
 
-  const handleNftMint = async (comingFrom) => {
-    setLoading(true);
-    let fd = new FormData();
+  const postNftWithImage = async (details, selectedFile) => {
+    const fd = new FormData();
     fd.append("user_image[name]", details.title);
     fd.append("user_image[pic]", selectedFile);
     fd.append("user_image[description]", details.description);
     fd.append("user_image[category]", details.category);
     fd.append("user_image[properties]", "");
 
-    const response = await axios.post(
+    return await axios.post(
       `${API_BASE_URL}/api/v1/user_images`,
       fd,
       {
@@ -171,7 +171,29 @@ const CreateNft = () => {
         },
       }
     );
-    const { data, success } = response.data;
+  }
+
+  const trackTransactionId = async (user, transactionId, details) => {
+    const requestBody = {
+      transaction_id: transactionId,
+      userWallet: user.accountId,
+      details,
+    };
+
+    return await axios.post(
+      // TODO: Populate this with the endpoint given by Will
+      `${API_BASE_URL}/api/v1/post_transaction_id`,
+      requestBody,
+    );
+  }
+
+  const mineNft = async (comingFrom) => {
+    setLoading(true);
+
+    const postNftResponse = await postNftWithImage(details, selectedFile);
+    trackTransactionId(user, transactionId, details);
+    
+    const { data, success } = postNftResponse.data;
     // setSelectedFile(data);
     setCreateNftResponse(data);
     dispatch({ type: "addNewNft", payload: data });
@@ -503,7 +525,7 @@ const CreateNft = () => {
           </div>
           <div className={styles.multiple__btn__wrapper}>
             <button
-              onClick={handleNftMint}
+              onClick={mineNft}
               // disabled={loading}
               className={styles.next__btn}
             >
@@ -513,7 +535,7 @@ const CreateNft = () => {
               </span>
             </button>
             <button
-              onClick={() => handleNftMint("create")}
+              onClick={() => mineNft("create")}
               disabled={loading}
               className={styles.next__btn}
             >
