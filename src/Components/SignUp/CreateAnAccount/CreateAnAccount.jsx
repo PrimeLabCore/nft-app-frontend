@@ -102,7 +102,7 @@ const CreateAnAccount = () => {
     return matchesCharacterRequirements && !hasUppercaseLetter;
   };
 
-  const doesAccountIdHaveValidLength = accountString => accountString.length > 1 && accountString <= 64;
+  const doesAccountIdHaveValidLength = accountString => accountString.length > 1 && accountString.length <= 64;
 
   const onAccountChange = (e) => {
     const { value } = e.target;
