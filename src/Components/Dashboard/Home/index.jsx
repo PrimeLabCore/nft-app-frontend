@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import React, { memo, useEffect, useState } from "react";
 import styles from "./Home.module.css";
 import { Container } from "react-bootstrap";
 import { IoIosArrowForward } from "react-icons/io";
@@ -10,8 +10,49 @@ import MyNFT from "./MyNft";
 import Transactions from "./RecentTransactions";
 import HomeHeader from "./HomeHeader";
 import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
+import ImportContactsDialog from "../../ImportContactsDialog/ImportContactsDialog";
+
 const Home = () => {
   const dispatch = useDispatch();
+  const [importContactDialog, setimportContactDialog] = useState(false);
+
+  useEffect(() => {
+    if (localStorage.getItem("welcome") === "true") {
+      localStorage.removeItem("welcome");
+      HandleDialogOpen();
+    }
+  }, []);
+
+  const HandleDialogOpen = () => {
+    setimportContactDialog(true);
+  };
+
+  const HandleDialogClose = () => {
+    setimportContactDialog(false);
+  };
+
+  const importContact = (data) => {
+    if (data) {
+      dispatch({
+        type: "getGoogleContactData",
+        payload: data,
+      });
+      setimportContactDialog(false);
+    }
+  };
+
+  const contactImportCallback = (error, source) => {
+    HandleDialogClose();
+
+    if (error) {
+      toast.error(`Something Went Wrong Fetching Contacts From ${source}`);
+      return;
+    } else {
+      toast.success(`Your Contacts Were Successfully Imported From ${source}`);
+      return;
+    }
+  };
 
   return (
     <>
@@ -19,6 +60,12 @@ const Home = () => {
         <Container>
           {/* Home Header  */}
           <HomeHeader />
+
+          <ImportContactsDialog
+            onImport={importContact}
+            status={importContactDialog}
+            callback={contactImportCallback}
+          />
 
           {/* Home Create NFT Container */}
           <div className={styles.create__nft__container}>

@@ -12,7 +12,7 @@ import { AiOutlineCheck } from "react-icons/ai";
 import SearchIcon from "@material-ui/icons/Search";
 import { BsCheckCircleFill } from "react-icons/bs";
 import { GoPrimitiveDot } from "react-icons/go";
-import ImportGoogleContactsDialog from "../../ImportGoogleContactsDialog/ImportGoogleContactsDialog";
+import ImportContactsDialog from "../../ImportContactsDialog/ImportContactsDialog";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { API_BASE_URL, googleAccess } from "../../../Utils/config";
@@ -37,11 +37,12 @@ const responsive = {
   },
 };
 const checkAllContacts = (data) =>
-  data.map((item) => ({ checked: false, email: item.email }));
+  data.map((item) => ({ checked: false, email: item.primary_email }));
 
 const findIfChecked = (email, array) => {
   const foundItem = array.find((item) => item.email === email);
-  return foundItem.checked;
+  if (foundItem) return foundItem.checked;
+  else return false;
 };
 
 const SendNft = () => {
@@ -166,12 +167,7 @@ const SendNft = () => {
     setimportContactDialog(false);
   };
 
-  const importGoogleContact = (data, error) => {
-    if (error) {
-      toast.error("Something Went Wrong Fetching Contacts From Google");
-      setimportContactDialog(false);
-      return;
-    }
+  const importContact = (data) => {
     if (data) {
       dispatch({
         type: "getGoogleContactData",
@@ -180,6 +176,22 @@ const SendNft = () => {
       setCheckedState(checkAllContacts(data));
       setimportContactDialog(false);
       setFilteredData(data);
+    }
+  };
+
+  const contactImportCallback = (error, source) => {
+    HandleDialogClose();
+
+    if (error) {
+      if (source === "backdropClick") {
+        toast.error(`Please select a contact provider to import contacts`);
+        return;
+      }
+      toast.error(`Something Went Wrong Fetching Contacts From ${source}`);
+      return;
+    } else {
+      toast.success(`Your Contacts Were Successfully Imported From ${source}`);
+      return;
     }
   };
 
@@ -298,10 +310,10 @@ const SendNft = () => {
         </Modal.Body>
       </Modal>
 
-      <ImportGoogleContactsDialog
-        onImport={importGoogleContact}
+      <ImportContactsDialog
+        onImport={importContact}
         status={importContactDialog}
-        callback={HandleDialogClose}
+        callback={contactImportCallback}
       />
       {/* NFT Sender Modal */}
       {/* {openGift && <GiftAnNft dashboard={true} closebutton={true} sendGiftButton={handleNftPreview}/>} */}
@@ -355,15 +367,15 @@ const SendNft = () => {
                   </div> */}
                   {/* TEXT */}
                   <div className={styles.textContainer}>
-                    <h6>{value.title}</h6>
-                    <p>@{value.email}</p>
+                    <h6>{value.fullname}</h6>
+                    <p>@{value.primary_email}</p>
                   </div>
                   {/* ICONS */}
                   <div
                     className={styles.icon}
-                    onClick={() => HandleClick(value.email)}
+                    onClick={() => HandleClick(value.primary_email)}
                   >
-                    {findIfChecked(value.email, checkedState) ? (
+                    {findIfChecked(value.primary_email, checkedState) ? (
                       <BsCheckCircleFill className={styles.checked} />
                     ) : (
                       <GoPrimitiveDot className={styles.unchecked} />
@@ -410,7 +422,7 @@ const SendNft = () => {
                 {sendGiftEmail?.length > 5
                   ? sendGiftEmail.split(",").length
                   : filteredData.filter((item) =>
-                      findIfChecked(item.email, checkedState)
+                      findIfChecked(item.primary_email, checkedState)
                     ).length}{" "}
                 contacts
               </h6>
