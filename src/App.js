@@ -48,7 +48,6 @@ function App() {
   let dispatch = useDispatch();
   let navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [transactionId, setTransactionId] = useState(null);
   const { search } = useLocation();
 
   const parseParams = (querystring) => {
@@ -70,6 +69,11 @@ function App() {
   };
 
   const urlParams = parseParams(search);
+
+  // TODO: This seems suspicious to define the local state property so low...
+  // However, it ensures the local state property picks up the URL param
+  // For some reason, the <PrivateRoute> was not re-rendering with the updated value from the local state for transactionId so this is a workaround
+  const [transactionId, setTransactionId] = useState(urlParams.transaction_id);
 
   useEffect(() => {
     // The splash/home page will redirect, clearing the transaction_id
@@ -166,7 +170,7 @@ function App() {
           <Route index element={<Settings />} />
         </Route>
 
-        <Route path="/signup" element={<PublicRoute />}>
+        <Route path="/signup" element={<PublicRoute transactionId={transactionId} />}>
           <Route index element={<SignUp />} />
           <Route path="verification" element={<Verification />} />
           <Route path="create-account" element={<CreateAnAccount />} />

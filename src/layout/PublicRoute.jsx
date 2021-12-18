@@ -13,10 +13,10 @@ const Layout = ({ children }) => {
     </div>
   );
 };
-const LayoutRoute = () => {
+const LayoutRoute = (props) => {
   return (
     <>
-      <Layout>
+      <Layout {...props} >
         <Outlet />
       </Layout>
     </>

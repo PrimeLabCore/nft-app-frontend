@@ -7,7 +7,9 @@ import { useSelector, useDispatch } from "react-redux";
 import CreateNftPopup from "../Components/Dashboard/CreateNFT/createNft";
 import SendNft from "../Components/Dashboard/SendNFT/sendNft";
 
-const Layout = ({ children }) => {
+const PrivateLayout = props => {
+  const { children, transactionId } = props;
+
   let dispatch = useDispatch();
   const tooltip_show = useSelector((state) => state.menu__tooltip); //Defined in reducer function
   const createnft__popup = useSelector((state) => state.createnft__popup); //Defined in reducer function
@@ -21,7 +23,7 @@ const Layout = ({ children }) => {
   };
   return (
     <>
-      <CreateNftPopup />
+      <CreateNftPopup transactionId={transactionId} />
       <SendNft />
       <div onClick={closeMenu}>
         <main
@@ -44,17 +46,20 @@ const Layout = ({ children }) => {
     </>
   );
 };
-const LayoutRoute = () => {
+
+const PrivateRoute = (props) => {
   // let navigate = useNavigate()
   // let isAuth = Cookies.get(cookieAuth) || false // => 'value'
   // let isAuth = true; // => 'value'
   const { user } = useSelector((state) => state.authReducer); //Defined in reducer function
   // let isAuth = JSON.parse(localStorage.getItem("user")) ? true : false;
-  let isAuth = user ? true : false;
+  let isAuthenticated = user ? true : false;
   return (
     <>
-      <Layout>{isAuth ? <Outlet /> : <Navigate replace to="/signup" />}</Layout>
+      <PrivateLayout {...props} >
+        {isAuthenticated ? <Outlet /> : <Navigate replace to="/signup" />}
+      </PrivateLayout>
     </>
   );
 };
-export default LayoutRoute;
+export default PrivateRoute;
