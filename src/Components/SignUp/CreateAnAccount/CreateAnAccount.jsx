@@ -94,8 +94,17 @@ const CreateAnAccount = () => {
     // console.log('i m focused', ClickedInput)
     setinfo(ClickedInput);
   };
-  const inputEvent = (e) => {
-    const { name, value } = e.target;
+
+  const isValidAccountString = accountString => {
+    return /^[a-z_0-9-]+$/i.test(accountString);
+  };
+
+  const onAccountChange = (e) => {
+    const { value } = e.target;
+
+    if (isValidAccountString(value) && value.length <= 64) {
+      setAccountId(value);
+    }
 
     // setDetails((preValue) => {
     //   return {
@@ -103,10 +112,9 @@ const CreateAnAccount = () => {
     //     [name]: value,
     //   };
     // });
-    setAccountId(e.target.value);
   };
 
-  const hadleFullname = (e) => {
+  const onNameChange = (e) => {
     setFullname(e?.target?.value);
   };
 
@@ -193,7 +201,7 @@ const CreateAnAccount = () => {
             placeholder="Ex John Doe"
             InputValue={fullname}
             type="text"
-            HandleInputChange={hadleFullname}
+            HandleInputChange={onNameChange}
             HandleFocus={() => HandleFocus("name")}
           />
         </div>
@@ -209,7 +217,7 @@ const CreateAnAccount = () => {
             // InputValue={details.id}
             InputValue={accountId}
             name="id"
-            HandleInputChange={inputEvent}
+            HandleInputChange={onAccountChange}
             placeholder="yourname.near"
             type="text"
             InputProps={{
