@@ -368,7 +368,7 @@ const SendNft = () => {
                   {/* TEXT */}
                   <div className={styles.textContainer}>
                     <h6>{value.fullname}</h6>
-                    <p>@{value.primary_email}</p>
+                    <p>{value.primary_email}</p>
                   </div>
                   {/* ICONS */}
                   <div
