@@ -48,6 +48,7 @@ function App() {
   let dispatch = useDispatch();
   let navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [transactionId, setTransactionId] = useState(null);
   const { search } = useLocation();
 
   const parseParams = (querystring) => {
@@ -68,31 +69,40 @@ function App() {
     return obj;
   };
 
-  useEffect(() => {
-    let par = parseParams(search);
+  const urlParams = parseParams(search);
 
+  useEffect(() => {
+    // The splash/home page will redirect, clearing the transaction_id
+    // Make sure to grab the value and hold onto it in local state, so it can be used in the NFT Creation flow
+    const { transaction_id } = urlParams;
+
+    if (transaction_id) { 
+      setTransactionId(transaction_id);
+    }
+  }, [urlParams]);
+
+  useEffect(() => {
     const fetchDetail = async () => {
       axios.interceptors.request.use(function (config) {
         // const token = store.getState().session.token;
-        config.headers.Authorization = par?.token;
+        config.headers.Authorization = urlParams?.token;
 
         return config;
       });
 
       const response = await axios.get(`${API_BASE_URL}/api/v1/users/details`);
-      console.log(`response`, response.data);
       const { success, data } = response.data;
       if (success) {
         dispatch({
           type: "login_Successfully",
-          payload: { ...data, token: par?.token },
+          payload: { ...data, token: urlParams?.token },
         });
         navigate("/");
       } else {
         navigate("/signup");
       }
     };
-    if (par?.token) {
+    if (urlParams?.token) {
       fetchDetail();
     }
 
@@ -146,7 +156,7 @@ function App() {
 
       <ToastContainer />
       <Routes>
-        <Route path="/" element={<PrivateRoute />}>
+        <Route path="/" element={<PrivateRoute transactionId={transactionId} />}>
           <Route index element={<Dashboard />} />
           <Route path="transactions" element={<Transactions />} />
           <Route path="all-nft" element={<AllNft />} />
