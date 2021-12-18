@@ -42,7 +42,6 @@ const CreateNft = props => {
   };
 
   let handleChange = (id, clikedInput) => (e) => {
-    // console.log(id, clikedInput);
     const get_index = formValues.findIndex((value) => value.id === id);
     formValues[get_index] = {
       ...formValues[get_index],
