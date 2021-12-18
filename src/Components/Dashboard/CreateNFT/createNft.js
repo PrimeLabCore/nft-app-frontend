@@ -256,8 +256,6 @@ const CreateNft = props => {
   // };
 
   const changeHandler = async (event) => {
-    // console.log(`event.target.files`, event.target.files[0]?.name);
-
     // let fd = new FormData();
     // fd.append("user_image[name]", "name");
     // fd.append("user_image[pic]", event.target.files[0]);
