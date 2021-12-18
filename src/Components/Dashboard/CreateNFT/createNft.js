@@ -171,10 +171,8 @@ const CreateNft = () => {
         },
       }
     );
-    console.log(`response`, response);
     const { data, success } = response.data;
     // setSelectedFile(data);
-    console.log(`data`, data);
     setCreateNftResponse(data);
     dispatch({ type: "addNewNft", payload: data });
     if (success) {
@@ -263,8 +261,7 @@ const CreateNft = () => {
       file__reader.readAsDataURL(files[0]);
     }
   };
-  console.log(`details`, details);
-  console.log(`selectedFile`, selectedFile);
+  
   return (
     <>
       {/* Initial Modal  */}
@@ -553,7 +550,7 @@ const CreateNft = () => {
                 />
               </div>
               <h1>
-                {createNftResponse.name} <br /> Successfully Mint
+                {createNftResponse.name} <br /> Successfully Mined
               </h1>
               <h6>NFT ID {createNftResponse?.nft_id}</h6>
             </div>
