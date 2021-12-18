@@ -140,22 +140,28 @@ const Settings = () => {
                 </div>
               </Col>
               {/* Acc#03 */}
-              <Col md={{ span: 8, offset: 2 }}>
-                <div
-                  className={styles.settings__acc__inner}
-                  onClick={() => Authentication(true)}
-                >
-                  <h5>Security</h5>
-                  <div className={styles.settings__acc}>
-                    <div className={styles.settings__name__info}>
-                      <h6>Add 2FA authentication</h6>
+
+              {
+                /* Hidden until 2FA actually works 
+                  <Col md={{ span: 8, offset: 2 }}>
+                    <div
+                      className={styles.settings__acc__inner}
+                      onClick={() => Authentication(true)}
+                    >
+                      <h5>Security</h5>
+                      <div className={styles.settings__acc}>
+                        <div className={styles.settings__name__info}>
+                          <h6>Add 2FA authentication</h6>
+                        </div>
+                        <button>
+                          <IoIosArrowForward />
+                        </button>
+                      </div>
                     </div>
-                    <button>
-                      <IoIosArrowForward />
-                    </button>
-                  </div>
-                </div>
-              </Col>
+                  </Col>
+                */
+              }
+              
             </Row>
           </div>
         </Container>
