@@ -20,6 +20,7 @@ const CreateNft = props => {
     name: "",
   });
   const { user } = useSelector((state) => state.authReducer);
+
   const [details, setDetails] = useState({
     title: "",
     description: "",
@@ -176,7 +177,7 @@ const CreateNft = props => {
   const trackConversion = async (user, transactionId, details) => {
     const requestBody = {
       transaction_id: transactionId,
-      userWallet: user.accountId,
+      userWallet: user.account_id,
       details,
     };
 
