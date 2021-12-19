@@ -193,10 +193,6 @@ const CreateNft = props => {
     setLoading(true);
 
     const postNftResponse = await postNftWithImage(details, selectedFile);
-
-    if (transactionId) {
-      trackConversion(user, transactionId, details);
-    }
     
     const { data, success } = postNftResponse.data;
     // setSelectedFile(data);
@@ -232,6 +228,10 @@ const CreateNft = props => {
         });
       }
       sendNftModal();
+
+      if (transactionId) {
+        trackConversion(user, transactionId, details);
+      }
     }
 
     setLoading(false);
