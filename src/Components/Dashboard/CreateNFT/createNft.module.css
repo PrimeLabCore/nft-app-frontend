@@ -381,7 +381,8 @@
 .nft__form__modal .modal__body__wrapper .mynft__box .mynft__box__description__wrapper h2 {
   font-size: 19.2px;
   margin-bottom: 0px;
-  padding-bottom: 10px;
+  padding-bottom: 5px;
+  padding-top: 10px;
 }
 
 .nft__form__modal .modal__body__wrapper .mynft__box .mynft__box__description__wrapper p {
