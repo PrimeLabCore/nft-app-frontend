@@ -162,7 +162,6 @@ const CreateAnAccount = () => {
 
         return config;
       });
-      setAccessToken(authorization);
       dispatch({
         type: "login_Successfully",
         payload: { ...data, token: authorization },
