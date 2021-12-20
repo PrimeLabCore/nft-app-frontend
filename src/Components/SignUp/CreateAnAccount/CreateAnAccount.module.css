@@ -221,4 +221,13 @@
     font-size: 14.8px;
   }
 }
+@media screen and (max-width: 420px) {
+  .childContainer {
+    padding: 0px 10px;
+  }
+  .childContainer .textField {
+    min-width: 96%;
+  }
+  
+}
 /*# sourceMappingURL=CreateAnAccount.module.css.map */
