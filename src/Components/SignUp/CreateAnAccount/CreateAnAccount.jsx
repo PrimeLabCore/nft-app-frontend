@@ -16,7 +16,6 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { InputAdornment } from "@material-ui/core";
-import { setAccessToken } from "../../../Services/AuthService";
 
 const CreateAnAccount = () => {
   const { signupEmail, signupPhone } = useSelector(
@@ -162,7 +161,6 @@ const CreateAnAccount = () => {
 
         return config;
       });
-      setAccessToken(authorization);
       dispatch({
         type: "login_Successfully",
         payload: { ...data, token: authorization },
