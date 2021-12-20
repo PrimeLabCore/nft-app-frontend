@@ -276,8 +276,8 @@ const CreateAnAccount = () => {
 
         <p>
           By creating a NEAR account, you agree to the <br />
-          NEAR Wallet <span>Terms of Service</span> and{" "}
-          <span>Privacy Policy</span>.
+          NEAR Wallet <span><a href="https://terms.nftmakerapp.io/" target={"_blank"}>Terms of Service</a></span> and{" "}
+          <span><a href="https://privacy.nftmakerapp.io/" target={"_blank"}>Privacy Policy</a></span>.
         </p>
 
         {!accId && (
