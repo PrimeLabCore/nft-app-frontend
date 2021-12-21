@@ -17,13 +17,11 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { InputAdornment } from "@material-ui/core";
 import { setAccessToken } from "../../../Services/AuthService";
-import AppLoader from "../../Generic/AppLoader";
 
 const CreateAnAccount = () => {
   const { signupEmail, signupPhone } = useSelector(
     (state) => state.authReducer
   );
-  const [isLoading, setIsloading] = useState(false);
 
   const loginForm = useSelector((state) => state.LoginFormMethod);
 
@@ -133,7 +131,6 @@ const CreateAnAccount = () => {
       return;
     }
 
-    setIsloading(true);
     // try {
     const fd = new FormData();
     if (LoginFormMethod === "email") {
@@ -165,6 +162,7 @@ const CreateAnAccount = () => {
 
         return config;
       });
+      setAccessToken(authorization);
       dispatch({
         type: "login_Successfully",
         payload: { ...data, token: authorization },
@@ -174,11 +172,9 @@ const CreateAnAccount = () => {
       //   JSON.stringify({ ...data, token: authorization })
       // );
       localStorage.setItem("welcome", true);
-      setIsloading(false);
       navigate(redirectUrl ? redirectUrl : "/");
     } else {
       toast.error(errors[0]);
-      setIsloading(false);
       // navigate("verification");
       // toast.error("Already Taken");
     }
@@ -190,10 +186,6 @@ const CreateAnAccount = () => {
 
   return (
     <div className={styles.half_container}>
-      {
-        isLoading && 
-        <AppLoader />
-      }
       <AiFillCloseCircle className={styles.cross} onClick={HandleClick} />
       <div className={styles.account__wrapper}>
         <span className={styles.createAnAccount}>Create an NFT account</span>
@@ -285,8 +277,8 @@ const CreateAnAccount = () => {
 
         <p>
           By creating a NEAR account, you agree to the <br />
-          NEAR Wallet <span><a href="https://terms.nftmakerapp.io/" target={"_blank"}>Terms of Service</a></span> and{" "}
-          <span><a href="https://privacy.nftmakerapp.io/" target={"_blank"}>Privacy Policy</a></span>.
+          NEAR Wallet <span>Terms of Service</span> and{" "}
+          <span>Privacy Policy</span>.
         </p>
 
         {!accId && (

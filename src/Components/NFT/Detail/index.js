@@ -97,11 +97,13 @@ const Details = () => {
                   <div className={styles.nft__info}>
                     <p>Contract Address</p>
                     <a
-                      href={nft__detail?.explorer_url}
+                      href="https://explorer.near.org/"
                       target="_blank"
                       rel="noreferrer"
                     >
-                      Explorer
+                      {nft__detail?.explorer_url
+                        ? nft__detail?.explorer_url
+                        : ""}
                     </a>
                   </div>
                 </Accordion.Body>

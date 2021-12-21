@@ -411,6 +411,7 @@ const CreateNft = props => {
                 {formValues.map((val, index) => (
                   <div className={styles.form__group__inner} key={index}>
                     <input
+                      style={{ width: "200px" }}
                       type="text"
                       value={val[`size_${val.id}`]}
                       placeholder="Ex. Size"
@@ -419,6 +420,7 @@ const CreateNft = props => {
 
                     <input
                       type="text"
+                      style={{ width: "200px" }}
                       value={val[`extension_${val.id}`]}
                       placeholder="Ex. 40"
                       onChange={handleChange(val.id, "extension")}
@@ -512,7 +514,7 @@ const CreateNft = props => {
               <div className={styles.mynft__box__description__wrapper}>
                 <h2>Title</h2>
                 <p>{details.title}</p>
-                <h2>Description</h2>
+                <h2>description</h2>
                 <p>{details?.description}</p>
                 <div className={styles.mynft__box__profile__info}>
                   <div className={styles.details__profile__picture}></div>
