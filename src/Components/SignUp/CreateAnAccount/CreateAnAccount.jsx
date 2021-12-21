@@ -17,11 +17,13 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { InputAdornment } from "@material-ui/core";
 import { setAccessToken } from "../../../Services/AuthService";
+import AppLoader from "../../Generic/AppLoader";
 
 const CreateAnAccount = () => {
   const { signupEmail, signupPhone } = useSelector(
     (state) => state.authReducer
   );
+  const [isLoading, setIsloading] = useState(false);
 
   const loginForm = useSelector((state) => state.LoginFormMethod);
 
@@ -131,6 +133,7 @@ const CreateAnAccount = () => {
       return;
     }
 
+    setIsloading(true);
     // try {
     const fd = new FormData();
     if (LoginFormMethod === "email") {
@@ -171,9 +174,11 @@ const CreateAnAccount = () => {
       //   JSON.stringify({ ...data, token: authorization })
       // );
       localStorage.setItem("welcome", true);
+      setIsloading(false);
       navigate(redirectUrl ? redirectUrl : "/");
     } else {
       toast.error(errors[0]);
+      setIsloading(false);
       // navigate("verification");
       // toast.error("Already Taken");
     }
@@ -185,6 +190,10 @@ const CreateAnAccount = () => {
 
   return (
     <div className={styles.half_container}>
+      {
+        isLoading && 
+        <AppLoader />
+      }
       <AiFillCloseCircle className={styles.cross} onClick={HandleClick} />
       <div className={styles.account__wrapper}>
         <span className={styles.createAnAccount}>Create an NFT account</span>
