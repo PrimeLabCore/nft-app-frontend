@@ -345,11 +345,10 @@ const SignUpWith = () => {
         </button>
 
         <p>
-          by clicking continue you must agree to near labs
-          <br />
-          <span>Terms & Conditions</span> and <span>Privacy Policy</span>
+          By creating a NEAR account, you agree to the <br />
+          NEAR Wallet <span><a href="https://terms.nftmakerapp.io/" target={"_blank"}>Terms of Service</a></span> and{" "}
+          <span><a href="https://privacy.nftmakerapp.io/" target={"_blank"}>Privacy Policy</a></span>.
         </p>
-
         <hr />
 
         <h6 className={styles.link}>Already have Near Account?</h6>
