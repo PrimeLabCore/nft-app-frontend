@@ -39,8 +39,6 @@ import TagManager from "react-gtm-module";
 import axios from "axios";
 import { API_BASE_URL } from "./Utils/config";
 
-import { PersistGate } from 'redux-persist/integration/react'
-
 const tagManagerArgs = {
   gtmId: "GTM-TJSWG5R",
 };
@@ -185,10 +183,9 @@ function App() {
           />
         </Route>
 
-        <Route path="/signin" element={<PublicRoute />}>
+        <Route path="/" element={<PublicRoute />}>
           {/* <Route path="/signin" element={<SignIn />} /> */}
-          <Route index element={<SignIn />} />
-          {/* <Route path="/signin" element={<SignUp />} /> */}
+          <Route path="/signin" element={<SignUp />} />
         </Route>
 
         <Route path="/nft" render element={<DetailRoute />}>
