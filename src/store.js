@@ -13,18 +13,18 @@ const persistConfig = {
 const composeEnhancers =
   window["__REDUX_DEVTOOLS_EXTENSION_COMPOSE__"] || compose;
 
-const store = createStore(
-  rootReducer,
-  composeEnhancers(applyMiddleware(thunk))
-);
+// const store = createStore(
+//   rootReducer,
+//   composeEnhancers(applyMiddleware(thunk))
+// );
 
-// const persistedReducer = persistReducer(persistConfig, rootReducer)
+const persistedReducer = persistReducer(persistConfig, rootReducer)
  
 // export default () => {
-//   const store = createStore(
-//     persistedReducer,
-//     composeEnhancers(applyMiddleware(thunk))
-//   );
+  const store = createStore(
+    persistedReducer,
+    composeEnhancers(applyMiddleware(thunk))
+  );
 
 //   let persistor = persistStore(store)
 //   return { store, persistor }
