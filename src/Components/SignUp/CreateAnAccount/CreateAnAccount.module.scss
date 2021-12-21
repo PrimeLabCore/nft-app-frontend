@@ -95,7 +95,13 @@
     background-color: black;
   }
 }
-
+.active_button{
+  color: white!important;
+  background-color: black!important;
+}
+button[disabled] {
+  cursor: not-allowed;
+}
 .primary_button {
   @include defaultButton($primary__color);
   color: white;
