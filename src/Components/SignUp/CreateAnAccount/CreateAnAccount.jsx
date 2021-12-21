@@ -183,6 +183,17 @@ const CreateAnAccount = () => {
     // }
   };
 
+  const isFormValid = ()=>{
+    let returnVal = true;
+    if(fullname ==""){
+      returnVal = false;
+    }else if(accountId == "" || !doesAccountStringHaveValidCharacters(accountId)){
+      returnVal = false;
+    }
+    console.log("isFormValid=>", returnVal)
+    return returnVal;
+  }
+
   return (
     <div className={styles.half_container}>
       <AiFillCloseCircle className={styles.cross} onClick={HandleClick} />
@@ -251,7 +262,11 @@ const CreateAnAccount = () => {
         {/* create account button */}
         <button
           onClick={handleSignup} // createAccount
-          className={`${styles.secondary_button}`}
+          className={`${styles.secondary_button} ${
+            isFormValid()? 'active_button' : ""
+          }`}
+
+          disabled={!isFormValid()}
         >
           Create an account
           {
