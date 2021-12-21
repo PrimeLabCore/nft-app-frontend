@@ -221,13 +221,11 @@
     font-size: 14.8px;
   }
 }
-@media screen and (max-width: 420px) {
-  .childContainer {
-    padding: 0px 10px;
-  }
-  .childContainer .textField {
-    min-width: 96%;
-  }
-  
+.active_button {
+  color: white!important;
+  background-color: black!important;
+}
+button[disabled] {
+  cursor: not-allowed;
 }
 /*# sourceMappingURL=CreateAnAccount.module.css.map */
