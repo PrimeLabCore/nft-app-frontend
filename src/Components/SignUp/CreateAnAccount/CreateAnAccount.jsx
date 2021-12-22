@@ -316,8 +316,6 @@ const CreateAnAccount = () => {
                 </span>
               }
             </button>
-
-            <h3>NFT Maker by NearApps is the easiest way to Create new NFTs and share them others. Join the fast growing NEAR Ecosystem today and start creating!</h3>
           </>
         )}
       </div>
