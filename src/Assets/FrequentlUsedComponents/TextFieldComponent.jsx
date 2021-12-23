@@ -54,6 +54,8 @@ const TextFieldComponent = ({
   name,
   disabled,
   InputProps,
+  HandelKeyUp,
+  HandelKeyPress
 }) => {
   const classes = useStyles();
   return (
@@ -73,6 +75,8 @@ const TextFieldComponent = ({
         disabled={disabled ? disabled : false}
         name={name}
         onFocus={HandleFocus}
+        onKeyUp={HandelKeyUp}
+        onKeyPress={HandelKeyPress}
         InputProps={{ ...InputProps, className: classes.input }}
       />
     </>
