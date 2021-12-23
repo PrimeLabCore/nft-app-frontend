@@ -269,9 +269,6 @@ const SignUpWith = () => {
 
   return (
     <div className={styles.half_container}>
-      <h2 className="home_page_text">
-        NFT Maker by NearApps is the easiest way to Create new NFTs and share them others. Join the fast growing NEAR Ecosystem today and start creating!
-      </h2>
       {/* EMAIL AND PHONE SIGNUP CONATINER */}
       <div className={styles.buttonContainer} onClick={handleClick}>
         <button
@@ -364,7 +361,15 @@ const SignUpWith = () => {
             </span>
           }
         </button>
+
+
       </div>
+
+      <div className={styles.home_page_text}>
+          NFT Maker by NearApps is the easiest way to Create new NFTs and share them others. Join the fast growing NEAR ecosystem today and start creating!
+        </div>
+
+
     </div>
   );
 };
