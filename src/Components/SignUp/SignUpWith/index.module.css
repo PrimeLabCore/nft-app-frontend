@@ -168,9 +168,10 @@
 }
 .home_page_text {
   font-size: 16px;
-  padding: 20px;
+  padding: 30px;
   text-align: center;
   color: #565656;
+  max-width: 60%;
 }
 @media screen and (max-width: 800px) {
   .mainContainer {
@@ -188,6 +189,12 @@
   .mainContainer .link {
     margin-top: 9px;
     margin-bottom: 2px;
+  }
+}
+@media screen and (max-width: 768px) {
+  .home_page_text {
+    max-width: 100%;
+    padding: 20px;
   }
 }
 /*# sourceMappingURL=index.module.css.map */
