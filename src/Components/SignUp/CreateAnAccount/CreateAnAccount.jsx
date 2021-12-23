@@ -272,7 +272,7 @@ const CreateAnAccount = () => {
         <button
           onClick={handleSignup} // createAccount
           className={`${styles.secondary_button} ${
-            isFormValid()? 'active_button' : ""
+            isFormValid()? styles.active_button : ""
           }`}
 
           disabled={!isFormValid()}

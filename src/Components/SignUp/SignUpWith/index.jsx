@@ -361,7 +361,15 @@ const SignUpWith = () => {
             </span>
           }
         </button>
+
+
       </div>
+
+      <div className={styles.home_page_text}>
+          NFT Maker by NearApps is the easiest way to Create new NFTs and share them others. Join the fast growing NEAR ecosystem today and start creating!
+        </div>
+
+
     </div>
   );
 };
