@@ -255,6 +255,12 @@
         top: 15px;
         right: 7px;
     }
+    .contactList{
+        padding: 0px;
+    }
+    .contactText{
+        font-size: 16px;
+    }
 
   }
   
