@@ -215,9 +215,13 @@
     .leftSideMainText, .featureList{
         display: none;
     }
+    .mainContainer .rightSide{
+        overflow: unset;
+    }
     .nftMakerAppDesc, .nftAboutFeatureList{
         padding: 20px 20px 0px 20px;
         margin-bottom: 40px;
+        display: block;
     }
     .rightSideHeader {
         padding: 0px;
