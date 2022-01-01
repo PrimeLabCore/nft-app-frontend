@@ -1,0 +1,261 @@
+.mainContainer {
+    display: flex;
+    justify-content: space-between;
+}
+.mainContainer .leftSide{
+    flex: 0.5;
+    background-color: #000000;
+    height: 100vh;
+    background-image: url(../../Assets/Images/bg-img.png);
+    background-position: bottom left;
+    background-repeat: no-repeat;
+    background-size: 50%;
+}
+.mainContainer .rightSide{
+    flex: 0.5;
+    height: 100vh;
+    overflow: auto;
+}
+.logo{
+    padding-top: 5%;
+    padding-left: 2%;
+}
+.leftSideMainText{
+    padding: 30px;
+    color: #FFF;
+    font-weight: 400;
+    padding-top: 50px;
+    line-height: inherit;
+    width: 80%;
+    margin: 0px auto;
+}
+.featureList{
+    margin-top: 20%;
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 50px;
+}
+.featureList ul{
+    
+}
+.featureList ul li{
+    font-size: 24px;
+    line-height: 44px;
+    color: #FFF;
+}
+
+.rightSideHeader{
+    display: flex;
+    justify-content: flex-end;
+    padding: 30px;
+}
+.rightSideHeader ul{
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0;
+}
+.rightSideHeader ul li{
+    font-size: 20px;
+    font-weight: 400;
+    cursor: pointer;
+    padding: 0px 20px;
+    padding-bottom: 10px;
+}
+.rightSideHeader ul li.active{
+    border-bottom: 2px solid;
+}
+
+.rightSideHeader ul li button{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: white;
+    background-color: #2f80ed;
+    padding: 7px 16px;
+    border-radius: 10px;
+    font-size: 17px;
+    cursor: pointer;
+    border: none;
+}
+.rightSideHeader ul li a{
+    text-decoration: none;
+    color: black;
+}
+.nftMakerAppDesc, .nftAboutFeatureList{
+    display: none;
+}
+.rightSideBody h2{
+    text-align: center;
+    border-bottom: 1px solid gainsboro;
+    width: max-content;
+    margin: 0px auto;
+    font-weight: 700;
+    padding: 20px;
+}
+.pageContent{
+    padding: 30px;
+}
+.getStartedBtn{
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+.getStartedBtn a{
+    text-decoration: none;
+}
+.getStartedBtn button{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: white;
+    background-color: #2f80ed;
+    padding: 7px 16px;
+    border-radius: 10px;
+    font-size: 17px;
+    cursor: pointer;
+    border: none;
+    text-decoration: none;
+}
+.imageContainer{
+    display: flex;
+    padding: 32px;
+    justify-content: center;
+    border-bottom: 1px solid gainsboro;
+    width: 75%;
+    margin: 0px auto;
+    padding-top: 60px;
+    min-height: 360px;
+}
+.imageContainer .image2nd{
+    margin-left: -35%;
+    margin-top: -10%;
+}
+.copyRightText{
+    text-align: center;
+    color: gray;
+}
+.privacyPolicyTC{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.privacyPolicyTC ul{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    list-style: none;
+    margin-top: 20px;
+    padding: 10px;
+}
+.privacyPolicyTC ul li{
+    padding: 0px 20px;
+    text-decoration: underline;
+    margin: 20px 0px;
+    cursor: pointer;
+}
+.privacyPolicyTC ul li:last-child{
+    border-left: 1px solid gray;
+}
+
+
+
+
+
+.contactList {
+    list-style-type: none;
+    padding-right: 20px;
+  }
+  
+  .listItem {
+    line-height: 4;
+    color: #aaa;
+  }
+  
+  .contactText {
+    font: 300 18px 'Lato', sans-serif;
+    letter-spacing: 1.9px;
+    color: #bbb;
+  }
+  
+  .place {
+    margin-left: 24px;
+  }
+  
+  .phone {
+    margin-left: 24px;
+  }
+  
+  .gmail {
+    margin-left: 24px;
+  }
+  .addressIcons{
+      font-size: 28px;
+  }
+  
+  .contactText a {
+    color: #bbb;
+    text-decoration: none;
+    transition-duration: 0.2s;
+  }
+  
+  .contactText a:hover {
+    color: #000;
+    text-decoration: none;
+  }
+  
+  @media screen and (max-width: 850px) {
+    .mainContainer{
+        flex-direction: column;
+    }
+    .logo{
+        padding-bottom: 5%;
+    }
+    .leftSideMainText, .featureList{
+        display: none;
+    }
+    .nftMakerAppDesc, .nftAboutFeatureList{
+        padding: 20px 20px 0px 20px;
+        margin-bottom: 40px;
+    }
+    .rightSideHeader {
+        padding: 0px;
+        padding-top: 20px;
+        justify-content: center;
+    }
+    .rightSideHeader ul li {
+        font-size: 17px;
+        font-weight: 400;
+        padding: 0px 10px;
+        padding-bottom: 10px;
+    }
+    .imageContainer{
+        flex-direction: column;
+        position: relative;
+        padding-top: 0px;
+        min-height: auto;
+        padding-bottom: 60px;
+        margin-top: 30px;
+    }
+    .imageContainer .image2nd{
+        position: absolute;
+        left: 28%;
+        top: 16%;
+        width: 74%;
+        margin: 0px;
+    }
+    .imageContainer .image1st{
+        width: 95%;
+    }
+
+    
+    .rightSideHeader ul li:last-child{
+        position: absolute;
+        top: 15px;
+        right: 7px;
+    }
+
+  }
+  
+/*# sourceMappingURL=index.module.css.map */
