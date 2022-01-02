@@ -23,7 +23,7 @@
 .leftSideMainText{
     padding: 30px;
     color: #FFF;
-    font-weight: 400;
+    font-weight: lighter;
     padding-top: 50px;
     line-height: inherit;
     width: 80%;
@@ -36,12 +36,13 @@
     padding-right: 50px;
 }
 .featureList ul{
-    
+    list-style: none;
 }
 .featureList ul li{
     font-size: 24px;
     line-height: 44px;
     color: #FFF;
+    font-weight: lighter;
 }
 
 .rightSideHeader{
@@ -111,7 +112,7 @@
     justify-content: space-between;
     color: white;
     background-color: #2f80ed;
-    padding: 7px 16px;
+    padding: 10px 20px;
     border-radius: 10px;
     font-size: 17px;
     cursor: pointer;
@@ -169,14 +170,19 @@
   }
   
   .listItem {
-    line-height: 4;
-    color: #aaa;
+    line-height: 30px;
+    color: #000;
+    display: flex;
+    justify-content: flex-start;
+    align-items: baseline;
+    margin-bottom: 20px;
   }
   
   .contactText {
-    font: 300 18px 'Lato', sans-serif;
-    letter-spacing: 1.9px;
-    color: #bbb;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: normal;
+    color: #000000;
   }
   
   .place {
@@ -195,7 +201,7 @@
   }
   
   .contactText a {
-    color: #bbb;
+    color: #000;
     text-decoration: none;
     transition-duration: 0.2s;
   }

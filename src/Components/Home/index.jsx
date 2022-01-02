@@ -160,19 +160,19 @@ const HomePage = (props) => {
                       <span>
                         <IoMdMap className={styles.addressIcons} />
                       </span>
-                      <span class={`${styles.contactText} ${styles.place}`}>City, State</span></li>
+                      <span class={`${styles.contactText} ${styles.place}`}>Growth Lab, Inc. 1209 Orange Street, Wilmington Delaware</span></li>
 
                     <li class={styles.listItem}>
                       <span>
                         <IoMdPhonePortrait className={styles.addressIcons} />
                       </span>
-                      <span class={`${styles.contactText} ${styles.phone}`}><a href="tel:+1 (###) ###-####" title="Give me a call">+1 (###) ###-####</a></span></li>
+                      <span class={`${styles.contactText} ${styles.phone}`}><a href="tel:+1 984-230-3429" title="">+1 984-230-3429</a></span></li>
 
                     <li class={styles.listItem}>
                     <span>
                         <IoMdMail className={styles.addressIcons} />
                       </span>
-                      <span class={`${styles.contactText} ${styles.gmail}`}><a href="mailto:contact@nftmakerapp.io" title="Send us an email">contact@nftmakerapp.io</a></span></li>
+                      <span class={`${styles.contactText} ${styles.gmail}`}><a href="mailto:support@nftmakerapp.io" title="">support@nftmakerapp.io</a></span></li>
 
                   </ul>
 
