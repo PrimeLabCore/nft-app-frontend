@@ -35,6 +35,7 @@ import NFTClaim from "./Pages/NftClaim";
 import GiftAnNftDialog from "./Components/GiftAnNftDialog/GiftAnNft";
 import SignIn from "./Components/SignIn/SignIn";
 import Settings from "./Components/Dashboard/Settings";
+import HomePage from './Components/Home/index'
 import TagManager from "react-gtm-module";
 import axios from "axios";
 import { API_BASE_URL } from "./Utils/config";
@@ -162,6 +163,14 @@ function App() {
 
       <ToastContainer />
       <Routes>
+
+      <Route path="/" >
+          <Route index element={<HomePage />} />
+          <Route path="about-us" element={<HomePage pageName="about-us" />} />
+          <Route path="contact-us" element={<HomePage pageName="contact-us" />} />
+        </Route>
+
+
         <Route path="/" element={<PrivateRoute transactionId={transactionId} />}>
           <Route index element={<Dashboard />} />
           <Route path="transactions" element={<Transactions />} />
