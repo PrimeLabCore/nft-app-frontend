@@ -291,7 +291,7 @@ const CreateNft = props => {
     <>
       {/* Initial Modal  */}
       <Modal
-        className={`${styles.initial__nft__modal} nft__mobile__modal initial__modal`}
+        className={`${styles.initial__nft__modal} ${styles.nft__mobile__modal} initial__modal`}
         show={createnft__popup}
         onHide={() => dispatch({ type: "createnft__close" })}
         backdrop="static"
