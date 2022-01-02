@@ -454,4 +454,10 @@
 .nft__form__modal .modal__body__wrapper .mint__info__wrapper h6 {
   font-size: 16.8px;
 }
+
+@media screen and (max-width: 767px) {
+  .nft__mobile__modal{
+    background: #FFF;
+  }
+}
 /*# sourceMappingURL=createNft.module.css.map */
