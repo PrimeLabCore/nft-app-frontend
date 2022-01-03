@@ -1,18 +1,6 @@
 @import "../../../Assets/Styles/mixins";
 @import "../../../Assets/Styles/partials";
 
-@media only screen and (max-width:"767px"){
-  .mynft__box__wrapper{
-    .selected__mynft__box__description__wrapper{
-      .checked{
-        width: 20px !important;
-        height: 20px !important;
-        padding:3px ;
-      }
-    }
-  }
-}
-
 .initial__nft__modal {
   button {
     &:focus {
@@ -301,4 +289,28 @@
       border:2px solid $primary__color;
       box-shadow: none;
     }
+}
+
+@media only screen and (max-width:"767px"){
+  .mynft__box__wrapper{
+    .selected__mynft__box__description__wrapper{
+      .checked{
+        width: 20px !important;
+        height: 20px !important;
+        padding:3px ;
+      }
+    }
+  }
+  .initial__nft__modal  {
+    .modal__body__wrapper{
+      margin: 0px auto;
+    }
+  }
+  .textContainer {
+    p{
+      max-width: 240px;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+  }
 }

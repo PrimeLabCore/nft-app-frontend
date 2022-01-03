@@ -1,26 +1,6 @@
 @import "../Assets/Styles/mixins";
 @import "../Assets/Styles/partials";
 
-@media only screen and (max-width:"991px") {
-  .background{
-    .detail__1,.detail__2{
-      width: 350px !important;
-    }
-  }
-}
-@media only screen and (max-width:"767px"){
-  .background{
-    .nft__image__outer__wrapper{
-      position: relative !important;
-      width: 100% !important;
-      .nft__image__wrapper{
-        img{
-          border-radius: 0px !important;
-        }
-      }
-    }
-  }
-}
 .lightbg{
   background-color: #CBB9FF !important;
 }
@@ -53,9 +33,49 @@
             border-radius: 25px;
             width: 100%;
         }
+        ::after {
+          content: "";
+          background: rgb(0 0 0 / 37%);
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+        }
     }
     }
     
     
   }
   
+
+  @media only screen and (max-width:"991px") {
+    .background{
+      .detail__1,.detail__2{
+        width: 350px !important;
+      }
+    }
+  }
+  @media only screen and (max-width:"767px"){
+    .background{
+      .nft__image__outer__wrapper{
+        position: relative !important;
+        width: 100% !important;
+        .nft__image__wrapper{
+          img{
+            border-radius: 0px !important;
+          }
+        }
+        ::after {
+          content: "";
+          background: #000;
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          opacity: 0.3;
+        }
+      }
+    }
+  }
