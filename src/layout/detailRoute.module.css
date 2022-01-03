@@ -1,25 +1,3 @@
-@media only screen and (max-width: 991px) {
-  .background .detail__1, .background .detail__2 {
-    width: 350px !important;
-  }
-}
-
-@media only screen and (max-width: 767px) {
-  .background .nft__image__outer__wrapper {
-    position: relative !important;
-    width: 100% !important;
-  }
-  .background .nft__image__outer__wrapper .nft__image__wrapper img {
-    border-radius: 0px !important;
-  }
-  .nft__image__wrapper {
-    min-height: 230px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-}
-
 .lightbg {
   background-color: #CBB9FF !important;
 }
@@ -67,4 +45,37 @@
   border-radius: 25px;
   width: 100%;
 }
+
+@media only screen and (max-width: 991px) {
+  .background .detail__1, .background .detail__2 {
+    width: 350px !important;
+  }
+}
+
+@media only screen and (max-width: 767px) {
+  .background .nft__image__outer__wrapper {
+    position: relative !important;
+    width: 100% !important;
+  }
+  .background .nft__image__outer__wrapper .nft__image__wrapper img {
+    border-radius: 0px !important;
+  }
+  .nft__image__wrapper {
+    min-height: 230px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .nft__image__wrapper::after {
+    content: "";
+    background: #000;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0.3;
+  }
+}
+
 /*# sourceMappingURL=detailRoute.module.css.map */
