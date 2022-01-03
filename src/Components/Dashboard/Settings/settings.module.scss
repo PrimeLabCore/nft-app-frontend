@@ -150,3 +150,19 @@
     }
     
 }
+
+@media only screen and (max-width:"767px"){
+    .connection__modal {
+        .modal__body__wrapper {
+            margin: auto;
+            padding: 20px 10px;
+            .name__wrapper {
+                h6 {
+                max-width: 260px;
+                text-overflow: ellipsis;
+                overflow: hidden;
+              }
+            }
+          }
+    }
+}
