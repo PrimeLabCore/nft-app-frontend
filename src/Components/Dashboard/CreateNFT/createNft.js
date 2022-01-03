@@ -291,7 +291,7 @@ const CreateNft = props => {
     <>
       {/* Initial Modal  */}
       <Modal
-        className={`${styles.initial__nft__modal} nft__mobile__modal initial__modal`}
+        className={`${styles.initial__nft__modal} ${styles.nft__mobile__modal} initial__modal`}
         show={createnft__popup}
         onHide={() => dispatch({ type: "createnft__close" })}
         backdrop="static"
@@ -360,7 +360,7 @@ const CreateNft = props => {
 
       {/* NFT Form Modal */}
       <Modal
-        className={`${styles.initial__nft__modal} nft__mobile__modal ${styles.nft__form__modal} initial__modal`}
+        className={`${styles.initial__nft__modal} ${styles.nft__mobile__modal} ${styles.nft__form__modal} initial__modal`}
         show={nftForm}
         onHide={() => setNftForm(false)}
         backdrop="static"
@@ -473,7 +473,7 @@ const CreateNft = props => {
 
       {/* NFT Preview Modal */}
       <Modal
-        className={`${styles.initial__nft__modal} ${styles.nft__form__modal} initial__modal nft__mobile__modal`}
+        className={`${styles.initial__nft__modal} ${styles.nft__form__modal} initial__modal ${styles.nft__mobile__modal}`}
         show={nftPreview}
         onHide={() => setNftPreview(false)}
         backdrop="static"

@@ -220,6 +220,9 @@
   .childContainer p {
     font-size: 14.8px;
   }
+  .childContainer .textField {
+    min-width: 93%;
+  }
 }
 .active_button {
   color: white!important;

@@ -267,6 +267,12 @@ const SignUpWith = () => {
     setinputFields({ ...inputFields, [field]: e.target.value });
   };
 
+  const CheckAndSubmitForm = (e)=>{
+    if(e.which === 13){
+      loginForm === "email" ? oldHandleSignup() : phoneNumberSignUp();
+    }
+  }
+
   return (
     <div className={styles.half_container}>
       {/* EMAIL AND PHONE SIGNUP CONATINER */}
@@ -298,6 +304,7 @@ const SignUpWith = () => {
             type={"tel"}
             InputValue={inputFields.phone}
             HandleInputChange={HandleInputChange("phone")}
+            HandelKeyPress={(e)=>{CheckAndSubmitForm(e)}}
           />
         )}
 
@@ -320,6 +327,7 @@ const SignUpWith = () => {
             //   ),
             // }}
             HandleInputChange={HandleInputChange("email")}
+            HandelKeyPress={(e)=>{CheckAndSubmitForm(e)}}
           />
         )}
         <button

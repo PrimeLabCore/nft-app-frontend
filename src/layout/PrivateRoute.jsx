@@ -57,7 +57,7 @@ const PrivateRoute = (props) => {
   return (
     <>
       <PrivateLayout {...props} >
-        {isAuthenticated ? <Outlet /> : <Navigate replace to="/signup" />}
+        {isAuthenticated ? <Outlet /> : <Navigate replace to="/home" />}
       </PrivateLayout>
     </>
   );

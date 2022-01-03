@@ -256,4 +256,11 @@
   padding-bottom: 0px;
   margin-bottom: 0px;
 }
+@media screen and (max-width: 767px) {
+  .details__wrapper .details__back button {
+      color: black !important;
+      background: rgb(255 255 255 / 88%) !important;
+      font-weight: 600;
+  }
+}
 /*# sourceMappingURL=details.module.css.map */

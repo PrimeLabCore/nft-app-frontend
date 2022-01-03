@@ -443,6 +443,7 @@
 .nft__form__modal .modal__body__wrapper .mint__info__wrapper .mint__image img {
   width: 50%;
   border-radius: 25px;
+  box-shadow: 0px 0px 5px 0px;
 }
 
 .nft__form__modal .modal__body__wrapper .mint__info__wrapper h1 {
@@ -453,5 +454,11 @@
 
 .nft__form__modal .modal__body__wrapper .mint__info__wrapper h6 {
   font-size: 16.8px;
+}
+
+@media screen and (max-width: 767px) {
+  .nft__mobile__modal{
+    background: #FFF;
+  }
 }
 /*# sourceMappingURL=createNft.module.css.map */
