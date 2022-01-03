@@ -12,6 +12,12 @@
   .background .nft__image__outer__wrapper .nft__image__wrapper img {
     border-radius: 0px !important;
   }
+  .nft__image__wrapper {
+    min-height: 230px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 }
 
 .lightbg {
