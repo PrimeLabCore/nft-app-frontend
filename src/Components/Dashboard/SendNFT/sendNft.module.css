@@ -1,11 +1,3 @@
-@media only screen and (max-width: 767px) {
-  .mynft__box__wrapper .selected__mynft__box__description__wrapper .checked {
-    width: 20px !important;
-    height: 20px !important;
-    padding: 3px;
-  }
-}
-
 .initial__nft__modal button:focus {
   outline: none;
 }
@@ -481,5 +473,24 @@
   border: 2px solid #2f80ed;
   -webkit-box-shadow: none;
           box-shadow: none;
+}
+
+@media only screen and (max-width: 767px) {
+  .mynft__box__wrapper .selected__mynft__box__description__wrapper .checked {
+    width: 20px !important;
+    height: 20px !important;
+    padding: 3px;
+  }
+  .initial__nft__modal .modal__header__wrapper {
+    border-bottom: 1px solid #dee2e6 !important;
+  }
+  .initial__nft__modal .modal__body__wrapper {
+    margin: 0px auto;
+  }
+  .initial__nft__modal .modal__body__wrapper .data__wrapper .data_row_container .textContainer p{
+    max-width: 240px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
 }
 /*# sourceMappingURL=sendNft.module.css.map */
