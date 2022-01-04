@@ -231,9 +231,6 @@ const CreateAnAccount = () => {
 
         {/* input field for full name */}
         <div className={styles.textField}>
-          {info === "name" ? (
-            <BsInfoCircleFill className={styles.infoIcon} />
-          ) : null}
           <TextFieldComponent
             label="FULL NAME"
             variant="outlined"
@@ -248,9 +245,6 @@ const CreateAnAccount = () => {
 
         {/* input field for account id */}
         <div className={styles.textField}>
-          {info === "id" ? (
-            <BsInfoCircleFill className={styles.infoIcon} />
-          ) : null}
           <TextFieldComponent
             label="ACCOUNT ID"
             variant="outlined"
