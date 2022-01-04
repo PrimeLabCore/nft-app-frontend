@@ -80,6 +80,9 @@
     cursor: pointer;
     border: none;
 }
+.rightSideHeader ul li button:disabled{
+    background-color: #bdbdbd;
+}
 .rightSideHeader ul li a{
     text-decoration: none;
     color: black;
