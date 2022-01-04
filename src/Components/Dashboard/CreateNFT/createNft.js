@@ -271,16 +271,22 @@ const CreateNft = (props) => {
     // setSelectedFile(data);
 
     // FileReader support
+    const imageSizeLimit = 50000000; // 50 mb
     let target = event.target || window.event.srcElement,
       files = target.files;
     if (FileReader && files && files.length) {
       // console.log(`files[0]`, files[0]);
-      let file__reader = new FileReader();
-      file__reader.onload = function () {
-        setSelectedFile(files[0]);
-        toast.success("File Uploaded");
-      };
-      file__reader.readAsDataURL(files[0]);
+      if (files[0].size <= imageSizeLimit) {
+        let file__reader = new FileReader();
+        file__reader.onload = function () {
+          setSelectedFile(files[0]);
+          toast.success("File Uploaded");
+        };
+        file__reader.readAsDataURL(files[0]);
+      } else {
+        // display error if image is larger then 50 mb
+        toast.error("Image file too large");
+      }
     }
   };
 
