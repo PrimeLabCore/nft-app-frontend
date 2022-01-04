@@ -173,6 +173,9 @@
   color: #565656;
   max-width: 60%;
 }
+.button:disabled{
+  background-color: #bdbdbd;
+}
 @media screen and (max-width: 800px) {
   .mainContainer {
     padding: 0px;

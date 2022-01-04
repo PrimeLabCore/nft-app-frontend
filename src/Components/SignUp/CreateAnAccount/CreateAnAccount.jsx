@@ -88,7 +88,7 @@ const CreateAnAccount = () => {
 
   // HandleLogin
   const HandleLogin = () => {
-    window.open(`${API_BASE_URL}/near_login/login.html`, "_self");
+    //window.open(`${API_BASE_URL}/near_login/login.html`, "_self");
     // navigate("/signin");
   };
 
@@ -199,6 +199,12 @@ const CreateAnAccount = () => {
     return returnVal;
   }
 
+  const CheckAndSubmitForm = (e)=>{
+    if(e.which === 13 && isFormValid()){
+      handleSignup()
+    }
+  }
+
   return (
     <div className={styles.half_container}>
       {
@@ -236,6 +242,7 @@ const CreateAnAccount = () => {
             type="text"
             HandleInputChange={onNameChange}
             HandleFocus={() => HandleFocus("name")}
+            HandelKeyPress={(e)=>{CheckAndSubmitForm(e)}}
           />
         </div>
 
@@ -253,6 +260,7 @@ const CreateAnAccount = () => {
             HandleInputChange={onAccountChange}
             placeholder="yourname.near"
             type="text"
+            HandelKeyPress={(e)=>{CheckAndSubmitForm(e)}}
             InputProps={{
               endAdornment: (
                 <InputAdornment
@@ -308,7 +316,7 @@ const CreateAnAccount = () => {
           <>
             <h6 className={styles.link}>Already have Near Account?</h6>
 
-            <button className={styles.primary_button} onClick={HandleLogin}>
+            <button disabled={true} className={styles.primary_button} onClick={HandleLogin}>
               Login With NEAR
               {
                 <span>
