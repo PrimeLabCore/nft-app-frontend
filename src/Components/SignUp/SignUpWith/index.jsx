@@ -375,7 +375,7 @@ const SignUpWith = () => {
             loginForm === "email" ? oldHandleSignup() : phoneNumberSignUp()
           }
           className={`${styles.button} ${
-            inputFields.email ? styles.primaryColor : styles.secondaryColor
+            inputFields.email || inputFields.phone ? styles.primaryColor : styles.secondaryColor
           }`}
           disabled={
             loginForm === "email"
