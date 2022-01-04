@@ -446,6 +446,7 @@ const CreateNft = (props) => {
               <div className={styles.form__group}>
                 <label>CATEGORY</label>
                 <select
+                  className={styles.form__category__dropdown}
                   name="category"
                   value={details.category}
                   onChange={inputEvent}
