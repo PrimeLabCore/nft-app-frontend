@@ -317,7 +317,7 @@ const CreateAnAccount = () => {
             <h6 className={styles.link}>Already have Near Account?</h6>
 
             <button disabled={true} className={styles.primary_button} onClick={HandleLogin}>
-              Login With NEAR
+              Login
               {
                 <span>
                   <IoIosArrowForward />
