@@ -199,6 +199,12 @@ const CreateAnAccount = () => {
     return returnVal;
   }
 
+  const CheckAndSubmitForm = (e)=>{
+    if(e.which === 13 && isFormValid()){
+      handleSignup()
+    }
+  }
+
   return (
     <div className={styles.half_container}>
       {
@@ -236,6 +242,7 @@ const CreateAnAccount = () => {
             type="text"
             HandleInputChange={onNameChange}
             HandleFocus={() => HandleFocus("name")}
+            HandelKeyPress={(e)=>{CheckAndSubmitForm(e)}}
           />
         </div>
 
@@ -253,6 +260,7 @@ const CreateAnAccount = () => {
             HandleInputChange={onAccountChange}
             placeholder="yourname.near"
             type="text"
+            HandelKeyPress={(e)=>{CheckAndSubmitForm(e)}}
             InputProps={{
               endAdornment: (
                 <InputAdornment
