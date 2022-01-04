@@ -416,14 +416,14 @@ const CreateNft = (props) => {
                     <input
                       type="text"
                       value={val[`size_${val.id}`]}
-                      placeholder="Ex. Size"
+                      placeholder="Tag"
                       onChange={handleChange(val.id, "size")}
                     />
 
                     <input
                       type="text"
                       value={val[`extension_${val.id}`]}
-                      placeholder="Ex. 40"
+                      placeholder="Value"
                       onChange={handleChange(val.id, "extension")}
                     />
 
