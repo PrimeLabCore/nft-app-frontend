@@ -77,3 +77,12 @@
         width:50%;
     }
 }
+
+@media only screen and (max-width: 767px) {
+    .uploaded__file img {
+      width: auto;
+      max-height: 150px;
+      max-width: 100%;
+      box-shadow: 0 0 3px 0px;
+    }
+}

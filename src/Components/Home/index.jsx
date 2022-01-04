@@ -17,7 +17,7 @@ const HomePage = (props) => {
   let navigate = useNavigate();
 
   const HandleLoginWithNear = () => {
-    window.open(`${API_BASE_URL}/near_login/login.html`, "_self");
+    //window.open(`${API_BASE_URL}/near_login/login.html`, "_self");
   };
 
   let pageName = props.pageName || "home";
@@ -64,7 +64,7 @@ const HomePage = (props) => {
                 </Link>
               </li>
               <li>
-                <button onClick={HandleLoginWithNear}>
+                <button disabled={true} onClick={HandleLoginWithNear}>
                   Login
                   <span>
                     <IoIosArrowForward />

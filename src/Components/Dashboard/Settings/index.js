@@ -253,7 +253,7 @@ const Settings = () => {
             </div>
             <div className={styles.btn__wrapper}>
               <button onClick={savePersonalInfo} className={styles.next__btn}>
-                Add New Wallet
+                Submit
               </button>
             </div>
           </Modal.Body>
