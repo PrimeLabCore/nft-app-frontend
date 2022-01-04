@@ -10,7 +10,7 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import { API_BASE_URL } from "../../../Utils/config";
 
-const CreateNft = props => {
+const CreateNft = (props) => {
   let navigate = useNavigate();
   const { transactionId } = props;
 
@@ -162,16 +162,12 @@ const CreateNft = props => {
     fd.append("user_image[category]", details.category);
     fd.append("user_image[properties]", "");
 
-    return await axios.post(
-      `${API_BASE_URL}/api/v1/user_images`,
-      fd,
-      {
-        headers: {
-          "Content-type": "multipart/form-data",
-        },
-      }
-    );
-  }
+    return await axios.post(`${API_BASE_URL}/api/v1/user_images`, fd, {
+      headers: {
+        "Content-type": "multipart/form-data",
+      },
+    });
+  };
 
   const trackConversion = async (user, transactionId, details) => {
     const requestBody = {
@@ -180,20 +176,21 @@ const CreateNft = props => {
       details,
     };
 
-    const conversionURL = 'https://fcnefunrz6.execute-api.us-east-1.amazonaws.com/test/conversion';
+    const conversionURL =
+      "https://fcnefunrz6.execute-api.us-east-1.amazonaws.com/test/conversion";
     return axios.post(
       conversionURL,
       // TODO: Populate conversionURL with the production version of the endpoint, something like below:
       // `${API_BASE_URL}/api/v1/conversion`,
-      requestBody,
+      requestBody
     );
-  }
+  };
 
   const mineNft = async (comingFrom) => {
     setLoading(true);
 
     const postNftResponse = await postNftWithImage(details, selectedFile);
-    
+
     const { data, success } = postNftResponse.data;
     // setSelectedFile(data);
     setCreateNftResponse(data);
@@ -286,7 +283,7 @@ const CreateNft = props => {
       file__reader.readAsDataURL(files[0]);
     }
   };
-  
+
   return (
     <>
       {/* Initial Modal  */}
@@ -412,6 +409,7 @@ const CreateNft = props => {
                   <div className={styles.form__group__inner} key={index}>
                     <input
                       type="text"
+                      style={{ maxWidth: "50%" }}
                       value={val[`size_${val.id}`]}
                       placeholder="Ex. Size"
                       onChange={handleChange(val.id, "size")}
@@ -419,6 +417,7 @@ const CreateNft = props => {
 
                     <input
                       type="text"
+                      style={{ maxWidth: "50%" }}
                       value={val[`extension_${val.id}`]}
                       placeholder="Ex. 40"
                       onChange={handleChange(val.id, "extension")}
