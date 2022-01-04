@@ -400,7 +400,7 @@ const SignUpWith = () => {
 
         <h6 className={styles.link}>Already have Near Account?</h6>
 
-        <button className={styles.button} onClick={HandleLoginWithNear}>
+        <button disabled={true} className={styles.button} onClick={HandleLoginWithNear}>
           Login With NEAR
           {
             <span>

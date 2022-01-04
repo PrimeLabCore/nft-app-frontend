@@ -88,7 +88,7 @@ const CreateAnAccount = () => {
 
   // HandleLogin
   const HandleLogin = () => {
-    window.open(`${API_BASE_URL}/near_login/login.html`, "_self");
+    //window.open(`${API_BASE_URL}/near_login/login.html`, "_self");
     // navigate("/signin");
   };
 
@@ -308,7 +308,7 @@ const CreateAnAccount = () => {
           <>
             <h6 className={styles.link}>Already have Near Account?</h6>
 
-            <button className={styles.primary_button} onClick={HandleLogin}>
+            <button disabled={true} className={styles.primary_button} onClick={HandleLogin}>
               Login With NEAR
               {
                 <span>

@@ -201,7 +201,9 @@
   font-size: 18px;
   cursor: pointer;
 }
-
+button.primary_button:disabled{
+  background-color: #bdbdbd;
+}
 @media screen and (max-width: 800px) {
   .half_container {
     position: absolute;

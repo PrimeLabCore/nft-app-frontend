@@ -20,6 +20,9 @@
   &:focus {
     outline: none;
   }
+  :disabled{
+    background-color: #bdbdbd;
+  }
 }
 
 .secondary {
