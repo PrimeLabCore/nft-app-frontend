@@ -26,7 +26,9 @@ const HomePage = (props) => {
     <>
       <div className={styles.mainContainer}>
         <div className={styles.leftSide}>
-          <img src={Logo} className={styles.logo} alt="Brand Logo" />
+          <Link to="/">
+            <img src={Logo} className={styles.logo} alt="Brand Logo" />
+          </Link>
           <h3 className={styles.leftSideMainText}>
             The easiest way to Create NFTs and share them others. Start minting NFTs in NEAR's rapidly expanding ecosystem
           </h3>
@@ -48,11 +50,6 @@ const HomePage = (props) => {
         <div className={styles.rightSide}>
           <div className={styles.rightSideHeader}>
             <ul>
-              <li className={pageName === "home" ? styles.active : ""}>
-                <Link to="/">
-                  Home
-                </Link>
-              </li>
               <li className={pageName === "about-us" ? styles.active : ""}>
                 <Link to="/about-us">
                   About
