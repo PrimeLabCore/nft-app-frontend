@@ -17,6 +17,22 @@ const validateEmail = (email) => {
     );
 };
 
+// Date : Jan 4 2021, 09:27 AM IST, Rohit Yadav
+// Added phone number validation.
+// Valid formats:
+
+// (123) 456-7890
+// (123)456-7890
+// 123-456-7890
+// 123.456.7890
+// 1234567890
+// +31636363634
+// 075-63546725
+
+const validatePhone = (phone) => {
+  return /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im.test(phone);
+}
+
 const SignUpWith = () => {
   const dispatch = useDispatch();
   const loginForm = useSelector((state) => state.LoginFormMethod);
@@ -206,9 +222,24 @@ const SignUpWith = () => {
       formIsValid = false;
       errors["email"] = "Email is not valid";
     }
+
     setErrors(errors);
     return formIsValid;
   };
+
+  // Rohit: Choose to create new function handlePhoneValidation to handle the phone number validation
+  const handlePhoneValidation = () => {
+    let errors = {};
+    let formIsValid = true;
+    console.log(`inputFields.email.length`, inputFields.phone.length < 1);
+    if (!validatePhone(inputFields.phone)) {
+      formIsValid = false;
+      errors["email"] = "Phone is not valid";
+    }
+
+    setErrors(errors);
+    return formIsValid;
+  }
 
   const oldHandleSignup = () => {
     if (inputFields.email.length < 1) {
@@ -241,6 +272,14 @@ const SignUpWith = () => {
 
   // Phone Input Continue
   const phoneNumberSignUp = () => {
+    // Rohit : Displays the toast error if phone number is not valid
+    if (inputFields.phone.length < 1) {
+      toast.error("Required");
+      return false;
+    } else if (!handlePhoneValidation()) {
+      return toast.error("Phone is not valid");
+    }
+
     dispatch({ type: "set_signup_phone", payload: inputFields.phone });
     window.dataLayer.push({
       event: "event",
