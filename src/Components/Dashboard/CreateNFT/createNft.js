@@ -444,7 +444,17 @@ const CreateNft = (props) => {
                 </button>
               </div>
               <div className={styles.form__group}>
-                <label>CATEGORY : Digital Art</label>
+                <label>CATEGORY</label>
+                <select
+                  name="category"
+                  value={details.category}
+                  onChange={inputEvent}
+                  defaultValue={"Digital Arts"}
+                  disabled
+                >
+                  <option></option>
+                  <option value="Digital Arts">Digital Arts</option>
+                </select>
               </div>
             </form>
           </div>
