@@ -1,23 +1,17 @@
-import React, { useState, useEffect } from "react";
-import styles from "./CreateAnAccount.module.css";
-import { IoIosArrowForward } from "react-icons/io";
-import TextFieldComponent from "../../../Assets/FrequentlUsedComponents/TextFieldComponent";
-import { useNavigate, useParams } from "react-router-dom";
-import { AiFillCloseCircle } from "react-icons/ai";
-import { useDispatch } from "react-redux";
-import { BsInfoCircleFill } from "react-icons/bs";
-import { ProgressBar } from "react-bootstrap";
-import {
-  API_BASE_URL,
-  googleClientId,
-  googleRedirectUrl,
-} from "../../../Utils/config";
-import { useSelector } from "react-redux";
-import axios from "axios";
-import { toast } from "react-toastify";
 import { InputAdornment } from "@material-ui/core";
-import { setAccessToken } from "../../../Services/AuthService";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { ProgressBar } from "react-bootstrap";
+import { AiFillCloseCircle } from "react-icons/ai";
+import { BsInfoCircleFill } from "react-icons/bs";
+import { IoIosArrowForward } from "react-icons/io";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
+import TextFieldComponent from "../../../Assets/FrequentlUsedComponents/TextFieldComponent";
+import { API_BASE_URL } from "../../../Utils/config";
 import AppLoader from "../../Generic/AppLoader";
+import styles from "./CreateAnAccount.module.css";
 
 const CreateAnAccount = () => {
   const { signupEmail, signupPhone } = useSelector(
@@ -188,29 +182,29 @@ const CreateAnAccount = () => {
     // }
   };
 
-  const isFormValid = ()=>{
+  const isFormValid = () => {
     let returnVal = true;
-    if(fullname ==""){
+    if (fullname == "") {
       returnVal = false;
-    }else if(accountId == "" || !doesAccountStringHaveValidCharacters(accountId)){
+    } else if (
+      accountId == "" ||
+      !doesAccountStringHaveValidCharacters(accountId)
+    ) {
       returnVal = false;
     }
-    console.log("isFormValid=>", returnVal)
+    console.log("isFormValid=>", returnVal);
     return returnVal;
-  }
+  };
 
-  const CheckAndSubmitForm = (e)=>{
-    if(e.which === 13 && isFormValid()){
-      handleSignup()
+  const CheckAndSubmitForm = (e) => {
+    if (e.which === 13 && isFormValid()) {
+      handleSignup();
     }
-  }
+  };
 
   return (
     <div className={styles.half_container}>
-      {
-        isLoading && 
-        <AppLoader />
-      }
+      {isLoading && <AppLoader />}
       <AiFillCloseCircle className={styles.cross} onClick={HandleClick} />
       <div className={styles.account__wrapper}>
         <span className={styles.createAnAccount}>Create an NFT account</span>
@@ -242,7 +236,9 @@ const CreateAnAccount = () => {
             type="text"
             HandleInputChange={onNameChange}
             HandleFocus={() => HandleFocus("name")}
-            HandelKeyPress={(e)=>{CheckAndSubmitForm(e)}}
+            HandelKeyPress={(e) => {
+              CheckAndSubmitForm(e);
+            }}
           />
         </div>
 
@@ -260,7 +256,9 @@ const CreateAnAccount = () => {
             HandleInputChange={onAccountChange}
             placeholder="yourname.near"
             type="text"
-            HandelKeyPress={(e)=>{CheckAndSubmitForm(e)}}
+            HandelKeyPress={(e) => {
+              CheckAndSubmitForm(e);
+            }}
             InputProps={{
               endAdornment: (
                 <InputAdornment
@@ -280,9 +278,8 @@ const CreateAnAccount = () => {
         <button
           onClick={handleSignup} // createAccount
           className={`${styles.secondary_button} ${
-            isFormValid()? styles.active_button : ""
+            isFormValid() ? styles.active_button : ""
           }`}
-
           disabled={!isFormValid()}
         >
           Create an account
@@ -308,15 +305,30 @@ const CreateAnAccount = () => {
 
         <p>
           By creating a NEAR account, you agree to the <br />
-          NEAR Wallet <span><a href="https://terms.nftmakerapp.io/" target={"_blank"}>Terms of Service</a></span> and{" "}
-          <span><a href="https://privacy.nftmakerapp.io/" target={"_blank"}>Privacy Policy</a></span>.
+          NEAR Wallet{" "}
+          <span>
+            <a href="https://terms.nftmakerapp.io/" target={"_blank"}>
+              Terms of Service
+            </a>
+          </span>{" "}
+          and{" "}
+          <span>
+            <a href="https://privacy.nftmakerapp.io/" target={"_blank"}>
+              Privacy Policy
+            </a>
+          </span>
+          .
         </p>
 
         {!accId && (
           <>
             <h6 className={styles.link}>Already have Near Account?</h6>
 
-            <button disabled={true} className={styles.primary_button} onClick={HandleLogin}>
+            <button
+              disabled={true}
+              className={styles.primary_button}
+              onClick={HandleLogin}
+            >
               Login With NEAR
               {
                 <span>
