@@ -161,13 +161,7 @@ function App() {
         This website uses cookies to enhance the user experience.{" "}
       </CookieConsent>
 
-      <ToastContainer
-        hideProgressBar
-        autoClose={false}
-        theme="dark"
-        closeOnClick={false}
-        closeButton={false}
-      />
+      <ToastContainer hideProgressBar theme="dark" closeButton={false} />
       <Routes>
         <Route path="/">
           <Route path="home" element={<HomePage />} />
