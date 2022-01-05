@@ -71,7 +71,7 @@ const Verification = () => {
     <div className={styles.half_container}>
       <AiFillCloseCircle className={styles.cross} onClick={HandleClick} />
       <div className={styles.container__header}>
-        <span className={styles.verification}>Verification</span>
+        <span className={styles.verification}>Authentication</span>
         {windowstate && (
           <div className={styles.progress}>
             <ProgressBar now={(1 / 3) * 100} />
@@ -81,7 +81,7 @@ const Verification = () => {
 
       <div className={styles.childContainer}>
         <p>
-          We've sent a 6-digit verification code to
+          We've sent a 6-digit Authentication code to
           <br />
           your email address
         </p>

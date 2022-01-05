@@ -8,6 +8,7 @@ import { InputAdornment } from "@material-ui/core";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { API_BASE_URL } from "../../../Utils/config";
+import CustomPhoneInput from "../../../common/components/CustomPhoneInput/CustomPhoneInput";
 
 const validateEmail = (email) => {
   return String(email)
@@ -337,12 +338,12 @@ const SignUpWith = () => {
       <div className={styles.mainContainer}>
         {/* LOGIN WITH PHONE */}
         {loginForm === "phone" && (
-          <TextFieldComponent
+          <CustomPhoneInput
             variant="outlined"
             placeholder="Ex. (373) 378 8383"
             type={"tel"}
-            InputValue={inputFields.phone}
-            HandleInputChange={HandleInputChange("phone")}
+            value={inputFields.phone}
+            onChange={HandleInputChange("phone")}
             HandelKeyPress={(e)=>{CheckAndSubmitForm(e)}}
           />
         )}
