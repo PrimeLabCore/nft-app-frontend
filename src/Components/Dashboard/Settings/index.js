@@ -45,7 +45,7 @@ const Settings = () => {
                 setChangeInfo(false);
                 setVerificationTarget("");
             }else{
-                toast.error("Please enter name");
+                toast.error("Please enter the name");
             }
         }else if(details === "Email"){
             if(validateEmail(verificationTarget)){
@@ -70,23 +70,27 @@ const Settings = () => {
     };
 
     const updateEmailOrMobile = ()=>{
-        if(details === "Email"){
-            dispatch({
+        if(verificationCode == "" || verificationCode.length < 6){
+            toast.error("Please enter valid code");
+        }else{
+            if(details === "Email"){
+                dispatch({
+                    type: "login_Successfully",
+                    payload: {...user, email: verificationTarget},
+                  });
+                setVerificationCode("");
+                setVerificationTarget("");
+            }else {
+                dispatch({
                 type: "login_Successfully",
-                payload: {...user, email: verificationTarget},
-              });
-            setVerificationCode("");
-            setVerificationTarget("");
-        }else {
-            dispatch({
-            type: "login_Successfully",
-            payload: {...user, phone_no: verificationTarget},
-            });
-            setVerificationCode("");
-            setVerificationTarget("");
+                payload: {...user, phone_no: verificationTarget},
+                });
+                setVerificationCode("");
+                setVerificationTarget("");
+            }
+            setIsOpenAuthenticationPopup(false);
+            toast.success(details + " Updated");
         }
-        setIsOpenAuthenticationPopup(false);
-        toast.success(details + " Updated");
     }
     const Authentication = (isEnable) => {
         if (isEnable) {
