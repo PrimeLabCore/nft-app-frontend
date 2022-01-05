@@ -49,9 +49,10 @@ const Home = () => {
 
     if (error) {
       toast.error(`Something Went Wrong Fetching Contacts From ${source}`);
+      dispatch({ type: "createnft__open" });
       return;
     } else {
-
+      dispatch({ type: "createnft__open" });
       toast.success(`Your Contacts Were Successfully Imported From ${source}`);
       return;
     }
