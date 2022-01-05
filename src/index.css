@@ -3,9 +3,9 @@ body {
   margin: 0;
   padding: 0;
   -webkit-box-sizing: border-box;
-          box-sizing: border-box;
-  font-family: 'Inter', sans-serif;
-  background-color: #F9F9F9 !important;
+  box-sizing: border-box;
+  font-family: "Inter", sans-serif;
+  background-color: #f9f9f9 !important;
 }
 
 /* Custom Scrollbar */
@@ -37,3 +37,12 @@ body {
   align-items: center;
 }
 /*# sourceMappingURL=index.css.map */
+
+.Toastify__toast,
+.Toastify__toast-body {
+  border-radius: 20px !important;
+}
+
+.Toastify__toast-body {
+  padding: 15px !important;
+}
