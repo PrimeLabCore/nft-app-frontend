@@ -6,6 +6,7 @@ import { Navigate, Outlet } from "react-router-dom";
 import CreateNftPopup from "../Components/Dashboard/CreateNFT/createNft";
 import SendNft from "../Components/Dashboard/SendNFT/sendNft";
 import Menu from "../Components/Dashboard/Widgets/Menu";
+import axios from "axios";
 
 const PrivateLayout = (props) => {
   const { children, transactionId } = props;
@@ -55,7 +56,12 @@ const PrivateRoute = (props) => {
   if (isAuthenticated) {
     //save user details in redux state
     dispatch({ type: "login_Successfully", payload: user.user_info });
-    console.log(user.user_info);
+
+    //adding JWT Authorization token to axios requests
+    axios.interceptors.request.use(function (config) {
+      config.headers.Authorization = `Bearer ${user.jwt_access_token}`;
+      return config;
+    });
   }
 
   return (
