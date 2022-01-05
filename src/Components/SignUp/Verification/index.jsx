@@ -37,23 +37,9 @@ const Verification = () => {
     );
   }, [windowstate]);
 
-  const tempLogIn = () => {
-    Cookies.set(cookieAuth, "cookie");
-    navigate("/signup/create-account");
-    window.dataLayer.push({
-      event: "event",
-      eventProps: {
-        category: "Signup",
-        action: "User Verified",
-        label: "Signup",
-        value: "Signup",
-      },
-    });
-  };
-
   // HandleClick for cancel button
   const HandleClick = () => {
-    navigate("/signup");
+    navigate("/signin");
   };
 
   const inputEvent = (e) => {
@@ -134,7 +120,7 @@ const Verification = () => {
       {isLoading && <AppLoader />}
       <AiFillCloseCircle className={styles.cross} onClick={HandleClick} />
       <div className={styles.container__header}>
-        <span className={styles.verification}>Authentication</span>
+        <span className={styles.verification}>Verification</span>
         {windowstate && (
           <div className={styles.progress}>
             <ProgressBar now={(1 / 3) * 100} />

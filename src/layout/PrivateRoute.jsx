@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from "react-redux";
 import CreateNftPopup from "../Components/Dashboard/CreateNFT/createNft";
 import SendNft from "../Components/Dashboard/SendNFT/sendNft";
 
-const PrivateLayout = props => {
+const PrivateLayout = (props) => {
   const { children, transactionId } = props;
 
   let dispatch = useDispatch();
@@ -51,12 +51,12 @@ const PrivateRoute = (props) => {
   // let navigate = useNavigate()
   // let isAuth = Cookies.get(cookieAuth) || false // => 'value'
   // let isAuth = true; // => 'value'
-  const { user } = useSelector((state) => state.authReducer); //Defined in reducer function
-  // let isAuth = JSON.parse(localStorage.getItem("user")) ? true : false;
+  //const { user } = useSelector((state) => state.authReducer); //Defined in reducer function
+  const user = JSON.parse(localStorage.getItem("user")) ? true : false;
   let isAuthenticated = user ? true : false;
   return (
     <>
-      <PrivateLayout {...props} >
+      <PrivateLayout {...props}>
         {isAuthenticated ? <Outlet /> : <Navigate replace to="/home" />}
       </PrivateLayout>
     </>
