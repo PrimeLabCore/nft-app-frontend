@@ -37,7 +37,7 @@ const responsive = {
   },
 };
 const checkAllContacts = (data) =>
-  data.map((item) => ({ checked: false, email: item.primary_email }));
+  data.map((item) => ({ checked: true, email: item.primary_email }));
 
 const findIfChecked = (email, array) => {
   const foundItem = array.find((item) => item.email === email);
