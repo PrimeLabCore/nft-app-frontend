@@ -396,6 +396,7 @@ const Settings = () => {
                             <p className={styles.enterCode}>Enter Verification Code</p>
                             <VerificationInput
                                 autoFocus={true}
+                                autocomplete="off"
                                 placeholder=" "
                                 classNames={{
                                 container: "verification__container",
