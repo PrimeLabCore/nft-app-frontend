@@ -84,7 +84,7 @@ const Home = () => {
               openCreateNFTPopup()
             }}
             onBack={()=>{
-              openCreateNFTPopup
+              openCreateNFTPopup()
             }}
             title={"Gift an NFT"}
             btnText={"Send Gift"}
