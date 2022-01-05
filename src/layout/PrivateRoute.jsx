@@ -1,11 +1,11 @@
 import React from "react";
-import { Outlet, Navigate } from "react-router-dom";
-import Menu from "../Components/Dashboard/Widgets/Menu";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { Navigate, Outlet } from "react-router-dom";
 // import Cookies from 'js-cookie'
 // import {cookieAuth} from "../Utils/config"
 import CreateNftPopup from "../Components/Dashboard/CreateNFT/createNft";
 import SendNft from "../Components/Dashboard/SendNFT/sendNft";
+import Menu from "../Components/Dashboard/Widgets/Menu";
 
 const PrivateLayout = (props) => {
   const { children, transactionId } = props;
@@ -48,12 +48,16 @@ const PrivateLayout = (props) => {
 };
 
 const PrivateRoute = (props) => {
-  // let navigate = useNavigate()
-  // let isAuth = Cookies.get(cookieAuth) || false // => 'value'
-  // let isAuth = true; // => 'value'
-  //const { user } = useSelector((state) => state.authReducer); //Defined in reducer function
-  const user = JSON.parse(localStorage.getItem("user")) ? true : false;
+  let dispatch = useDispatch();
+  const user = JSON.parse(localStorage.getItem("user"));
   let isAuthenticated = user ? true : false;
+
+  if (isAuthenticated) {
+    //save user details in redux state
+    dispatch({ type: "login_Successfully", payload: user.user_info });
+    console.log(user.user_info);
+  }
+
   return (
     <>
       <PrivateLayout {...props}>
