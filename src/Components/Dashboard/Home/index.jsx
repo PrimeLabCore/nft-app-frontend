@@ -12,6 +12,7 @@ import HomeHeader from "./HomeHeader";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import ImportContactsDialog from "../../ImportContactsDialog/ImportContactsDialog";
+import {useNavigate} from "react-router-dom";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -23,6 +24,7 @@ const Home = () => {
       HandleDialogOpen();
     }
   }, []);
+  let navigate = useNavigate();
 
   const HandleDialogOpen = () => {
     setimportContactDialog(true);
@@ -49,6 +51,7 @@ const Home = () => {
       toast.error(`Something Went Wrong Fetching Contacts From ${source}`);
       return;
     } else {
+
       toast.success(`Your Contacts Were Successfully Imported From ${source}`);
       return;
     }
