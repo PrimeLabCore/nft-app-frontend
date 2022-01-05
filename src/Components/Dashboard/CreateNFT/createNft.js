@@ -21,6 +21,9 @@ const CreateNft = (props) => {
   });
   const { user } = useSelector((state) => state.authReducer);
 
+  // getting all NFT detail
+  const home__allnft = useSelector((state) => state.home__allnft);
+
   const [details, setDetails] = useState({
     title: "",
     description: "",
@@ -300,7 +303,10 @@ const CreateNft = (props) => {
         backdrop="static"
         keyboard={false}
       >
-        <Modal.Header className={styles.modal__header__wrapper} closeButton>
+        <Modal.Header
+          className={styles.modal__header__wrapper}
+          closeButton={home__allnft.length > 0}
+        >
           <div className="modal__title__wrapper">
             <Modal.Title>
               <div className={styles.modal__header}>
@@ -369,7 +375,10 @@ const CreateNft = (props) => {
         backdrop="static"
         keyboard={false}
       >
-        <Modal.Header className={styles.modal__header__wrapper} closeButton>
+        <Modal.Header
+          className={styles.modal__header__wrapper}
+          closeButton={home__allnft.length > 0}
+        >
           <div className="modal__multiple__wrapper">
             <button onClick={() => goBack("initalForm")} className="back__btn">
               Back
@@ -484,7 +493,10 @@ const CreateNft = (props) => {
         backdrop="static"
         keyboard={false}
       >
-        <Modal.Header className={styles.modal__header__wrapper} closeButton>
+        <Modal.Header
+          className={styles.modal__header__wrapper}
+          closeButton={home__allnft.length > 0}
+        >
           <div className="modal__multiple__wrapper">
             <button onClick={() => goBack("nftForm")} className="back__btn">
               Back
@@ -565,7 +577,7 @@ const CreateNft = (props) => {
       >
         <Modal.Header
           className={`${styles.modal__header__wrapper}  ${styles.modal__header__bottom} last__modal__header`}
-          closeButton
+          closeButton={home__allnft.length > 0}
         ></Modal.Header>
         {/* <button onClick={allNft} className="btnclose">X</button> */}
         <Modal.Body className={styles.modal__body__top}>
