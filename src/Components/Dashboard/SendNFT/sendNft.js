@@ -341,8 +341,7 @@ const SendNft = () => {
         </Modal.Header>
         <Modal.Body>
           <div
-            style={{ height: "80vh", overflow: "auto" }}
-            className={styles.modal__body__wrapper}
+            className={`${styles.modal__body__wrapper} ${styles.modal__contact__list}`}
           >
             <div className={styles.search__wrapper}>
               <div className={styles.search__inner__wrapper}>
