@@ -37,7 +37,7 @@ const responsive = {
   },
 };
 const checkAllContacts = (data) =>
-  data.map((item) => ({ checked: false, email: item.primary_email }));
+  data.map((item) => ({ checked: true, email: item.primary_email }));
 
 const findIfChecked = (email, array) => {
   const foundItem = array.find((item) => item.email === email);
@@ -156,7 +156,7 @@ const SendNft = () => {
     let value = event.target.value.toLowerCase();
     let result = [];
     result = giftNFT__contactData.filter((data) => {
-      return data.title.toLowerCase().search(value) !== -1;
+      return data.primary_email.toLowerCase().search(value) !== -1;
     });
     setFilteredData(result);
     setSendGiftEmail(event.target.value.toLowerCase());

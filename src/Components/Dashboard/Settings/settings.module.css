@@ -231,4 +231,12 @@
     overflow: hidden;
   }
 }
+
+
+
+.contact-country-select{
+  width: 100%;
+  margin-bottom: 14px !important;
+  height: 42px;
+}
 /*# sourceMappingURL=settings.module.css.map */
