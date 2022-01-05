@@ -340,7 +340,10 @@ const SendNft = () => {
           </div>
         </Modal.Header>
         <Modal.Body>
-          <div className={styles.modal__body__wrapper}>
+          <div
+            style={{ height: "80vh", overflow: "auto" }}
+            className={styles.modal__body__wrapper}
+          >
             <div className={styles.search__wrapper}>
               <div className={styles.search__inner__wrapper}>
                 <div className={styles.search__input}>
