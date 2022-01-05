@@ -320,7 +320,7 @@ const SendNft = () => {
       {/* {openGift && <GiftAnNft dashboard={true} closebutton={true} sendGiftButton={handleNftPreview}/>} */}
      
       <ContactPopup
-      // filteredData={filteredData}
+      data={filteredData}
       show={openGift}
       onClose={closegiftNft}
       onBack={openInitialSendNft}

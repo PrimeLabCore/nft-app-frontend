@@ -22,7 +22,7 @@ const findIfChecked = (email, array) => {
   else return false;
 };
 
-const ContactPopup = ({show, onClose, onBack, title, btnText, handleBtnClick}) => {
+const ContactPopup = ({show, onClose, onBack, title, btnText, handleBtnClick, data}) => {
 
     let navigate = useNavigate();
     const dispatch = useDispatch();
@@ -30,13 +30,14 @@ const ContactPopup = ({show, onClose, onBack, title, btnText, handleBtnClick}) =
     const giftNFT__contactData = useSelector(
         (state) => state.giftNFT__contactData
       );
+      debugger;
     
       const [filteredData, setFilteredData] = useState(
-        giftNFT__contactData ? giftNFT__contactData : []
+        data?data:giftNFT__contactData ? giftNFT__contactData : []
       );
 
       const [checkedState, setCheckedState] = useState(
-        checkAllContacts(giftNFT__contactData || [])
+        checkAllContacts(data?data:giftNFT__contactData || [])
       );
 
       const [importContactDialog, setimportContactDialog] = useState(false);

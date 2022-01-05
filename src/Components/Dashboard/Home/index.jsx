@@ -19,6 +19,7 @@ const Home = () => {
   const dispatch = useDispatch();
   const [importContactDialog, setImportContactDialog] = useState(false);
   const [showContactListPopup, setShowContactListPopup] = useState(false);
+  const [allContacts, setAllContacts] = useState([]);
 
   useEffect(() => {
     if (localStorage.getItem("welcome") === "true") {
@@ -38,6 +39,7 @@ const Home = () => {
 
   const importContact = (data) => {
     if (data) {
+      setAllContacts(data)
       setImportContactDialog(false);
       setShowContactListPopup(true);
       dispatch({
@@ -61,7 +63,7 @@ const Home = () => {
   };
 
   const openCreateNFTPopup = ()=>{
-    setShowContactListPopup(true);
+    setShowContactListPopup(false);
     dispatch({ type: "createnft__open" });
   }
 
@@ -72,13 +74,20 @@ const Home = () => {
           {/* Home Header  */}
           <HomeHeader />
 
-          <ImportContactsDialog
+{
+  importContactDialog && 
+  <ImportContactsDialog
             onImport={importContact}
             status={importContactDialog}
             callback={contactImportCallback}
           />
+}
+          
 
-          <ContactPopup
+{
+  showContactListPopup && 
+  <ContactPopup
+            data={allContacts}
             show={showContactListPopup}
             onClose={()=>{
               openCreateNFTPopup()
@@ -92,6 +101,8 @@ const Home = () => {
               openCreateNFTPopup()
             }}
           />
+}
+          
 
           {/* Home Create NFT Container */}
           <div className={styles.create__nft__container}>
