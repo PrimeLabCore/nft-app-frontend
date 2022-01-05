@@ -31,8 +31,10 @@ const validateEmail = (email) => {
 // 075-63546725
 
 const validatePhone = (phone) => {
-  return /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im.test(phone);
-}
+  return /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im.test(
+    phone
+  );
+};
 
 const SignUpWith = () => {
   const dispatch = useDispatch();
@@ -178,6 +180,10 @@ const SignUpWith = () => {
     window.open(`${API_BASE_URL}/near_login/login.html`, "_self");
   };
 
+  const SignIn = () => {
+    navigate("/signin");
+  };
+
   const handleLogin = async (email) => {
     const fd = new FormData();
     if (!email) {
@@ -240,7 +246,7 @@ const SignUpWith = () => {
 
     setErrors(errors);
     return formIsValid;
-  }
+  };
 
   const oldHandleSignup = () => {
     if (inputFields.email.length < 1) {
@@ -307,11 +313,11 @@ const SignUpWith = () => {
     setinputFields({ ...inputFields, [field]: e.target.value });
   };
 
-  const CheckAndSubmitForm = (e)=>{
-    if(e.which === 13){
+  const CheckAndSubmitForm = (e) => {
+    if (e.which === 13) {
       loginForm === "email" ? oldHandleSignup() : phoneNumberSignUp();
     }
-  }
+  };
 
   return (
     <div className={styles.half_container}>
@@ -344,7 +350,9 @@ const SignUpWith = () => {
             type={"tel"}
             value={inputFields.phone}
             onChange={HandleInputChange("phone")}
-            HandelKeyPress={(e)=>{CheckAndSubmitForm(e)}}
+            HandelKeyPress={(e) => {
+              CheckAndSubmitForm(e);
+            }}
           />
         )}
 
@@ -367,7 +375,9 @@ const SignUpWith = () => {
             //   ),
             // }}
             HandleInputChange={HandleInputChange("email")}
-            HandelKeyPress={(e)=>{CheckAndSubmitForm(e)}}
+            HandelKeyPress={(e) => {
+              CheckAndSubmitForm(e);
+            }}
           />
         )}
         <button
@@ -376,7 +386,9 @@ const SignUpWith = () => {
             loginForm === "email" ? oldHandleSignup() : phoneNumberSignUp()
           }
           className={`${styles.button} ${
-            inputFields.email || inputFields.phone ? styles.primaryColor : styles.secondaryColor
+            inputFields.email || inputFields.phone
+              ? styles.primaryColor
+              : styles.secondaryColor
           }`}
           disabled={
             loginForm === "email"
@@ -394,14 +406,25 @@ const SignUpWith = () => {
 
         <p>
           By creating a NEAR account, you agree to the <br />
-          NEAR Wallet <span><a href="https://terms.nftmakerapp.io/" target={"_blank"}>Terms of Service</a></span> and{" "}
-          <span><a href="https://privacy.nftmakerapp.io/" target={"_blank"}>Privacy Policy</a></span>.
+          NEAR Wallet{" "}
+          <span>
+            <a href="https://terms.nftmakerapp.io/" target={"_blank"}>
+              Terms of Service
+            </a>
+          </span>{" "}
+          and{" "}
+          <span>
+            <a href="https://privacy.nftmakerapp.io/" target={"_blank"}>
+              Privacy Policy
+            </a>
+          </span>
+          .
         </p>
         <hr />
 
         <h6 className={styles.link}>Already have Near Account?</h6>
 
-        <button disabled={true} className={styles.button} onClick={HandleLoginWithNear}>
+        <button className={styles.button} onClick={SignIn}>
           Login
           {
             <span>
@@ -409,15 +432,12 @@ const SignUpWith = () => {
             </span>
           }
         </button>
-
-
       </div>
 
       <div className={styles.home_page_text}>
-          The easiest way to Create NFTs and share them others. Start minting NFTs in NEAR's rapidly expanding ecosystem
+        The easiest way to Create NFTs and share them others. Start minting NFTs
+        in NEAR's rapidly expanding ecosystem
       </div>
-
-
     </div>
   );
 };

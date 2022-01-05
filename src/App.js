@@ -35,12 +35,12 @@ import NFTClaim from "./Pages/NftClaim";
 import GiftAnNftDialog from "./Components/GiftAnNftDialog/GiftAnNft";
 import SignIn from "./Components/SignIn/SignIn";
 import Settings from "./Components/Dashboard/Settings";
-import HomePage from './Components/Home/index'
+import HomePage from "./Components/Home/index";
 import TagManager from "react-gtm-module";
 import axios from "axios";
 import { API_BASE_URL } from "./Utils/config";
 
-import { PersistGate } from 'redux-persist/integration/react'
+import { PersistGate } from "redux-persist/integration/react";
 
 const tagManagerArgs = {
   gtmId: "GTM-TJSWG5R",
@@ -83,7 +83,7 @@ function App() {
     // Make sure to grab the value and hold onto it in local state, so it can be used in the NFT Creation flow
     const { transaction_id } = urlParams;
 
-    if (transaction_id) { 
+    if (transaction_id) {
       setTransactionId(transaction_id);
     }
   }, [urlParams]);
@@ -163,15 +163,19 @@ function App() {
 
       <ToastContainer />
       <Routes>
-
-        <Route path="/" >
+        <Route path="/">
           <Route path="home" element={<HomePage />} />
           <Route path="about-us" element={<HomePage pageName="about-us" />} />
-          <Route path="contact-us" element={<HomePage pageName="contact-us" />} />
+          <Route
+            path="contact-us"
+            element={<HomePage pageName="contact-us" />}
+          />
         </Route>
 
-
-        <Route path="/" element={<PrivateRoute transactionId={transactionId} />}>
+        <Route
+          path="/"
+          element={<PrivateRoute transactionId={transactionId} />}
+        >
           <Route index element={<Dashboard />} />
           <Route path="transactions" element={<Transactions />} />
           <Route path="all-nft" element={<AllNft />} />
@@ -181,9 +185,11 @@ function App() {
           <Route index element={<Settings />} />
         </Route>
 
-        <Route path="/signup" element={<PublicRoute transactionId={transactionId} />}>
+        <Route
+          path="/signup"
+          element={<PublicRoute transactionId={transactionId} />}
+        >
           <Route index element={<SignUp />} />
-          <Route path="verification" element={<Verification />} />
           <Route path="create-account" element={<CreateAnAccount />} />
           <Route path="create-account/:accId" element={<CreateAnAccount />} />
           <Route
@@ -197,6 +203,7 @@ function App() {
         <Route path="/signin" element={<PublicRoute />}>
           {/* <Route path="/signin" element={<SignIn />} /> */}
           <Route index element={<SignIn />} />
+          <Route path="verification/:accountId" element={<Verification />} />
           {/* <Route path="/signin" element={<SignUp />} /> */}
         </Route>
 

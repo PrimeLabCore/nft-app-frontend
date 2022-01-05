@@ -3,7 +3,6 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { ProgressBar } from "react-bootstrap";
 import { AiFillCloseCircle } from "react-icons/ai";
-import { BsInfoCircleFill } from "react-icons/bs";
 import { IoIosArrowForward } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
@@ -61,20 +60,6 @@ const CreateAnAccount = () => {
     }
   }, [signupEmail, signupPhone]);
 
-  const createAccount = () => {
-    // navigate("/signup/gift-nft")
-    // dispatch({ type: 'open_dialog_gift_nft' })
-    window.dataLayer.push({
-      event: "event",
-      eventProps: {
-        category: "Signup",
-        action: "Created Account",
-        label: "Signup",
-        value: "Signup",
-      },
-    });
-  };
-
   // HandleClick for cancel button
   const HandleClick = () => {
     navigate("/signup");
@@ -122,64 +107,44 @@ const CreateAnAccount = () => {
   };
 
   const handleSignup = async () => {
+    //validate account id
     if (!doesAccountIdHaveValidLength(accountId)) {
       toast.warn("Please enter an account ID of between 2 and 64 characters.");
       return;
     }
 
+    //signup body
+    let user = {
+      fullName: fullname,
+      walletName: accountId.includes(".near") ? accountId : accountId + ".near",
+      email: signupEmail,
+      phone: signupPhone,
+    };
+
     setIsloading(true);
-    // try {
-    const fd = new FormData();
-    if (LoginFormMethod === "email") {
-      fd.append("user[email]", signupEmail);
-      fd.append("user[account_id]", accountId?.replace(".", "") + ".near");
 
-      fd.append("user[full_name]", fullname);
-    } else {
-      fd.append("user[phone_no]", signupPhone);
-      fd.append("user[account_id]", accountId + ".near");
-      fd.append("user[full_name]", fullname);
-    }
+    //Ajax Request to create user
+    axios
+      .post(`${API_BASE_URL}/user/create`, user)
+      .then((response) => {
+        console.log(response);
 
-    const response = await axios.post(`${API_BASE_URL}/signup`, fd);
-    const { success, errors } = response.data;
+        //save user details
+        localStorage.setItem("user", JSON.stringify(response.data));
 
-    if (
-      success
-      // && status === 200 || status === 201
-    ) {
-      const {
-        headers: { authorization },
-        data: { data },
-      } = response;
+        //cloudsponge import on signup
+        localStorage.setItem("welcome", true);
 
-      axios.interceptors.request.use(function (config) {
-        // const token = store.getState().session.token;
-        config.headers.Authorization = authorization;
-
-        return config;
+        navigate(redirectUrl ? redirectUrl : "/");
+      })
+      .catch((error) => {
+        if (error.response.data) {
+          toast.error(error.response.data.message);
+        }
+      })
+      .finally(() => {
+        setIsloading(false);
       });
-      dispatch({
-        type: "login_Successfully",
-        payload: { ...data, token: authorization },
-      });
-      // localStorage.setItem(
-      //   "user",
-      //   JSON.stringify({ ...data, token: authorization })
-      // );
-      localStorage.setItem("welcome", true);
-      setIsloading(false);
-      navigate(redirectUrl ? redirectUrl : "/");
-    } else {
-      toast.error(errors[0]);
-      setIsloading(false);
-      // navigate("verification");
-      // toast.error("Already Taken");
-    }
-    // } catch (e) {
-    //   console.log("Error", e);
-    //   // toast.error("Already Taken");
-    // }
   };
 
   const isFormValid = () => {
@@ -192,7 +157,7 @@ const CreateAnAccount = () => {
     ) {
       returnVal = false;
     }
-    console.log("isFormValid=>", returnVal);
+    //console.log("isFormValid=>", returnVal);
     return returnVal;
   };
 
