@@ -568,6 +568,12 @@
   box-shadow: none;
 }
 
+.modal__contact__list .data__wrapper {
+  width: 100%;
+  max-height: 60vh;
+  overflow: auto;
+}
+
 @media only screen and (max-width: 767px) {
   .mynft__box__wrapper .selected__mynft__box__description__wrapper .checked {
     width: 20px !important;
@@ -590,11 +596,13 @@
     text-overflow: ellipsis;
     overflow: hidden;
   }
+  .modal__contact__list .data__wrapper {
+    width: 100%;
+    max-height: 70vh;
+    overflow: auto;
+  }  
 }
 
-.modal__contact__list {
-  height: 80vh;
-  overflow: auto;
-}
+
 
 /*# sourceMappingURL=sendNft.module.css.map */
