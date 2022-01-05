@@ -190,6 +190,7 @@ const SendNft = () => {
       toast.error(`Something Went Wrong Fetching Contacts From ${source}`);
       return;
     } else {
+      dispatch({ type: "createnft__open" });
       toast.success(`Your Contacts Were Successfully Imported From ${source}`);
       return;
     }
