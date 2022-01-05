@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styles from "./settings.module.css";
 import SettingsHeader from "./SettingsHeader";
-import { IoIosArrowForward } from "react-icons/io";
+import { IoIosArrowForward, IoIosLogOut } from "react-icons/io";
 import { AiOutlineCheck } from "react-icons/ai";
 import user_icon from "../../../Assets/Images/user-icon.png";
 import { Container, Row, Col, Modal } from "react-bootstrap";
@@ -62,6 +62,12 @@ const Settings = () => {
       setConnectedModal(false);
     }
   };
+
+  const SignOut = () => {
+    localStorage.removeItem("user");
+    navigate("/");
+  };
+
   // HandleFocus for input
   const HandleFocus = (ClickedInput) => {
     setinfo(ClickedInput);
@@ -124,6 +130,7 @@ const Settings = () => {
                           <IoIosArrowForward />
                         </button>
                       </div>
+
                       <div
                         className={styles.settings__acc__content}
                         onClick={() => openChangeInfo("Number")}
@@ -134,6 +141,18 @@ const Settings = () => {
                         </div>
                         <button>
                           <IoIosArrowForward />
+                        </button>
+                      </div>
+
+                      <div
+                        className={styles.settings__acc__content}
+                        onClick={() => SignOut()}
+                      >
+                        <div className={styles.personal__settings}>
+                          <p>Sign Out</p>
+                        </div>
+                        <button>
+                          <IoIosLogOut />
                         </button>
                       </div>
                     </div>

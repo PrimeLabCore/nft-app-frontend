@@ -77,9 +77,6 @@ const Verification = () => {
         //save user details
         localStorage.setItem("user", JSON.stringify(response.data));
 
-        //cloudsponge import on signup
-        localStorage.setItem("welcome", true);
-
         navigate(redirectUrl ? redirectUrl : "/");
       })
       .catch((error) => {

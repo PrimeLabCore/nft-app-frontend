@@ -181,7 +181,7 @@ function App() {
           <Route path="all-nft" element={<AllNft />} />
         </Route>
 
-        <Route path="/settings" element={<SettingsRoute />}>
+        <Route path="/settings" element={<PrivateRoute />}>
           <Route index element={<Settings />} />
         </Route>
 

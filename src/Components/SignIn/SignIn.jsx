@@ -68,7 +68,6 @@ const SignIn = () => {
           : accountId + ".near",
       })
       .then((response) => {
-        console.log(response);
         navigate("/signin/verification/" + accountId);
       })
       .catch((error) => {
