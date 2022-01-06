@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import SearchIcon from "@material-ui/icons/Search";
@@ -37,7 +37,6 @@ const ContactPopup = ({
   const giftNFT__contactData = useSelector(
     (state) => state.giftNFT__contactData
   );
-  // debugger;
 
   const [filteredData, setFilteredData] = useState(
     data ? data : giftNFT__contactData ? giftNFT__contactData : []
@@ -71,6 +70,11 @@ const ContactPopup = ({
       setFilteredData(data);
     }
   };
+
+  useEffect(() => {
+    setFilteredData(data);
+    setCheckedState(checkAllContacts(data));
+  }, [data]);
 
   const contactImportCallback = (error, source) => {
     setimportContactDialog(false);

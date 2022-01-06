@@ -213,6 +213,12 @@
     color: #000;
     text-decoration: none;
   }
+  .onlyOnMobile{
+    display: none;
+  }
+  .onlyOnDesktop{
+      display: block;
+  }
   
   @media screen and (max-width: 850px) {
     .mainContainer{
@@ -274,6 +280,12 @@
     .contactText{
         font-size: 16px;
     }
+    .onlyOnMobile{
+        display: flex;
+    }
+  .onlyOnDesktop{
+        display: none;
+   }
 
   }
   
