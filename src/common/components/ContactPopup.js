@@ -30,7 +30,7 @@ const ContactPopup = ({show, onClose, onBack, title, btnText, handleBtnClick, da
     const giftNFT__contactData = useSelector(
         (state) => state.giftNFT__contactData
       );
-    
+
       const [filteredData, setFilteredData] = useState(
         data?data:giftNFT__contactData ? giftNFT__contactData : []
       );
