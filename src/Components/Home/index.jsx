@@ -71,12 +71,14 @@ const HomePage = (props) => {
                 </Link>
               </li>
               <li>
-                <button disabled={true} onClick={HandleLoginWithNear}>
+               <Link to="/signup">
+                <button>
                   Login
                   <span>
                     <IoIosArrowForward />
                   </span>
                 </button>
+                </Link>
               </li>
             </ul>
           </div>
