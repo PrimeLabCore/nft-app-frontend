@@ -101,7 +101,11 @@ const SendNft = () => {
 
   const handleNftGift = () => {
     dispatch({ type: "sendnft__close" });
-    setOpenGift(true);
+    if (filteredData.length === 0) {
+      setimportContactDialog(true);
+    } else {
+      setOpenGift(true);
+    }
     setOpenPreview(false);
   };
 
@@ -192,6 +196,7 @@ const SendNft = () => {
       return;
     } else {
       toast.success(`Your Contacts Were Successfully Imported From ${source}`);
+      setOpenGift(true);
       return;
     }
   };
@@ -311,27 +316,28 @@ const SendNft = () => {
         </Modal.Body>
       </Modal>
 
-      {/* <ImportContactsDialog
+      {/* NFT Sender Modal */}
+      {/* {openGift && <GiftAnNft dashboard={true} closebutton={true} sendGiftButton={handleNftPreview}/>} */}
+
+      <ImportContactsDialog
         onImport={importContact}
         status={importContactDialog}
         callback={contactImportCallback}
-      /> */}
-      {/* NFT Sender Modal */}
-      {/* {openGift && <GiftAnNft dashboard={true} closebutton={true} sendGiftButton={handleNftPreview}/>} */}
-     
+      />
+
       <ContactPopup
-      data={filteredData}
-      show={openGift}
-      onClose={closegiftNft}
-      onBack={openInitialSendNft}
-      title={"Send NFT"}
-      // handleSearch={handleSearch}
-      // HandleDialogOpen={HandleDialogOpen}
-      btnText={"Send Gift"}
-      handleBtnClick={handleNftPreview}
-      // findIfChecked={findIfChecked}
-      // HandleClick={HandleClick}
-      // checkedState={checkedState}
+        data={filteredData}
+        show={openGift}
+        onClose={closegiftNft}
+        onBack={openInitialSendNft}
+        title={"Send NFT"}
+        // handleSearch={handleSearch}
+        // HandleDialogOpen={HandleDialogOpen}
+        btnText={"Send Gift"}
+        handleBtnClick={handleNftPreview}
+        // findIfChecked={findIfChecked}
+        // HandleClick={HandleClick}
+        // checkedState={checkedState}
       />
 
       {/* NFT Preview Modal */}
