@@ -170,7 +170,7 @@ const MyNft = ({ isLink }) => {
                                 />
                                 : fileType.toLowerCase() ==="mp3" ?
                                     (
-                                        <audio controls>
+                                        <audio style={{marginTop:"60px",marginLeft:"5px"}} controls>
                                           <source src={data?.image} />
                                         </audio>
                                     ) :
