@@ -85,7 +85,7 @@ const ImportContactsDialog = ({ status, callback, onImport }) => {
               all[i].style.display = "block";
             }
 
-            //return false;
+            return false;
           },
           beforeLaunch: function () {
             var all = document.getElementsByClassName("initial__modal");

@@ -183,6 +183,9 @@
       margin-bottom: 10px;
       .mynft__box__image__wrapper {
         position: relative;
+        img{
+          width: 100%;
+        }
         .mynft__box__image {
           img {
             width: 100%;
