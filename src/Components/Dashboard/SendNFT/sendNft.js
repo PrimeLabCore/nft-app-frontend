@@ -95,18 +95,27 @@ const SendNft = () => {
   };
 
   useEffect(() => {
+    if(giftNFT__contactData){
+      setFilteredData(giftNFT__contactData);
+    }else{
+      console.log("empty dataaa.................")
+    }
+  }, [giftNFT__contactData]);
+
+  useEffect(() => {
     console.log(`nft`, nft);
     nft && setSelected(nft);
   }, [nft]);
 
   const handleNftGift = () => {
     dispatch({ type: "sendnft__close" });
-    if (filteredData.length === 0) {
-      setimportContactDialog(true);
-    } else {
-      setOpenGift(true);
-    }
+    // if (filteredData.length === 0) {
+    //   setimportContactDialog(true);
+    // } else {
+    //   setOpenGift(true);
+    // }
     setOpenPreview(false);
+    setOpenGift(true);
   };
 
   const handleNftPreview = async () => {
@@ -201,9 +210,9 @@ const SendNft = () => {
     }
   };
 
-  const HandleDialogOpen = () => {
-    setimportContactDialog(true);
-  };
+  // const HandleDialogOpen = () => {
+  //   setimportContactDialog(true);
+  // };
 
   return (
     <>
