@@ -40,8 +40,6 @@ const Home = () => {
   const importContact = (data) => {
     if (data) {
       setAllContacts(data)
-      setImportContactDialog(false);
-      setShowContactListPopup(true);
       dispatch({
         type: "getGoogleContactData",
         payload: data,
@@ -58,6 +56,8 @@ const Home = () => {
     } else {
       // dispatch({ type: "createnft__open" });
       toast.success(`Your Contacts Were Successfully Imported From ${source}`);
+      setImportContactDialog(false);
+      setShowContactListPopup(true);
       return;
     }
   };
