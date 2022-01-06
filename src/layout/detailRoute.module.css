@@ -69,7 +69,7 @@
   .nft__image__wrapper::after {
     content: "";
     background: #000;
-    position: absolute;
+    /*position: absolute;*/
     top: 0;
     left: 0;
     right: 0;

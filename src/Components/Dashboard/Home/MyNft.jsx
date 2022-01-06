@@ -150,6 +150,8 @@ const MyNft = ({ isLink }) => {
                 draggable={true}
               >
                 {alldata.map((data, i) => {
+                  const urlArray = data?.image?.split('.');
+                  const fileType = urlArray.length ? urlArray[urlArray.length - 1] : "";
                   return (
                     <Fragment key={nanoid()}>
                       <div
@@ -159,7 +161,25 @@ const MyNft = ({ isLink }) => {
                       >
                         <div className={styles.mynft__box__image__wrapper}>
                           <div className={styles.mynft__box__image}>
-                            <img src={data.image} alt={data.title} />
+                            {fileType.toLowerCase() === "mp4" ?
+                                <video
+                                    style={{width: '100%', borderRadius: "8px"}}
+                                    src={data?.image}
+                                />
+                                : fileType.toLowerCase() === "mp3" ?
+                                    (
+                                        <div style={{width:"100%",padding:"0 2px"}}>
+                                          <audio style={{width:"inherit",marginTop:"60px"}} controls>
+                                            <source src={data?.image}/>
+                                          </audio>
+                                        </div>
+                                    ) :
+                                    (
+                                        <img
+                                            src={data?.image}
+                                            alt={data.name}
+                                        />
+                                    )}
                           </div>
                           <div className={styles.mynft__box__cat}>
                             <h6>{data?.category}</h6>
@@ -181,6 +201,8 @@ const MyNft = ({ isLink }) => {
             <>
               <Row>
                 {alldata.map((data, i) => {
+                  const urlArray = data?.image?.split('.');
+                  const fileType=urlArray.length?urlArray[urlArray.length-1]:"";
                   return (
                     <Fragment key={nanoid()}>
                       <Col
@@ -197,7 +219,25 @@ const MyNft = ({ isLink }) => {
                         >
                           <div className={styles.mynft__box__image__wrapper}>
                             <div className={styles.mynft__box__image}>
-                              <img src={data.image} alt={data.title} />
+                              {fileType.toLowerCase() ==="mp4"?
+                                  <video
+                                      style={{ width: '100%',borderRadius:"8px" }}
+                                      src={data?.image}
+                                  />
+                                  : fileType.toLowerCase() ==="mp3" ?
+                                      (
+                                          <div style={{width:"100%",paddingRight:"10px"}}>
+                                            <audio style={{width:"inherit",marginTop:"60px",marginLeft:"5px"}} controls>
+                                              <source src={data?.image} />
+                                            </audio>
+                                          </div>
+                                      ) :
+                                      (
+                                          <img
+                                              src={data?.image}
+                                              alt={data.name}
+                                          />
+                                      )}
                             </div>
                             <div className={styles.mynft__box__cat}>
                               <h6>{data?.category}</h6>

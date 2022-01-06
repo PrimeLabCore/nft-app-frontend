@@ -11,12 +11,12 @@ const Layout = ({ children }) => {
   const [windowstate, setWindow] = useState(window.innerWidth < 767);
   useEffect(() => {
     window.addEventListener(
-      "resize",
-      () => {
-        const ismobile = window.innerWidth < 767;
-        if (ismobile !== windowstate) setWindow(ismobile);
-      },
-      false
+        "resize",
+        () => {
+          const ismobile = window.innerWidth < 767;
+          if (ismobile !== windowstate) setWindow(ismobile);
+        },
+        false
     );
   }, [windowstate]);
 
@@ -26,30 +26,46 @@ const Layout = ({ children }) => {
     }
   }, []);
 
+  const urlArray = nft__detail?.image?.split('.');
+  const fileType = urlArray.length ? urlArray[urlArray.length - 1] : "";
   return (
-    <>
-      <div className={`${styles.background} ${claim ? styles.lightbg : ""}`}>
-        {!windowstate && (
-          <>
-            <img src={detail__1} alt="Detail 1" className={styles.detail__1} />
-            <img src={detail__2} alt="Detail 2" className={styles.detail__2} />
-          </>
-        )}
+      <>
+        <div className={`${styles.background} ${claim ? styles.lightbg : ""}`}>
+          {!windowstate && (
+              <>
+                <img src={detail__1} alt="Detail 1" className={styles.detail__1} />
+                <img src={detail__2} alt="Detail 2" className={styles.detail__2} />
+              </>
+          )}
 
-        {/* NFT Image */}
-        <div className={styles.nft__image__outer__wrapper}>
-          <div className={styles.nft__image__wrapper}>
-            <img
-              src={nft__detail.image}
-              alt="NFT"
-              className={styles.nft__image}
-            />
+          {/* NFT Image */}
+          <div className={styles.nft__image__outer__wrapper}>
+            <div className={styles.nft__image__wrapper} style={{width:"60%"}}>
+              {fileType.toLowerCase() === "mp4" ?
+                  <video
+                      style={{width: '100%', borderRadius: "8px"}}
+                      src={nft__detail?.image}
+                  />
+                  : fileType.toLowerCase() === "mp3" ?
+                      (
+                          <div style={{width:"100%",padding:"0 2px"}}>
+                            <audio style={{width:"inherit",marginTop:"60px"}} controls>
+                              <source src={nft__detail?.image}/>
+                            </audio>
+                          </div>
+                      ) :
+                      (
+                          <img
+                              src={nft__detail?.image}
+                              alt={nft__detail.name}
+                          />
+                      )}
+            </div>
           </div>
-        </div>
 
-        <main>{children}</main>
-      </div>
-    </>
+          <main>{children}</main>
+        </div>
+      </>
   );
 };
 const LayoutRoute = () => {
@@ -60,9 +76,9 @@ const LayoutRoute = () => {
   const nft__detail = useSelector((state) => state.nft__detail);
 
   return (
-    <>
-      <Layout>{isAuth ? <Outlet /> : <Navigate replace to="/signup" />}</Layout>
-    </>
+      <>
+        <Layout>{isAuth ? <Outlet /> : <Navigate replace to="/signup" />}</Layout>
+      </>
   );
 };
 export default LayoutRoute;
