@@ -8,6 +8,8 @@ import { InputAdornment } from "@material-ui/core";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { API_BASE_URL } from "../../../Utils/config";
+import CustomPhoneInput from "../../../common/components/CustomPhoneInput/CustomPhoneInput";
+import SignIn from "../../SignIn/SignIn";
 
 const validateEmail = (email) => {
   return String(email)
@@ -30,13 +32,16 @@ const validateEmail = (email) => {
 // 075-63546725
 
 const validatePhone = (phone) => {
-  return /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im.test(phone);
-}
+  return /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im.test(
+    phone
+  );
+};
 
 const SignUpWith = () => {
   const dispatch = useDispatch();
   const loginForm = useSelector((state) => state.LoginFormMethod);
   const [inputFields, setinputFields] = useState({ email: "", phone: "" });
+  const [loginFields, setLoginFields] = useState({ username: "" });
   const [validateUserLoading, setValidateUserLoading] = useState(true);
   const [isUserIDAvailable, setIsUserIDAvailable] = useState(false);
   const { redirectUrl } = useSelector((state) => state.authReducer);
@@ -112,7 +117,6 @@ const SignUpWith = () => {
     }
 
     const response = await axios.post(`${API_BASE_URL}/signup`, fd);
-    console.log(`response`, response);
     const { status } = response;
 
     if (status === 200 || status === 201) {
@@ -180,9 +184,9 @@ const SignUpWith = () => {
   const handleLogin = async (email) => {
     const fd = new FormData();
     if (!email) {
-      fd.append("user[email]", inputFields.email);
+      fd.append("user[email]", loginFields.username);
     } else {
-      fd.append("user[phone]", inputFields.phone);
+      fd.append("user[phone]", loginFields.username);
     }
 
     const response = await axios.post(`${API_BASE_URL}/login`, fd);
@@ -200,6 +204,7 @@ const SignUpWith = () => {
 
         return config;
       });
+      console.log("data", redirectUrl);
       dispatch({
         type: "login_Successfully",
         payload: { ...data, token: authorization },
@@ -208,9 +213,9 @@ const SignUpWith = () => {
       //   "user",
       //   JSON.stringify({ ...data, token: authorization })
       // );
-      navigate(redirectUrl ? redirectUrl : "/");
+      // navigate(redirectUrl ? redirectUrl : "/");
     } else {
-      navigate("verification");
+      // navigate("verification");
     }
   };
 
@@ -239,7 +244,7 @@ const SignUpWith = () => {
 
     setErrors(errors);
     return formIsValid;
-  }
+  };
 
   const oldHandleSignup = () => {
     if (inputFields.email.length < 1) {
@@ -306,12 +311,15 @@ const SignUpWith = () => {
     setinputFields({ ...inputFields, [field]: e.target.value });
   };
 
-  const CheckAndSubmitForm = (e)=>{
-    if(e.which === 13){
+  const handleInputUserName = (e) => {
+    setLoginFields({ username: e.target.value });
+  };
+
+  const CheckAndSubmitForm = (e) => {
+    if (e.which === 13) {
       loginForm === "email" ? oldHandleSignup() : phoneNumberSignUp();
     }
-  }
-
+  };
   return (
     <div className={styles.half_container}>
       {/* EMAIL AND PHONE SIGNUP CONATINER */}
@@ -337,13 +345,15 @@ const SignUpWith = () => {
       <div className={styles.mainContainer}>
         {/* LOGIN WITH PHONE */}
         {loginForm === "phone" && (
-          <TextFieldComponent
+          <CustomPhoneInput
             variant="outlined"
             placeholder="Ex. (373) 378 8383"
             type={"tel"}
-            InputValue={inputFields.phone}
-            HandleInputChange={HandleInputChange("phone")}
-            HandelKeyPress={(e)=>{CheckAndSubmitForm(e)}}
+            value={inputFields.phone}
+            onChange={HandleInputChange("phone")}
+            HandelKeyPress={(e) => {
+              CheckAndSubmitForm(e);
+            }}
           />
         )}
 
@@ -366,7 +376,9 @@ const SignUpWith = () => {
             //   ),
             // }}
             HandleInputChange={HandleInputChange("email")}
-            HandelKeyPress={(e)=>{CheckAndSubmitForm(e)}}
+            HandelKeyPress={(e) => {
+              CheckAndSubmitForm(e);
+            }}
           />
         )}
         <button
@@ -375,7 +387,9 @@ const SignUpWith = () => {
             loginForm === "email" ? oldHandleSignup() : phoneNumberSignUp()
           }
           className={`${styles.button} ${
-            inputFields.email || inputFields.phone ? styles.primaryColor : styles.secondaryColor
+            inputFields.email || inputFields.phone
+              ? styles.primaryColor
+              : styles.secondaryColor
           }`}
           disabled={
             loginForm === "email"
@@ -393,30 +407,52 @@ const SignUpWith = () => {
 
         <p>
           By creating a NEAR account, you agree to the <br />
-          NEAR Wallet <span><a href="https://terms.nftmakerapp.io/" target={"_blank"}>Terms of Service</a></span> and{" "}
-          <span><a href="https://privacy.nftmakerapp.io/" target={"_blank"}>Privacy Policy</a></span>.
+          NEAR Wallet{" "}
+          <span>
+            <a href="https://terms.nftmakerapp.io/" target={"_blank"}>
+              Terms of Service
+            </a>
+          </span>{" "}
+          and{" "}
+          <span>
+            <a href="https://privacy.nftmakerapp.io/" target={"_blank"}>
+              Privacy Policy
+            </a>
+          </span>
+          .
         </p>
         <hr />
 
         <h6 className={styles.link}>Already have Near Account?</h6>
 
-        <button disabled={true} className={styles.button} onClick={HandleLoginWithNear}>
-          Login With NEAR
+        <TextFieldComponent
+          variant="outlined"
+          placeholder="walletName.near"
+          type={"email"}
+          InputValue={loginFields.username}
+          HandleInputChange={handleInputUserName}
+          HandelKeyPress={(e) => {
+            // CheckAndSubmitForm(e);
+          }}
+        />
+        <button
+          disabled={loginFields.username.length > 2 ? false : true}
+          className={styles.button}
+          onClick={() => handleLogin(loginFields.username)}
+        >
+          Login
           {
             <span>
               <IoIosArrowForward />
             </span>
           }
         </button>
-
-
       </div>
 
       <div className={styles.home_page_text}>
-          The easiest way to Create NFTs and share them others. Start minting NFTs in NEAR's rapidly expanding ecosystem
+        The easiest way to Create NFTs and share them others. Start minting NFTs
+        in NEAR's rapidly expanding ecosystem
       </div>
-
-
     </div>
   );
 };

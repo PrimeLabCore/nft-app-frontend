@@ -45,6 +45,11 @@ const MyNft = ({ isLink }) => {
     console.log(`response.data`, response.data);
     const { success, data } = response.data;
 
+    // open the create NFT by default if no nft images found
+    // if(response.data.data.length === 0) {
+    //   dispatch({ type: "createnft__open" });
+    // }
+
     if (success) {
       setAlldata(data);
       dispatch({ type: "getNft", payload: data });

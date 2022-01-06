@@ -17,6 +17,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { API_BASE_URL, googleAccess } from "../../../Utils/config";
 import { toast } from "react-toastify";
+import ContactPopup from "../../../common/components/ContactPopup";
 const responsive = {
   superLargeDesktop: {
     // the naming can be any, depends on you.
@@ -37,7 +38,7 @@ const responsive = {
   },
 };
 const checkAllContacts = (data) =>
-  data.map((item) => ({ checked: false, email: item.primary_email }));
+  data.map((item) => ({ checked: true, email: item.primary_email }));
 
 const findIfChecked = (email, array) => {
   const foundItem = array.find((item) => item.email === email);
@@ -100,7 +101,11 @@ const SendNft = () => {
 
   const handleNftGift = () => {
     dispatch({ type: "sendnft__close" });
-    setOpenGift(true);
+    if (filteredData.length === 0) {
+      setimportContactDialog(true);
+    } else {
+      setOpenGift(true);
+    }
     setOpenPreview(false);
   };
 
@@ -156,7 +161,7 @@ const SendNft = () => {
     let value = event.target.value.toLowerCase();
     let result = [];
     result = giftNFT__contactData.filter((data) => {
-      return data.title.toLowerCase().search(value) !== -1;
+      return data.primary_email.toLowerCase().search(value) !== -1;
     });
     setFilteredData(result);
     setSendGiftEmail(event.target.value.toLowerCase());
@@ -191,6 +196,7 @@ const SendNft = () => {
       return;
     } else {
       toast.success(`Your Contacts Were Successfully Imported From ${source}`);
+      setOpenGift(true);
       return;
     }
   };
@@ -310,91 +316,29 @@ const SendNft = () => {
         </Modal.Body>
       </Modal>
 
+      {/* NFT Sender Modal */}
+      {/* {openGift && <GiftAnNft dashboard={true} closebutton={true} sendGiftButton={handleNftPreview}/>} */}
+
       <ImportContactsDialog
         onImport={importContact}
         status={importContactDialog}
         callback={contactImportCallback}
       />
-      {/* NFT Sender Modal */}
-      {/* {openGift && <GiftAnNft dashboard={true} closebutton={true} sendGiftButton={handleNftPreview}/>} */}
-      <Modal
-        className={`${styles.initial__nft__modal} send__nft__mobile__modal initial__modal`}
+
+      <ContactPopup
+        data={filteredData}
         show={openGift}
-        onHide={closegiftNft}
-        backdrop="static"
-        size="lg"
-        centered
-        keyboard={false}
-      >
-        <Modal.Header className={styles.modal__header__wrapper} closeButton>
-          <div className="modal__multiple__wrapper">
-            <button onClick={openInitialSendNft} className="back__btn">
-              Back
-            </button>
-            <Modal.Title>
-              <div className={styles.modal__header}>
-                <h2>Send NFT</h2>
-              </div>
-            </Modal.Title>
-          </div>
-        </Modal.Header>
-        <Modal.Body>
-          <div className={styles.modal__body__wrapper}>
-            <div className={styles.search__wrapper}>
-              <div className={styles.search__inner__wrapper}>
-                <div className={styles.search__input}>
-                  <div className={styles.searchIcon}>
-                    <SearchIcon />
-                  </div>
-                  <input
-                    type="text"
-                    placeholder="Search People"
-                    onChange={handleSearch}
-                  />
-                </div>
-              </div>
-              <button onClick={HandleDialogOpen}>Import</button>
-            </div>
-            <div className={styles.data__wrapper}>
-              {filteredData.map((value, index) => (
-                <div className={styles.data_row_container} key={nanoid()}>
-                  {/* AVATAR */}
-                  {/* <div className={styles.avatar}>
-                    <img
-                      src={value.photos[0].url}
-                      alt={value.names[0].displayName}
-                    />
-                  </div> */}
-                  {/* TEXT */}
-                  <div className={styles.textContainer}>
-                    <h6>{value.fullname}</h6>
-                    <p>{value.primary_email}</p>
-                  </div>
-                  {/* ICONS */}
-                  <div
-                    className={styles.icon}
-                    onClick={() => HandleClick(value.primary_email)}
-                  >
-                    {findIfChecked(value.primary_email, checkedState) ? (
-                      <BsCheckCircleFill className={styles.checked} />
-                    ) : (
-                      <GoPrimitiveDot className={styles.unchecked} />
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className={styles.multiple__btn__wrapper}>
-            <button onClick={handleNftPreview} className={styles.next__btn}>
-              Send Gift
-              <span>
-                <IoIosArrowForward />
-              </span>
-            </button>
-          </div>
-        </Modal.Body>
-      </Modal>
+        onClose={closegiftNft}
+        onBack={openInitialSendNft}
+        title={"Send NFT"}
+        // handleSearch={handleSearch}
+        // HandleDialogOpen={HandleDialogOpen}
+        btnText={"Send Gift"}
+        handleBtnClick={handleNftPreview}
+        // findIfChecked={findIfChecked}
+        // HandleClick={HandleClick}
+        // checkedState={checkedState}
+      />
 
       {/* NFT Preview Modal */}
       <Modal

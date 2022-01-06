@@ -10,7 +10,7 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import { API_BASE_URL } from "../../../Utils/config";
 
-const CreateNft = props => {
+const CreateNft = (props) => {
   let navigate = useNavigate();
   const { transactionId } = props;
 
@@ -20,6 +20,9 @@ const CreateNft = props => {
     name: "",
   });
   const { user } = useSelector((state) => state.authReducer);
+
+  // getting all NFT detail
+  const home__allnft = useSelector((state) => state.home__allnft);
 
   const [details, setDetails] = useState({
     title: "",
@@ -162,16 +165,12 @@ const CreateNft = props => {
     fd.append("user_image[category]", details.category);
     fd.append("user_image[properties]", "");
 
-    return await axios.post(
-      `${API_BASE_URL}/api/v1/user_images`,
-      fd,
-      {
-        headers: {
-          "Content-type": "multipart/form-data",
-        },
-      }
-    );
-  }
+    return await axios.post(`${API_BASE_URL}/api/v1/user_images`, fd, {
+      headers: {
+        "Content-type": "multipart/form-data",
+      },
+    });
+  };
 
   const trackConversion = async (user, transactionId, details) => {
     const requestBody = {
@@ -180,20 +179,21 @@ const CreateNft = props => {
       details,
     };
 
-    const conversionURL = 'https://fcnefunrz6.execute-api.us-east-1.amazonaws.com/test/conversion';
+    const conversionURL =
+      "https://fcnefunrz6.execute-api.us-east-1.amazonaws.com/test/conversion";
     return axios.post(
       conversionURL,
       // TODO: Populate conversionURL with the production version of the endpoint, something like below:
       // `${API_BASE_URL}/api/v1/conversion`,
-      requestBody,
+      requestBody
     );
-  }
+  };
 
   const mineNft = async (comingFrom) => {
     setLoading(true);
 
     const postNftResponse = await postNftWithImage(details, selectedFile);
-    
+
     const { data, success } = postNftResponse.data;
     // setSelectedFile(data);
     setCreateNftResponse(data);
@@ -274,19 +274,25 @@ const CreateNft = props => {
     // setSelectedFile(data);
 
     // FileReader support
+    const imageSizeLimit = 50000000; // 50 mb
     let target = event.target || window.event.srcElement,
       files = target.files;
     if (FileReader && files && files.length) {
       // console.log(`files[0]`, files[0]);
-      let file__reader = new FileReader();
-      file__reader.onload = function () {
-        setSelectedFile(files[0]);
-        toast.success("File Uploaded");
-      };
-      file__reader.readAsDataURL(files[0]);
+      if (files[0].size <= imageSizeLimit) {
+        let file__reader = new FileReader();
+        file__reader.onload = function () {
+          setSelectedFile(files[0]);
+          toast.success("File Uploaded");
+        };
+        file__reader.readAsDataURL(files[0]);
+      } else {
+        // display error if image is larger then 50 mb
+        toast.error("Image file too large");
+      }
     }
   };
-  
+
   return (
     <>
       {/* Initial Modal  */}
@@ -297,7 +303,10 @@ const CreateNft = props => {
         backdrop="static"
         keyboard={false}
       >
-        <Modal.Header className={styles.modal__header__wrapper} closeButton>
+        <Modal.Header
+          className={styles.modal__header__wrapper}
+          closeButton={home__allnft.length > 0}
+        >
           <div className="modal__title__wrapper">
             <Modal.Title>
               <div className={styles.modal__header}>
@@ -366,7 +375,10 @@ const CreateNft = props => {
         backdrop="static"
         keyboard={false}
       >
-        <Modal.Header className={styles.modal__header__wrapper} closeButton>
+        <Modal.Header
+          className={styles.modal__header__wrapper}
+          closeButton={home__allnft.length > 0}
+        >
           <div className="modal__multiple__wrapper">
             <button onClick={() => goBack("initalForm")} className="back__btn">
               Back
@@ -413,14 +425,14 @@ const CreateNft = props => {
                     <input
                       type="text"
                       value={val[`size_${val.id}`]}
-                      placeholder="Ex. Size"
+                      placeholder="Tag"
                       onChange={handleChange(val.id, "size")}
                     />
 
                     <input
                       type="text"
                       value={val[`extension_${val.id}`]}
-                      placeholder="Ex. 40"
+                      placeholder="Value"
                       onChange={handleChange(val.id, "extension")}
                     />
 
@@ -449,10 +461,12 @@ const CreateNft = props => {
               <div className={styles.form__group}>
                 <label>CATEGORY</label>
                 <select
+                  className={styles.form__category__dropdown}
                   name="category"
                   value={details.category}
                   onChange={inputEvent}
                   defaultValue={"Digital Arts"}
+                  disabled
                 >
                   <option></option>
                   <option value="Digital Arts">Digital Arts</option>
@@ -479,7 +493,10 @@ const CreateNft = props => {
         backdrop="static"
         keyboard={false}
       >
-        <Modal.Header className={styles.modal__header__wrapper} closeButton>
+        <Modal.Header
+          className={styles.modal__header__wrapper}
+          closeButton={home__allnft.length > 0}
+        >
           <div className="modal__multiple__wrapper">
             <button onClick={() => goBack("nftForm")} className="back__btn">
               Back
@@ -560,7 +577,7 @@ const CreateNft = props => {
       >
         <Modal.Header
           className={`${styles.modal__header__wrapper}  ${styles.modal__header__bottom} last__modal__header`}
-          closeButton
+          closeButton={home__allnft.length > 0}
         ></Modal.Header>
         {/* <button onClick={allNft} className="btnclose">X</button> */}
         <Modal.Body className={styles.modal__body__top}>

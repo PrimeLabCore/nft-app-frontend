@@ -84,6 +84,7 @@
   font-weight: normal;
   font-size: 12px;
   padding-bottom: 5px;
+  position: relative;
 }
 
 .settings__wrapper .settings__acc__wrapper .settings__acc__inner .settings__acc .personal__settings h6 {
@@ -179,6 +180,7 @@
   display: -ms-flexbox;
   display: flex;
   margin: 5px 0px;
+  margin-top: 40px;
 }
 
 .connection__modal .btn__wrapper .next__btn {
@@ -220,6 +222,48 @@
   height: 100%;
 }
 
+.defaultAuthenticMethod{
+  font-size: 22px;
+  position: absolute;
+  right: 14px;
+  top: -2px;
+  color: #03a9f4;
+  font-weight: 600;
+}
+.verficationContainer, .verficationContainerEndText{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.verficationContainer p{
+  color: #808080;
+}
+.verficationContainerEndText .link, .modalSubtitle span{
+  color: #39C0BA;
+  font-weight: 500;
+}
+.verficationContainerEndText{
+  padding-top: 40px;
+  padding-bottom: 40px
+}
+.verficationContainerEndText p{
+  margin: 0px;
+}
+.modalSubtitle{
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 20px;
+  text-align: center;
+  color: #808080;
+}
+.modalSubtitle span{
+  color: #2f80ed;
+  font-weight: 400;
+}
+.authPopupBtnContainer button{
+  width: 86%;
+  margin: 0px auto;
+}
 @media only screen and (max-width: 767px) {
   .connection__modal .modal__body__wrapper {
     margin: auto;
@@ -230,5 +274,13 @@
     text-overflow: ellipsis;
     overflow: hidden;
   }
+}
+
+
+
+.contact-country-select{
+  width: 100%;
+  margin-bottom: 14px !important;
+  height: 42px;
 }
 /*# sourceMappingURL=settings.module.css.map */

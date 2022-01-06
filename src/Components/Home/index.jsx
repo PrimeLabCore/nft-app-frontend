@@ -32,7 +32,7 @@ const HomePage = (props) => {
           <h3 className={styles.leftSideMainText}>
             The easiest way to Create NFTs and share them others. Start minting NFTs in NEAR's rapidly expanding ecosystem
           </h3>
-          <div className={styles.featureList}>
+          {/* <div className={styles.featureList}>
             <ul>
               <li>
                 Create NFTs
@@ -44,7 +44,7 @@ const HomePage = (props) => {
                 Explore Blockchain
               </li>
             </ul>
-          </div>
+          </div> */}
         </div>
 
         <div className={styles.rightSide}>
@@ -60,13 +60,25 @@ const HomePage = (props) => {
                   Contact
                 </Link>
               </li>
+              <li className={`${styles.onlyOnDesktop}`}>
+              <Link to="/signup">
+                  <button>
+                    Get Started
+                    <span>
+                      <IoIosArrowForward />
+                    </span>
+                  </button>
+                </Link>
+              </li>
               <li>
-                <button disabled={true} onClick={HandleLoginWithNear}>
+               <Link to="/signup">
+                <button>
                   Login
                   <span>
                     <IoIosArrowForward />
                   </span>
                 </button>
+                </Link>
               </li>
             </ul>
           </div>
@@ -77,6 +89,17 @@ const HomePage = (props) => {
               <>
                 <h2>NFT Maker App</h2>
 
+                <div className={`${styles.getStartedBtn} ${styles.onlyOnMobile}`}>
+                <Link to="/signup">
+                  <button>
+                    Get Started
+                    <span>
+                      <IoIosArrowForward />
+                    </span>
+                  </button>
+                </Link>
+                </div>
+
                 <p className={styles.nftMakerAppDesc}>
                   The easiest way to Create NFTs and share them others. Start minting NFTs in NEAR's rapidly expanding ecosystem
                 </p>
@@ -85,7 +108,7 @@ const HomePage = (props) => {
                   <img src={HomeCard2} className={styles.image1st} />
                   <img src={HomeCard1} className={styles.image2nd} />
                 </div>
-                <div className={styles.nftAboutFeatureList}>
+                {/* <div className={styles.nftAboutFeatureList}>
                 <ul>
                   <li>
                     Create NFTs
@@ -97,7 +120,7 @@ const HomePage = (props) => {
                     Explore Blockchain
                   </li>
                 </ul>
-                </div>
+                </div> */}
                 <div className={styles.getStartedBtn}>
                   <Link to="/signup">
                     <button>
@@ -134,12 +157,14 @@ const HomePage = (props) => {
                   </ul>
                 </div>
                 <div className={styles.getStartedBtn}>
-                  <button onClick={HandleLoginWithNear}>
-                    Get Started
-                    <span>
-                      <IoIosArrowForward />
-                    </span>
-                  </button>
+                <Link to="/signup">
+                    <button>
+                      Get Started
+                      <span>
+                        <IoIosArrowForward />
+                      </span>
+                    </button>
+                  </Link>
                 </div>
               </>
             }
@@ -177,12 +202,14 @@ const HomePage = (props) => {
 
                 </div>
                 <div className={styles.getStartedBtn}>
-                  <button >
-                    Get Started
-                    <span>
-                      <IoIosArrowForward />
-                    </span>
-                  </button>
+                <Link to="/signup">
+                    <button>
+                      Get Started
+                      <span>
+                        <IoIosArrowForward />
+                      </span>
+                    </button>
+                  </Link>
                 </div>
               </>
             }
