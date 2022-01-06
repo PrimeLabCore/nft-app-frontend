@@ -10,15 +10,11 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import { API_BASE_URL } from "../../../Utils/config";
 
-const audioRegex = /(audio)(\/\w+)+/g;
-const videoRegex = /(video)(\/\w+)+/g;
-
 const CreateNft = (props) => {
   let navigate = useNavigate();
   const { transactionId } = props;
 
   const [selectedFile, setSelectedFile] = useState("");
-  const [selectedFileType, setSelectedFileType] = useState("image");
   const [loading, setLoading] = useState(false);
   const [createNftResponse, setCreateNftResponse] = useState({
     name: "",
@@ -278,7 +274,7 @@ const CreateNft = (props) => {
     // setSelectedFile(data);
 
     // FileReader support
-    const imageSizeLimit = 100000000; // 50 mb
+    const imageSizeLimit = 50000000; // 50 mb
     let target = event.target || window.event.srcElement,
       files = target.files;
     if (FileReader && files && files.length) {
@@ -287,14 +283,6 @@ const CreateNft = (props) => {
         let file__reader = new FileReader();
         file__reader.onload = function () {
           setSelectedFile(files[0]);
-          console.log("files[0].type", files[0].type)
-          if(videoRegex.test(files[0].type)){
-            setSelectedFileType("video")
-          } else if(audioRegex.test(files[0].type)){
-            setSelectedFileType("audio")
-          } else {
-            setSelectedFileType("image")
-          }
           toast.success("File Uploaded");
         };
         file__reader.readAsDataURL(files[0]);
@@ -305,7 +293,6 @@ const CreateNft = (props) => {
     }
   };
 
-  console.log(selectedFile)
   return (
     <>
       {/* Initial Modal  */}
@@ -341,7 +328,7 @@ const CreateNft = (props) => {
                 id="files"
                 name="file"
                 onChange={changeHandler}
-                accept="image/png, image/jpg, image/jpeg, video/mp4, audio/mp3, image/webp"
+                accept="image/png, image/jpg, image/jpeg"
                 style={{ display: "none" }}
                 required
               />
@@ -350,33 +337,15 @@ const CreateNft = (props) => {
                   {selectedFile ? "Upload Another File" : "Choose File"}
                 </label>
               </div>
-              <p>PNG, GIF, WEBP, MP4 or MP3. Max 100mb.</p>
+              <p>PNG, JPEG, JPG, SVG. Max 50mb.</p>
             </div>
-            {console.log(selectedFile?.type?.includes("video"))}
             {selectedFile && (
-                selectedFile?.type?.includes("video") ?
-                    (
-                        <div className="uploaded__file">
-                          <video
-                              style={{ width: '100%',borderRadius:"8px" }}
-                              src={URL.createObjectURL(selectedFile)}
-                          />
-                        </div>
-                    )
-                    : selectedFile?.type?.includes("audio") ?
-                    (
-                        <div className="uploaded__file">
-                          <audio controls>
-                            <source src={URL.createObjectURL(selectedFile)} />
-                          </audio>
-                        </div>
-                    ) :
-                    (<div className="uploaded__file">
-                      <img
-                        src={URL.createObjectURL(selectedFile)}
-                        alt="Uploaded File"
-                      />
-                    </div>)
+              <div className="uploaded__file">
+                <img
+                  src={URL.createObjectURL(selectedFile)}
+                  alt="Uploaded File"
+                />
+              </div>
             )}
           </div>
           <div className={styles.next__btn__wrapper}>
@@ -547,30 +516,15 @@ const CreateNft = (props) => {
             <h6>Preview</h6>
             <div className={styles.mynft__box}>
               <div className={styles.mynft__box__image__wrapper}>
-                {selectedFile && (
-                    selectedFile?.type?.includes("video") ?
-                        (
-                              <video
-                                  style={{ width: '100%',borderRadius:"8px" }}
-                                  src={URL.createObjectURL(selectedFile)}
-                              />
-                        )
-                        : selectedFile?.type?.includes("audio") ?
-                        (
-                              <audio style={{marginTop:"60px",marginLeft:"5px"}} controls>
-                                <source src={URL.createObjectURL(selectedFile)} />
-                              </audio>
-                        ) :
-                        (
-                              <img
-                                  src={URL.createObjectURL(selectedFile)}
-                                  alt={formInfo.title}
-                              />
-                        )
-                )}
-                {!audioRegex.test(selectedFile.type) && <div className={styles.mynft__box__cat}>
+                <div className={styles.mynft__box__image}>
+                  <img
+                    src={selectedFile ? URL.createObjectURL(selectedFile) : ""}
+                    alt={formInfo.title}
+                  />
+                </div>
+                <div className={styles.mynft__box__cat}>
                   <h6>{details?.category}</h6>
-                </div>}
+                </div>
               </div>
               <div className={styles.mynft__box__description__wrapper}>
                 <h2>Title</h2>

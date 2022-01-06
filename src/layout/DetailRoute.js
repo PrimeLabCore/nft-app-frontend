@@ -26,8 +26,6 @@ const Layout = ({ children }) => {
     }
   }, []);
 
-  const urlArray = nft__detail?.image?.split('.');
-  const fileType = urlArray.length ? urlArray[urlArray.length - 1] : "";
   return (
     <>
       <div className={`${styles.background} ${claim ? styles.lightbg : ""}`}>
@@ -40,26 +38,12 @@ const Layout = ({ children }) => {
 
         {/* NFT Image */}
         <div className={styles.nft__image__outer__wrapper}>
-          <div className={styles.nft__image__wrapper} style={{width:"60%"}}>
-            {fileType.toLowerCase() === "mp4" ?
-                <video
-                    style={{width: '100%', borderRadius: "8px"}}
-                    src={nft__detail?.image}
-                />
-                : fileType.toLowerCase() === "mp3" ?
-                    (
-                        <div style={{width:"100%",padding:"0 2px"}}>
-                          <audio style={{width:"inherit",marginTop:"60px"}} controls>
-                            <source src={nft__detail?.image}/>
-                          </audio>
-                        </div>
-                    ) :
-                    (
-                        <img
-                            src={nft__detail?.image}
-                            alt={nft__detail.name}
-                        />
-                    )}
+          <div className={styles.nft__image__wrapper}>
+            <img
+              src={nft__detail.image}
+              alt="NFT"
+              className={styles.nft__image}
+            />
           </div>
         </div>
 
