@@ -54,6 +54,12 @@ const CreateAnAccount = () => {
   const [info, setinfo] = useState("");
 
   useEffect(() => {
+    if (signupEmail == "" && signupPhone == "") {
+      HandleClick();
+    }
+  }, []);
+
+  useEffect(() => {
     if (LoginFormMethod === "email") {
       setAccountId(
         signupEmail?.split("@")[0]?.replace(".", "")
