@@ -327,6 +327,7 @@ const SendNft = () => {
 
       <ContactPopup
         data={filteredData}
+        displayImportContact={false}
         show={openGift}
         onClose={closegiftNft}
         onBack={openInitialSendNft}
