@@ -330,6 +330,7 @@ const SendNft = () => {
         show={openGift}
         onClose={closegiftNft}
         onBack={openInitialSendNft}
+        displayImportContact={false}
         title={"Send NFT"}
         // handleSearch={handleSearch}
         // HandleDialogOpen={HandleDialogOpen}

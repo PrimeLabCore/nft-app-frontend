@@ -30,6 +30,7 @@ const ContactPopup = ({
   btnText,
   handleBtnClick,
   data,
+  displayImportContact,
 }) => {
   let navigate = useNavigate();
   const dispatch = useDispatch();
@@ -46,7 +47,8 @@ const ContactPopup = ({
     checkAllContacts(data ? data : giftNFT__contactData || [])
   );
 
-  const [importContactDialog, setimportContactDialog] = useState(false);
+  const [importContactDialog, setimportContactDialog] =
+    useState(displayImportContact);
 
   const [sendGiftEmail, setSendGiftEmail] = useState("");
 
@@ -191,11 +193,13 @@ const ContactPopup = ({
         </Modal.Body>
       </Modal>
 
-      <ImportContactsDialog
-        onImport={importContact}
-        status={importContactDialog}
-        callback={contactImportCallback}
-      />
+      {importContactDialog ? (
+        <ImportContactsDialog
+          onImport={importContact}
+          status={importContactDialog}
+          callback={contactImportCallback}
+        />
+      ) : null}
     </>
   );
 };
