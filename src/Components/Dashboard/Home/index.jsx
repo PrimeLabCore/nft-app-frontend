@@ -80,11 +80,9 @@ const Home = () => {
             callback={contactImportCallback}
           />
 
-          
-
-
   <ContactPopup
             data={allContacts}
+            displayImportContact={false}
             show={showContactListPopup}
             onClose={()=>{
               openCreateNFTPopup()
@@ -98,8 +96,6 @@ const Home = () => {
               openCreateNFTPopup()
             }}
           />
-
-          
 
           {/* Home Create NFT Container */}
           <div className={styles.create__nft__container}>
