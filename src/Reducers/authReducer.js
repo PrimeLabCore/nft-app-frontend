@@ -4,6 +4,7 @@ let initialvalue = {
   signupPhone: "",
   nft: null,
   redirectUrl: null,
+  otp_medium: "",
 };
 
 const authReducer = (state = initialvalue, action) => {
@@ -33,6 +34,12 @@ const authReducer = (state = initialvalue, action) => {
       return {
         ...state,
         redirectUrl: action.payload,
+      };
+
+    case "set_otp_medium":
+      return {
+        ...state,
+        otp_medium: action.payload,
       };
 
     default:

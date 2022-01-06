@@ -68,7 +68,7 @@ const CreateAnAccount = () => {
   // HandleLogin
   const HandleLogin = () => {
     //window.open(`${API_BASE_URL}/near_login/login.html`, "_self");
-    // navigate("/signin");
+    navigate("/signin");
   };
 
   // HandleFocus for input
@@ -248,19 +248,6 @@ const CreateAnAccount = () => {
             </span>
           }
         </button>
-        {/* <button onClick={createAccount} className={styles.createAccountButton}>
-          <a
-            href={`https://accounts.google.com/o/oauth2/auth?response_type=code&redirect_uri=${googleRedirectUrl}&scope=https://www.googleapis.com/auth/contacts&client_id=${googleClientId}&access_type=offline&prompt=consent`}
-            className={`${styles.secondary_button}`}
-          >
-            Create an account
-            {
-              <span>
-                <IoIosArrowForward />
-              </span>
-            }
-          </a>
-        </button> */}
 
         <p>
           By creating a NEAR account, you agree to the <br />
@@ -284,7 +271,7 @@ const CreateAnAccount = () => {
             <h6 className={styles.link}>Already have Near Account?</h6>
 
             <button
-              disabled={true}
+              /*  disabled={true} */
               className={styles.primary_button}
               onClick={HandleLogin}
             >

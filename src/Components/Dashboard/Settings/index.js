@@ -8,11 +8,15 @@ import { Container, Row, Col, Modal } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import TextFieldComponent from "../../../Assets/FrequentlUsedComponents/TextFieldComponent";
 import { toast } from "react-toastify";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import CustomPhoneInput from "../../../common/components/CustomPhoneInput/CustomPhoneInput";
+import { API_BASE_URL } from "../../../Utils/config";
+import AppLoader from "../../Generic/AppLoader";
+import axios from "axios";
 
 const Settings = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [connectedModal, setConnectedModal] = useState(false);
   const [changeInfo, setChangeInfo] = useState(false);
   const [details, setDetails] = useState("");
@@ -20,6 +24,14 @@ const Settings = () => {
   const [enable2fa, setEnable2fa] = useState(false);
   const [info, setinfo] = useState("");
   const { user } = useSelector((state) => state.authReducer);
+  const [isLoading, setIsloading] = useState(false);
+
+  const [inputFields, setinputFields] = useState({
+    email: user.email,
+    phone: user.phone,
+    full_name: user.full_name,
+  });
+
   const closeChangeInfo = () => {
     setChangeInfo(false);
   };
@@ -27,29 +39,82 @@ const Settings = () => {
     setChangeInfo(true);
     setDetails(infovalue);
   };
+
+  const validateEmail = (email) => {
+    return String(email)
+      .toLowerCase()
+      .match(
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      );
+  };
+
+  const validatePhone = (phone) => {
+    return /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im.test(
+      phone
+    );
+  };
+
   const savePersonalInfo = () => {
     setChangeInfo(false);
-    toast.success("Settings Saved");
+
+    switch (details) {
+      case "full_name":
+        if (!inputFields.full_name) {
+          toast.error("Name can't be empty");
+          return;
+        }
+        break;
+
+      case "email":
+        if (!validateEmail(inputFields.email)) {
+          toast.error("Email is not valid");
+          return;
+        }
+        break;
+
+      case "phone":
+        if (!validatePhone(inputFields.phone)) {
+          toast.error("Phone number is not valid");
+          return;
+        }
+        break;
+
+      default:
+        break;
+    }
+
+    setIsloading(true);
+
+    let payload = {};
+
+    payload[`${details}`] = inputFields[`${details}`];
+
+    //Ajax Request to update user
+    axios
+      .put(`${API_BASE_URL}/user/${user.user_id}`, payload)
+      .then((response) => {
+        toast.success("Settings Saved");
+
+        //update user details in localstorage and redux state
+        let temp = JSON.parse(localStorage.getItem("user"));
+        temp.user_info = response.data;
+        localStorage.setItem("user", JSON.stringify(temp));
+        dispatch({ type: "login_Successfully", payload: response.data });
+      })
+      .catch((error) => {
+        if (error.response.data) {
+          toast.error(error.response.data.message);
+        }
+      })
+      .finally(() => {
+        setIsloading(false);
+      });
   };
+
   const closeConnectedModal = () => {
     setConnectedModal(false);
   };
-  const Authentication = (isEnable) => {
-    if (isEnable) {
-      toast.success("2FA Enabled");
-      window.dataLayer.push({
-        event: "event",
-        eventProps: {
-          category: "Settings",
-          action: "2FA Enabled",
-          label: "Settings",
-          value: "Settings",
-        },
-      });
-    } else {
-      toast.success("2FA Disabled");
-    }
-  };
+
   const openConnectedModal = () => {
     setConnectedModal(true);
   };
@@ -68,12 +133,18 @@ const Settings = () => {
     navigate("/");
   };
 
+  const HandleInputChange = (field) => (e) => {
+    console.log(field, e);
+    setinputFields({ ...inputFields, [field]: e.target.value });
+  };
+
   // HandleFocus for input
   const HandleFocus = (ClickedInput) => {
     setinfo(ClickedInput);
   };
   return (
     <>
+      {isLoading && <AppLoader />}
       <SettingsHeader />
 
       <div className={styles.settings__wrapper}>
@@ -107,7 +178,7 @@ const Settings = () => {
                     <div style={{ width: "100%" }}>
                       <div
                         className={styles.settings__acc__content}
-                        onClick={() => openChangeInfo("Name")}
+                        onClick={() => openChangeInfo("full_name")}
                       >
                         <div className={styles.personal__settings}>
                           <p>Name</p>
@@ -120,7 +191,7 @@ const Settings = () => {
                       </div>
                       <div
                         className={styles.settings__acc__content}
-                        onClick={() => openChangeInfo("Email")}
+                        onClick={() => openChangeInfo("email")}
                       >
                         <div className={styles.personal__settings}>
                           <p>Email Address</p>
@@ -133,7 +204,7 @@ const Settings = () => {
 
                       <div
                         className={styles.settings__acc__content}
-                        onClick={() => openChangeInfo("Number")}
+                        onClick={() => openChangeInfo("phone")}
                       >
                         <div className={styles.personal__settings}>
                           <p>Phone number</p>
@@ -160,25 +231,6 @@ const Settings = () => {
                 </div>
               </Col>
               {/* Acc#03 */}
-
-              {/* Hidden until 2FA actually works
-                                  <Col md={{ span: 8, offset: 2 }}>
-                                    <div
-                                      className={styles.settings__acc__inner}
-                                      onClick={() => Authentication(true)}
-                                    >
-                                      <h5>Security</h5>
-                                      <div className={styles.settings__acc}>
-                                        <div className={styles.settings__name__info}>
-                                          <h6>Add 2FA authentication</h6>
-                                        </div>
-                                        <button>
-                                          <IoIosArrowForward />
-                                        </button>
-                                      </div>
-                                    </div>
-                                  </Col>
-                                */}
             </Row>
           </div>
         </Container>
@@ -253,24 +305,28 @@ const Settings = () => {
           </Modal.Header>
           <Modal.Body>
             <div className={styles.input__body__wrapper}>
-              {details !== "Number" ? (
+              {details !== "phone" ? (
                 <TextFieldComponent
                   variant="outlined"
                   placeholder={`${
-                    details === "Name"
+                    details === "full_name"
                       ? "Name"
-                      : details === "Email"
+                      : details === "email"
                       ? "Email"
                       : ""
                   }`}
-                  type="text"
-                  HandleFocus={() => HandleFocus("name")}
+                  type={"email"}
+                  InputValue={inputFields[`${details}`]}
+                  HandleInputChange={HandleInputChange(details)}
+                  onFocus={() => HandleFocus("name")}
                 />
               ) : (
                 <>
                   <CustomPhoneInput
+                    value={inputFields.phone}
                     onFocus={() => HandleFocus("name")}
                     placeholder={"Phone Number"}
+                    onChange={HandleInputChange("phone")}
                   />
                 </>
               )}

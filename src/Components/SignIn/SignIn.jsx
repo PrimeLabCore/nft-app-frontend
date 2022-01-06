@@ -4,7 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import React, { useState } from "react";
 import { BsArrowLeftRight } from "react-icons/bs";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import TextFieldComponent from "../../Assets/FrequentlUsedComponents/TextFieldComponent";
@@ -28,11 +28,8 @@ const useStyles = makeStyles((theme) => ({
 
 const SignIn = () => {
   let navigate = useNavigate();
-  const classes = useStyles();
-  const [email, setemail] = useState("");
   const [accountId, setAccountId] = useState("");
   const dispatch = useDispatch();
-  const { redirectUrl } = useSelector((state) => state.authReducer);
   const [isLoading, setIsloading] = useState(false);
 
   const doesAccountStringHaveValidCharacters = (accountString) => {
@@ -68,6 +65,7 @@ const SignIn = () => {
           : accountId + ".near",
       })
       .then((response) => {
+        dispatch({ type: "set_otp_medium", payload: response.data.type });
         navigate("/signin/verification/" + accountId);
       })
       .catch((error) => {

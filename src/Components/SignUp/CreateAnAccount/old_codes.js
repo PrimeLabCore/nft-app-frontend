@@ -78,3 +78,19 @@ const createAccount = () => {
 //   console.log("Error", e);
 //   // toast.error("Already Taken");
 // }
+
+{
+  /* <button onClick={createAccount} className={styles.createAccountButton}>
+          <a
+            href={`https://accounts.google.com/o/oauth2/auth?response_type=code&redirect_uri=${googleRedirectUrl}&scope=https://www.googleapis.com/auth/contacts&client_id=${googleClientId}&access_type=offline&prompt=consent`}
+            className={`${styles.secondary_button}`}
+          >
+            Create an account
+            {
+              <span>
+                <IoIosArrowForward />
+              </span>
+            }
+          </a>
+        </button> */
+}
