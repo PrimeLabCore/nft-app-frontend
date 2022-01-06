@@ -119,6 +119,7 @@ const MyNft = ({ isLink }) => {
         className={`${styles.mynft__wrapper} ${
           !isLink ? styles.mynft__page__wrapper : ""
         }`}
+
       >
         <div className={styles.mynft__header}>
           <h5>My NFTs</h5>
@@ -150,6 +151,9 @@ const MyNft = ({ isLink }) => {
                 draggable={true}
               >
                 {alldata.map((data, i) => {
+                  const urlArray = data?.image?.split('.');
+                  const fileType=urlArray.length?urlArray[urlArray.length-1]:"";
+                  console.log(fileType,urlArray,data)
                   return (
                     <Fragment key={nanoid()}>
                       <div
@@ -159,7 +163,24 @@ const MyNft = ({ isLink }) => {
                       >
                         <div className={styles.mynft__box__image__wrapper}>
                           <div className={styles.mynft__box__image}>
-                            <img src={data.image} alt={data.title} />
+                            {fileType.toLowerCase() ==="mp4"?
+                                <video
+                                    style={{ width: '100%',borderRadius:"8px" }}
+                                    src={data?.image}
+                                />
+                                : fileType.toLowerCase() ==="mp3" ?
+                                    (
+                                        <audio style={{marginTop:"60px",marginLeft:"5px"}} controls>
+                                          <source src={data?.image} />
+                                        </audio>
+                                    ) :
+                                    (
+                                        <img
+                                            src={data?.image}
+                                            alt={data.name}
+                                        />
+                                    )}
+                            {/*<img src={data.image} alt={data.title} />*/}
                           </div>
                           <div className={styles.mynft__box__cat}>
                             <h6>{data?.category}</h6>
@@ -181,6 +202,9 @@ const MyNft = ({ isLink }) => {
             <>
               <Row>
                 {alldata.map((data, i) => {
+                  const urlArray = data?.image?.split('.');
+                  const fileType=urlArray.length?urlArray[urlArray.length-1]:"";
+                  console.log(fileType,urlArray,data)
                   return (
                     <Fragment key={nanoid()}>
                       <Col
@@ -197,7 +221,25 @@ const MyNft = ({ isLink }) => {
                         >
                           <div className={styles.mynft__box__image__wrapper}>
                             <div className={styles.mynft__box__image}>
-                              <img src={data.image} alt={data.title} />
+                              {fileType.toLowerCase() ==="mp4"?
+                                  <video
+                                      style={{ width: '100%',borderRadius:"8px" }}
+                                      src={data?.image}
+                                  />
+                                  : fileType.toLowerCase() ==="mp3" ?
+                                      (
+                                          <div style={{width:"100%",padding:"0 2px"}}>
+                                            <audio style={{width:"inherit",marginTop:"60px"}} controls>
+                                              <source src={data?.image} />
+                                            </audio>
+                                          </div>
+                                      ) :
+                                      (
+                                          <img
+                                              src={data?.image}
+                                              alt={data.name}
+                                          />
+                                      )}
                             </div>
                             <div className={styles.mynft__box__cat}>
                               <h6>{data?.category}</h6>
