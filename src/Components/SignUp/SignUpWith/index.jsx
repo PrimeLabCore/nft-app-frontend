@@ -117,7 +117,6 @@ const SignUpWith = () => {
     }
 
     const response = await axios.post(`${API_BASE_URL}/signup`, fd);
-    console.log(`response`, response);
     const { status } = response;
 
     if (status === 200 || status === 201) {
@@ -185,9 +184,9 @@ const SignUpWith = () => {
   const handleLogin = async (email) => {
     const fd = new FormData();
     if (!email) {
-      fd.append("user[email]", inputFields.email);
+      fd.append("user[email]", loginFields.username);
     } else {
-      fd.append("user[phone]", inputFields.phone);
+      fd.append("user[phone]", loginFields.username);
     }
 
     const response = await axios.post(`${API_BASE_URL}/login`, fd);
@@ -205,6 +204,7 @@ const SignUpWith = () => {
 
         return config;
       });
+      console.log("data", redirectUrl);
       dispatch({
         type: "login_Successfully",
         payload: { ...data, token: authorization },
@@ -213,9 +213,9 @@ const SignUpWith = () => {
       //   "user",
       //   JSON.stringify({ ...data, token: authorization })
       // );
-      navigate(redirectUrl ? redirectUrl : "/");
+      // navigate(redirectUrl ? redirectUrl : "/");
     } else {
-      navigate("verification");
+      // navigate("verification");
     }
   };
 
@@ -438,7 +438,7 @@ const SignUpWith = () => {
         <button
           disabled={loginFields.username.length > 2 ? false : true}
           className={styles.button}
-          onClick={handleLogin(loginFields.username)}
+          onClick={() => handleLogin(loginFields.username)}
         >
           Login
           {
