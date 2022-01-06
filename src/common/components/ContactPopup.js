@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import PhoneInput from "react-phone-input-2";
-import 'react-phone-input-2/lib/style.css'
+import "react-phone-input-2/lib/style.css";
 import SearchIcon from "@material-ui/icons/Search";
 import { Modal } from "react-bootstrap";
 import { nanoid } from "nanoid";
@@ -22,79 +22,85 @@ const findIfChecked = (email, array) => {
   else return false;
 };
 
-const ContactPopup = ({show, onClose, onBack, title, btnText, handleBtnClick, data}) => {
+const ContactPopup = ({
+  show,
+  onClose,
+  onBack,
+  title,
+  btnText,
+  handleBtnClick,
+  data,
+}) => {
+  let navigate = useNavigate();
+  const dispatch = useDispatch();
 
-    let navigate = useNavigate();
-    const dispatch = useDispatch();
+  const giftNFT__contactData = useSelector(
+    (state) => state.giftNFT__contactData
+  );
+  // debugger;
 
-    const giftNFT__contactData = useSelector(
-        (state) => state.giftNFT__contactData
-      );
-      debugger;
-    
-      const [filteredData, setFilteredData] = useState(
-        data?data:giftNFT__contactData ? giftNFT__contactData : []
-      );
+  const [filteredData, setFilteredData] = useState(
+    data ? data : giftNFT__contactData ? giftNFT__contactData : []
+  );
 
-      const [checkedState, setCheckedState] = useState(
-        checkAllContacts(data?data:giftNFT__contactData || [])
-      );
+  const [checkedState, setCheckedState] = useState(
+    checkAllContacts(data ? data : giftNFT__contactData || [])
+  );
 
-      const [importContactDialog, setimportContactDialog] = useState(false);
+  const [importContactDialog, setimportContactDialog] = useState(false);
 
-      const [sendGiftEmail, setSendGiftEmail] = useState("");
+  const [sendGiftEmail, setSendGiftEmail] = useState("");
 
-      const HandleClick = (email) => {
-        const updatedCheckedState = checkedState.map((item) =>
-          item.email === email
-            ? { ...item, checked: !item.checked }
-            : { ...item, checked: item.checked }
-        );
-        setCheckedState(updatedCheckedState);
-      };
+  const HandleClick = (email) => {
+    const updatedCheckedState = checkedState.map((item) =>
+      item.email === email
+        ? { ...item, checked: !item.checked }
+        : { ...item, checked: item.checked }
+    );
+    setCheckedState(updatedCheckedState);
+  };
 
-      const importContact = (data) => {
-        if (data) {
-          dispatch({
-            type: "getGoogleContactData",
-            payload: data,
-          });
-          setCheckedState(checkAllContacts(data));
-          setimportContactDialog(false);
-          setFilteredData(data);
-        }
-      };
-    
-      const contactImportCallback = (error, source) => {
-        setimportContactDialog(false);
-    
-        if (error) {
-          if (source === "backdropClick") {
-            toast.error(`Please select a contact provider to import contacts`);
-            return;
-          }
-          toast.error(`Something Went Wrong Fetching Contacts From ${source}`);
-          return;
-        } else {
-          toast.success(`Your Contacts Were Successfully Imported From ${source}`);
-          return;
-        }
-      };
+  const importContact = (data) => {
+    if (data) {
+      dispatch({
+        type: "getGoogleContactData",
+        payload: data,
+      });
+      setCheckedState(checkAllContacts(data));
+      setimportContactDialog(false);
+      setFilteredData(data);
+    }
+  };
 
-      const handleSearch = (event) => {
-        let value = event.target.value.toLowerCase();
-        let result = [];
-        result = giftNFT__contactData.filter((data) => {
-          return data.primary_email.toLowerCase().search(value) !== -1;
-        });
-        setFilteredData(result);
-        setSendGiftEmail(event.target.value.toLowerCase());
-      };
+  const contactImportCallback = (error, source) => {
+    setimportContactDialog(false);
 
+    if (error) {
+      if (source === "backdropClick") {
+        toast.error(`Please select a contact provider to import contacts`);
+        return;
+      }
+      toast.error(`Something Went Wrong Fetching Contacts From ${source}`);
+      return;
+    } else {
+      toast.success(`Your Contacts Were Successfully Imported From ${source}`);
+      return;
+    }
+  };
 
-    return (
-        <>
-            <Modal
+  const handleSearch = (event) => {
+    let value = event.target.value.toLowerCase();
+    let result = [];
+    result = giftNFT__contactData.filter((data) => {
+      return data.primary_email.toLowerCase().search(value) !== -1;
+    });
+    setFilteredData(result);
+    setSendGiftEmail(event.target.value.toLowerCase());
+  };
+
+  return (
+    <>
+      <Modal
         className={`${styles.initial__nft__modal} send__nft__mobile__modal initial__modal`}
         show={show}
         onHide={onClose}
@@ -132,9 +138,13 @@ const ContactPopup = ({show, onClose, onBack, title, btnText, handleBtnClick, da
                   />
                 </div>
               </div>
-              <button onClick={()=>{
+              <button
+                onClick={() => {
                   setimportContactDialog(true);
-              }}>Import</button>
+                }}
+              >
+                Import
+              </button>
             </div>
             <div className={styles.data__wrapper}>
               {filteredData.map((value, index) => (
@@ -177,16 +187,12 @@ const ContactPopup = ({show, onClose, onBack, title, btnText, handleBtnClick, da
         </Modal.Body>
       </Modal>
 
-
-
       <ImportContactsDialog
         onImport={importContact}
         status={importContactDialog}
         callback={contactImportCallback}
       />
-
-
-        </>
-    );
+    </>
+  );
 };
 export default ContactPopup;
