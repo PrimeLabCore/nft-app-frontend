@@ -7,11 +7,11 @@ const CssTextField = withStyles({
     "& .MuiOutlinedInput-root": {
       "&.Mui-focused fieldset": {
         borderColor: "#2F80ED",
-        marginTop: "3px",
+        marginTop: "5px",
       },
       "& fieldset": {
         borderColor: "#BDBDBD",
-        marginTop: "3px",
+        marginTop: "5px",
       },
       "&:hover fieldset": {
         borderColor: "#2F80ED",
