@@ -12,7 +12,7 @@ import HomeHeader from "./HomeHeader";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import ImportContactsDialog from "../../ImportContactsDialog/ImportContactsDialog";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import ContactPopup from "../../../common/components/ContactPopup";
 
 const Home = () => {
@@ -22,8 +22,8 @@ const Home = () => {
   const [allContacts, setAllContacts] = useState([]);
 
   useEffect(() => {
+    //HandleDialogOpen();
     if (localStorage.getItem("welcome") === "true") {
-      localStorage.removeItem("welcome");
       HandleDialogOpen();
     }
   }, []);
@@ -39,7 +39,7 @@ const Home = () => {
 
   const importContact = (data) => {
     if (data) {
-      setAllContacts(data)
+      setAllContacts(data);
       dispatch({
         type: "getGoogleContactData",
         payload: data,
@@ -54,17 +54,19 @@ const Home = () => {
       dispatch({ type: "createnft__open" });
       return;
     } else {
-      toast.success(`Your Contacts Were Successfully noui Imported From ${source}`);
+      toast.success(
+        `Your Contacts Were Successfully noui Imported From ${source}`
+      );
       HandleDialogClose();
       setShowContactListPopup(true);
       return;
     }
   };
 
-  const openCreateNFTPopup = ()=>{
+  const openCreateNFTPopup = () => {
     setShowContactListPopup(false);
     dispatch({ type: "createnft__open" });
-  }
+  };
 
   return (
     <>
@@ -73,27 +75,26 @@ const Home = () => {
           {/* Home Header  */}
           <HomeHeader />
 
-
-  <ImportContactsDialog
+          <ImportContactsDialog
             onImport={importContact}
             status={importContactDialog}
             callback={contactImportCallback}
           />
 
-  <ContactPopup
+          <ContactPopup
             data={allContacts}
             displayImportContact={false}
             show={showContactListPopup}
-            onClose={()=>{
-              openCreateNFTPopup()
+            onClose={() => {
+              openCreateNFTPopup();
             }}
-            onBack={()=>{
-              openCreateNFTPopup()
+            onBack={() => {
+              openCreateNFTPopup();
             }}
             title={"Gift an NFT"}
             btnText={"Send Gift"}
-            handleBtnClick={()=>{
-              openCreateNFTPopup()
+            handleBtnClick={() => {
+              openCreateNFTPopup();
             }}
           />
 
