@@ -15,3 +15,12 @@
 // } else {
 //   setOpenGift(true);
 // }
+
+// const find_index_of_clicked_item = (data.findIndex(value => Number(value.id) === Number(id)))
+// data[find_index_of_clicked_item] = { ...data[find_index_of_clicked_item], checked: !data[find_index_of_clicked_item].checked }
+// setdata([...data])
+
+//Defined in reducer function
+//const home__allnft = useSelector((state) => state.home__allnft); //Defined in reducer function
+
+// let updatedNFT = useSelector((state) => state.home__allnft); //Defined in reducer function

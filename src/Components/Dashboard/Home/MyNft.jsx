@@ -7,6 +7,7 @@ import PropTypes from "prop-types";
 import { AiOutlinePlus } from "react-icons/ai";
 import { Row, Col } from "react-bootstrap";
 import Carousel from "react-multi-carousel";
+import { toast } from "react-toastify";
 
 import { useDispatch } from "react-redux";
 import axios from "axios";
@@ -34,21 +35,18 @@ const responsive = {
 };
 
 const MyNft = ({ isLink }) => {
-  const [alldata, setAlldata] = useState([]);
   let navigate = useNavigate();
   let dispatch = useDispatch(); //Direct assigning right now
   const [windowstate, setWindow] = useState(window.innerWidth < 767);
-  const allNft = useSelector((state) => state.home__allnft);
+  const nfts = useSelector((state) => state.home__allnft);
   const { user } = useSelector((state) => state.authReducer);
+  const [alldata, setAlldata] = useState([]);
+
+  const [isLoading, setIsloading] = useState(false);
 
   const getAllImages = async () => {
     const response = await axios.get(`/nfts/?user_id=${user.user_id}`);
     const { success, data } = response.data;
-
-    // open the create NFT by default if no nft images found
-    // if(response.data.data.length === 0) {
-    //   dispatch({ type: "createnft__open" });
-    // }
 
     if (success) {
       setAlldata(data);
@@ -65,52 +63,45 @@ const MyNft = ({ isLink }) => {
       },
       false
     );
-    getAllImages();
+    //getAllImages();
   }, [windowstate]);
 
-  //   let mynft = [
-  //     {
-  //       image: image1,
-  //       cat: "Digital Art",
-  //       title: "Vecotry Illustration ",
-  //       selected: false,
-  //       id: "#17372",
-  //       nftid: nanoid(),
-  //       description:
-  //         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-  //     },
-  //     {
-  //       image: image2,
-  //       cat: "Digital Art",
-  //       title: "Nature Illustration ",
-  //       selected: false,
-  //       id: "#3783",
-  //       nftid: nanoid(),
-  //       description:
-  //         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-  //     },
-  //   ];
-
   useEffect(() => {
-    // mynft = [];
-    // dispatch({ type: "getNft", payload: mynft });
-    setAlldata(allNft);
-  }, [allNft]);
+    //setAlldata(nfts);
+    console.log(nfts);
+  }, [nfts]);
+
+  //fetch all the nfts of the user
+  useEffect(() => {
+    setIsloading(true);
+
+    //Ajax Request to create user
+    axios
+      .get(`${API_BASE_URL}/nfts?user_id=${user.user_id}`)
+      .then((response) => {
+        //save user details
+        let tempNfts = response.data.data;
+        dispatch({ type: "update_nfts", payload: tempNfts });
+      })
+      .catch((error) => {
+        if (error.response.data) {
+          toast.error(error.response.data.message);
+        }
+      })
+      .finally(() => {
+        setIsloading(false);
+      });
+  }, []);
 
   const handleChange = () => {
     dispatch({ type: "createnft__open" });
   };
-  //   const detailPage = (id, index) => {
-  //     // dispatch({ type: "nft__detail", payload: mynft[index] });
-  //     navigate(`/nft/${id}`);
-  //   };
 
   const detailPage = (data, index) => {
     dispatch({ type: "nft__detail", payload: data });
     navigate(`/nft/${data.uuid}`);
   };
 
-  // const nft__data = useSelector((state)=> state.home__allnft) //Defined in reducer function
   return (
     <>
       <div

@@ -5,11 +5,11 @@ import { IoIosArrowForward } from "react-icons/io";
 
 import create_nft_left from "../../../Assets/Images/create-nft-left.png";
 import create_nft_right from "../../../Assets/Images/create-nft-right.png";
+import { useDispatch, useSelector } from "react-redux";
 
 import MyNFT from "./MyNft";
 import Transactions from "./RecentTransactions";
 import HomeHeader from "./HomeHeader";
-import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import ImportContactsDialog from "../../ImportContactsDialog/ImportContactsDialog";
 import { useNavigate } from "react-router-dom";
@@ -26,6 +26,7 @@ const Home = () => {
       HandleDialogOpen();
     }
   }, []);
+
   let navigate = useNavigate();
 
   const HandleDialogOpen = () => {
