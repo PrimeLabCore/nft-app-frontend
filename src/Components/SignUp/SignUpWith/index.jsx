@@ -348,6 +348,7 @@ const SignUpWith = () => {
           <CustomPhoneInput
             variant="outlined"
             placeholder="Ex. (373) 378 8383"
+            containerStyle={{margin: "10px 0px",}}
             type={"tel"}
             value={inputFields.phone}
             onChange={HandleInputChange("phone")}
