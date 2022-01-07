@@ -22,7 +22,7 @@ const Verification = () => {
   const [details, setDetails] = useState({
     verification: [],
   });
-  const { redirectUrl } = useSelector((state) => state.authReducer);
+  const { redirectUrl, otp_medium } = useSelector((state) => state.authReducer);
   const { accountId } = useParams();
 
   let navigate = useNavigate();
@@ -124,7 +124,7 @@ const Verification = () => {
       </div>
 
       <div className={styles.childContainer}>
-        <p>We've sent a 6-digit Authentication code.</p>
+        <p>We've sent a 6-digit Authentication code on your{otp_medium}.</p>
 
         <div className={styles.verficationContainer}>
           <p className={styles.enterCode}>Enter Verification Code</p>

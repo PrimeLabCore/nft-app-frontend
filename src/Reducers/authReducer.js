@@ -5,6 +5,7 @@ let initialvalue = {
   nft: null,
   redirectUrl: null,
   contacts: [],
+  otp_medium: "",
 };
 
 const authReducer = (state = initialvalue, action) => {
@@ -40,6 +41,12 @@ const authReducer = (state = initialvalue, action) => {
       return {
         ...state,
         contacts: action.payload,
+      };
+
+    case "set_otp_medium":
+      return {
+        ...state,
+        otp_medium: action.payload,
       };
 
     default:

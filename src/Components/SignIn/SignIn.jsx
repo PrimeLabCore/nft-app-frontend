@@ -68,6 +68,7 @@ const SignIn = () => {
           : accountId + ".near",
       })
       .then((response) => {
+        dispatch({ type: "set_otp_medium", payload: response.data.type });
         navigate("/signin/verification/" + accountId);
       })
       .catch((error) => {
