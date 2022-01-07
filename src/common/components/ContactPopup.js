@@ -49,7 +49,6 @@ const ContactPopup = ({
       .get(`${API_BASE_URL}/contacts/list/${user.user_id}`)
       .then((response) => {
         //save user details
-        console.log(response.data);
         let tempContacts = response.data.data;
         dispatch({ type: "update_contacts", payload: tempContacts });
       })
