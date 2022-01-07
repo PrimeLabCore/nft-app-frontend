@@ -167,7 +167,7 @@ const ImportContactsDialog = ({ status, callback, onImport }) => {
           data-cloudsponge-source="gmail"
         >
           <FcGoogle className={classes.googleicon} />
-          <p> Connect Gooogle Contacts</p>
+          <p> Sign in with Google</p>
         </button>
 
         <button
