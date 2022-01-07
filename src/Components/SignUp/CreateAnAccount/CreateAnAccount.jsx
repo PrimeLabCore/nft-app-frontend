@@ -74,7 +74,7 @@ const CreateAnAccount = () => {
   // HandleLogin
   const HandleLogin = () => {
     //window.open(`${API_BASE_URL}/near_login/login.html`, "_self");
-    // navigate("/signin");
+    navigate("/signin");
   };
 
   // HandleFocus for input

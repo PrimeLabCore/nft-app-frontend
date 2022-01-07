@@ -1,23 +1,16 @@
-import React, { Fragment, useEffect, useState } from "react";
-import { nanoid } from "nanoid";
-import styles from "./sendNft.module.css";
-import { useNavigate } from "react-router-dom";
-import { Modal } from "react-bootstrap";
-import Carousel from "react-multi-carousel";
-import { IoIosArrowForward } from "react-icons/io";
-import GiftAnNft from "../../GiftAnNftDialog/GiftAnNft";
-import { useSelector, useDispatch } from "react-redux";
-import dummy__img from "../../../Assets/Images/dummy-card1.png";
-import { AiOutlineCheck } from "react-icons/ai";
-import SearchIcon from "@material-ui/icons/Search";
-import { BsCheckCircleFill } from "react-icons/bs";
-import { GoPrimitiveDot } from "react-icons/go";
-import ImportContactsDialog from "../../ImportContactsDialog/ImportContactsDialog";
 import axios from "axios";
-import Cookies from "js-cookie";
-import { API_BASE_URL, googleAccess } from "../../../Utils/config";
+import { nanoid } from "nanoid";
+import React, { Fragment, useEffect, useState } from "react";
+import { Modal } from "react-bootstrap";
+import { AiOutlineCheck } from "react-icons/ai";
+import { IoIosArrowForward } from "react-icons/io";
+import Carousel from "react-multi-carousel";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import ContactPopup from "../../../common/components/ContactPopup";
+import ImportContactsDialog from "../../ImportContactsDialog/ImportContactsDialog";
+import styles from "./sendNft.module.css";
 const responsive = {
   superLargeDesktop: {
     // the naming can be any, depends on you.
@@ -37,6 +30,7 @@ const responsive = {
     items: 1.5,
   },
 };
+
 const checkAllContacts = (data) =>
   data.map((item) => ({ checked: true, email: item.primary_email }));
 
@@ -55,7 +49,6 @@ const SendNft = () => {
     (state) => state.giftNFT__contactData
   );
 
-  // const [data, setdata] = useState(dummyContacts)
   const [filteredData, setFilteredData] = useState(
     giftNFT__contactData ? giftNFT__contactData : []
   );
@@ -64,14 +57,11 @@ const SendNft = () => {
   const [openGift, setOpenGift] = useState(false);
   const [selected, setSelected] = useState(nft ? nft : "");
   const [sendGiftEmail, setSendGiftEmail] = useState("");
-  // const [selected,setSelected] = useState({
-  //     value:false,
-  //     id:""
-  // })
-  // const [data,setdata] = useState(useSelector((state) => state.home__allnft))
+
   const sendnft__popup = useSelector((state) => state.sendnft__popup); //Defined in reducer function
   const home__allnft = useSelector((state) => state.home__allnft); //Defined in reducer function
   // let updatedNFT = useSelector((state) => state.home__allnft); //Defined in reducer function
+
   const closeSendNft = () => {
     dispatch({ type: "sendnft__close" });
     setOpenPreview(false);
@@ -79,6 +69,7 @@ const SendNft = () => {
   const [checkedState, setCheckedState] = useState(
     checkAllContacts(giftNFT__contactData || [])
   );
+
   // for checked and unchecked items
   const HandleClick = (email) => {
     // const find_index_of_clicked_item = (data.findIndex(value => Number(value.id) === Number(id)))
@@ -91,6 +82,7 @@ const SendNft = () => {
     );
     setCheckedState(updatedCheckedState);
   };
+
   const closegiftNft = () => {
     setOpenGift(false);
   };
@@ -109,11 +101,7 @@ const SendNft = () => {
 
   const handleNftGift = () => {
     dispatch({ type: "sendnft__close" });
-    // if (filteredData.length === 0) {
-    //   setimportContactDialog(true);
-    // } else {
-    //   setOpenGift(true);
-    // }
+
     setOpenPreview(false);
     setOpenGift(true);
   };
@@ -206,6 +194,7 @@ const SendNft = () => {
   const HandleDialogOpen = () => {
     setimportContactDialog(true);
   };
+
   const urlArray = selected?.image?.split(".");
   const fileType = urlArray?.length ? urlArray[urlArray.length - 1] : "";
   return (
@@ -355,18 +344,13 @@ const SendNft = () => {
       <ContactPopup
         data={filteredData}
         displayImportContact={false}
-        show={openGift}
+        //show={openGift}
+        show={true}
         onClose={closegiftNft}
         onBack={openInitialSendNft}
-        displayImportContact={false}
         title={"Send NFT"}
-        // handleSearch={handleSearch}
-        // HandleDialogOpen={HandleDialogOpen}
         btnText={"Send Gift"}
         handleBtnClick={handleNftPreview}
-        // findIfChecked={findIfChecked}
-        // HandleClick={HandleClick}
-        // checkedState={checkedState}
       />
 
       {/* NFT Preview Modal */}

@@ -4,6 +4,7 @@ let initialvalue = {
   signupPhone: "",
   nft: null,
   redirectUrl: null,
+  contacts: [],
 };
 
 const authReducer = (state = initialvalue, action) => {
@@ -33,6 +34,12 @@ const authReducer = (state = initialvalue, action) => {
       return {
         ...state,
         redirectUrl: action.payload,
+      };
+
+    case "update_contacts":
+      return {
+        ...state,
+        contacts: action.payload,
       };
 
     default:

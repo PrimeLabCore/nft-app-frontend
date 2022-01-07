@@ -1,17 +1,18 @@
-import React, { useState, useEffect } from "react";
-import PhoneInput from "react-phone-input-2";
-import "react-phone-input-2/lib/style.css";
 import SearchIcon from "@material-ui/icons/Search";
-import { Modal } from "react-bootstrap";
 import { nanoid } from "nanoid";
+import React, { useEffect, useState } from "react";
+import { Modal } from "react-bootstrap";
 import { BsCheckCircleFill } from "react-icons/bs";
 import { GoPrimitiveDot } from "react-icons/go";
 import { IoIosArrowForward } from "react-icons/io";
-import styles from "../../Components/Dashboard/SendNFT/sendNft.module.css";
-import { useNavigate } from "react-router";
+import "react-phone-input-2/lib/style.css";
 import { useDispatch, useSelector } from "react-redux";
-import ImportContactsDialog from "../../Components/ImportContactsDialog/ImportContactsDialog";
+import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
+import styles from "../../Components/Dashboard/SendNFT/sendNft.module.css";
+import ImportContactsDialog from "../../Components/ImportContactsDialog/ImportContactsDialog";
+import axios from "axios";
+import { API_BASE_URL } from "../../Utils/config";
 
 const checkAllContacts = (data) =>
   data.map((item) => ({ checked: true, email: item.primary_email }));
@@ -38,6 +39,31 @@ const ContactPopup = ({
   const giftNFT__contactData = useSelector(
     (state) => state.giftNFT__contactData
   );
+  const { user } = useSelector((state) => state.authReducer);
+
+  const [isLoading, setIsloading] = useState(false);
+
+  //get contacts
+  useEffect(() => {
+    setIsloading(true);
+
+    //Ajax Request to create user
+    axios
+      .get(`${API_BASE_URL}/contacts/list/${user.user_id}`)
+      .then((response) => {
+        //save user details
+        console.log(response.data);
+        dispatch({ type: "login_Successfully", payload: user.user_info });
+      })
+      .catch((error) => {
+        if (error.response.data) {
+          toast.error(error.response.data.message);
+        }
+      })
+      .finally(() => {
+        setIsloading(false);
+      });
+  }, []);
 
   const [filteredData, setFilteredData] = useState(
     data ? data : giftNFT__contactData ? giftNFT__contactData : []
