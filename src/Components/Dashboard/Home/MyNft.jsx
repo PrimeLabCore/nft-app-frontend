@@ -42,15 +42,13 @@ const MyNft = ({ isLink }) => {
   const { user } = useSelector((state) => state.authReducer);
 
   const getAllImages = async () => {
-    const response = await axios.get(`/nfts/?user_id=${user.user_id}`);
-    const { success, data } = response.data;
+    const response = await axios.get(
+      `${API_BASE_URL}/nfts?user_id=${user.user_id}`
+    );
 
-    // open the create NFT by default if no nft images found
-    // if(response.data.data.length === 0) {
-    //   dispatch({ type: "createnft__open" });
-    // }
+    const data = response.data?.data;
 
-    if (success) {
+    if (data) {
       setAlldata(data);
       dispatch({ type: "getNft", payload: data });
     }
@@ -94,7 +92,7 @@ const MyNft = ({ isLink }) => {
   useEffect(() => {
     // mynft = [];
     // dispatch({ type: "getNft", payload: mynft });
-    setAlldata(allNft);
+    // setAlldata(allNft);
   }, [allNft]);
 
   const handleChange = () => {
@@ -148,7 +146,7 @@ const MyNft = ({ isLink }) => {
                 draggable={true}
               >
                 {alldata.map((data, i) => {
-                  const urlArray = data?.image?.split(".");
+                  const urlArray = data?.file_url?.split(".");
                   const fileType = urlArray.length
                     ? urlArray[urlArray.length - 1]
                     : "";
@@ -164,7 +162,7 @@ const MyNft = ({ isLink }) => {
                             {fileType.toLowerCase() === "mp4" ? (
                               <video
                                 style={{ width: "100%", borderRadius: "8px" }}
-                                src={data?.image}
+                                src={data?.file_url}
                               />
                             ) : fileType.toLowerCase() === "mp3" ? (
                               <div style={{ width: "100%", padding: "0 2px" }}>
@@ -175,11 +173,11 @@ const MyNft = ({ isLink }) => {
                                   }}
                                   controls
                                 >
-                                  <source src={data?.image} />
+                                  <source src={data?.file_url} />
                                 </audio>
                               </div>
                             ) : (
-                              <img src={data?.image} alt={data.name} />
+                              <img src={data?.file_url} alt={data.title} />
                             )}
                           </div>
                           <div className={styles.mynft__box__cat}>
@@ -189,7 +187,7 @@ const MyNft = ({ isLink }) => {
                         <div
                           className={styles.mynft__box__description__wrapper}
                         >
-                          <h2>{data?.name}</h2>
+                          <h2>{data?.title}</h2>
                           <p>{data?.nft_id}</p>
                         </div>
                       </div>
@@ -202,7 +200,7 @@ const MyNft = ({ isLink }) => {
             <>
               <Row>
                 {alldata.map((data, i) => {
-                  const urlArray = data?.image?.split(".");
+                  const urlArray = data?.file_url?.split(".");
                   const fileType = urlArray.length
                     ? urlArray[urlArray.length - 1]
                     : "";
@@ -225,7 +223,7 @@ const MyNft = ({ isLink }) => {
                               {fileType.toLowerCase() === "mp4" ? (
                                 <video
                                   style={{ width: "100%", borderRadius: "8px" }}
-                                  src={data?.image}
+                                  src={data?.file_url}
                                 />
                               ) : fileType.toLowerCase() === "mp3" ? (
                                 <div
@@ -242,11 +240,11 @@ const MyNft = ({ isLink }) => {
                                     }}
                                     controls
                                   >
-                                    <source src={data?.image} />
+                                    <source src={data?.file_url} />
                                   </audio>
                                 </div>
                               ) : (
-                                <img src={data?.image} alt={data.name} />
+                                <img src={data?.file_url} alt={data.title} />
                               )}
                             </div>
                             <div className={styles.mynft__box__cat}>
@@ -256,7 +254,7 @@ const MyNft = ({ isLink }) => {
                           <div
                             className={styles.mynft__box__description__wrapper}
                           >
-                            <h2>{data?.name}</h2>
+                            <h2>{data?.title}</h2>
                             <p>{data?.nft_id}</p>
                           </div>
                         </div>

@@ -16,6 +16,7 @@ const TransactionHistory = () => {
   const [transactions, setTransactions] = useState([]);
   const { allTransactions } = useSelector((state) => state.transactionsReducer);
   let navigate = useNavigate();
+  const { user } = useSelector((state) => state.authReducer);
 
   useEffect(() => {
     window.addEventListener(
@@ -30,73 +31,27 @@ const TransactionHistory = () => {
 
   useEffect(() => {
     async function fetchTransactions() {
-      let sendersResponse = await axios.get(
-        `${API_BASE_URL}/api/v1/nft_histories/sender_list`
-      );
-      let receiverResponse = await axios.get(
-        `${API_BASE_URL}/api/v1/nft_histories/receiver_list`
+      let response = await axios.get(
+        `${API_BASE_URL}/transactions/list/${user.user_id}`
       );
 
-      let receives = receiverResponse?.data?.data?.map(
-        (el) => (el = { ...el, transaction: "received" })
-      );
-      let sent = sendersResponse.data?.data?.map(
-        (el) => (el = { ...el, transaction: "sent" })
-      );
+      const fetchedTransactions = response.data?.data;
 
-      setTransactions([...receives, ...sent]);
-      dispatch({ type: "fetch_transactions", payload: [...receives, ...sent] });
+      if (fetchedTransactions) {
+        setTransactions(fetchedTransactions);
+        dispatch({
+          type: "fetch_transactions",
+          payload: [fetchedTransactions],
+        });
+      }
     }
 
     fetchTransactions();
-  }, []);
+  }, [user]);
 
   useEffect(() => {
     setTransactions(allTransactions);
   }, [allTransactions]);
-
-  const alltransactions2 = [
-    {
-      transaction: "sent",
-      id: "#17372",
-      sender: { email: "aaa@aa.cc" },
-      receiver: { email: "aaa@aa.cc" },
-      name: "michael.near",
-      time: "3 days ago",
-    },
-    {
-      transaction: "received",
-      id: "#8982",
-      sender: { email: "aaa@aa.cc" },
-      receiver: { email: "aaa@aa.cc" },
-      name: "0x748....4d849",
-      time: "3 days ago",
-    },
-    {
-      transaction: "sent",
-      id: "#17372",
-      sender: { email: "aaa@aa.cc" },
-      receiver: { email: "aaa@aa.cc" },
-      name: "jordan.near",
-      time: "3 days ago",
-    },
-    {
-      transaction: "received",
-      id: "#8982",
-      sender: { email: "aaa@aa.cc" },
-      receiver: { email: "aaa@aa.cc" },
-      name: "0x748....4d849",
-      time: "3 days ago",
-    },
-    {
-      transaction: "sent",
-      id: "#17372",
-      sender: { email: "aaa@aa.cc" },
-      receiver: { email: "aaa@aa.cc" },
-      name: "michael.near",
-      time: "3 days ago",
-    },
-  ];
 
   const handleTabClick = (e) => {
     setTabs(e.target.value);
@@ -180,42 +135,38 @@ const TransactionHistory = () => {
             </div>
           </div>
         )}
-        <div className={styles.transaction__list__wrapper}>
-          {alltransactions2
-            .filter((data) =>
-              tabs === "sent"
-                ? data.transaction === "sent"
-                : tabs === "received"
-                ? data.transaction === "received"
-                : data
-            )
-            .map((data) => {
-              return (
-                <Fragment key={nanoid()}>
-                  <div
-                    className={styles.transaction__list}
-                    style={{
-                      cursor:
-                        data.transaction === "received" ? "pointer" : null,
-                    }}
-                    onClick={() =>
-                      data.transaction === "received" && openClaim(data)
-                    }
-                  >
-                    <div className={styles.transaction__action}>
-                      <div className={styles.icon__wrapper}>
-                        {data.transaction === "sent" ? (
-                          <BsArrowUpRight />
-                        ) : (
-                          <BsArrowDownLeft />
-                        )}
-                      </div>
-                      <h6>
-                        <span>{data.sender.email}</span> <br />
-                        {data.transaction === "sent"
-                          ? "Sent to"
-                          : "Received from"}{" "}
-                        {/* <a
+        {transactions?.length && (
+          <div className={styles.transaction__list__wrapper}>
+            {transactions
+              .filter((data) =>
+                tabs === "sent"
+                  ? !!data.sender
+                  : tabs === "received"
+                  ? !data.sender
+                  : data
+              )
+              .map((data) => {
+                return (
+                  <Fragment key={nanoid()}>
+                    <div
+                      className={styles.transaction__list}
+                      style={{
+                        cursor: !!data.sender ? "pointer" : null,
+                      }}
+                      onClick={() => !data.sender && openClaim(data)}
+                    >
+                      <div className={styles.transaction__action}>
+                        <div className={styles.icon__wrapper}>
+                          {data.sender ? (
+                            <BsArrowUpRight />
+                          ) : (
+                            <BsArrowDownLeft />
+                          )}
+                        </div>
+                        <h6>
+                          <span>{user.wallet_id}</span> <br />
+                          {data.sender ? "Sent to" : "Received from"}{" "}
+                          {/* <a
                           href="https://explorer.near.org/"
                           target="_blank"
                           rel="noreferrer"
@@ -223,31 +174,32 @@ const TransactionHistory = () => {
                         >
                           {data.receiver.email}
                         </a> */}
-                        <span
-                          //   href="https://explorer.near.org/"
-                          //   target="_blank"
-                          //   rel="noreferrer"
-                          className={styles.transaction__name}
-                        >
-                          {data.receiver.email}
-                        </span>
-                      </h6>
+                          <span
+                            //   href="https://explorer.near.org/"
+                            //   target="_blank"
+                            //   rel="noreferrer"
+                            className={styles.transaction__name}
+                          >
+                            {data.counterparty?.email}
+                          </span>
+                        </h6>
+                      </div>
+                      <div className={styles.transaction__time}>
+                        {/* <p>{data.time}</p> */}
+                        <p>
+                          {moment
+                            .utc(data.created)
+                            .local()
+                            .startOf("seconds")
+                            .fromNow()}
+                        </p>
+                      </div>
                     </div>
-                    <div className={styles.transaction__time}>
-                      {/* <p>{data.time}</p> */}
-                      <p>
-                        {moment
-                          .utc(data.created_at)
-                          .local()
-                          .startOf("seconds")
-                          .fromNow()}
-                      </p>
-                    </div>
-                  </div>
-                </Fragment>
-              );
-            })}
-        </div>
+                  </Fragment>
+                );
+              })}
+          </div>
+        )}
       </div>
     </>
   );

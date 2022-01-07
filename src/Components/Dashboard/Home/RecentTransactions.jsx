@@ -1,22 +1,42 @@
-import React, { memo, Fragment } from "react";
+import React, { memo, Fragment, useEffect, useState } from "react";
 import styles from "./Home.module.css";
 import { Link } from "react-router-dom";
 import { nanoid } from "nanoid";
+import axios from "axios";
 
 import { BsArrowUpRight, BsArrowDownLeft } from "react-icons/bs";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { API_BASE_URL } from "../../../Utils/config";
 
 const Transactions = () => {
+  const [transactions, setTransactions] = useState([]);
+  const dispatch = useDispatch();
   const { allTransactions } = useSelector((state) => state.transactionsReducer);
+  const { user } = useSelector((state) => state.authReducer);
 
-  // const transaction = [
-  //   {
-  //     transaction: "sent",
-  //     id: "#17372",
-  //     name: "michael.near",
-  //     time: "3 days ago",
-  //   },
-  // ];
+  useEffect(() => {
+    async function fetchTransactions() {
+      let response = await axios.get(
+        `${API_BASE_URL}/transactions/list/${user.user_id}`
+      );
+
+      const fetchedTransactions = response.data?.data;
+
+      if (fetchedTransactions) {
+        setTransactions(fetchedTransactions);
+        dispatch({
+          type: "fetch_transactions",
+          payload: [fetchedTransactions],
+        });
+      }
+    }
+
+    fetchTransactions();
+  }, [user]);
+
+  useEffect(() => {
+    setTransactions(allTransactions);
+  }, [allTransactions]);
 
   return (
     <>
@@ -26,13 +46,13 @@ const Transactions = () => {
           <Link to="/transactions">See All</Link>
         </div>
         <div className={styles.transaction__list__wrapper}>
-          {allTransactions.map((data) => {
+          {transactions.map((data) => {
             return (
               <Fragment key={nanoid()}>
                 <div className={styles.transaction__list}>
                   <div className={styles.transaction__action}>
                     <div>
-                      {data.transaction === "sent" ? (
+                      {data.sender === true ? (
                         <BsArrowUpRight />
                       ) : (
                         <BsArrowDownLeft />
@@ -40,10 +60,8 @@ const Transactions = () => {
                     </div>
                     <h6>
                       {/* <span>{data.id}</span>{" "} */}
-                      <span>{data.sender.email}</span>{" "}
-                      {data.transaction === "sent"
-                        ? "Sent to"
-                        : "Received from"}{" "}
+                      <span>{user.wallet_id}</span>{" "}
+                      {data.sender === true ? "sent to" : "received from"}{" "}
                       <a
                         href="https://explorer.near.org/"
                         rel="noreferrer"
@@ -51,12 +69,12 @@ const Transactions = () => {
                         className={styles.transaction__name}
                       >
                         {/* {data.name} */}
-                        {data.receiver.email}
+                        {data.counterparty?.email}
                       </a>
                     </h6>
                   </div>
                   <div className={styles.transaction__time}>
-                    <p>{data.time}</p>
+                    <p>{data.formattedtime}</p>
                   </div>
                 </div>
               </Fragment>
