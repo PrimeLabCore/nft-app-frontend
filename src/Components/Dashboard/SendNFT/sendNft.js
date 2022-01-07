@@ -131,10 +131,31 @@ const SendNft = () => {
 
     //send nft here to backend
 
-    dispatch({ type: "sendnft__close" });
-    dispatch({ type: "close_dialog_gift_nft" });
-    setOpenGift(false);
-    setOpenPreview(true);
+    let nftDetail = {
+      sender_id: user.user_id,
+      recipient_id: selectedContacts,
+      transaction_item_id: selected.nft_id,
+      transaction_value: "NA",
+      type: "gift",
+    };
+
+    axios
+      .post(`${API_BASE_URL}/transactions`, nftDetail)
+      .then((response) => {
+        console.log(response.data);
+        toast.success(response.data.message);
+
+        dispatch({ type: "sendnft__close" });
+        dispatch({ type: "close_dialog_gift_nft" });
+        setOpenGift(false);
+        setOpenPreview(true);
+      })
+      .catch((error) => {
+        if (error.response.data) {
+          toast.error(error.response.data.message);
+        }
+      })
+      .finally(() => {});
   };
 
   const openInitialSendNft = () => {
