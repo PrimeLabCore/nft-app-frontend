@@ -600,9 +600,11 @@
     width: 100%;
     max-height: 70vh;
     overflow: auto;
-  }  
+  }
 }
 
-
-
 /*# sourceMappingURL=sendNft.module.css.map */
+
+.next__btn:disabled {
+  background-color: #bdbdbd !important;
+}
