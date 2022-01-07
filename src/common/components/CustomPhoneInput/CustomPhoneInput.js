@@ -2,7 +2,7 @@ import React from "react";
 import PhoneInput from "react-phone-input-2";
 import 'react-phone-input-2/lib/style.css'
 
-const CustomPhoneInput = ({placeholder, HandelKeyPress, value, height, onFocus, onChange, className}) => {
+const CustomPhoneInput = ({placeholder, HandelKeyPress, value, height, onFocus, onChange, className, containerStyle={}}) => {
 
     return (
         <>
@@ -15,6 +15,7 @@ const CustomPhoneInput = ({placeholder, HandelKeyPress, value, height, onFocus, 
                     height: height || "56px",
                     borderRadius: "10px",
                     backgroundColor: "#f7f7f7",
+                    ...containerStyle
                 }}
                 onKeyDown={HandelKeyPress}
                 buttonStyle={{borderRadius: " 10px 0 0 10px "}}

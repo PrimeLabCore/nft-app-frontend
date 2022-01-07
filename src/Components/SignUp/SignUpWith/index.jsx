@@ -12,11 +12,15 @@ import CustomPhoneInput from "../../../common/components/CustomPhoneInput/Custom
 import SignIn from "../../SignIn/SignIn";
 
 const validateEmail = (email) => {
-  return String(email)
-    .toLowerCase()
-    .match(
-      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-    );
+  const splitEmail = email.split("@");
+
+  if (splitEmail.length > 2) return false;
+
+  const t = /[ `!@#$%^&*()+\=\[\]{};':"\\|,<>\/?~]/;
+
+  var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+  return re.test(email) && !t.test(splitEmail[0]);
 };
 
 // Date : Jan 4 2021, 09:27 AM IST, Rohit Yadav
@@ -353,6 +357,7 @@ const SignUpWith = () => {
           <CustomPhoneInput
             variant="outlined"
             placeholder="Ex. (373) 378 8383"
+            containerStyle={{ margin: "10px 0px", }}
             type={"tel"}
             value={inputFields.phone}
             onChange={HandleInputChange("phone")}
@@ -392,8 +397,8 @@ const SignUpWith = () => {
             loginForm === "email" ? oldHandleSignup() : phoneNumberSignUp()
           }
           className={`${styles.button} ${inputFields.email || inputFields.phone
-              ? styles.primaryColor
-              : styles.secondaryColor
+            ? styles.primaryColor
+            : styles.secondaryColor
             }`}
           disabled={
             loginForm === "email"

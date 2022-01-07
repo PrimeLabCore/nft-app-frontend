@@ -220,7 +220,7 @@
       display: block;
   }
   
-  @media screen and (max-width: 850px) {
+  @media screen and (max-width: 990px) {
     .mainContainer{
         flex-direction: column;
     }
