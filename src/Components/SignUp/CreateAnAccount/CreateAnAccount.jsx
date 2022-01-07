@@ -151,9 +151,16 @@ const CreateAnAccount = () => {
       });
   };
 
+  const isFullNameValid = (fullname) => {
+    var format = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+    return format.test(fullname);
+  }
+
   const isFormValid = () => {
     let returnVal = true;
     if (fullname == "") {
+      returnVal = false;
+    } else if (isFullNameValid(fullname)) {
       returnVal = false;
     } else if (
       accountId == "" ||
@@ -233,16 +240,15 @@ const CreateAnAccount = () => {
               ),
             }}
             HandleFocus={() => HandleFocus("id")}
-            // disabled
+          // disabled
           />
         </div>
 
         {/* create account button */}
         <button
           onClick={handleSignup} // createAccount
-          className={`${styles.secondary_button} ${
-            isFormValid() ? styles.active_button : ""
-          }`}
+          className={`${styles.secondary_button} ${isFormValid() ? styles.active_button : ""
+            }`}
           disabled={!isFormValid()}
         >
           Create an account
