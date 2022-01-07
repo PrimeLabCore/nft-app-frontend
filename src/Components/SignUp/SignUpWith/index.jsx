@@ -322,28 +322,26 @@ const SignUpWith = () => {
   };
 
   const clearFieldData = (field) => {
-    setinputFields({...inputFields, [field] : ""});
+    setinputFields({ ...inputFields, [field]: "" });
   }
-  
+
   return (
     <div className={styles.half_container}>
       {/* EMAIL AND PHONE SIGNUP CONATINER */}
       <div className={styles.buttonContainer} onClick={handleClick}>
         <button
-        onClick={() => {clearFieldData("phone")}}
+          onClick={() => { clearFieldData("phone") }}
           value="email"
-          className={`${styles.button} ${styles.secondary} ${
-            loginForm === "email" ? styles.active : ""
-          }`}
+          className={`${styles.button} ${styles.secondary} ${loginForm === "email" ? styles.active : ""
+            }`}
         >
           Email
         </button>
         <button
           value="phone"
-          onClick={() => {clearFieldData("email")}}
-          className={`${styles.button} ${styles.secondary} ${
-            loginForm === "phone" ? styles.active : ""
-          }`}
+          onClick={() => { clearFieldData("email") }}
+          className={`${styles.button} ${styles.secondary} ${loginForm === "phone" ? styles.active : ""
+            }`}
         >
           Phone
         </button>
@@ -393,14 +391,13 @@ const SignUpWith = () => {
           onClick={() =>
             loginForm === "email" ? oldHandleSignup() : phoneNumberSignUp()
           }
-          className={`${styles.button} ${
-            inputFields.email || inputFields.phone
+          className={`${styles.button} ${inputFields.email || inputFields.phone
               ? styles.primaryColor
               : styles.secondaryColor
-          }`}
+            }`}
           disabled={
             loginForm === "email"
-              ? inputFields.email.length < 0
+              ? inputFields.email.length == 0
               : inputFields.phone.length < 2
           }
         >
