@@ -176,15 +176,12 @@ const CreateNft = (props) => {
         },
       })
       .then((response) => {
-        //will be done when create nft api returns data
-        /* 
-              dispatch({
-                type: "current_selected_nft",
-                payload: data,
-              });
+        dispatch({
+          type: "current_selected_nft",
+          payload: response.data?.data,
+        });
 
-              setCreateNftResponse(data);
-            */
+        setCreateNftResponse(response.data?.data);
 
         toast.success(
           `NFT ${details.title} was successfully ${
@@ -608,12 +605,16 @@ const CreateNft = (props) => {
             <div className={styles.mint__info__wrapper}>
               <div className={styles.mint__image}>
                 <img
-                  src={createNftResponse?.image ? createNftResponse.image : ""}
+                  src={
+                    createNftResponse?.file_url
+                      ? createNftResponse.file_url
+                      : ""
+                  }
                   alt={""}
                 />
               </div>
               <h1>
-                {createNftResponse.name} <br /> Successfully Mined
+                {createNftResponse.title} <br /> Successfully Mined
               </h1>
               <h6>NFT ID {createNftResponse?.nft_id}</h6>
             </div>
