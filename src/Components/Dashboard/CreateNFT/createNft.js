@@ -35,13 +35,7 @@ const CreateNft = (props) => {
     category: "Digital Arts",
   });
 
-  const [formValues, setFormValues] = useState([
-    {
-      [`size_12345`]: "",
-      [`extension_12345`]: "",
-      id: "12345",
-    },
-  ]);
+  const [formValues, setFormValues] = useState([{ [``]: "" }]);
 
   const formInfo = {
     selectedFile,
@@ -137,26 +131,12 @@ const CreateNft = (props) => {
   };
   const handleNftPreview = () => {
     if (details.title && details.description && details.category) {
-      // if (formValues.length <= 5) {
-      //   for (let i = 0; i < formValues.length; i++) {
-      //     let extension = `extension_${formValues[i].id}`;
-      //     let size = `size_${formValues[i].id}`;
-      //     var count = 0;
-      //     if (!formValues[i][extension] && !formValues[i][size]) {
-      //       count += 1;
-      //     }
-      //   }
-      //   if (count === 0) {
+      //create NFT here
+
       dispatch({ type: "createnft__close" });
       setNftForm(false);
       setNftPreview(true);
       setNftMint(false);
-      //   } else {
-      //     toast.error("All fields are required");
-      //   }
-      // } else {
-      //   toast.error("Too Many Property Fields");
-      // }
     } else {
       toast.error("All fields are required");
     }
@@ -267,23 +247,6 @@ const CreateNft = (props) => {
   // };
 
   const changeHandler = async (event) => {
-    // let fd = new FormData();
-    // fd.append("user_image[name]", "name");
-    // fd.append("user_image[pic]", event.target.files[0]);
-
-    // const response = await axios.post(
-    //   `${API_BASE_URL}/api/v1/user_images`,
-    //   fd,
-    //   {
-    //     headers: {
-    //       "Content-type": "multipart/form-data",
-    //     },
-    //   }
-    // );
-    // console.log(`response`, response);
-    // const { data } = response.data;
-    // setSelectedFile(data);
-
     // FileReader support
     const imageSizeLimit = 100000000; // 50 mb
     const acceptedFileTypes = [
@@ -314,7 +277,7 @@ const CreateNft = (props) => {
           } else {
             setSelectedFileType("image");
           }
-          toast.success("File Uploaded");
+          //toast.success("File Uploaded");
         };
         file__reader.readAsDataURL(files[0]);
       } else {
@@ -595,8 +558,8 @@ const CreateNft = (props) => {
                 <div className={styles.mynft__box__profile__info}>
                   <div className={styles.details__profile__picture}></div>
                   <div className={styles.details__user__info}>
-                    <p>Creater</p>
-                    <h6>{user?.account_id}</h6>
+                    <p>{user?.full_name}</p>
+                    <h6>{user?.wallet_id}</h6>
                   </div>
                 </div>
               </div>

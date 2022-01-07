@@ -1,4 +1,5 @@
 import SearchIcon from "@material-ui/icons/Search";
+import axios from "axios";
 import { nanoid } from "nanoid";
 import React, { useEffect, useState } from "react";
 import { Modal } from "react-bootstrap";
@@ -10,10 +11,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import styles from "../../Components/Dashboard/SendNFT/sendNft.module.css";
-import ImportContactsDialog from "../../Components/ImportContactsDialog/ImportContactsDialog";
-import axios from "axios";
-import { API_BASE_URL } from "../../Utils/config";
 import { LoaderIconBlue } from "../../Components/Generic/icons";
+import ImportContactsDialog from "../../Components/ImportContactsDialog/ImportContactsDialog";
+import { API_BASE_URL } from "../../Utils/config";
 
 const ContactPopup = ({
   show,
@@ -215,7 +215,9 @@ const ContactPopup = ({
           <div className={styles.multiple__btn__wrapper}>
             <button
               disabled={selectedContacts.length === 0 ? true : false}
-              onClick={handleBtnClick(selectedContacts)}
+              onClick={() => {
+                handleBtnClick(selectedContacts);
+              }}
               className={styles.next__btn}
             >
               {btnText}

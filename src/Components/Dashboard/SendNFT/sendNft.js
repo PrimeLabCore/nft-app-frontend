@@ -109,6 +109,8 @@ const SendNft = () => {
   const handleNftPreview = async (selectedContacts) => {
     console.log("here", selectedContacts);
 
+    //send nft here to backend
+
     dispatch({ type: "sendnft__close" });
     dispatch({ type: "close_dialog_gift_nft" });
     setOpenGift(false);
@@ -138,16 +140,6 @@ const SendNft = () => {
     dispatch({ type: "close_dialog_gift_nft" });
   }, []);
 
-  const handleSearch = (event) => {
-    let value = event.target.value.toLowerCase();
-    let result = [];
-    result = giftNFT__contactData.filter((data) => {
-      return data.primary_email.toLowerCase().search(value) !== -1;
-    });
-    setFilteredData(result);
-    setSendGiftEmail(event.target.value.toLowerCase());
-  };
-
   const [importContactDialog, setimportContactDialog] = useState(false);
   const HandleDialogClose = () => {
     setimportContactDialog(false);
@@ -155,10 +147,6 @@ const SendNft = () => {
 
   const importContact = (data) => {
     if (data) {
-      dispatch({
-        type: "getGoogleContactData",
-        payload: data,
-      });
       setCheckedState(checkAllContacts(data));
       setimportContactDialog(false);
       setFilteredData(data);
@@ -334,8 +322,7 @@ const SendNft = () => {
 
       <ContactPopup
         displayImportContact={false}
-        //show={openGift}
-        show={true}
+        show={openGift}
         onClose={closegiftNft}
         onBack={openInitialSendNft}
         title={"Send NFT"}
