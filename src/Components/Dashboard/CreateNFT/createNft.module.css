@@ -14,6 +14,11 @@
   }
 }
 
+.modal__body__wrapper .form__group .form__group__inner input {
+  width: 100%;
+  margin: 5px;
+}
+
 .initial__nft__modal button:focus {
   outline: none;
 }
@@ -517,6 +522,9 @@
 
 .nft__form__modal .modal__body__wrapper .mint__info__wrapper h6 {
   font-size: 16.8px;
+}
+.mynft__box__image__wrapper img{
+  width: 100%;
 }
 
 @media screen and (max-width: 767px) {

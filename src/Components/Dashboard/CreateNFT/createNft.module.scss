@@ -161,6 +161,10 @@
               outline: none;
             }
           }
+          input{
+            width: 100%;
+            margin: 5px;
+          }
         }
         .addFieldsBtn {
           background-color: transparent;
@@ -183,6 +187,9 @@
       margin-bottom: 10px;
       .mynft__box__image__wrapper {
         position: relative;
+        img{
+          width: 100%;
+        }
         .mynft__box__image {
           img {
             width: 100%;

@@ -10,11 +10,15 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import { API_BASE_URL } from "../../../Utils/config";
 
+const audioRegex = /(audio)(\/\w+)+/g;
+const videoRegex = /(video)(\/\w+)+/g;
+
 const CreateNft = (props) => {
   let navigate = useNavigate();
   const { transactionId } = props;
 
   const [selectedFile, setSelectedFile] = useState("");
+  const [selectedFileType, setSelectedFileType] = useState("image");
   const [loading, setLoading] = useState(false);
   const [createNftResponse, setCreateNftResponse] = useState({
     name: "",
@@ -180,61 +184,67 @@ const CreateNft = (props) => {
     };
 
     const conversionURL =
-      "https://fcnefunrz6.execute-api.us-east-1.amazonaws.com/test/conversion";
+        "https://fcnefunrz6.execute-api.us-east-1.amazonaws.com/test/conversion";
     return axios.post(
-      conversionURL,
-      // TODO: Populate conversionURL with the production version of the endpoint, something like below:
-      // `${API_BASE_URL}/api/v1/conversion`,
-      requestBody
+        conversionURL,
+        // TODO: Populate conversionURL with the production version of the endpoint, something like below:
+        // `${API_BASE_URL}/api/v1/conversion`,
+        requestBody
     );
   };
 
   const mineNft = async (comingFrom) => {
-    setLoading(true);
+      try {
+          setLoading(true);
+          const postNftResponse = await
+          postNftWithImage(details, selectedFile);
+          console.log("comming", postNftResponse)
 
-    const postNftResponse = await postNftWithImage(details, selectedFile);
+          const {data, success} = postNftResponse.data;
+          // setSelectedFile(data);
+          setCreateNftResponse(data);
+          dispatch({type: "addNewNft", payload: data});
+          if (success) {
+              dispatch({type: "createnft__close"});
+              setNftForm(false);
+              setNftPreview(false);
+              if (comingFrom !== "create") {
+                  setNftMint(true);
+              }
+              setDetails({
+                  title: "",
+                  description: "",
+                  category: "Digital Arts",
+              });
+              setSelectedFile("");
+              setFormValues([
+                  {
+                      [`size_12345`]: "",
+                      [`extension_12345`]: "",
+                      id: "12345",
+                  },
+              ]);
+          }
 
-    const { data, success } = postNftResponse.data;
-    // setSelectedFile(data);
-    setCreateNftResponse(data);
-    dispatch({ type: "addNewNft", payload: data });
-    if (success) {
-      dispatch({ type: "createnft__close" });
-      setNftForm(false);
-      setNftPreview(false);
-      if (comingFrom !== "create") {
-        setNftMint(true);
+          if (comingFrom === "create") {
+              if (data) {
+                  dispatch({
+                      type: "current_selected_nft",
+                      payload: data,
+                  });
+              }
+              sendNftModal();
+
+              if (transactionId) {
+                  trackConversion(user, transactionId, details);
+              }
+          }
+
+          setLoading(false);
+      }catch (e) {
+          setLoading(false);
+          toast.error("Error while uploading file");
       }
-      setDetails({
-        title: "",
-        description: "",
-        category: "Digital Arts",
-      });
-      setSelectedFile("");
-      setFormValues([
-        {
-          [`size_12345`]: "",
-          [`extension_12345`]: "",
-          id: "12345",
-        },
-      ]);
-    }
-
-    if (comingFrom === "create") {
-      if (data) {
-        dispatch({
-          type: "current_selected_nft",
-          payload: data,
-        });
-      }
-      sendNftModal();
-
-      if (transactionId) {
-        trackConversion(user, transactionId, details);
-      }
-    }
-
-    setLoading(false);
   };
 
   const goBack = (modalName) => {
@@ -274,15 +284,23 @@ const CreateNft = (props) => {
     // setSelectedFile(data);
 
     // FileReader support
-    const imageSizeLimit = 50000000; // 50 mb
+    const imageSizeLimit = 100000000; // 50 mb
     let target = event.target || window.event.srcElement,
-      files = target.files;
+        files = target.files;
     if (FileReader && files && files.length) {
       // console.log(`files[0]`, files[0]);
       if (files[0].size <= imageSizeLimit) {
         let file__reader = new FileReader();
         file__reader.onload = function () {
           setSelectedFile(files[0]);
+          console.log("files[0].type", files[0].type)
+          if(videoRegex.test(files[0].type)){
+            setSelectedFileType("video")
+          } else if(audioRegex.test(files[0].type)){
+            setSelectedFileType("audio")
+          } else {
+            setSelectedFileType("image")
+          }
           toast.success("File Uploaded");
         };
         file__reader.readAsDataURL(files[0]);
@@ -293,318 +311,352 @@ const CreateNft = (props) => {
     }
   };
 
+  console.log(selectedFile)
   return (
-    <>
-      {/* Initial Modal  */}
-      <Modal
-        className={`${styles.initial__nft__modal} ${styles.nft__mobile__modal} initial__modal`}
-        show={createnft__popup}
-        onHide={() => dispatch({ type: "createnft__close" })}
-        backdrop="static"
-        keyboard={false}
-      >
-        <Modal.Header
-          className={styles.modal__header__wrapper}
-          closeButton={home__allnft.length > 0}
+      <>
+        {/* Initial Modal  */}
+        <Modal
+            className={`${styles.initial__nft__modal} ${styles.nft__mobile__modal} initial__modal`}
+            show={createnft__popup}
+            onHide={() => dispatch({ type: "createnft__close" })}
+            backdrop="static"
+            keyboard={false}
         >
-          <div className="modal__title__wrapper">
-            <Modal.Title>
-              <div className={styles.modal__header}>
-                <h2>Create an NFT</h2>
-              </div>
-            </Modal.Title>
-          </div>
-        </Modal.Header>
-        <div className={styles.progress}>
-          <ProgressBar now={(1 / 3) * 100} />
-        </div>
-        <Modal.Body>
-          <div className={styles.modal__body__wrapper}>
-            <h3>Upload Files</h3>
-
-            <div className="file__wrapper">
-              <input
-                type="file"
-                id="files"
-                name="file"
-                onChange={changeHandler}
-                accept="image/png, image/jpg, image/jpeg"
-                style={{ display: "none" }}
-                required
-              />
-              <div className="file__upload__wrapper">
-                <label for="files">
-                  {selectedFile ? "Upload Another File" : "Choose File"}
-                </label>
-              </div>
-              <p>PNG, JPEG, JPG, SVG. Max 50mb.</p>
+          <Modal.Header
+              className={styles.modal__header__wrapper}
+              closeButton={home__allnft.length > 0}
+          >
+            <div className="modal__title__wrapper">
+              <Modal.Title>
+                <div className={styles.modal__header}>
+                  <h2>Create an NFT</h2>
+                </div>
+              </Modal.Title>
             </div>
-            {selectedFile && (
-              <div className="uploaded__file">
-                <img
-                  src={URL.createObjectURL(selectedFile)}
-                  alt="Uploaded File"
-                />
-              </div>
-            )}
+          </Modal.Header>
+          <div className={styles.progress}>
+            <ProgressBar now={(1 / 3) * 100} />
           </div>
-          <div className={styles.next__btn__wrapper}>
-            <button
-              onClick={() =>
-                selectedFile
-                  ? handleNftForm()
-                  : toast.error("Please upload files.")
-              }
-              disabled={selectedFile ? false : true}
-              className={styles.next__btn}
-            >
-              Next
-              <span>
+          <Modal.Body>
+            <div className={styles.modal__body__wrapper}>
+              <h3>Upload Files</h3>
+
+              <div className="file__wrapper">
+                <input
+                    type="file"
+                    id="files"
+                    name="file"
+                    onChange={changeHandler}
+                    accept="image/png, image/jpg, image/jpeg, video/mp4, audio/mp3, image/webp"
+                    style={{ display: "none" }}
+                    required
+                />
+                <div className="file__upload__wrapper">
+                  <label for="files">
+                    {selectedFile ? "Upload Another File" : "Choose File"}
+                  </label>
+                </div>
+                <p>PNG, GIF, WEBP, MP4 or MP3. Max 100mb.</p>
+              </div>
+              {console.log(selectedFile?.type?.includes("video"))}
+              {selectedFile && (
+                  selectedFile?.type?.includes("video") ?
+                      (
+                          <div className="uploaded__file">
+                            <video
+                                style={{ width: '100%',borderRadius:"8px" }}
+                                src={URL.createObjectURL(selectedFile)}
+                            />
+                          </div>
+                      )
+                      : selectedFile?.type?.includes("audio") ?
+                      (
+                          <div className="uploaded__file">
+                            <audio controls>
+                              <source src={URL.createObjectURL(selectedFile)} />
+                            </audio>
+                          </div>
+                      ) :
+                      (<div className="uploaded__file">
+                        <img
+                            src={URL.createObjectURL(selectedFile)}
+                            alt="Uploaded File"
+                        />
+                      </div>)
+              )}
+            </div>
+            <div className={styles.next__btn__wrapper}>
+              <button
+                  onClick={() =>
+                      selectedFile
+                          ? handleNftForm()
+                          : toast.error("Please upload files.")
+                  }
+                  disabled={selectedFile ? false : true}
+                  className={styles.next__btn}
+              >
+                Next
+                <span>
                 <IoIosArrowForward />
               </span>
-            </button>
-          </div>
-        </Modal.Body>
-      </Modal>
+              </button>
+            </div>
+          </Modal.Body>
+        </Modal>
 
-      {/* NFT Form Modal */}
-      <Modal
-        className={`${styles.initial__nft__modal} ${styles.nft__mobile__modal} ${styles.nft__form__modal} initial__modal`}
-        show={nftForm}
-        onHide={() => setNftForm(false)}
-        backdrop="static"
-        keyboard={false}
-      >
-        <Modal.Header
-          className={styles.modal__header__wrapper}
-          closeButton={home__allnft.length > 0}
+        {/* NFT Form Modal */}
+        <Modal
+            className={`${styles.initial__nft__modal} ${styles.nft__mobile__modal} ${styles.nft__form__modal} initial__modal`}
+            show={nftForm}
+            onHide={() => setNftForm(false)}
+            backdrop="static"
+            keyboard={false}
         >
-          <div className="modal__multiple__wrapper">
-            <button onClick={() => goBack("initalForm")} className="back__btn">
-              Back
-            </button>
-            <Modal.Title>
-              <div className={styles.modal__header}>
-                <h2>Create an NFT</h2>
-              </div>
-            </Modal.Title>
+          <Modal.Header
+              className={styles.modal__header__wrapper}
+              closeButton={home__allnft.length > 0}
+          >
+            <div className="modal__multiple__wrapper">
+              <button onClick={() => goBack("initalForm")} className="back__btn">
+                Back
+              </button>
+              <Modal.Title>
+                <div className={styles.modal__header}>
+                  <h2>Create an NFT</h2>
+                </div>
+              </Modal.Title>
+            </div>
+          </Modal.Header>
+          <div className={styles.progress}>
+            <ProgressBar now={(2 / 3) * 100} />
           </div>
-        </Modal.Header>
-        <div className={styles.progress}>
-          <ProgressBar now={(2 / 3) * 100} />
-        </div>
-        <Modal.Body>
-          <div className={styles.modal__body__wrapper}>
-            <form>
-              <div className={styles.form__group}>
-                <label>TITLE</label>
-                <input
-                  type="text"
-                  name="title"
-                  value={details.title}
-                  onChange={inputEvent}
-                  placeholder="Ex. Redeemable Art"
-                  required
-                />
-              </div>
-              <div className={styles.form__group}>
-                <label>DESCRIPTION</label>
-                <textarea
-                  rows={5}
-                  name="description"
-                  value={details.description}
-                  onChange={inputEvent}
-                  placeholder="Ex. Redeemable Art"
-                  required
-                />
-              </div>
-              <div className={styles.form__group}>
-                <label>PROPERTIES</label>
-                {formValues.map((val, index) => (
-                  <div className={styles.form__group__inner} key={index}>
-                    <input
+          <Modal.Body>
+            <div className={styles.modal__body__wrapper}>
+              <form>
+                <div className={styles.form__group}>
+                  <label>TITLE</label>
+                  <input
                       type="text"
-                      value={val[`size_${val.id}`]}
-                      placeholder="Tag"
-                      onChange={handleChange(val.id, "size")}
-                    />
+                      name="title"
+                      value={details.title}
+                      onChange={inputEvent}
+                      placeholder="Ex. Redeemable Art"
+                      required
+                  />
+                </div>
+                <div className={styles.form__group}>
+                  <label>DESCRIPTION</label>
+                  <textarea
+                      rows={5}
+                      name="description"
+                      value={details.description}
+                      onChange={inputEvent}
+                      placeholder="Ex. Redeemable Art"
+                      required
+                  />
+                </div>
+                <div className={styles.form__group}>
+                  <label>PROPERTIES</label>
+                  {formValues.map((val, index) => (
+                      <div className={styles.form__group__inner} key={index}>
+                        <input
+                            type="text"
+                            value={val[`size_${val.id}`]}
+                            placeholder="Tag"
+                            onChange={handleChange(val.id, "size")}
+                        />
 
-                    <input
-                      type="text"
-                      value={val[`extension_${val.id}`]}
-                      placeholder="Value"
-                      onChange={handleChange(val.id, "extension")}
-                    />
+                        <input
+                            type="text"
+                            value={val[`extension_${val.id}`]}
+                            placeholder="Value"
+                            onChange={handleChange(val.id, "extension")}
+                        />
 
-                    {index ? (
-                      <button
-                        type="button"
-                        className={styles.remove__btn}
-                        onClick={() => removeFormFields(index)}
-                      >
-                        X
-                      </button>
-                    ) : null}
-                  </div>
-                ))}
-                <button
-                  className={styles.addFieldsBtn}
-                  type="button"
-                  onClick={() => addFormFields()}
-                >
+                        {index ? (
+                            <button
+                                type="button"
+                                className={styles.remove__btn}
+                                onClick={() => removeFormFields(index)}
+                            >
+                              X
+                            </button>
+                        ) : null}
+                      </div>
+                  ))}
+                  <button
+                      className={styles.addFieldsBtn}
+                      type="button"
+                      onClick={() => addFormFields()}
+                  >
                   <span>
                     <AiOutlinePlus />
                   </span>
-                  Add More
-                </button>
-              </div>
-              <div className={styles.form__group}>
-                <label>CATEGORY</label>
-                <select
-                  className={styles.form__category__dropdown}
-                  name="category"
-                  value={details.category}
-                  onChange={inputEvent}
-                  defaultValue={"Digital Arts"}
-                  disabled
-                >
-                  <option></option>
-                  <option value="Digital Arts">Digital Arts</option>
-                </select>
-              </div>
-            </form>
-          </div>
-          <div className={styles.multiple__btn__wrapper}>
-            <button onClick={handleNftPreview} className={styles.next__btn}>
-              Next
-              <span>
+                    Add More
+                  </button>
+                </div>
+                <div className={styles.form__group}>
+                  <label>CATEGORY</label>
+                  <select
+                      className={styles.form__category__dropdown}
+                      name="category"
+                      value={details.category}
+                      onChange={inputEvent}
+                      defaultValue={"Digital Arts"}
+                      disabled
+                  >
+                    <option></option>
+                    <option value="Digital Arts">Digital Arts</option>
+                  </select>
+                </div>
+              </form>
+            </div>
+            <div className={styles.multiple__btn__wrapper}>
+              <button onClick={handleNftPreview} className={styles.next__btn}>
+                Next
+                <span>
                 <IoIosArrowForward />
               </span>
-            </button>
-          </div>
-        </Modal.Body>
-      </Modal>
+              </button>
+            </div>
+          </Modal.Body>
+        </Modal>
 
-      {/* NFT Preview Modal */}
-      <Modal
-        className={`${styles.initial__nft__modal} ${styles.nft__form__modal} initial__modal ${styles.nft__mobile__modal}`}
-        show={nftPreview}
-        onHide={() => setNftPreview(false)}
-        backdrop="static"
-        keyboard={false}
-      >
-        <Modal.Header
-          className={styles.modal__header__wrapper}
-          closeButton={home__allnft.length > 0}
+        {/* NFT Preview Modal */}
+        <Modal
+            className={`${styles.initial__nft__modal} ${styles.nft__form__modal} initial__modal ${styles.nft__mobile__modal}`}
+            show={nftPreview}
+            onHide={() => setNftPreview(false)}
+            backdrop="static"
+            keyboard={false}
         >
-          <div className="modal__multiple__wrapper">
-            <button onClick={() => goBack("nftForm")} className="back__btn">
-              Back
-            </button>
-            <Modal.Title>
-              <div className={styles.modal__header}>
-                <h2>Create an NFT</h2>
-              </div>
-            </Modal.Title>
+          <Modal.Header
+              className={styles.modal__header__wrapper}
+              closeButton={home__allnft.length > 0}
+          >
+            <div className="modal__multiple__wrapper">
+              <button onClick={() => goBack("nftForm")} className="back__btn">
+                Back
+              </button>
+              <Modal.Title>
+                <div className={styles.modal__header}>
+                  <h2>Create an NFT</h2>
+                </div>
+              </Modal.Title>
+            </div>
+          </Modal.Header>
+          <div className={styles.progress}>
+            <ProgressBar now={(2.9 / 3) * 100} />
           </div>
-        </Modal.Header>
-        <div className={styles.progress}>
-          <ProgressBar now={(2.9 / 3) * 100} />
-        </div>
-        <Modal.Body>
-          <div className={styles.modal__body__wrapper}>
-            <h6>Preview</h6>
-            <div className={styles.mynft__box}>
-              <div className={styles.mynft__box__image__wrapper}>
-                <div className={styles.mynft__box__image}>
-                  <img
-                    src={selectedFile ? URL.createObjectURL(selectedFile) : ""}
-                    alt={formInfo.title}
-                  />
+          <Modal.Body>
+            <div className={styles.modal__body__wrapper}>
+              <h6>Preview</h6>
+              <div className={styles.mynft__box}>
+                <div className={styles.mynft__box__image__wrapper}>
+                  {selectedFile && (
+                      selectedFile?.type?.includes("video") ?
+                          (
+                              <video
+                                  style={{ width: '100%',borderRadius:"8px" }}
+                                  src={URL.createObjectURL(selectedFile)}
+                              />
+                          )
+                          : selectedFile?.type?.includes("audio") ?
+                          (
+                              <audio style={{marginTop:"60px",marginLeft:"5px"}} controls>
+                                <source src={URL.createObjectURL(selectedFile)} />
+                              </audio>
+                          ) :
+                          (
+                              <img
+                                  src={URL.createObjectURL(selectedFile)}
+                                  alt={formInfo.title}
+                              />
+                          )
+                  )}
+                  {!audioRegex.test(selectedFile.type) && <div className={styles.mynft__box__cat}>
+                    <h6>{details?.category}</h6>
+                  </div>}
                 </div>
-                <div className={styles.mynft__box__cat}>
-                  <h6>{details?.category}</h6>
-                </div>
-              </div>
-              <div className={styles.mynft__box__description__wrapper}>
-                <h2>Title</h2>
-                <p>{details.title}</p>
-                <h2>Description</h2>
-                <p>{details?.description}</p>
-                <div className={styles.mynft__box__profile__info}>
-                  <div className={styles.details__profile__picture}></div>
-                  <div className={styles.details__user__info}>
-                    <p>Creater</p>
-                    <h6>{user?.account_id}</h6>
+                <div className={styles.mynft__box__description__wrapper}>
+                  <h2>Title</h2>
+                  <p>{details.title}</p>
+                  <h2>Description</h2>
+                  <p>{details?.description}</p>
+                  <div className={styles.mynft__box__profile__info}>
+                    <div className={styles.details__profile__picture}></div>
+                    <div className={styles.details__user__info}>
+                      <p>Creater</p>
+                      <h6>{user?.account_id}</h6>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div className={styles.multiple__btn__wrapper}>
-            <button
-              onClick={mineNft}
-              // disabled={loading}
-              className={styles.next__btn}
-            >
-              Mine NFT
-              <span>
+            <div className={styles.multiple__btn__wrapper}>
+              <button
+                  onClick={mineNft}
+                  // disabled={loading}
+                  className={styles.next__btn}
+              >
+                Mine NFT
+                <span>
                 <IoIosArrowForward />
               </span>
-            </button>
-            <button
-              onClick={() => mineNft("create")}
-              disabled={loading}
-              className={styles.next__btn}
-            >
-              Send NFT
-              <span>
+              </button>
+              <button
+                  onClick={() => mineNft("create")}
+                  disabled={loading}
+                  className={styles.next__btn}
+              >
+                Send NFT
+                <span>
                 <IoIosArrowForward />
               </span>
-            </button>
-          </div>
-        </Modal.Body>
-      </Modal>
-
-      {/* NFT Mint Modal */}
-      <Modal
-        className={`${styles.initial__nft__modal} ${styles.nft__form__modal} nft__final__mobile__modal initial__modal`}
-        show={nftMint}
-        onHide={() => setNftMint(false)}
-        backdrop="static"
-        keyboard={false}
-        centered
-      >
-        <Modal.Header
-          className={`${styles.modal__header__wrapper}  ${styles.modal__header__bottom} last__modal__header`}
-          closeButton={home__allnft.length > 0}
-        ></Modal.Header>
-        {/* <button onClick={allNft} className="btnclose">X</button> */}
-        <Modal.Body className={styles.modal__body__top}>
-          <div className={`${styles.modal__body__wrapper}`}>
-            <div className={styles.mint__info__wrapper}>
-              <div className={styles.mint__image}>
-                <img
-                  src={createNftResponse?.image ? createNftResponse.image : ""}
-                  alt={""}
-                />
-              </div>
-              <h1>
-                {createNftResponse.name} <br /> Successfully Mined
-              </h1>
-              <h6>NFT ID {createNftResponse?.nft_id}</h6>
+              </button>
             </div>
-          </div>
-          <div
-            className={`${styles.multiple__btn__wrapper} ${styles.last__modal__btn}`}
-          >
-            <button onClick={openNftDetail} className={styles.next__btn}>
-              Open
-            </button>
-          </div>
-        </Modal.Body>
-      </Modal>
-    </>
+          </Modal.Body>
+        </Modal>
+
+        {/* NFT Mint Modal */}
+        <Modal
+            className={`${styles.initial__nft__modal} ${styles.nft__form__modal} nft__final__mobile__modal initial__modal`}
+            show={nftMint}
+            onHide={() => setNftMint(false)}
+            backdrop="static"
+            keyboard={false}
+            centered
+        >
+          <Modal.Header
+              className={`${styles.modal__header__wrapper}  ${styles.modal__header__bottom} last__modal__header`}
+              closeButton={home__allnft.length > 0}
+          ></Modal.Header>
+          {/* <button onClick={allNft} className="btnclose">X</button> */}
+          <Modal.Body className={styles.modal__body__top}>
+            <div className={`${styles.modal__body__wrapper}`}>
+              <div className={styles.mint__info__wrapper}>
+                <div className={styles.mint__image}>
+                  <img
+                      src={createNftResponse?.image ? createNftResponse.image : ""}
+                      alt={""}
+                  />
+                </div>
+                <h1>
+                  {createNftResponse.name} <br /> Successfully Mined
+                </h1>
+                <h6>NFT ID {createNftResponse?.nft_id}</h6>
+              </div>
+            </div>
+            <div
+                className={`${styles.multiple__btn__wrapper} ${styles.last__modal__btn}`}
+            >
+              <button onClick={openNftDetail} className={styles.next__btn}>
+                Open
+              </button>
+            </div>
+          </Modal.Body>
+        </Modal>
+      </>
   );
 };
 export default CreateNft;

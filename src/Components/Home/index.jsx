@@ -43,13 +43,13 @@ const HomePage = (props) => {
             The easiest way to Create NFTs and share them others. Start minting
             NFTs in NEAR's rapidly expanding ecosystem
           </h3>
-          <div className={styles.featureList}>
+          {/* <div className={styles.featureList}>
             <ul>
               <li>Create NFTs</li>
               <li>Share with Friends</li>
               <li>Explore Blockchain</li>
             </ul>
-          </div>
+          </div> */}
         </div>
 
         <div className={styles.rightSide}>
@@ -60,6 +60,16 @@ const HomePage = (props) => {
               </li>
               <li className={pageName === "contact-us" ? styles.active : ""}>
                 <Link to="/contact-us">Contact</Link>
+              </li>
+              <li className={`${styles.onlyOnDesktop}`}>
+                <Link to="/signup">
+                  <button>
+                    Get Started
+                    <span>
+                      <IoIosArrowForward />
+                    </span>
+                  </button>
+                </Link>
               </li>
               <li>
                 <button /* disabled={true} */ onClick={HandleLoginWithNear}>
@@ -75,6 +85,19 @@ const HomePage = (props) => {
             {pageName === "home" && (
               <>
                 <h2>NFT Maker App</h2>
+
+                <div
+                  className={`${styles.getStartedBtn} ${styles.onlyOnMobile}`}
+                >
+                  <Link to="/signup">
+                    <button>
+                      Get Started
+                      <span>
+                        <IoIosArrowForward />
+                      </span>
+                    </button>
+                  </Link>
+                </div>
 
                 <p className={styles.nftMakerAppDesc}>
                   The easiest way to Create NFTs and share them others. Start
@@ -92,6 +115,19 @@ const HomePage = (props) => {
                     <li>Explore Blockchain</li>
                   </ul>
                 </div>
+                {/* <div className={styles.nftAboutFeatureList}>
+                <ul>
+                  <li>
+                    Create NFTs
+                  </li>
+                  <li>
+                    Share with Friends
+                  </li>
+                  <li>
+                    Explore Blockchain
+                  </li>
+                </ul>
+                </div> */}
                 <div className={styles.getStartedBtn}>
                   <Link to="/signup">
                     <button>
@@ -123,12 +159,14 @@ const HomePage = (props) => {
                   </ul>
                 </div>
                 <div className={styles.getStartedBtn}>
-                  <button onClick={HandleLoginWithNear}>
-                    Get Started
-                    <span>
-                      <IoIosArrowForward />
-                    </span>
-                  </button>
+                  <Link to="/signup">
+                    <button>
+                      Get Started
+                      <span>
+                        <IoIosArrowForward />
+                      </span>
+                    </button>
+                  </Link>
                 </div>
               </>
             )}
@@ -177,6 +215,14 @@ const HomePage = (props) => {
                       <IoIosArrowForward />
                     </span>
                   </button>
+                  {/* <Link to="/signup">
+                    <button>
+                      Get Started
+                      <span>
+                        <IoIosArrowForward />
+                      </span>
+                    </button>
+                  </Link> */}
                 </div>
               </>
             )}

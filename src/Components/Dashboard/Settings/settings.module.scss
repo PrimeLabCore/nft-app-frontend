@@ -68,6 +68,7 @@
                         font-weight: normal;
                         font-size: 12px;
                         padding-bottom: 5px;
+                        position: relative;
                     }
                     h6{
                         margin-bottom: 0px;
@@ -142,6 +143,7 @@
     .btn__wrapper{
         display: flex;
         margin: 5px 0px;
+        margin-top: 40px;
         .next__btn {
             @include defaultButton($primary__color);
             width: 100%;
@@ -149,6 +151,15 @@
         }
     }
     
+}
+
+.defaultAuthenticMethod{
+    font-size: 22px;
+    position: absolute;
+    right: 14px;
+    top: -2px;
+    color: #03a9f4;
+    font-weight: 600;
 }
 
 @media only screen and (max-width:"767px"){

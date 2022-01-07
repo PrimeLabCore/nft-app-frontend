@@ -17,6 +17,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { API_BASE_URL, googleAccess } from "../../../Utils/config";
 import { toast } from "react-toastify";
+import ContactPopup from "../../../common/components/ContactPopup";
 const responsive = {
   superLargeDesktop: {
     // the naming can be any, depends on you.
@@ -94,14 +95,27 @@ const SendNft = () => {
   };
 
   useEffect(() => {
+    if(giftNFT__contactData){
+      setFilteredData(giftNFT__contactData);
+    }else{
+      console.log("empty dataaa.................")
+    }
+  }, [giftNFT__contactData]);
+
+  useEffect(() => {
     console.log(`nft`, nft);
     nft && setSelected(nft);
   }, [nft]);
 
   const handleNftGift = () => {
     dispatch({ type: "sendnft__close" });
-    setOpenGift(true);
+    // if (filteredData.length === 0) {
+    //   setimportContactDialog(true);
+    // } else {
+    //   setOpenGift(true);
+    // }
     setOpenPreview(false);
+    setOpenGift(true);
   };
 
   const handleNftPreview = async () => {
@@ -191,6 +205,7 @@ const SendNft = () => {
       return;
     } else {
       toast.success(`Your Contacts Were Successfully Imported From ${source}`);
+      setOpenGift(true);
       return;
     }
   };
@@ -198,7 +213,8 @@ const SendNft = () => {
   const HandleDialogOpen = () => {
     setimportContactDialog(true);
   };
-
+  const urlArray = selected?.image?.split('.');
+  const fileType = urlArray?.length ? urlArray[urlArray.length - 1] : "";
   return (
     <>
       {/* NFT Selection Modal */}
@@ -238,6 +254,9 @@ const SendNft = () => {
                 draggable={true}
               >
                 {home__allnft.map((data, i) => {
+                  const urlArray = data?.image?.split('.');
+                  const fileType = urlArray.length ? urlArray[urlArray.length - 1] : "";
+
                   return (
                     <Fragment key={nanoid()}>
                       <div
@@ -250,7 +269,25 @@ const SendNft = () => {
                       >
                         <div className={styles.mynft__box__image__wrapper}>
                           <div className={styles.mynft__box__image}>
-                            <img src={data.image} alt={data.title} />
+                            {fileType.toLowerCase() === "mp4" ?
+                                <video
+                                    style={{width: '100%', borderRadius: "8px"}}
+                                    src={data?.image}
+                                />
+                                : fileType.toLowerCase() === "mp3" ?
+                                    (
+                                        <div style={{width:"100%",padding:"0 2px"}}>
+                                          <audio style={{width:"inherit",marginTop:"60px"}} controls>
+                                            <source src={data?.image}/>
+                                          </audio>
+                                        </div>
+                                    ) :
+                                    (
+                                        <img
+                                            src={data?.image}
+                                            alt={data.name}
+                                        />
+                                    )}
                           </div>
                           <div className={styles.mynft__box__cat}>
                             <h6>{data.cat}</h6>
@@ -310,91 +347,31 @@ const SendNft = () => {
         </Modal.Body>
       </Modal>
 
+      {/* NFT Sender Modal */}
+      {/* {openGift && <GiftAnNft dashboard={true} closebutton={true} sendGiftButton={handleNftPreview}/>} */}
+
       <ImportContactsDialog
         onImport={importContact}
         status={importContactDialog}
         callback={contactImportCallback}
       />
-      {/* NFT Sender Modal */}
-      {/* {openGift && <GiftAnNft dashboard={true} closebutton={true} sendGiftButton={handleNftPreview}/>} */}
-      <Modal
-        className={`${styles.initial__nft__modal} send__nft__mobile__modal initial__modal`}
+
+      <ContactPopup
+        data={filteredData}
+        displayImportContact={false}
         show={openGift}
-        onHide={closegiftNft}
-        backdrop="static"
-        size="lg"
-        centered
-        keyboard={false}
-      >
-        <Modal.Header className={styles.modal__header__wrapper} closeButton>
-          <div className="modal__multiple__wrapper">
-            <button onClick={openInitialSendNft} className="back__btn">
-              Back
-            </button>
-            <Modal.Title>
-              <div className={styles.modal__header}>
-                <h2>Send NFT</h2>
-              </div>
-            </Modal.Title>
-          </div>
-        </Modal.Header>
-        <Modal.Body>
-          <div className={styles.modal__body__wrapper}>
-            <div className={styles.search__wrapper}>
-              <div className={styles.search__inner__wrapper}>
-                <div className={styles.search__input}>
-                  <div className={styles.searchIcon}>
-                    <SearchIcon />
-                  </div>
-                  <input
-                    type="text"
-                    placeholder="Search People"
-                    onChange={handleSearch}
-                  />
-                </div>
-              </div>
-              <button onClick={HandleDialogOpen}>Import</button>
-            </div>
-            <div className={styles.data__wrapper}>
-              {filteredData.map((value, index) => (
-                <div className={styles.data_row_container} key={nanoid()}>
-                  {/* AVATAR */}
-                  {/* <div className={styles.avatar}>
-                    <img
-                      src={value.photos[0].url}
-                      alt={value.names[0].displayName}
-                    />
-                  </div> */}
-                  {/* TEXT */}
-                  <div className={styles.textContainer}>
-                    <h6>{value.fullname}</h6>
-                    <p>{value.primary_email}</p>
-                  </div>
-                  {/* ICONS */}
-                  <div
-                    className={styles.icon}
-                    onClick={() => HandleClick(value.primary_email)}
-                  >
-                    {findIfChecked(value.primary_email, checkedState) ? (
-                      <BsCheckCircleFill className={styles.checked} />
-                    ) : (
-                      <GoPrimitiveDot className={styles.unchecked} />
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className={styles.multiple__btn__wrapper}>
-            <button onClick={handleNftPreview} className={styles.next__btn}>
-              Send Gift
-              <span>
-                <IoIosArrowForward />
-              </span>
-            </button>
-          </div>
-        </Modal.Body>
-      </Modal>
+        onClose={closegiftNft}
+        onBack={openInitialSendNft}
+        displayImportContact={false}
+        title={"Send NFT"}
+        // handleSearch={handleSearch}
+        // HandleDialogOpen={HandleDialogOpen}
+        btnText={"Send Gift"}
+        handleBtnClick={handleNftPreview}
+        // findIfChecked={findIfChecked}
+        // HandleClick={HandleClick}
+        // checkedState={checkedState}
+      />
 
       {/* NFT Preview Modal */}
       <Modal
@@ -413,7 +390,25 @@ const SendNft = () => {
           <div className={styles.modal__body__wrapper}>
             <div className={styles.mint__info__wrapper}>
               <div className={styles.mint__image}>
-                <img src={selected.image} alt="NFT Vecotry Illustartion" />
+                {fileType.toLowerCase() === "mp4" ?
+                    <video
+                        style={{width: '100%', borderRadius: "8px"}}
+                        src={selected?.image}
+                    />
+                    : fileType.toLowerCase() === "mp3" ?
+                        (
+                            <div style={{width:"100%",padding:"0 2px"}}>
+                              <audio style={{width:"inherit",marginTop:"60px"}} controls>
+                                <source src={selected?.image}/>
+                              </audio>
+                            </div>
+                        ) :
+                        (
+                            <img
+                                src={selected?.image}
+                                alt={selected.name}
+                            />
+                        )}
               </div>
               <h1>
                 {selected.name} <br /> sent successfully to

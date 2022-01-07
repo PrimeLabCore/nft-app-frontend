@@ -13,10 +13,13 @@ import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import ImportContactsDialog from "../../ImportContactsDialog/ImportContactsDialog";
 import {useNavigate} from "react-router-dom";
+import ContactPopup from "../../../common/components/ContactPopup";
 
 const Home = () => {
   const dispatch = useDispatch();
-  const [importContactDialog, setimportContactDialog] = useState(false);
+  const [importContactDialog, setImportContactDialog] = useState(false);
+  const [showContactListPopup, setShowContactListPopup] = useState(false);
+  const [allContacts, setAllContacts] = useState([]);
 
   useEffect(() => {
     if (localStorage.getItem("welcome") === "true") {
@@ -27,35 +30,41 @@ const Home = () => {
   let navigate = useNavigate();
 
   const HandleDialogOpen = () => {
-    setimportContactDialog(true);
+    setImportContactDialog(true);
   };
 
   const HandleDialogClose = () => {
-    setimportContactDialog(false);
+    setImportContactDialog(false);
   };
 
   const importContact = (data) => {
     if (data) {
+      setAllContacts(data)
       dispatch({
         type: "getGoogleContactData",
         payload: data,
       });
-      setimportContactDialog(false);
     }
   };
 
   const contactImportCallback = (error, source) => {
-    HandleDialogClose();
-
+    setImportContactDialog(false);
     if (error) {
       toast.error(`Something Went Wrong Fetching Contacts From ${source}`);
+      dispatch({ type: "createnft__open" });
       return;
     } else {
-
-      toast.success(`Your Contacts Were Successfully Imported From ${source}`);
+      toast.success(`Your Contacts Were Successfully noui Imported From ${source}`);
+      HandleDialogClose();
+      setShowContactListPopup(true);
       return;
     }
   };
+
+  const openCreateNFTPopup = ()=>{
+    setShowContactListPopup(false);
+    dispatch({ type: "createnft__open" });
+  }
 
   return (
     <>
@@ -64,10 +73,28 @@ const Home = () => {
           {/* Home Header  */}
           <HomeHeader />
 
-          <ImportContactsDialog
+
+  <ImportContactsDialog
             onImport={importContact}
             status={importContactDialog}
             callback={contactImportCallback}
+          />
+
+  <ContactPopup
+            data={allContacts}
+            displayImportContact={false}
+            show={showContactListPopup}
+            onClose={()=>{
+              openCreateNFTPopup()
+            }}
+            onBack={()=>{
+              openCreateNFTPopup()
+            }}
+            title={"Gift an NFT"}
+            btnText={"Send Gift"}
+            handleBtnClick={()=>{
+              openCreateNFTPopup()
+            }}
           />
 
           {/* Home Create NFT Container */}

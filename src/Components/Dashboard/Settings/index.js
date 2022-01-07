@@ -5,11 +5,12 @@ import { IoIosArrowForward, IoIosLogOut } from "react-icons/io";
 import { AiOutlineCheck } from "react-icons/ai";
 import user_icon from "../../../Assets/Images/user-icon.png";
 import { Container, Row, Col, Modal } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
 import TextFieldComponent from "../../../Assets/FrequentlUsedComponents/TextFieldComponent";
 import { toast } from "react-toastify";
+import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import CustomPhoneInput from "../../../common/components/CustomPhoneInput/CustomPhoneInput";
+import VerificationInput from "react-verification-input";
 
 const Settings = () => {
   const navigate = useNavigate();

@@ -272,6 +272,7 @@ export default function GiftAnNft({ closebutton, sendGiftButton, dashboard }) {
 
           {/* DATA */}
           <div
+          style={{backgroundColor: "red"}}
             className={`${
               dashboard ? styles.dashboardContainer : styles.dataContainer
             }`}
