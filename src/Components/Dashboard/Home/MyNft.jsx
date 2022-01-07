@@ -69,11 +69,6 @@ const MyNft = ({ isLink }) => {
     //getAllImages();
   }, [windowstate]);
 
-  useEffect(() => {
-    //setAlldata(nfts);
-    console.log(nfts);
-  }, [nfts]);
-
   //fetch all the nfts of the user
   useEffect(() => {
     setIsloading(true);

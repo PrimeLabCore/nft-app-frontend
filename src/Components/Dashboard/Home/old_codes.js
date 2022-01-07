@@ -35,3 +35,8 @@
 
 // mynft = [];
 // dispatch({ type: "getNft", payload: mynft });
+
+useEffect(() => {
+  setAlldata(nfts);
+  console.log(nfts);
+}, [nfts]);
