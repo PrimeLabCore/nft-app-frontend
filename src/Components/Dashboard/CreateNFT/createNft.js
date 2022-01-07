@@ -329,7 +329,7 @@ const CreateNft = (props) => {
               </div>
               <p>PNG, GIF, WEBP, MP4 or MP3. Max 100mb.</p>
             </div>
-            {console.log(selectedFile?.type?.includes("video"))}
+
             {selectedFile &&
               (selectedFile?.type?.includes("video") ? (
                 <div className="uploaded__file">

@@ -106,3 +106,6 @@
 
 setCreateNftResponse(data);
     dispatch({ type: "addNewNft", payload: data });
+
+
+     {console.log(selectedFile?.type?.includes("video"))}
