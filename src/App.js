@@ -97,7 +97,7 @@ function App() {
         return config;
       });
 
-      const response = await axios.get(`${API_BASE_URL}/api/v1/users/details`);
+      const response = await axios.get(`${API_BASE_URL}/users/details`);
       const { success, data } = response.data;
       if (success) {
         dispatch({

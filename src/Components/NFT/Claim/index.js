@@ -29,7 +29,7 @@ const Claim = () => {
   const fetchNft = async () => {
     setLoading(true);
     const response = await axios.get(
-      `${API_BASE_URL}/api/v1/user_images/fetch_user_image?uuid=${params?.invoiceId}`
+      `${API_BASE_URL}/nfts/${params?.invoiceId}`
     );
     const { data, success } = response.data;
     if (success) {

@@ -39,9 +39,10 @@ const MyNft = ({ isLink }) => {
   let dispatch = useDispatch(); //Direct assigning right now
   const [windowstate, setWindow] = useState(window.innerWidth < 767);
   const allNft = useSelector((state) => state.home__allnft);
+  const { user } = useSelector((state) => state.authReducer);
 
   const getAllImages = async () => {
-    const response = await axios.get(`${API_BASE_URL}/api/v1/user_images`);
+    const response = await axios.get(`/nfts/?user_id=${user.user_id}`);
     const { success, data } = response.data;
 
     // open the create NFT by default if no nft images found

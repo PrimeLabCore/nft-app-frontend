@@ -162,16 +162,18 @@ const CreateNft = (props) => {
   };
 
   const postNftWithImage = async (details, selectedFile) => {
-    const fd = new FormData();
-    fd.append("user_image[name]", details.title);
-    fd.append("user_image[pic]", selectedFile);
-    fd.append("user_image[description]", details.description);
-    fd.append("user_image[category]", details.category);
-    fd.append("user_image[properties]", "");
+    let fd = new FormData();
+    details.owner_id = user.user_id;
+    details.tracker_id = "";
+    details.collection_id = "";
+    details.attributes = [];
 
-    return await axios.post(`${API_BASE_URL}/api/v1/user_images`, fd, {
+    fd.append("file", selectedFile);
+    fd.append("data", JSON.stringify(details));
+
+    return await axios.post(`/nfts/`, fd, {
       headers: {
-        "Content-type": "multipart/form-data",
+        "Content-Type": "multipart/form-data",
       },
     });
   };
@@ -179,7 +181,7 @@ const CreateNft = (props) => {
   const trackConversion = async (user, transactionId, details) => {
     const requestBody = {
       transaction_id: transactionId,
-      userWallet: user.account_id,
+      userWallet: user.user_id,
       details,
     };
 
@@ -592,7 +594,7 @@ const CreateNft = (props) => {
               // disabled={loading}
               className={styles.next__btn}
             >
-              Mine NFT
+              Mint NFT
               <span>
                 <IoIosArrowForward />
               </span>
@@ -602,7 +604,7 @@ const CreateNft = (props) => {
               disabled={loading}
               className={styles.next__btn}
             >
-              Send NFT
+              Gift NFT
               <span>
                 <IoIosArrowForward />
               </span>

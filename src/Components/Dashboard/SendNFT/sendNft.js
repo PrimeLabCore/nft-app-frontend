@@ -48,6 +48,7 @@ const findIfChecked = (email, array) => {
 
 const SendNft = () => {
   let navigate = useNavigate();
+  const { user } = useSelector((state) => state.authReducer);
   const dispatch = useDispatch();
   const { nft } = useSelector((state) => state.authReducer);
   const giftNFT__contactData = useSelector(
@@ -122,15 +123,12 @@ const SendNft = () => {
     const email_array = filteredData
       .filter((item) => findIfChecked(item.email, checkedState))
       .map((item) => item.email);
-    // fd.append("email", [sendGiftEmail].toString());
-
     let final = sendGiftEmail?.length > 5 ? sendGiftEmail : email_array;
-    const resp = await axios.post(
-      `${API_BASE_URL}/api/v1/user_images/send_image?uuid=${
-        selected.uuid
-      }&emails=${[final].toString()}`,
-      fd
-    );
+    fd.append("recipient_id", [final].toString());
+    fd.append("transaction_item_id", selected.uuid);
+    fd.append("type", "gift");
+    fd.append("sender_id", user.user_id);
+    const resp = await axios.post(`/transactions`, fd);
 
     dispatch({ type: "sendnft__close" });
     dispatch({ type: "close_dialog_gift_nft" });
@@ -249,7 +247,7 @@ const SendNft = () => {
                 draggable={true}
               >
                 {home__allnft.map((data, i) => {
-                  const urlArray = data?.image?.split(".");
+                  const urlArray = data?.file?.split(".");
                   const fileType = urlArray.length
                     ? urlArray[urlArray.length - 1]
                     : "";
