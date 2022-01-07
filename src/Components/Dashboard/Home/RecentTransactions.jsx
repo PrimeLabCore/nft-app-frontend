@@ -6,6 +6,7 @@ import axios from "axios";
 
 import { BsArrowUpRight, BsArrowDownLeft } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
+import { API_BASE_URL } from "../../../Utils/config";
 
 const Transactions = () => {
   const [transactions, setTransactions] = useState([]);
@@ -13,64 +14,28 @@ const Transactions = () => {
   const { allTransactions } = useSelector((state) => state.transactionsReducer);
   const { user } = useSelector((state) => state.authReducer);
 
-  const testTransactions = [
-    {
-      transaction_id: "X7yQyklU4t8w968jD3SJ3",
-      sender_id: "K7yQyklU4t8w968jD3SJ5",
-      recipient_id: ["X24OyklU4t8w968jD3SP1", "X24OyklU4t8w968jD3SP1"],
-      transaction_item_id: "T24OyklU4t8w968jD903N",
-      transaction_value: "10 USD",
-      type: "regular",
-      status: "completed",
-      sender: true,
-      counterparty: {
-        wallet_id: "mark.near",
-        full_name: "Mark Henry",
-        email: "moisesmarques.ti@hotmail.com",
-        phone: "19024039201",
-      },
-      created: 1641355923848,
-      updated: 1641355923848,
-      formattedtime: "3 mins ago",
-    },
-    {
-      transaction_id: "X7yQyklU4t8w968jD3SJ3",
-      sender_id: "K7yQyklU4t8w968jD3SJ5",
-      recipient_id: ["X24OyklU4t8w968jD3SP1", "X24OyklU4t8w968jD3SP1"],
-      transaction_item_id: "T24OyklU4t8w968jD903N",
-      transaction_value: "10 USD",
-      type: "regular",
-      status: "completed",
-      sender: false,
-      counterparty: {
-        wallet_id: "mark.near",
-        full_name: "Mark Henry",
-        email: "moisesmarques.ti@hotmail.com",
-        phone: "19024039201",
-      },
-      created: 1641355923848,
-      updated: 1641355923848,
-      formattedtime: "3 mins ago",
-    },
-  ];
-
   useEffect(() => {
     async function fetchTransactions() {
-      // let response = await axios.get(`/transactions/list/${user.user_id}}`);
-      // let fetchedTransactions = [...response.data];
-      let fetchedTransactions = testTransactions;
+      let response = await axios.get(
+        `${API_BASE_URL}/transactions/list/${user.user_id}`
+      );
 
-      setTransactions(fetchedTransactions);
-      dispatch({ type: "fetch_transactions", payload: [fetchedTransactions] });
+      const fetchedTransactions = response.data?.data;
+
+      if (fetchedTransactions) {
+        setTransactions(fetchedTransactions);
+        dispatch({
+          type: "fetch_transactions",
+          payload: [fetchedTransactions],
+        });
+      }
     }
 
     fetchTransactions();
-  }, []);
+  }, [user]);
 
   useEffect(() => {
-    // TODO: uncomment below line to switch out for actual transactions
-    // setTransactions(allTransactions);
-    setTransactions(testTransactions);
+    setTransactions(allTransactions);
   }, [allTransactions]);
 
   return (
@@ -104,7 +69,7 @@ const Transactions = () => {
                         className={styles.transaction__name}
                       >
                         {/* {data.name} */}
-                        {data.counterparty.email}
+                        {data.counterparty?.email}
                       </a>
                     </h6>
                   </div>

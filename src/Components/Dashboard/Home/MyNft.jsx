@@ -34,52 +34,7 @@ const responsive = {
 };
 
 const MyNft = ({ isLink }) => {
-  // TODO: Remove when API is hooked up correctly
-  const testData = [
-    {
-      title: "First NFT",
-      description: "First NFT Description",
-      category: "Finance",
-      attributes: [
-        {
-          attr_name: "Size",
-          attr_value: "commodo consectetur",
-        },
-        {
-          attr_name: "Size",
-          attr_value: "dolore tempor laborum ipsum minim",
-        },
-      ],
-      file_url: "https://via.placeholder.com/300/09f/fff.png",
-      owner_id: "S7yQyklU_t8w968jD3SJo",
-      collection_id: "v5yQyklU_t8w968jD3g25",
-      tracker_id: "533om3go3mgadg",
-      created: 1641355923848,
-      updated: 1641355923848,
-    },
-    {
-      title: "Second NFT",
-      description: "First NFT Description",
-      category: "Finance",
-      attributes: [
-        {
-          attr_name: "Size",
-          attr_value: "commodo consectetur",
-        },
-        {
-          attr_name: "Size",
-          attr_value: "dolore tempor laborum ipsum minim",
-        },
-      ],
-      file_url: "https://via.placeholder.com/300/03g/fff.png",
-      owner_id: "S7yQyklU_t8w968jD3SJo",
-      collection_id: "v5yQyklU_t8w968jD3g25",
-      tracker_id: "533om3go3mgadg",
-      created: 1641355923848,
-      updated: 1641355923848,
-    },
-  ];
-  const [alldata, setAlldata] = useState(testData);
+  const [alldata, setAlldata] = useState([]);
   let navigate = useNavigate();
   let dispatch = useDispatch(); //Direct assigning right now
   const [windowstate, setWindow] = useState(window.innerWidth < 767);
@@ -87,15 +42,13 @@ const MyNft = ({ isLink }) => {
   const { user } = useSelector((state) => state.authReducer);
 
   const getAllImages = async () => {
-    const response = await axios.get(`/nfts/?user_id=${user.user_id}`);
-    const { success, data } = response.data;
+    const response = await axios.get(
+      `${API_BASE_URL}/nfts?user_id=${user.user_id}`
+    );
 
-    // open the create NFT by default if no nft images found
-    // if(response.data.data.length === 0) {
-    //   dispatch({ type: "createnft__open" });
-    // }
+    const data = response.data?.data;
 
-    if (success) {
+    if (data) {
       setAlldata(data);
       dispatch({ type: "getNft", payload: data });
     }
