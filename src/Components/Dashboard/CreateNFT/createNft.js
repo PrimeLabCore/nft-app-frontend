@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 import axios from "axios";
 
 import fileHelper from "../../../Services/fileHelper";
+import { API_BASE_URL } from "../../../Utils/config";
 
 const audioRegex = /(audio)(\/\w+)+/g;
 const videoRegex = /(video)(\/\w+)+/g;
@@ -43,7 +44,7 @@ const CreateNft = (props) => {
     category: "Digital Arts",
   });
 
-  const [formValues, setFormValues] = useState([{ [``]: "" }]);
+  const [formValues, setFormValues] = useState([{}]);
 
   const formInfo = {
     selectedFile,
@@ -51,24 +52,20 @@ const CreateNft = (props) => {
     ...formValues,
   };
 
-  let handleChange = (id, clikedInput) => (e) => {
-    const get_index = formValues.findIndex((value) => value.id === id);
-    formValues[get_index] = {
-      ...formValues[get_index],
-      [`${clikedInput}_${id}`]: e.target.value,
+  let handleChange = (index, clikedInput) => (e) => {
+    formValues[index] = {
+      ...formValues[index],
+      [`${clikedInput}`]: e.target.value,
     };
     setFormValues([...formValues]);
   };
 
   let addFormFields = () => {
-    const id = nanoid();
     setFormValues([
       ...formValues,
-      // generating unique keys for each object
       {
-        [`size_${id}`]: "",
-        [`extension_${id}`]: "",
-        id: id,
+        attr_name: "",
+        attr_value: "",
       },
     ]);
   };
@@ -87,7 +84,7 @@ const CreateNft = (props) => {
       type: "nft__detail",
       payload: createNftResponse,
     });
-    navigate(`/nft/${createNftResponse.uuid}`);
+    navigate(`/nft/${createNftResponse.nft_id}`);
   };
 
   let removeFormFields = (i) => {
@@ -137,10 +134,8 @@ const CreateNft = (props) => {
       toast.error("File Cannot Be Empty");
     }
   };
-  const handleNftPreview = () => {
+  const handleNftPreview = async () => {
     if (details.title && details.description && details.category) {
-      //create NFT here
-
       dispatch({ type: "createnft__close" });
       setNftForm(false);
       setNftPreview(true);
@@ -148,23 +143,6 @@ const CreateNft = (props) => {
     } else {
       toast.error("All fields are required");
     }
-  };
-
-  const postNftWithImage = async (details, selectedFile) => {
-    let fd = new FormData();
-    details.owner_id = user.user_id;
-    details.tracker_id = "";
-    details.collection_id = "";
-    details.attributes = [];
-
-    fd.append("file", selectedFile);
-    fd.append("data", JSON.stringify(details));
-
-    return await axios.post(`/nfts/`, fd, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
   };
 
   const trackConversion = async (user, transactionId, details) => {
@@ -184,56 +162,74 @@ const CreateNft = (props) => {
     );
   };
 
-  const mineNft = async (comingFrom) => {
-    try {
-      setLoading(true);
-      const postNftResponse = await postNftWithImage(details, selectedFile);
+  const mineNft = async (type) => {
+    setLoading(true);
 
-      const { data, success } = postNftResponse.data;
-      // setSelectedFile(data);
-      setCreateNftResponse(data);
-      dispatch({ type: "addNewNft", payload: data });
-      if (success) {
+    let nftDetail = { ...details };
+    nftDetail.attributes = formValues;
+    nftDetail.owner_id = user.user_id;
+
+    if (type === "mint") {
+      nftDetail.action_type = "mine";
+    }
+
+    let nftData = new FormData();
+    nftData.append("file", selectedFile);
+    nftData.append("data", JSON.stringify(nftDetail));
+
+    axios
+      .post(`${API_BASE_URL}/nfts`, nftData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((response) => {
+        dispatch({
+          type: "current_selected_nft",
+          payload: response.data?.data,
+        });
+
+        setCreateNftResponse(response.data?.data);
+
+        toast.success(
+          `NFT ${details.title} was successfully ${
+            type === "mint" ? "mined" : "created"
+          }.`
+        );
+
         dispatch({ type: "createnft__close" });
         setNftForm(false);
         setNftPreview(false);
-        if (comingFrom !== "create") {
-          setNftMint(true);
-        }
+
+        //reset create nft form
         setDetails({
           title: "",
           description: "",
           category: "Digital Arts",
         });
         setSelectedFile("");
-        setFormValues([
-          {
-            [`size_12345`]: "",
-            [`extension_12345`]: "",
-            id: "12345",
-          },
-        ]);
-      }
+        setFormValues([]);
 
-      if (comingFrom === "create") {
-        if (data) {
-          dispatch({
-            type: "current_selected_nft",
-            payload: data,
-          });
+        if (type === "gift") {
+          sendNftModal();
+
+          if (transactionId) {
+            trackConversion(user, transactionId, details);
+          }
         }
-        sendNftModal();
 
-        if (transactionId) {
-          trackConversion(user, transactionId, details);
+        if (type === "mint") {
+          setNftMint(true);
         }
-      }
-
-      setLoading(false);
-    } catch (e) {
-      setLoading(false);
-      toast.error("Error while uploading file");
-    }
+      })
+      .catch((error) => {
+        if (error.response.data) {
+          toast.error(error.response.data.message);
+        }
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   const goBack = (modalName) => {
@@ -323,7 +319,7 @@ const CreateNft = (props) => {
               <p>{requiredFileExtensionsDescription}</p>
               <p>Max {fileHelper.convertBytesToMB(fileHelper.DEFAULT_MAX_FILE_SIZE_IN_BYTES)}MB</p>
             </div>
-            {console.log(selectedFile?.type?.includes("video"))}
+
             {selectedFile &&
               (selectedFile?.type?.includes("video") ? (
                 <div className="uploaded__file">
@@ -423,16 +419,16 @@ const CreateNft = (props) => {
                   <div className={styles.form__group__inner} key={index}>
                     <input
                       type="text"
-                      value={val[`size_${val.id}`]}
+                      value={val[`attr_name`]}
                       placeholder="Tag"
-                      onChange={handleChange(val.id, "size")}
+                      onChange={handleChange(index, "attr_name")}
                     />
 
                     <input
                       type="text"
-                      value={val[`extension_${val.id}`]}
+                      value={val[`attr_value`]}
                       placeholder="Value"
-                      onChange={handleChange(val.id, "extension")}
+                      onChange={handleChange(index, "attr_value")}
                     />
 
                     {index ? (
@@ -557,7 +553,7 @@ const CreateNft = (props) => {
           </div>
           <div className={styles.multiple__btn__wrapper}>
             <button
-              onClick={mineNft}
+              onClick={() => mineNft("mint")}
               // disabled={loading}
               className={styles.next__btn}
             >
@@ -567,7 +563,7 @@ const CreateNft = (props) => {
               </span>
             </button>
             <button
-              onClick={() => mineNft("create")}
+              onClick={() => mineNft("gift")}
               disabled={loading}
               className={styles.next__btn}
             >
@@ -599,12 +595,16 @@ const CreateNft = (props) => {
             <div className={styles.mint__info__wrapper}>
               <div className={styles.mint__image}>
                 <img
-                  src={createNftResponse?.image ? createNftResponse.image : ""}
+                  src={
+                    createNftResponse?.file_url
+                      ? createNftResponse.file_url
+                      : ""
+                  }
                   alt={""}
                 />
               </div>
               <h1>
-                {createNftResponse.name} <br /> Successfully Mined
+                {createNftResponse.title} <br /> Successfully Mined
               </h1>
               <h6>NFT ID {createNftResponse?.nft_id}</h6>
             </div>

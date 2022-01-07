@@ -59,3 +59,53 @@
                   </div>
                 </div>
               </div>
+
+
+
+[`size_${id}`]: "",
+        [`extension_${id}`]: "",
+        id: id,
+
+         //create NFT here
+
+      let nftDetail = { ...details };
+      nftDetail.attributes = formValues;
+      nftDetail.owner_id = user.user_id;
+ setLoading(true);
+   let nftData = new FormData();
+      nftData.append("file", selectedFile);
+      nftData.append("data", JSON.stringify(nftDetail));
+
+      //Ajax Request to create user
+      axios
+        .post(`${API_BASE_URL}/nfts`, nftData, {
+          headers: {
+            "Content-type": "multipart/form-data",
+          },
+        })
+        .then((response) => {
+          toast.success(`NFT ${details.title} was successfully created.`);
+        
+          console.log(response);
+        })
+        .catch((error) => {
+          if (error.response.data) {
+            toast.error(error.response.data.message);
+          }
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+
+         {
+            [`size_12345`]: "",
+            [`extension_12345`]: "",
+            id: "12345",
+          },
+
+
+setCreateNftResponse(data);
+    dispatch({ type: "addNewNft", payload: data });
+
+
+     {console.log(selectedFile?.type?.includes("video"))}
