@@ -15,15 +15,6 @@ import axios from "axios";
 import { API_BASE_URL } from "../../Utils/config";
 import { LoaderIconBlue } from "../../Components/Generic/icons";
 
-const checkAllContacts = (data) =>
-  data.map((item) => ({ checked: true, email: item.primary_email }));
-
-const findIfChecked = (email, array) => {
-  const foundItem = array.find((item) => item.email === email);
-  if (foundItem) return foundItem.checked;
-  else return false;
-};
-
 const ContactPopup = ({
   show,
   onClose,
@@ -31,7 +22,6 @@ const ContactPopup = ({
   title,
   btnText,
   handleBtnClick,
-  data,
   displayImportContact,
 }) => {
   let navigate = useNavigate();
@@ -39,12 +29,16 @@ const ContactPopup = ({
 
   const [selectedContacts, setSelectedContacts] = useState([]);
 
-  const giftNFT__contactData = useSelector(
-    (state) => state.giftNFT__contactData
-  );
   const { user, contacts } = useSelector((state) => state.authReducer);
 
   const [isLoading, setIsloading] = useState(false);
+
+  const [filteredData, setFilteredData] = useState(contacts);
+
+  useEffect(() => {
+    setFilteredData(contacts);
+    checkAllContacts(contacts);
+  }, [contacts]);
 
   //get contacts
   useEffect(() => {
@@ -56,7 +50,8 @@ const ContactPopup = ({
       .then((response) => {
         //save user details
         console.log(response.data);
-        dispatch({ type: "update_contacts", payload: response.data.data });
+        let tempContacts = response.data.data;
+        dispatch({ type: "update_contacts", payload: tempContacts });
       })
       .catch((error) => {
         if (error.response.data) {
@@ -68,52 +63,52 @@ const ContactPopup = ({
       });
   }, []);
 
-  const [filteredData, setFilteredData] = useState(
-    data ? data : giftNFT__contactData ? giftNFT__contactData : []
-  );
+  const getPrimaryEmail = (contact) => {
+    if (contact.email.length > 0) {
+      return contact.email[0].address;
+    } else {
+      return "";
+    }
+  };
 
-  const [checkedState, setCheckedState] = useState(
-    checkAllContacts(data ? data : giftNFT__contactData || [])
-  );
+  const getPrimaryPhone = (contact) => {
+    if (contact.phone.length > 0) {
+      return contact.phone[0].number;
+    } else {
+      return "";
+    }
+  };
+
+  const getFulllName = (contact) => {
+    return contact.first_name + " " + contact.last_name;
+  };
+
+  const findIfChecked = (contact_id) => {
+    return selectedContacts.includes(contact_id);
+  };
+
+  const checkAllContacts = (data) =>
+    //selecting all the contacts
+    setSelectedContacts(data.map((contact) => contact.contact_id));
 
   const [importContactDialog, setimportContactDialog] =
     useState(displayImportContact);
 
-  const [sendGiftEmail, setSendGiftEmail] = useState("");
-
-  const HandleClick = (email) => {
-    const updatedCheckedState = checkedState.map((item) =>
-      item.email === email
-        ? { ...item, checked: !item.checked }
-        : { ...item, checked: item.checked }
-    );
-    setCheckedState(updatedCheckedState);
-
-    const contacts = updatedCheckedState.filter(
-      (item) => item.checked === true
-    );
-
-    console.log("the contacts length", contacts);
-
-    setSelectedContacts(contacts);
+  const HandleClick = (contact_id) => {
+    if (selectedContacts.includes(contact_id)) {
+      setSelectedContacts(selectedContacts.filter((cId) => cId !== contact_id));
+    } else {
+      setSelectedContacts([...selectedContacts, contact_id]);
+    }
   };
 
   const importContact = (data) => {
     if (data) {
-      dispatch({
-        type: "getGoogleContactData",
-        payload: data,
-      });
-      setCheckedState(checkAllContacts(data));
+      checkAllContacts(data);
       setimportContactDialog(false);
       setFilteredData(data);
     }
   };
-
-  useEffect(() => {
-    setFilteredData(data);
-    setCheckedState(checkAllContacts(data));
-  }, [data]);
 
   const contactImportCallback = (error, source) => {
     setimportContactDialog(false);
@@ -134,11 +129,14 @@ const ContactPopup = ({
   const handleSearch = (event) => {
     let value = event.target.value.toLowerCase();
     let result = [];
-    result = giftNFT__contactData.filter((data) => {
-      return data.primary_email.toLowerCase().search(value) !== -1;
+    result = contacts.filter((data) => {
+      return (
+        getFulllName(data).toLowerCase().search(value) !== -1 ||
+        getPrimaryEmail(data).toLowerCase().search(value) !== -1 ||
+        getPrimaryPhone(data).toLowerCase().search(value) !== -1
+      );
     });
     setFilteredData(result);
-    setSendGiftEmail(event.target.value.toLowerCase());
   };
 
   return (
@@ -192,19 +190,19 @@ const ContactPopup = ({
             <div className={styles.data__wrapper}>
               <div>{isLoading && <LoaderIconBlue />}</div>
 
-              {contacts.map((value, index) => (
+              {filteredData.map((contact, index) => (
                 <div className={styles.data_row_container} key={nanoid()}>
                   {/* TEXT */}
                   <div className={styles.textContainer}>
-                    <h6>{value.first_name}</h6>
-                    <p>{value.email[0].address}</p>
+                    <h6>{getFulllName(contact)}</h6>
+                    <p>{getPrimaryEmail(contact)}</p>
                   </div>
                   {/* ICONS */}
                   <div
                     className={styles.icon}
-                    onClick={() => HandleClick(value.__selectedMail__)}
+                    onClick={() => HandleClick(contact.contact_id)}
                   >
-                    {findIfChecked(value.__selectedMail__, checkedState) ? (
+                    {findIfChecked(contact.contact_id) ? (
                       <BsCheckCircleFill className={styles.checked} />
                     ) : (
                       <GoPrimitiveDot className={styles.unchecked} />
@@ -217,7 +215,7 @@ const ContactPopup = ({
           <div className={styles.multiple__btn__wrapper}>
             <button
               disabled={selectedContacts.length === 0 ? true : false}
-              onClick={handleBtnClick}
+              onClick={handleBtnClick(selectedContacts)}
               className={styles.next__btn}
             >
               {btnText}

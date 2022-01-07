@@ -106,8 +106,17 @@ const SendNft = () => {
     setOpenGift(true);
   };
 
-  const handleNftPreview = async (selectedContacts) => {
-    console.log("here", selectedContacts);
+  const handleNftPreview = async () => {
+    const fd = new FormData();
+    const email_array = filteredData
+      .filter((item) => findIfChecked(item.email, checkedState))
+      .map((item) => item.email);
+    let final = sendGiftEmail?.length > 5 ? sendGiftEmail : email_array;
+    fd.append("recipient_id", [final].toString());
+    fd.append("transaction_item_id", selected.uuid);
+    fd.append("type", "gift");
+    fd.append("sender_id", user.user_id);
+    const resp = await axios.post(`/transactions`, fd);
 
     dispatch({ type: "sendnft__close" });
     dispatch({ type: "close_dialog_gift_nft" });
@@ -333,6 +342,7 @@ const SendNft = () => {
       />
 
       <ContactPopup
+        data={filteredData}
         displayImportContact={false}
         //show={openGift}
         show={true}
