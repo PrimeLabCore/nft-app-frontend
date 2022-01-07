@@ -76,7 +76,7 @@ const CreateNft = (props) => {
       type: "nft__detail",
       payload: createNftResponse,
     });
-    navigate(`/nft/${createNftResponse.uuid}`);
+    navigate(`/nft/${createNftResponse.nft_id}`);
   };
 
   let removeFormFields = (i) => {
