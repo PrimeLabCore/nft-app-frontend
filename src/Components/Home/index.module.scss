@@ -209,8 +209,14 @@
     color: #000;
     text-decoration: none;
   }
+
+  @media (orientation: landscape) and (max-width: 990px) {
+    .mainContainer .rightSide{
+        flex: 0.6;
+    }
+  } 
   
-  @media screen and (max-width: 850px) {
+  @media screen and (max-width: 990px) {
     .mainContainer{
         flex-direction: column;
     }
