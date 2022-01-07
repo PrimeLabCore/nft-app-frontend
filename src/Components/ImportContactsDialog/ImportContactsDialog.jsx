@@ -109,8 +109,11 @@ const ImportContactsDialog = ({ status, callback, onImport }) => {
 
             var all = document.getElementsByClassName("initial__modal");
             for (var i = 0; i < all.length; i++) {
-              all[i].style.display = "block";
+              all[i].style.display = "none";
             }
+
+            // Mimicing close button click
+            document.getElementsByClassName("btn-close")[0].click();
 
             return false;
           },
