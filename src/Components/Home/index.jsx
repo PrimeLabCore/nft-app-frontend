@@ -56,10 +56,10 @@ const HomePage = (props) => {
           <div className={styles.rightSideHeader}>
             <ul>
               <li className={pageName === "about-us" ? styles.active : ""}>
-                <Link to="/about-us">About</Link>
+                <Link to="/about-us">About Us</Link>
               </li>
               <li className={pageName === "contact-us" ? styles.active : ""}>
-                <Link to="/contact-us">Contact</Link>
+                <Link to="/contact-us">Contact Us</Link>
               </li>
               {/* <li className={`${styles.onlyOnDesktop}`}>
                 <Link to="/signup">
