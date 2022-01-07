@@ -13,6 +13,8 @@ import styles from "../../Components/Dashboard/SendNFT/sendNft.module.css";
 import ImportContactsDialog from "../../Components/ImportContactsDialog/ImportContactsDialog";
 import axios from "axios";
 import { API_BASE_URL } from "../../Utils/config";
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import AppLoader from "../../Components/Generic/AppLoader";
 
 const checkAllContacts = (data) =>
   data.map((item) => ({ checked: true, email: item.primary_email }));
@@ -39,7 +41,7 @@ const ContactPopup = ({
   const giftNFT__contactData = useSelector(
     (state) => state.giftNFT__contactData
   );
-  const { user } = useSelector((state) => state.authReducer);
+  const { user, contacts } = useSelector((state) => state.authReducer);
 
   const [isLoading, setIsloading] = useState(false);
 
@@ -53,7 +55,7 @@ const ContactPopup = ({
       .then((response) => {
         //save user details
         console.log(response.data);
-        dispatch({ type: "login_Successfully", payload: user.user_info });
+        dispatch({ type: "update_contacts", payload: response.data });
       })
       .catch((error) => {
         if (error.response.data) {
@@ -179,6 +181,10 @@ const ContactPopup = ({
               </button>
             </div>
             <div className={styles.data__wrapper}>
+              <div>
+                <AppLoader />
+              </div>
+
               {filteredData.map((value, index) => (
                 <div className={styles.data_row_container} key={nanoid()}>
                   {/* AVATAR */}
