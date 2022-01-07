@@ -13,7 +13,6 @@ import styles from "../../Components/Dashboard/SendNFT/sendNft.module.css";
 import ImportContactsDialog from "../../Components/ImportContactsDialog/ImportContactsDialog";
 import axios from "axios";
 import { API_BASE_URL } from "../../Utils/config";
-import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import { LoaderIconBlue } from "../../Components/Generic/icons";
 
 const checkAllContacts = (data) =>
