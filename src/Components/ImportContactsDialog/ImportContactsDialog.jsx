@@ -4,6 +4,10 @@ import { makeStyles } from "@material-ui/core/styles";
 import React, { useEffect } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { IoLogoApple, IoLogoMicrosoft } from "react-icons/io5";
+import { useSelector, useDispatch } from "react-redux";
+import { API_BASE_URL } from "../../../Utils/config";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -52,6 +56,28 @@ const useStyles = makeStyles((theme) => ({
 
 const ImportContactsDialog = ({ status, callback, onImport }) => {
   const classes = useStyles();
+  const { user } = useSelector((state) => state.authReducer);
+
+  const PostContactToBackend = (contacts) => {
+    //validate account id
+
+    //signup body
+
+    //Ajax Request to create user
+    axios
+      .post(`${API_BASE_URL}/user/create`, user)
+      .then((response) => {
+        //save user details
+        //disable contact import dialog on signup
+        localStorage.removeItem("welcome");
+      })
+      .catch((error) => {
+        if (error.response.data) {
+          toast.error(error.response.data.message);
+        }
+      })
+      .finally(() => {});
+  };
 
   useEffect(() => {
     LoadCloudSponge(() => {
@@ -61,20 +87,7 @@ const ImportContactsDialog = ({ status, callback, onImport }) => {
           skipSourceMenu: true,
           rootNodeSelector: "#cloudsponge-widget-container",
           beforeDisplayContacts: function (contacts, source, owner) {
-            //normalize contacts
-            let contactsNormalized = contacts.map((contact) => {
-              return {
-                fullname: contact.fullName(),
-                primary_phone: contact.primaryPhone(),
-                primary_email: contact.primaryEmail(),
-                first_name: contact.first_name,
-                last_name: contact.last_name,
-                phones: contact.phone,
-                emails: contact.email,
-              };
-            });
-
-            //post this normalized contact to backend to persist in database
+            //post contact to backend to persist in database
 
             //send this normalized contact back to UI
             onImport(contactsNormalized);
