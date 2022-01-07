@@ -51,13 +51,12 @@ const SendNft = () => {
     (state) => state.giftNFT__contactData
   );
 
-  const [filteredData, setFilteredData] = useState(
-    giftNFT__contactData ? giftNFT__contactData : []
-  );
+  const [filteredData, setFilteredData] = useState([]);
 
   const [openPreview, setOpenPreview] = useState(false);
   const [openGift, setOpenGift] = useState(false);
   const [selected, setSelected] = useState(nft ? nft : "");
+
   const [sendGiftEmail, setSendGiftEmail] = useState("");
   const [isLoading, setIsloading] = useState(false);
 
@@ -98,7 +97,6 @@ const SendNft = () => {
   useEffect(() => {
     setIsloading(true);
 
-    //Ajax Request to create user
     axios
       .get(`${API_BASE_URL}/nfts?user_id=${user.user_id}`)
       .then((response) => {
@@ -129,6 +127,8 @@ const SendNft = () => {
   const handleNftPreview = async (selectedContacts) => {
     console.log("here", selectedContacts);
 
+    setFilteredData(selectedContacts);
+
     //send nft here to backend
 
     dispatch({ type: "sendnft__close" });
@@ -148,12 +148,13 @@ const SendNft = () => {
     navigate("/transactions");
   };
 
-  const nftClicked = (e, i) => {
-    if (selected === i) {
+  const nftClicked = (data, i) => {
+    /* if (selected === i) {
       setSelected("");
     } else {
       setSelected(e);
-    }
+    } */
+    setSelected(data);
   };
 
   useEffect(() => {
@@ -373,7 +374,7 @@ const SendNft = () => {
                 {fileType.toLowerCase() === "mp4" ? (
                   <video
                     style={{ width: "100%", borderRadius: "8px" }}
-                    src={selected?.image}
+                    src={selected?.file_url}
                   />
                 ) : fileType.toLowerCase() === "mp3" ? (
                   <div style={{ width: "100%", padding: "0 2px" }}>
@@ -381,24 +382,17 @@ const SendNft = () => {
                       style={{ width: "inherit", marginTop: "60px" }}
                       controls
                     >
-                      <source src={selected?.image} />
+                      <source src={selected?.file_url} />
                     </audio>
                   </div>
                 ) : (
-                  <img src={selected?.image} alt={selected.name} />
+                  <img src={selected?.file_url} alt={selected.title} />
                 )}
               </div>
               <h1>
-                {selected.name} <br /> sent successfully to
+                {selected.title} <br /> sent successfully to
               </h1>
-              <h6>
-                {sendGiftEmail?.length > 5
-                  ? sendGiftEmail.split(",").length
-                  : filteredData.filter((item) =>
-                      findIfChecked(item.primary_email, checkedState)
-                    ).length}{" "}
-                contacts
-              </h6>
+              <h6>{filteredData.length} contacts</h6>
             </div>
           </div>
           <div

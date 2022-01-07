@@ -24,3 +24,15 @@
 //const home__allnft = useSelector((state) => state.home__allnft); //Defined in reducer function
 
 // let updatedNFT = useSelector((state) => state.home__allnft); //Defined in reducer function
+
+{
+  sendGiftEmail?.length > 5
+    ? sendGiftEmail.split(",").length
+    : filteredData.filter((item) =>
+        findIfChecked(item.primary_email, checkedState)
+      ).length;
+}
+{
+  (" ");
+}
+contacts;

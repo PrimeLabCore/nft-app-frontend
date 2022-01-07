@@ -37,7 +37,7 @@ const ContactPopup = ({
 
   useEffect(() => {
     setFilteredData(contacts);
-    checkAllContacts(contacts);
+    //checkAllContacts(contacts);
   }, [contacts]);
 
   //get contacts
@@ -87,9 +87,10 @@ const ContactPopup = ({
     return selectedContacts.includes(contact_id);
   };
 
-  const checkAllContacts = (data) =>
+  const checkAllContacts = (data) => {
     //selecting all the contacts
     setSelectedContacts(data.map((contact) => contact.contact_id));
+  };
 
   const [importContactDialog, setimportContactDialog] =
     useState(displayImportContact);
