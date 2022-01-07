@@ -292,6 +292,8 @@ const CreateNft = (props) => {
       "image/png",
       "image/gif",
       "image/webp",
+      "image/jpeg",
+      "image/jpg",
     ];
     let target = event.target || window.event.srcElement,
       files = target.files;
