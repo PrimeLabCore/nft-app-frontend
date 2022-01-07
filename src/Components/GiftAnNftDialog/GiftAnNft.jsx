@@ -336,6 +336,7 @@ export default function GiftAnNft({ closebutton, sendGiftButton, dashboard }) {
       {/* this dialog will open when import button is clicked */}
       {!dashboard && (
         <ImportContactsDialog
+        setImportContactDialog={setimportContactDialog}
           onImport={importContact}
           status={importContactDialog}
           callback={contactImportCallback}

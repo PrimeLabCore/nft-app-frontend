@@ -77,6 +77,7 @@ const Home = () => {
   <ImportContactsDialog
             onImport={importContact}
             status={importContactDialog}
+            setImportContactDialog={setImportContactDialog}
             callback={contactImportCallback}
           />
 

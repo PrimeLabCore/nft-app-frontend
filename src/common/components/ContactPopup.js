@@ -209,6 +209,7 @@ const ContactPopup = ({
 
       {importContactDialog ? (
         <ImportContactsDialog
+          setImportContactDialog={setimportContactDialog}
           onImport={importContact}
           status={importContactDialog}
           callback={contactImportCallback}

@@ -4,6 +4,10 @@ import { makeStyles } from "@material-ui/core/styles";
 import React, { useEffect } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { IoLogoApple, IoLogoMicrosoft } from "react-icons/io5";
+import { useDispatch } from "react-redux";
+
+import IconButton from '@mui/material/IconButton';
+import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -50,8 +54,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ImportContactsDialog = ({ status, callback, onImport }) => {
+const ImportContactsDialog = ({ status, callback, onImport, setImportContactDialog }) => {
   const classes = useStyles();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     LoadCloudSponge(() => {
@@ -147,6 +152,10 @@ const ImportContactsDialog = ({ status, callback, onImport }) => {
     if (existingScript && callback) callback();
   };
 
+  const handleDialogueClose = () => {
+    setImportContactDialog(false);
+  }
+
   return (
     <div>
       <div id="cloudsponge-widget-container"></div>
@@ -162,6 +171,19 @@ const ImportContactsDialog = ({ status, callback, onImport }) => {
         onClose={callback}
         id="contactDialogBack"
       >
+        <IconButton
+          aria-label="close"
+          onClick={handleDialogueClose}
+          sx={{
+            position: 'absolute',
+            right: 8,
+            top: 8,
+            color: (theme) => theme.palette.grey[500],
+          }}
+        >
+          <CancelRoundedIcon />
+        </IconButton>
+      
         <button
           className={classes.mainContainer + " " + "cloudsponge-launch"}
           data-cloudsponge-source="gmail"
