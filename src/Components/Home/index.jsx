@@ -61,7 +61,7 @@ const HomePage = (props) => {
               <li className={pageName === "contact-us" ? styles.active : ""}>
                 <Link to="/contact-us">Contact</Link>
               </li>
-              <li className={`${styles.onlyOnDesktop}`}>
+              {/* <li className={`${styles.onlyOnDesktop}`}>
                 <Link to="/signup">
                   <button>
                     Get Started
@@ -70,7 +70,7 @@ const HomePage = (props) => {
                     </span>
                   </button>
                 </Link>
-              </li>
+              </li> */}
               <li>
                 <button /* disabled={true} */ onClick={HandleLoginWithNear}>
                   Login

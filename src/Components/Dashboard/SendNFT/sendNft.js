@@ -95,15 +95,14 @@ const SendNft = () => {
   };
 
   useEffect(() => {
-    if(giftNFT__contactData){
+    if (giftNFT__contactData) {
       setFilteredData(giftNFT__contactData);
-    }else{
-      console.log("empty dataaa.................")
+    } else {
+      console.log("empty dataaa.................");
     }
   }, [giftNFT__contactData]);
 
   useEffect(() => {
-    console.log(`nft`, nft);
     nft && setSelected(nft);
   }, [nft]);
 
@@ -133,8 +132,6 @@ const SendNft = () => {
       fd
     );
 
-    console.log(`resp`, resp);
-
     dispatch({ type: "sendnft__close" });
     dispatch({ type: "close_dialog_gift_nft" });
     setOpenGift(false);
@@ -163,8 +160,6 @@ const SendNft = () => {
   useEffect(() => {
     dispatch({ type: "close_dialog_gift_nft" });
   }, []);
-
-  console.log(`selected`, selected);
 
   const handleSearch = (event) => {
     let value = event.target.value.toLowerCase();
@@ -213,7 +208,7 @@ const SendNft = () => {
   const HandleDialogOpen = () => {
     setimportContactDialog(true);
   };
-  const urlArray = selected?.image?.split('.');
+  const urlArray = selected?.image?.split(".");
   const fileType = urlArray?.length ? urlArray[urlArray.length - 1] : "";
   return (
     <>
@@ -254,8 +249,10 @@ const SendNft = () => {
                 draggable={true}
               >
                 {home__allnft.map((data, i) => {
-                  const urlArray = data?.image?.split('.');
-                  const fileType = urlArray.length ? urlArray[urlArray.length - 1] : "";
+                  const urlArray = data?.image?.split(".");
+                  const fileType = urlArray.length
+                    ? urlArray[urlArray.length - 1]
+                    : "";
 
                   return (
                     <Fragment key={nanoid()}>
@@ -269,25 +266,26 @@ const SendNft = () => {
                       >
                         <div className={styles.mynft__box__image__wrapper}>
                           <div className={styles.mynft__box__image}>
-                            {fileType.toLowerCase() === "mp4" ?
-                                <video
-                                    style={{width: '100%', borderRadius: "8px"}}
-                                    src={data?.image}
-                                />
-                                : fileType.toLowerCase() === "mp3" ?
-                                    (
-                                        <div style={{width:"100%",padding:"0 2px"}}>
-                                          <audio style={{width:"inherit",marginTop:"60px"}} controls>
-                                            <source src={data?.image}/>
-                                          </audio>
-                                        </div>
-                                    ) :
-                                    (
-                                        <img
-                                            src={data?.image}
-                                            alt={data.name}
-                                        />
-                                    )}
+                            {fileType.toLowerCase() === "mp4" ? (
+                              <video
+                                style={{ width: "100%", borderRadius: "8px" }}
+                                src={data?.image}
+                              />
+                            ) : fileType.toLowerCase() === "mp3" ? (
+                              <div style={{ width: "100%", padding: "0 2px" }}>
+                                <audio
+                                  style={{
+                                    width: "inherit",
+                                    marginTop: "60px",
+                                  }}
+                                  controls
+                                >
+                                  <source src={data?.image} />
+                                </audio>
+                              </div>
+                            ) : (
+                              <img src={data?.image} alt={data.name} />
+                            )}
                           </div>
                           <div className={styles.mynft__box__cat}>
                             <h6>{data.cat}</h6>
@@ -390,25 +388,23 @@ const SendNft = () => {
           <div className={styles.modal__body__wrapper}>
             <div className={styles.mint__info__wrapper}>
               <div className={styles.mint__image}>
-                {fileType.toLowerCase() === "mp4" ?
-                    <video
-                        style={{width: '100%', borderRadius: "8px"}}
-                        src={selected?.image}
-                    />
-                    : fileType.toLowerCase() === "mp3" ?
-                        (
-                            <div style={{width:"100%",padding:"0 2px"}}>
-                              <audio style={{width:"inherit",marginTop:"60px"}} controls>
-                                <source src={selected?.image}/>
-                              </audio>
-                            </div>
-                        ) :
-                        (
-                            <img
-                                src={selected?.image}
-                                alt={selected.name}
-                            />
-                        )}
+                {fileType.toLowerCase() === "mp4" ? (
+                  <video
+                    style={{ width: "100%", borderRadius: "8px" }}
+                    src={selected?.image}
+                  />
+                ) : fileType.toLowerCase() === "mp3" ? (
+                  <div style={{ width: "100%", padding: "0 2px" }}>
+                    <audio
+                      style={{ width: "inherit", marginTop: "60px" }}
+                      controls
+                    >
+                      <source src={selected?.image} />
+                    </audio>
+                  </div>
+                ) : (
+                  <img src={selected?.image} alt={selected.name} />
+                )}
               </div>
               <h1>
                 {selected.name} <br /> sent successfully to

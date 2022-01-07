@@ -72,8 +72,6 @@ const Verification = () => {
         nonce: details.verification,
       })
       .then((response) => {
-        console.log(response);
-
         //save user details
         localStorage.setItem("user", JSON.stringify(response.data));
 

@@ -133,8 +133,6 @@ const CreateAnAccount = () => {
     axios
       .post(`${API_BASE_URL}/user/create`, user)
       .then((response) => {
-        console.log(response);
-
         //save user details
         localStorage.setItem("user", JSON.stringify(response.data));
 

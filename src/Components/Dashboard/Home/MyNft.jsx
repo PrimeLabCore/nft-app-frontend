@@ -42,7 +42,6 @@ const MyNft = ({ isLink }) => {
 
   const getAllImages = async () => {
     const response = await axios.get(`${API_BASE_URL}/api/v1/user_images`);
-    console.log(`response.data`, response.data);
     const { success, data } = response.data;
 
     // open the create NFT by default if no nft images found
@@ -106,13 +105,11 @@ const MyNft = ({ isLink }) => {
   //   };
 
   const detailPage = (data, index) => {
-    console.log(`data`, data);
     dispatch({ type: "nft__detail", payload: data });
     navigate(`/nft/${data.uuid}`);
   };
 
   // const nft__data = useSelector((state)=> state.home__allnft) //Defined in reducer function
-  console.log(`alldata`, alldata);
   return (
     <>
       <div
@@ -150,8 +147,10 @@ const MyNft = ({ isLink }) => {
                 draggable={true}
               >
                 {alldata.map((data, i) => {
-                  const urlArray = data?.image?.split('.');
-                  const fileType = urlArray.length ? urlArray[urlArray.length - 1] : "";
+                  const urlArray = data?.image?.split(".");
+                  const fileType = urlArray.length
+                    ? urlArray[urlArray.length - 1]
+                    : "";
                   return (
                     <Fragment key={nanoid()}>
                       <div
@@ -161,25 +160,26 @@ const MyNft = ({ isLink }) => {
                       >
                         <div className={styles.mynft__box__image__wrapper}>
                           <div className={styles.mynft__box__image}>
-                            {fileType.toLowerCase() === "mp4" ?
-                                <video
-                                    style={{width: '100%', borderRadius: "8px"}}
-                                    src={data?.image}
-                                />
-                                : fileType.toLowerCase() === "mp3" ?
-                                    (
-                                        <div style={{width:"100%",padding:"0 2px"}}>
-                                          <audio style={{width:"inherit",marginTop:"60px"}} controls>
-                                            <source src={data?.image}/>
-                                          </audio>
-                                        </div>
-                                    ) :
-                                    (
-                                        <img
-                                            src={data?.image}
-                                            alt={data.name}
-                                        />
-                                    )}
+                            {fileType.toLowerCase() === "mp4" ? (
+                              <video
+                                style={{ width: "100%", borderRadius: "8px" }}
+                                src={data?.image}
+                              />
+                            ) : fileType.toLowerCase() === "mp3" ? (
+                              <div style={{ width: "100%", padding: "0 2px" }}>
+                                <audio
+                                  style={{
+                                    width: "inherit",
+                                    marginTop: "60px",
+                                  }}
+                                  controls
+                                >
+                                  <source src={data?.image} />
+                                </audio>
+                              </div>
+                            ) : (
+                              <img src={data?.image} alt={data.name} />
+                            )}
                           </div>
                           <div className={styles.mynft__box__cat}>
                             <h6>{data?.category}</h6>
@@ -201,8 +201,10 @@ const MyNft = ({ isLink }) => {
             <>
               <Row>
                 {alldata.map((data, i) => {
-                  const urlArray = data?.image?.split('.');
-                  const fileType=urlArray.length?urlArray[urlArray.length-1]:"";
+                  const urlArray = data?.image?.split(".");
+                  const fileType = urlArray.length
+                    ? urlArray[urlArray.length - 1]
+                    : "";
                   return (
                     <Fragment key={nanoid()}>
                       <Col
@@ -219,25 +221,32 @@ const MyNft = ({ isLink }) => {
                         >
                           <div className={styles.mynft__box__image__wrapper}>
                             <div className={styles.mynft__box__image}>
-                              {fileType.toLowerCase() ==="mp4"?
-                                  <video
-                                      style={{ width: '100%',borderRadius:"8px" }}
-                                      src={data?.image}
-                                  />
-                                  : fileType.toLowerCase() ==="mp3" ?
-                                      (
-                                          <div style={{width:"100%",paddingRight:"10px"}}>
-                                            <audio style={{width:"inherit",marginTop:"60px",marginLeft:"5px"}} controls>
-                                              <source src={data?.image} />
-                                            </audio>
-                                          </div>
-                                      ) :
-                                      (
-                                          <img
-                                              src={data?.image}
-                                              alt={data.name}
-                                          />
-                                      )}
+                              {fileType.toLowerCase() === "mp4" ? (
+                                <video
+                                  style={{ width: "100%", borderRadius: "8px" }}
+                                  src={data?.image}
+                                />
+                              ) : fileType.toLowerCase() === "mp3" ? (
+                                <div
+                                  style={{
+                                    width: "100%",
+                                    paddingRight: "10px",
+                                  }}
+                                >
+                                  <audio
+                                    style={{
+                                      width: "inherit",
+                                      marginTop: "60px",
+                                      marginLeft: "5px",
+                                    }}
+                                    controls
+                                  >
+                                    <source src={data?.image} />
+                                  </audio>
+                                </div>
+                              ) : (
+                                <img src={data?.image} alt={data.name} />
+                              )}
                             </div>
                             <div className={styles.mynft__box__cat}>
                               <h6>{data?.category}</h6>
