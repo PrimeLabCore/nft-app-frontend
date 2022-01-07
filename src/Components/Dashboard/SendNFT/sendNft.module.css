@@ -574,6 +574,17 @@
   overflow: auto;
 }
 
+.initial__nft__modal
+.modal__body__wrapper
+.data__wrapper
+.data_row_container
+.textContainer
+p {
+max-width: 350px;
+text-overflow: ellipsis;
+overflow: hidden;
+}
+
 @media only screen and (max-width: 767px) {
   .mynft__box__wrapper .selected__mynft__box__description__wrapper .checked {
     width: 20px !important;

@@ -197,7 +197,7 @@ const ContactPopup = ({
                   {/* TEXT */}
                   <div className={styles.textContainer}>
                     <h6>{value.first_name}</h6>
-                    <p>{value.email[0].address}</p>
+                    <p title={value.email[0].address}>{value.email[0].address}</p>
                   </div>
                   {/* ICONS */}
                   <div
