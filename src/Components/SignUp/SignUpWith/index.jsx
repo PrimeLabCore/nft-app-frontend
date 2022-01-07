@@ -321,11 +321,16 @@ const SignUpWith = () => {
     }
   };
 
+  const clearFieldData = (field) => {
+    setinputFields({...inputFields, [field] : ""});
+  }
+  
   return (
     <div className={styles.half_container}>
       {/* EMAIL AND PHONE SIGNUP CONATINER */}
       <div className={styles.buttonContainer} onClick={handleClick}>
         <button
+        onClick={() => {clearFieldData("phone")}}
           value="email"
           className={`${styles.button} ${styles.secondary} ${
             loginForm === "email" ? styles.active : ""
@@ -335,6 +340,7 @@ const SignUpWith = () => {
         </button>
         <button
           value="phone"
+          onClick={() => {clearFieldData("email")}}
           className={`${styles.button} ${styles.secondary} ${
             loginForm === "phone" ? styles.active : ""
           }`}
