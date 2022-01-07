@@ -53,9 +53,7 @@ const Home = () => {
       dispatch({ type: "createnft__open" });
       return;
     } else {
-      toast.success(
-        `Your Contacts Were Successfully noui Imported From ${source}`
-      );
+      toast.success(`Your Contacts Were Successfully Imported From ${source}`);
       HandleDialogClose();
       setShowContactListPopup(true);
       return;
