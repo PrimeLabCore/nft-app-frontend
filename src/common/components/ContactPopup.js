@@ -37,7 +37,7 @@ const ContactPopup = ({
 
   useEffect(() => {
     setFilteredData(contacts);
-    //checkAllContacts(contacts);
+    checkAllContacts(contacts);
   }, [contacts]);
 
   //get contacts
