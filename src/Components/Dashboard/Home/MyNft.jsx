@@ -49,13 +49,9 @@ const MyNft = ({ isLink }) => {
       `${API_BASE_URL}/nfts?user_id=${user.user_id}`
     );
 
-<<<<<<< HEAD
-    if (success) {
-=======
     const data = response.data?.data;
 
     if (data) {
->>>>>>> cb60b2e9b4e6876ed2a299fa3ad041ac60830f31
       setAlldata(data);
       dispatch({ type: "getNft", payload: data });
     }
@@ -80,7 +76,6 @@ const MyNft = ({ isLink }) => {
 
   //fetch all the nfts of the user
   useEffect(() => {
-<<<<<<< HEAD
     setIsloading(true);
 
     //Ajax Request to create user
@@ -100,12 +95,6 @@ const MyNft = ({ isLink }) => {
         setIsloading(false);
       });
   }, []);
-=======
-    // mynft = [];
-    // dispatch({ type: "getNft", payload: mynft });
-    // setAlldata(allNft);
-  }, [allNft]);
->>>>>>> cb60b2e9b4e6876ed2a299fa3ad041ac60830f31
 
   const handleChange = () => {
     dispatch({ type: "createnft__open" });
