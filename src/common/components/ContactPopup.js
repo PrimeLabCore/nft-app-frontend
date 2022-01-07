@@ -38,6 +38,8 @@ const ContactPopup = ({
   let navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const [selectedContacts, setSelectedContacts] = useState([]);
+
   const giftNFT__contactData = useSelector(
     (state) => state.giftNFT__contactData
   );
@@ -87,6 +89,14 @@ const ContactPopup = ({
         : { ...item, checked: item.checked }
     );
     setCheckedState(updatedCheckedState);
+
+    const contacts = updatedCheckedState.filter(
+      (item) => item.checked === true
+    );
+
+    console.log("the contacts length", contacts);
+
+    setSelectedContacts(contacts);
   };
 
   const importContact = (data) => {
@@ -215,7 +225,11 @@ const ContactPopup = ({
             </div>
           </div>
           <div className={styles.multiple__btn__wrapper}>
-            <button onClick={handleBtnClick} className={styles.next__btn}>
+            <button
+              disabled={selectedContacts.length === 0 ? true : false}
+              onClick={handleBtnClick}
+              className={styles.next__btn}
+            >
               {btnText}
               <span>
                 <IoIosArrowForward />
