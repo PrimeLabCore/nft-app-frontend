@@ -523,7 +523,7 @@
 .nft__form__modal .modal__body__wrapper .mint__info__wrapper h6 {
   font-size: 16.8px;
 }
-.mynft__box__image__wrapper img{
+.mynft__box__image__wrapper img {
   width: 100%;
 }
 
@@ -540,4 +540,8 @@ Class to disable the dropdown
 .form__category__dropdown {
   -webkit-appearance: none;
   appearance: none;
+}
+
+.next__btn:disabled {
+  background-color: #bdbdbd !important;
 }
