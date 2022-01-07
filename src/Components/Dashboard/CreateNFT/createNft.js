@@ -8,6 +8,7 @@ import { IoIosArrowForward } from "react-icons/io";
 import { AiOutlinePlus } from "react-icons/ai";
 import { toast } from "react-toastify";
 import axios from "axios";
+import { includes } from "lodash";
 import { API_BASE_URL } from "../../../Utils/config";
 
 const audioRegex = /(audio)(\/\w+)+/g;
@@ -285,10 +286,21 @@ const CreateNft = (props) => {
 
     // FileReader support
     const imageSizeLimit = 100000000; // 50 mb
+    const acceptedFileTypes = [
+      "audio/mpeg",
+      "video/mp4",
+      "image/png",
+      "image/gif",
+      "image/webp",
+    ];
     let target = event.target || window.event.srcElement,
       files = target.files;
     if (FileReader && files && files.length) {
-      // console.log(`files[0]`, files[0]);
+      if (!includes(acceptedFileTypes, files[0].type)) {
+        toast.error("Unsupported file format");
+        return;
+      }
+
       if (files[0].size <= imageSizeLimit) {
         let file__reader = new FileReader();
         file__reader.onload = function () {
