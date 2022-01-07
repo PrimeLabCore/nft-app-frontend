@@ -5,7 +5,7 @@ import React, { useEffect } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { IoLogoApple, IoLogoMicrosoft } from "react-icons/io5";
 import { useSelector, useDispatch } from "react-redux";
-import { API_BASE_URL } from "../../../Utils/config";
+import { API_BASE_URL } from "../../Utils/config";
 import axios from "axios";
 import { toast } from "react-toastify";
 
@@ -58,17 +58,24 @@ const ImportContactsDialog = ({ status, callback, onImport }) => {
   const classes = useStyles();
   const { user } = useSelector((state) => state.authReducer);
 
-  const PostContactToBackend = (contacts) => {
-    //validate account id
+  const PostContactToBackend = (contacts, source) => {
+    //add owner infor to contacts
 
-    //signup body
+    let newcontacts = contacts.map((c) => ({
+      ...c,
+      owner_id: user.user_id,
+      app_id: "NFT Maker App",
+      source,
+    }));
 
     //Ajax Request to create user
     axios
-      .post(`${API_BASE_URL}/user/create`, user)
+      .post(`${API_BASE_URL}/contacts/import`, newcontacts)
       .then((response) => {
-        //save user details
-        //disable contact import dialog on signup
+        console.log(response.data);
+        toast.success(response.data.message);
+
+        //disable contact import dialog on login/signup
         localStorage.removeItem("welcome");
       })
       .catch((error) => {
@@ -87,10 +94,18 @@ const ImportContactsDialog = ({ status, callback, onImport }) => {
           skipSourceMenu: true,
           rootNodeSelector: "#cloudsponge-widget-container",
           beforeDisplayContacts: function (contacts, source, owner) {
-            //post contact to backend to persist in database
+            let source_title =
+              source === "office365"
+                ? "Microsoft"
+                : source === "icloud"
+                ? "Apple"
+                : "Google";
 
-            //send this normalized contact back to UI
-            onImport(contactsNormalized);
+            //post contact to backend to persist in database
+            PostContactToBackend(contacts, source_title);
+
+            //send contact back to UI
+            onImport();
 
             var all = document.getElementsByClassName("initial__modal");
             for (var i = 0; i < all.length; i++) {

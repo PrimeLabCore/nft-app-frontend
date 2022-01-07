@@ -22,7 +22,6 @@ const Home = () => {
   const [allContacts, setAllContacts] = useState([]);
 
   useEffect(() => {
-    //HandleDialogOpen();
     if (localStorage.getItem("welcome") === "true") {
       HandleDialogOpen();
     }
