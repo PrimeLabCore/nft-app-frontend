@@ -31,8 +31,6 @@ const Details = () => {
 
   const nft__detail = useSelector((state) => state.nft__detail);
 
-  console.log(`nft__detail`, nft__detail);
-
   return (
     <>
       <div className={styles.details__wrapper}>

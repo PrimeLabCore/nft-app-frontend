@@ -1,13 +1,16 @@
-import React, { useState } from "react";
-import styles from "./SignIn.module.css";
-import { useNavigate } from "react-router-dom";
-import { BsArrowLeftRight } from "react-icons/bs";
-import TextField from "@material-ui/core/TextField";
+import { InputAdornment } from "@material-ui/core";
 // import MenuItem from "@material-ui/core/MenuItem";
 import { makeStyles } from "@material-ui/core/styles";
-import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
+import React, { useState } from "react";
+import { BsArrowLeftRight } from "react-icons/bs";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import TextFieldComponent from "../../Assets/FrequentlUsedComponents/TextFieldComponent";
 import { API_BASE_URL } from "../../Utils/config";
+import AppLoader from "../Generic/AppLoader";
+import styles from "./SignIn.module.css";
 
 const useStyles = makeStyles((theme) => ({
   inputfield: {
@@ -27,49 +30,60 @@ const SignIn = () => {
   let navigate = useNavigate();
   const classes = useStyles();
   const [email, setemail] = useState("");
+  const [accountId, setAccountId] = useState("");
   const dispatch = useDispatch();
   const { redirectUrl } = useSelector((state) => state.authReducer);
+  const [isLoading, setIsloading] = useState(false);
+
+  const doesAccountStringHaveValidCharacters = (accountString) => {
+    const matchesCharacterRequirements = /^[a-z_0-9-]+$/i.test(accountString);
+    const hasUppercaseLetter = /[A-Z]+?/.test(accountString);
+
+    return matchesCharacterRequirements && !hasUppercaseLetter;
+  };
+
+  const onAccountChange = (e) => {
+    const { value } = e.target;
+
+    if (!value || doesAccountStringHaveValidCharacters(value)) {
+      setAccountId(value);
+    }
+  };
+
+  const doesAccountIdHaveValidLength = (accountString) =>
+    accountString.length > 1 && accountString.length <= 64;
 
   const handleLogin = async () => {
-    const fd = new FormData();
-    // if (loginForm === "email") {
-    fd.append("user[email]", email);
-    // } else {
-    //   fd.append("user[password]", 11223344);
-    // }
-
-    const response = await axios.post(`${API_BASE_URL}/login`, fd);
-    const { status } = response;
-
-    if (status === 200 || status === 201) {
-      const {
-        headers: { authorization },
-        data: { data },
-      } = response;
-
-      axios.interceptors.request.use(function (config) {
-        // const token = store.getState().session.token;
-        config.headers.Authorization = authorization;
-
-        return config;
-      });
-      dispatch({
-        type: "login_Successfully",
-        payload: { ...data, token: authorization },
-      });
-      // localStorage.setItem(
-      //   "user",
-      //   JSON.stringify({ ...data, token: authorization })
-      // );
-      navigate(redirectUrl ? redirectUrl : "/");
-    } else {
-      navigate("verification");
+    if (!doesAccountIdHaveValidLength(accountId)) {
+      toast.warn("Please enter an account ID of between 2 and 64 characters.");
+      return;
     }
+    setIsloading(true);
+
+    //Ajax Request to send otp
+    axios
+      .post(`${API_BASE_URL}/login`, {
+        walletName: accountId.includes(".near")
+          ? accountId
+          : accountId + ".near",
+      })
+      .then((response) => {
+        navigate("/signin/verification/" + accountId);
+      })
+      .catch((error) => {
+        if (error.response.data) {
+          toast.error(error.response.data.message);
+        }
+      })
+      .finally(() => {
+        setIsloading(false);
+      });
   };
 
   return (
     <>
       <div className={styles.half_container}>
+        {isLoading && <AppLoader />}
         <div className={styles.childContainer}>
           <BsArrowLeftRight className={styles.icon} />
           <div className={styles.requestText}>
@@ -88,25 +102,26 @@ const SignIn = () => {
           {/* TEXT FIELD */}
 
           <div className={styles.textField}>
-            <TextField
-              id="outlined-select-currency"
-              //   select
+            <TextFieldComponent
+              label="ACCOUNT ID"
               variant="outlined"
-              //   placeholder="Johndoe.near"
-              placeholder="johndoe@gmail.com"
-              value={email}
-              className={classes.inputfield}
-              fullWidth={true}
-              inputProps={{
-                className: classes.inputStyles,
+              // InputValue={details.id}
+              InputValue={accountId}
+              name="id"
+              HandleInputChange={onAccountChange}
+              placeholder="accountId"
+              type="text"
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment
+                    position="start"
+                    className={`${styles.button} ${styles.secondary} ${styles.active}`}
+                  >
+                    <span>.near</span>
+                  </InputAdornment>
+                ),
               }}
-              onChange={(e) => setemail(e.target.value)}
-            >
-              {/* this will be mapped by using map function */}
-              {/* <MenuItem value={"Johndoe.near"}>Johndoe.near</MenuItem>
-              <MenuItem value={"Johndoe.near"}>Johndoe.near</MenuItem>
-              <MenuItem value={"Johndoe.near"}>Johndoe.near</MenuItem> */}
-            </TextField>
+            />
           </div>
 
           {/* BUTTON CONTAINER */}

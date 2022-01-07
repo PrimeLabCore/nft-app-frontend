@@ -26,15 +26,12 @@ const Claim = () => {
   let params = useParams();
   const dispatch = useDispatch();
 
-  console.log(`invoiceId`, params?.invoiceId);
-
   const fetchNft = async () => {
     setLoading(true);
     const response = await axios.get(
-      `${API_BASE_URL}/api/v1/user_images/fetch_user_image?uuid=${params?.invoiceId}`
+      `${API_BASE_URL}/nfts/${params?.invoiceId}`
     );
     const { data, success } = response.data;
-    console.log(`response`, data);
     if (success) {
       setNftDetail(data);
       dispatch({
@@ -59,7 +56,6 @@ const Claim = () => {
     );
     const { status } = response;
     const { success, message } = response.data;
-    console.log(`response`, response.data);
     if (success) {
       toast.success(message);
       navigate("/");
@@ -112,7 +108,6 @@ const Claim = () => {
     navigate("/signup");
   };
 
-  console.log(`nftDetail`, nftDetail);
   return (
     <>
       <div className={styles.details__wrapper}>

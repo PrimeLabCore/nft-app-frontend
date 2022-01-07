@@ -75,7 +75,6 @@ const ImportContactsDialog = ({ status, callback, onImport }) => {
             });
 
             //post this normalized contact to backend to persist in database
-            console.log(contactsNormalized);
 
             //send this normalized contact back to UI
             onImport(contactsNormalized);
