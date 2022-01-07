@@ -16,6 +16,7 @@ const TransactionHistory = () => {
   const [transactions, setTransactions] = useState([]);
   const { allTransactions } = useSelector((state) => state.transactionsReducer);
   let navigate = useNavigate();
+  const { user } = useSelector((state) => state.authReducer);
 
   useEffect(() => {
     window.addEventListener(
@@ -57,44 +58,42 @@ const TransactionHistory = () => {
 
   const alltransactions2 = [
     {
-      transaction: "sent",
-      id: "#17372",
-      sender: { email: "aaa@aa.cc" },
-      receiver: { email: "aaa@aa.cc" },
-      name: "michael.near",
-      time: "3 days ago",
+      transaction_id: "X7yQyklU4t8w968jD3SJ3",
+      sender_id: "K7yQyklU4t8w968jD3SJ5",
+      recipient_id: ["X24OyklU4t8w968jD3SP1", "X24OyklU4t8w968jD3SP1"],
+      transaction_item_id: "T24OyklU4t8w968jD903N",
+      transaction_value: "10 USD",
+      type: "regular",
+      status: "completed",
+      sender: true,
+      counterparty: {
+        wallet_id: "mark.near",
+        full_name: "Mark Henry",
+        email: "moisesmarques.ti@hotmail.com",
+        phone: "19024039201",
+      },
+      created: 1641355923848,
+      updated: 1641355923848,
+      formattedtime: "3 mins ago",
     },
     {
-      transaction: "received",
-      id: "#8982",
-      sender: { email: "aaa@aa.cc" },
-      receiver: { email: "aaa@aa.cc" },
-      name: "0x748....4d849",
-      time: "3 days ago",
-    },
-    {
-      transaction: "sent",
-      id: "#17372",
-      sender: { email: "aaa@aa.cc" },
-      receiver: { email: "aaa@aa.cc" },
-      name: "jordan.near",
-      time: "3 days ago",
-    },
-    {
-      transaction: "received",
-      id: "#8982",
-      sender: { email: "aaa@aa.cc" },
-      receiver: { email: "aaa@aa.cc" },
-      name: "0x748....4d849",
-      time: "3 days ago",
-    },
-    {
-      transaction: "sent",
-      id: "#17372",
-      sender: { email: "aaa@aa.cc" },
-      receiver: { email: "aaa@aa.cc" },
-      name: "michael.near",
-      time: "3 days ago",
+      transaction_id: "X7yQyklU4t8w968jD3SJ3",
+      sender_id: "K7yQyklU4t8w968jD3SJ5",
+      recipient_id: ["X24OyklU4t8w968jD3SP1", "X24OyklU4t8w968jD3SP1"],
+      transaction_item_id: "T24OyklU4t8w968jD903N",
+      transaction_value: "10 USD",
+      type: "regular",
+      status: "completed",
+      sender: false,
+      counterparty: {
+        wallet_id: "mark.near",
+        full_name: "Mark Henry",
+        email: "moisesmarques.ti@hotmail.com",
+        phone: "19024039201",
+      },
+      created: 1641355923848,
+      updated: 1641355923848,
+      formattedtime: "3 mins ago",
     },
   ];
 
@@ -184,9 +183,9 @@ const TransactionHistory = () => {
           {alltransactions2
             .filter((data) =>
               tabs === "sent"
-                ? data.transaction === "sent"
+                ? !!data.sender
                 : tabs === "received"
-                ? data.transaction === "received"
+                ? !data.sender
                 : data
             )
             .map((data) => {
@@ -195,26 +194,17 @@ const TransactionHistory = () => {
                   <div
                     className={styles.transaction__list}
                     style={{
-                      cursor:
-                        data.transaction === "received" ? "pointer" : null,
+                      cursor: !!data.sender ? "pointer" : null,
                     }}
-                    onClick={() =>
-                      data.transaction === "received" && openClaim(data)
-                    }
+                    onClick={() => !data.sender && openClaim(data)}
                   >
                     <div className={styles.transaction__action}>
                       <div className={styles.icon__wrapper}>
-                        {data.transaction === "sent" ? (
-                          <BsArrowUpRight />
-                        ) : (
-                          <BsArrowDownLeft />
-                        )}
+                        {data.sender ? <BsArrowUpRight /> : <BsArrowDownLeft />}
                       </div>
                       <h6>
-                        <span>{data.sender.email}</span> <br />
-                        {data.transaction === "sent"
-                          ? "Sent to"
-                          : "Received from"}{" "}
+                        <span>{user.wallet_id}</span> <br />
+                        {data.sender ? "Sent to" : "Received from"}{" "}
                         {/* <a
                           href="https://explorer.near.org/"
                           target="_blank"
@@ -229,7 +219,7 @@ const TransactionHistory = () => {
                           //   rel="noreferrer"
                           className={styles.transaction__name}
                         >
-                          {data.receiver.email}
+                          {data.counterparty.email}
                         </span>
                       </h6>
                     </div>
@@ -237,7 +227,7 @@ const TransactionHistory = () => {
                       {/* <p>{data.time}</p> */}
                       <p>
                         {moment
-                          .utc(data.created_at)
+                          .utc(data.created)
                           .local()
                           .startOf("seconds")
                           .fromNow()}
