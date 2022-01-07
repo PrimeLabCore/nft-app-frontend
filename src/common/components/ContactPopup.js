@@ -14,7 +14,7 @@ import ImportContactsDialog from "../../Components/ImportContactsDialog/ImportCo
 import axios from "axios";
 import { API_BASE_URL } from "../../Utils/config";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
-import AppLoader from "../../Components/Generic/AppLoader";
+import { LoaderIconBlue } from "../../Components/Generic/icons";
 
 const checkAllContacts = (data) =>
   data.map((item) => ({ checked: true, email: item.primary_email }));
@@ -55,7 +55,7 @@ const ContactPopup = ({
       .then((response) => {
         //save user details
         console.log(response.data);
-        dispatch({ type: "update_contacts", payload: response.data });
+        dispatch({ type: "update_contacts", payload: response.data.data });
       })
       .catch((error) => {
         if (error.response.data) {
@@ -181,30 +181,21 @@ const ContactPopup = ({
               </button>
             </div>
             <div className={styles.data__wrapper}>
-              <div>
-                <AppLoader />
-              </div>
+              <div>{isLoading && <LoaderIconBlue />}</div>
 
-              {filteredData.map((value, index) => (
+              {contacts.map((value, index) => (
                 <div className={styles.data_row_container} key={nanoid()}>
-                  {/* AVATAR */}
-                  {/* <div className={styles.avatar}>
-                    <img
-                      src={value.photos[0].url}
-                      alt={value.names[0].displayName}
-                    />
-                  </div> */}
                   {/* TEXT */}
                   <div className={styles.textContainer}>
-                    <h6>{value.fullname}</h6>
-                    <p>{value.primary_email}</p>
+                    <h6>{value.first_name}</h6>
+                    <p>{value.email[0].address}</p>
                   </div>
                   {/* ICONS */}
                   <div
                     className={styles.icon}
-                    onClick={() => HandleClick(value.primary_email)}
+                    onClick={() => HandleClick(value.__selectedMail__)}
                   >
-                    {findIfChecked(value.primary_email, checkedState) ? (
+                    {findIfChecked(value.__selectedMail__, checkedState) ? (
                       <BsCheckCircleFill className={styles.checked} />
                     ) : (
                       <GoPrimitiveDot className={styles.unchecked} />
