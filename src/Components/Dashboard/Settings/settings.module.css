@@ -52,8 +52,8 @@
   -webkit-box-pack: justify;
       -ms-flex-pack: justify;
           justify-content: space-between;
-  background: #FFFFFF;
-  border: 1px solid #DEDEDE;
+  background: #ffffff;
+  border: 1px solid #dedede;
   border-radius: 8px;
   padding: 25px 22px;
   cursor: pointer;
@@ -142,12 +142,14 @@
           justify-content: space-between;
   padding-bottom: 20px;
   margin-bottom: 20px;
-  border-bottom: 1.2px solid #DEDEDE;
+  border-bottom: 1.2px solid #dedede;
 }
 
-.connection__modal .modal__body__wrapper .name__wrapper h6 {
+.connection__modal .modal__body__wrapper .name__wrapper span {
+  max-width: 80%;
   font-weight: 600;
   font-size: 19.2px;
+  word-break: break-all;
 }
 
 .connection__modal .modal__body__wrapper .name__wrapper .checked {
@@ -222,7 +224,7 @@
   height: 100%;
 }
 
-.defaultAuthenticMethod{
+.defaultAuthenticMethod {
   font-size: 22px;
   position: absolute;
   right: 14px;
@@ -230,57 +232,17 @@
   color: #03a9f4;
   font-weight: 600;
 }
-.verficationContainer, .verficationContainerEndText{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.verficationContainer p{
-  color: #808080;
-}
-.verficationContainerEndText .link, .modalSubtitle span{
-  color: #39C0BA;
-  font-weight: 500;
-}
-.verficationContainerEndText{
-  padding-top: 40px;
-  padding-bottom: 40px
-}
-.verficationContainerEndText p{
-  margin: 0px;
-}
-.modalSubtitle{
-  font-weight: 300;
-  font-size: 16px;
-  line-height: 20px;
-  text-align: center;
-  color: #808080;
-}
-.modalSubtitle span{
-  color: #2f80ed;
-  font-weight: 400;
-}
-.authPopupBtnContainer button{
-  width: 86%;
-  margin: 0px auto;
-}
+
 @media only screen and (max-width: 767px) {
   .connection__modal .modal__body__wrapper {
     margin: auto;
     padding: 20px 10px;
   }
-  .connection__modal .modal__body__wrapper .name__wrapper h6 {
+  .connection__modal .modal__body__wrapper .name__wrapper span {
     max-width: 260px;
     text-overflow: ellipsis;
     overflow: hidden;
+    word-break: break-all;
   }
-}
-
-
-
-.contact-country-select{
-  width: 100%;
-  margin-bottom: 14px !important;
-  height: 42px;
 }
 /*# sourceMappingURL=settings.module.css.map */
