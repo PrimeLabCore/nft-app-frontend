@@ -298,7 +298,7 @@ const Settings = () => {
             <div className="modal__title__wrapper">
               <Modal.Title>
                 <div className={styles.modal__header}>
-                  <h2>Change {details}</h2>
+                  <h2>Change {details.replace(/_/g, " ")}</h2>
                 </div>
               </Modal.Title>
             </div>
