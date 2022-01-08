@@ -41,7 +41,7 @@ const TransactionHistory = () => {
         setTransactions(fetchedTransactions);
         dispatch({
           type: "fetch_transactions",
-          payload: [fetchedTransactions],
+          payload: fetchedTransactions,
         });
       }
     }
