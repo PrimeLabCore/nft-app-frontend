@@ -79,6 +79,8 @@ const MyNft = ({ isLink }) => {
       .then((response) => {
         //save user details
         let tempNfts = response.data.data;
+        // console.log("data nfts", tempNfts);
+        setAlldata(tempNfts);
         dispatch({ type: "update_nfts", payload: tempNfts });
       })
       .catch((error) => {

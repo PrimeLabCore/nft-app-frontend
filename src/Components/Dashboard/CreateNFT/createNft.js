@@ -295,7 +295,7 @@ const CreateNft = (props) => {
       >
         <Modal.Header
           className={styles.modal__header__wrapper}
-          closeButton={home__allnft.length > 0}
+          closeButton={home__allnft?.nfts.length > 0}
         >
           <div className="modal__title__wrapper">
             <Modal.Title>
