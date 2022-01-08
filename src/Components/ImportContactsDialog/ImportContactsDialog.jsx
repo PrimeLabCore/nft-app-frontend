@@ -58,7 +58,7 @@ const ImportContactsDialog = ({ status, callback, onImport }) => {
   const classes = useStyles();
   const { user } = useSelector((state) => state.authReducer);
 
-  const PostContactToBackend = (contacts, source) => {
+  const PostContactToBackend = async (contacts, source) => {
     //add owner infor to contacts
 
     let newcontacts = contacts.map((c) => ({
@@ -101,36 +101,38 @@ const ImportContactsDialog = ({ status, callback, onImport }) => {
                 ? "Apple"
                 : "Google";
 
-            //post contact to backend to persist in database
-            PostContactToBackend(contacts, source_title);
-
-            //send contact back to UI
-            onImport();
-
             var all = document.getElementsByClassName("initial__modal");
             for (var i = 0; i < all.length; i++) {
               all[i].style.display = "block";
             }
+
+            //post contact to backend to persist in database
+            PostContactToBackend(contacts, source_title);
+
+            //call callback functions
+            onImport();
 
             return false;
           },
           beforeLaunch: function () {
+            var all = document.getElementsByClassName("contactDialogBack");
+            for (var i = 0; i < all.length; i++) {
+              all[i].style.visibility = "hidden";
+            }
             var all = document.getElementsByClassName("initial__modal");
             for (var i = 0; i < all.length; i++) {
               all[i].style.display = "none";
             }
-
-            document.getElementById("contactDialogBack").style.visibility =
-              "hidden";
           },
           beforeClosing: function () {
+            var all = document.getElementsByClassName("contactDialogBack");
+            for (var i = 0; i < all.length; i++) {
+              all[i].style.visibility = "inherit";
+            }
             var all = document.getElementsByClassName("initial__modal");
             for (var i = 0; i < all.length; i++) {
               all[i].style.display = "block";
             }
-
-            document.getElementById("contactDialogBack").style.visibility =
-              "inherit";
           },
           afterImport: function (source, success) {
             let source_title =
@@ -187,7 +189,7 @@ const ImportContactsDialog = ({ status, callback, onImport }) => {
           style: { borderRadius: 20, cursor: "pointer", padding: 20 },
         }}
         onClose={callback}
-        id="contactDialogBack"
+        class="contactDialogBack"
       >
         <button
           className={classes.mainContainer + " " + "cloudsponge-launch"}

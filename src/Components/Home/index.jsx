@@ -1,23 +1,16 @@
-import React, { useEffect, useState } from "react";
-import styles from "./index.module.css";
-import { useNavigate, useLocation, Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-
-import Img from "../../Assets/Images/bg-img.png";
-import Logo from "../../Assets/Images/logo.png";
+import React, { useState } from "react";
 import {
   IoIosArrowForward,
-  IoLogoFacebook,
-  IoMdMap,
-  IoIosMegaphone,
   IoMdMail,
-  IoIosContact,
-  IoMdPhoneLandscape,
+  IoMdMap,
   IoMdPhonePortrait,
 } from "react-icons/io";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 import HomeCard1 from "../../Assets/Images/home-card-1.svg";
 import HomeCard2 from "../../Assets/Images/home-card-2.svg";
-import { API_BASE_URL } from "../../Utils/config";
+import Logo from "../../Assets/Images/logo.png";
+import styles from "./index.module.css";
 
 const HomePage = (props) => {
   const dispatch = useDispatch();
