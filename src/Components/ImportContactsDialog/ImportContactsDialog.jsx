@@ -58,6 +58,8 @@ const ImportContactsDialog = ({ status, callback, onImport }) => {
   const classes = useStyles();
   const { user } = useSelector((state) => state.authReducer);
 
+  const dispatch = useDispatch();
+
   const PostContactToBackend = (contacts, source) => {
     //add owner infor to contacts
 
@@ -112,8 +114,8 @@ const ImportContactsDialog = ({ status, callback, onImport }) => {
               all[i].style.display = "none";
             }
 
-            // Mimicing close button click
-            document.getElementsByClassName("btn-close")[0].click();
+            // Open Create NFT Dialog
+            dispatch({ type: "createnft__open" });
 
             return false;
           },
