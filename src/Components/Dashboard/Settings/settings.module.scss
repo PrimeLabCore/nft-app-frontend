@@ -1,26 +1,25 @@
 @import "../../../Assets/Styles/mixins";
 @import "../../../Assets/Styles/partials";
 
-.settings__header__top{
-    background:white;
+.settings__header__top {
+    background: white;
     padding: 15px 0px;
-    .backArrow{
-        position:absolute;
+    .backArrow {
+        position: absolute;
         left: 5px;
-        button{
+        button {
             background-color: transparent;
             border: none;
-            &:focus{
+            &:focus {
                 outline: none;
             }
-            svg{
+            svg {
                 color: $primary__color;
                 font-size: 22px;
             }
         }
-        
     }
-    h1{
+    h1 {
         text-align: center;
         font-weight: 500;
         font-size: 21px;
@@ -28,41 +27,40 @@
     }
 }
 
-
-.settings__wrapper{
-    .settings__acc__wrapper{
+.settings__wrapper {
+    .settings__acc__wrapper {
         margin: 50px 0px;
-        .settings__acc__inner{
+        .settings__acc__inner {
             margin-bottom: 20px;
-            h5{
+            h5 {
                 color: #808080;
                 margin-bottom: 0px;
                 padding-bottom: 12px;
                 font-weight: 500;
                 font-size: 16px;
             }
-            .settings__acc{
-                display:flex;
-                justify-content:space-between;
-                background: #FFFFFF;
-                border: 1px solid #DEDEDE;
+            .settings__acc {
+                display: flex;
+                justify-content: space-between;
+                background: #ffffff;
+                border: 1px solid #dedede;
                 border-radius: 8px;
                 padding: 25px 22px;
                 cursor: pointer;
-                .settings__name__info{
+                .settings__name__info {
                     display: flex;
                     align-items: center;
-                    img{
-                        margin-right:13px;
+                    img {
+                        margin-right: 13px;
                     }
-                    h6{
+                    h6 {
                         margin-bottom: 0px;
                         font-weight: 600;
                         font-size: 16px;
                     }
                 }
-                .personal__settings{
-                    p{
+                .personal__settings {
+                    p {
                         margin-bottom: 0px;
                         color: #808080;
                         font-weight: normal;
@@ -70,59 +68,57 @@
                         padding-bottom: 5px;
                         position: relative;
                     }
-                    h6{
+                    h6 {
                         margin-bottom: 0px;
                         font-weight: 600;
                         font-size: 16px;
                     }
                 }
-                button{
+                button {
                     border: none;
                     background-color: transparent;
-                    &:focus{
+                    &:focus {
                         outline: none;
                     }
-                    svg{
+                    svg {
                         color: #808080;
                     }
                 }
-                .settings__acc__content{
-                    display:flex;
-                    justify-content:space-between;
+                .settings__acc__content {
+                    display: flex;
+                    justify-content: space-between;
                     align-items: center;
                     width: 100%;
                     margin-bottom: 20px;
-                    &:nth-last-child(1){
+                    &:nth-last-child(1) {
                         margin-bottom: 0px;
                     }
                 }
-
             }
         }
     }
-
-    
 }
-.connection__modal{
-    .modal__header{
-        h2{
+.connection__modal {
+    .modal__header {
+        h2 {
             font-size: 24px;
         }
     }
-    .modal__body__wrapper{
-        margin: 25px 40px 40px 40px; 
-        .name__wrapper{
+    .modal__body__wrapper {
+        margin: 25px 40px 40px 40px;
+        .name__wrapper {
             cursor: pointer;
             display: flex;
-            justify-content:space-between;
+            justify-content: space-between;
             padding-bottom: 20px;
             margin-bottom: 20px;
-            border-bottom: 1.2px solid #DEDEDE;
-            h6{
+            border-bottom: 1.2px solid #dedede;
+            h6 {
                 font-weight: 600;
+
                 font-size: 19.2px;
             }
-            .checked{
+            .checked {
                 background: #2f80ed;
                 border-radius: 50%;
                 width: 28px;
@@ -134,13 +130,13 @@
                     color: white;
                 }
             }
-            &:nth-last-child(1){
-                padding-bottom:0px;
+            &:nth-last-child(1) {
+                padding-bottom: 0px;
                 border: none;
             }
         }
     }
-    .btn__wrapper{
+    .btn__wrapper {
         display: flex;
         margin: 5px 0px;
         margin-top: 40px;
@@ -150,10 +146,9 @@
             justify-content: center !important;
         }
     }
-    
 }
 
-.defaultAuthenticMethod{
+.defaultAuthenticMethod {
     font-size: 22px;
     position: absolute;
     right: 14px;
@@ -162,18 +157,18 @@
     font-weight: 600;
 }
 
-@media only screen and (max-width:"767px"){
+@media only screen and (max-width: "767px") {
     .connection__modal {
         .modal__body__wrapper {
             margin: auto;
             padding: 20px 10px;
             .name__wrapper {
                 h6 {
-                max-width: 260px;
-                text-overflow: ellipsis;
-                overflow: hidden;
-              }
+                    max-width: 260px;
+                    text-overflow: ellipsis;
+                    overflow: hidden;
+                }
             }
-          }
+        }
     }
 }
