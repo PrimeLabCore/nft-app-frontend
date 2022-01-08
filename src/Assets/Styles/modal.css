@@ -135,14 +135,4 @@
   padding: 10px !important;
   font-size: 12px !important;
 }
-
-.initial__modal.authenticationModal .modal-content{
-  padding-top: 50px;
-}
-.initial__modal.authenticationModal .modal-content .modal__settings__wrapper .btn-close {
-  position: absolute;
-    right: 20px;
-    top: 20px;
-}
-
 /*# sourceMappingURL=modal.css.map */

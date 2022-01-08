@@ -259,7 +259,7 @@ const Settings = () => {
             <div className={styles.modal__body__wrapper}>
               <div className={styles.name__wrapper} onClick={() => check(0)}>
                 {/* <h6>{user?.email?.split("@")[0] + ".near"}</h6> */}
-                <h6>{user?.wallet_id}</h6>
+                <span>{user?.wallet_id}</span>
                 {checked === 0 && (
                   <div className={styles.checked}>
                     <AiOutlineCheck />

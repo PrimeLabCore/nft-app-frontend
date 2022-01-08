@@ -311,7 +311,13 @@ const SendNft = () => {
                             >
                               <div className={styles.mynft__box__description}>
                                 <h2>{data.title}</h2>
-                                <p>{data.nft_id}</p>
+                                <span
+                                  className={
+                                    styles.mynft__box__description__text
+                                  }
+                                >
+                                  {data.nft_id}
+                                </span>
                               </div>
                               <div className={styles.checked}>
                                 <AiOutlineCheck />
