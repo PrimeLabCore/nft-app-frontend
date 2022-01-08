@@ -189,7 +189,7 @@ const ImportContactsDialog = ({ status, callback, onImport }) => {
           style: { borderRadius: 20, cursor: "pointer", padding: 20 },
         }}
         onClose={callback}
-        class="contactDialogBack"
+        className="contactDialogBack"
       >
         <button
           className={classes.mainContainer + " " + "cloudsponge-launch"}
