@@ -54,6 +54,37 @@ const Settings = () => {
     );
   };
 
+  const getPersonalInfo = () => {
+    //Ajax Request to update user
+    axios
+      .get(`${API_BASE_URL}/users/${user?.user_id}`)
+      .then((response) => {
+        //update user details in localstorage and redux state
+        let temp = JSON.parse(localStorage.getItem("user"));
+        localStorage.setItem(
+          "user",
+          JSON.stringify({
+            jwt_access_token: temp?.jwt_access_token,
+            jwt_id_token: temp?.jwt_id_token,
+            jwt_refresh_token: temp?.jwt_refresh_token,
+            user_info: response?.data?.data,
+          })
+        );
+        dispatch({
+          type: "login_Successfully",
+          payload: response?.data?.data,
+        });
+      })
+      .catch((error) => {
+        if (error.response.data) {
+          toast.error(error.response.data.message);
+        }
+      })
+      .finally(() => {
+        // setIsloading(false);
+      });
+  };
+
   const savePersonalInfo = () => {
     setChangeInfo(false);
 
@@ -91,15 +122,17 @@ const Settings = () => {
 
     //Ajax Request to update user
     axios
-      .put(`${API_BASE_URL}/user/${user.user_id}`, payload)
+      .put(`${API_BASE_URL}/users/${user?.user_id}`, payload)
       .then((response) => {
         toast.success("Settings Saved");
-
+        getPersonalInfo();
         //update user details in localstorage and redux state
         let temp = JSON.parse(localStorage.getItem("user"));
         temp.user_info = response.data;
-        localStorage.setItem("user", JSON.stringify(temp));
-        dispatch({ type: "login_Successfully", payload: response.data });
+
+        // localStorage.getItem("user");
+        // localStorage.setItem("user", JSON.stringify(temp));
+        // dispatch({ type: "login_Successfully", payload: response.data });
       })
       .catch((error) => {
         if (error.response.data) {
@@ -134,7 +167,6 @@ const Settings = () => {
   };
 
   const HandleInputChange = (field) => (e) => {
-    console.log(field, e);
     setinputFields({ ...inputFields, [field]: e.target.value });
   };
 
@@ -259,7 +291,7 @@ const Settings = () => {
             <div className={styles.modal__body__wrapper}>
               <div className={styles.name__wrapper} onClick={() => check(0)}>
                 {/* <h6>{user?.email?.split("@")[0] + ".near"}</h6> */}
-                <h6>{user?.wallet_id}</h6>
+                <span>{user?.wallet_id}</span>
                 {checked === 0 && (
                   <div className={styles.checked}>
                     <AiOutlineCheck />
@@ -298,7 +330,7 @@ const Settings = () => {
             <div className="modal__title__wrapper">
               <Modal.Title>
                 <div className={styles.modal__header}>
-                  <h2>Change {details}</h2>
+                  <h2>Change {details.replace(/_/g, " ")}</h2>
                 </div>
               </Modal.Title>
             </div>

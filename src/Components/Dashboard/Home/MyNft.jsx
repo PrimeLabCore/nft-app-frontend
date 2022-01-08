@@ -13,6 +13,7 @@ import { useDispatch } from "react-redux";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { API_BASE_URL } from "../../../Utils/config";
+import { mapNftDetails } from "../../../Utils/utils";
 
 const responsive = {
   superLargeDesktop: {
@@ -79,6 +80,8 @@ const MyNft = ({ isLink }) => {
       .then((response) => {
         //save user details
         let tempNfts = response.data.data;
+        // console.log("data nfts", tempNfts);
+        setAlldata(tempNfts);
         dispatch({ type: "update_nfts", payload: tempNfts });
       })
       .catch((error) => {
@@ -96,16 +99,15 @@ const MyNft = ({ isLink }) => {
   };
 
   const detailPage = (data, index) => {
-    dispatch({ type: "nft__detail", payload: data });
-    navigate(`/nft/${data.uuid}`);
+    dispatch({ type: "nft__detail", payload: mapNftDetails(data) });
+    navigate(`/nft/${data.nft_id}`);
   };
 
   return (
     <>
       <div
-        className={`${styles.mynft__wrapper} ${
-          !isLink ? styles.mynft__page__wrapper : ""
-        }`}
+        className={`${styles.mynft__wrapper} ${!isLink ? styles.mynft__page__wrapper : ""
+          }`}
       >
         <div className={styles.mynft__header}>
           <h5>My NFTs</h5>

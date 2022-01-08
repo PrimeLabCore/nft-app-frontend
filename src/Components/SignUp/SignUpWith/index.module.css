@@ -68,6 +68,10 @@
   outline: none;
 }
 
+.button :disabled {
+  background-color: #bdbdbd;
+}
+
 .secondary {
   background-color: white !important;
   color: #828282 !important;
@@ -166,6 +170,7 @@
   color: #4f4f4f !important;
   background-color: #f2f2f2 !important;
 }
+
 .home_page_text {
   font-size: 16px;
   padding: 30px;
@@ -173,9 +178,7 @@
   color: #565656;
   max-width: 60%;
 }
-.button:disabled{
-  background-color: #bdbdbd;
-}
+
 @media screen and (max-width: 800px) {
   .mainContainer {
     padding: 0px;
@@ -194,10 +197,10 @@
     margin-bottom: 2px;
   }
 }
+
 @media screen and (max-width: 768px) {
   .home_page_text {
     max-width: 100%;
-    padding: 20px;
   }
 }
 /*# sourceMappingURL=index.module.css.map */

@@ -125,12 +125,8 @@ const SendNft = () => {
   };
 
   const handleNftPreview = async (selectedContacts) => {
-    console.log("here", selectedContacts);
-
+  if(selectedContacts && selectedContacts.length >0){
     setFilteredData(selectedContacts);
-
-    //send nft here to backend
-
     let nftDetail = {
       sender_id: user.user_id,
       recipient_id: selectedContacts,
@@ -156,6 +152,9 @@ const SendNft = () => {
         }
       })
       .finally(() => {});
+    }else{
+      toast.error("Please select some contact!");
+    }
   };
 
   const openInitialSendNft = () => {
@@ -312,7 +311,13 @@ const SendNft = () => {
                             >
                               <div className={styles.mynft__box__description}>
                                 <h2>{data.title}</h2>
-                                <p>{data.nft_id}</p>
+                                <span
+                                  className={
+                                    styles.mynft__box__description__text
+                                  }
+                                >
+                                  {data.nft_id}
+                                </span>
                               </div>
                               <div className={styles.checked}>
                                 <AiOutlineCheck />
