@@ -16,7 +16,7 @@ const audioRegex = /(audio)(\/\w+)+/g;
 const videoRegex = /(video)(\/\w+)+/g;
 
 const allowedUploadCount = 1;
-const requiredFileExtensions = ['.png', '.jpg', '.jpeg', '.mp4', '.mp3', '.webp'];
+const requiredFileExtensions = ['.png', '.jpg', '.jpeg', '.gif', '.mp4', '.mp3', '.webp'];
 const requiredFileExtensionsDescription = 
   requiredFileExtensions.map(extension => extension.substring(1).toUpperCase()).join(', ')
   + ' or ' +
