@@ -289,7 +289,12 @@ const CreateNft = (props) => {
       <Modal
         className={`${styles.initial__nft__modal} ${styles.nft__mobile__modal} initial__modal`}
         show={createnft__popup}
-        onHide={() => dispatch({ type: "createnft__close" })}
+        onHide={() => {
+          dispatch({ type: "createnft__close" });
+          setDetails({ title: "", description: "", category: "Digital Arts" });
+          setSelectedFile("");
+          setFormValues([{}]);
+        }}
         backdrop="static"
         keyboard={false}
       >
@@ -376,13 +381,18 @@ const CreateNft = (props) => {
       <Modal
         className={`${styles.initial__nft__modal} ${styles.nft__mobile__modal} ${styles.nft__form__modal} initial__modal`}
         show={nftForm}
-        onHide={() => setNftForm(false)}
+        onHide={() => {
+          setNftForm(false);
+          setDetails({});
+          setFormValues([{}]);
+          setSelectedFile("");
+        }}
         backdrop="static"
         keyboard={false}
       >
         <Modal.Header
           className={styles.modal__header__wrapper}
-          closeButton={home__allnft.length > 0}
+          closeButton={home__allnft?.nfts.length > 0}
         >
           <div className="modal__multiple__wrapper">
             <button onClick={() => goBack("initalForm")} className="back__btn">
@@ -494,13 +504,18 @@ const CreateNft = (props) => {
       <Modal
         className={`${styles.initial__nft__modal} ${styles.nft__form__modal} initial__modal ${styles.nft__mobile__modal}`}
         show={nftPreview}
-        onHide={() => setNftPreview(false)}
+        onHide={() => {
+          setNftPreview(false);
+          setDetails({ title: "", description: "", category: "Digital Arts" });
+          setSelectedFile("");
+          setFormValues([{}]);
+        }}
         backdrop="static"
         keyboard={false}
       >
         <Modal.Header
           className={styles.modal__header__wrapper}
-          closeButton={home__allnft.length > 0}
+          closeButton={home__allnft?.nfts.length > 0}
         >
           <div className="modal__multiple__wrapper">
             <button onClick={() => goBack("nftForm")} className="back__btn">
@@ -597,7 +612,7 @@ const CreateNft = (props) => {
       >
         <Modal.Header
           className={`${styles.modal__header__wrapper}  ${styles.modal__header__bottom} last__modal__header`}
-          closeButton={home__allnft.length > 0}
+          closeButton={home__allnft?.nfts.length > 0}
         ></Modal.Header>
         {/* <button onClick={allNft} className="btnclose">X</button> */}
         <Modal.Body className={styles.modal__body__top}>
