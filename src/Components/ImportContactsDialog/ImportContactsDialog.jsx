@@ -58,9 +58,7 @@ const ImportContactsDialog = ({ status, callback, onImport }) => {
   const classes = useStyles();
   const { user } = useSelector((state) => state.authReducer);
 
-  const dispatch = useDispatch();
-
-  const PostContactToBackend = (contacts, source) => {
+  const PostContactToBackend = async (contacts, source) => {
     //add owner infor to contacts
 
     let newcontacts = contacts.map((c) => ({
@@ -74,7 +72,7 @@ const ImportContactsDialog = ({ status, callback, onImport }) => {
     axios
       .post(`${API_BASE_URL}/contacts/import`, newcontacts)
       .then((response) => {
-        console.log(response.data);
+        console.log("data from source", response.data);
         toast.success(response.data.message);
 
         //disable contact import dialog on login/signup
@@ -103,10 +101,15 @@ const ImportContactsDialog = ({ status, callback, onImport }) => {
                 ? "Apple"
                 : "Google";
 
+            var all = document.getElementsByClassName("initial__modal");
+            for (var i = 0; i < all.length; i++) {
+              all[i].style.display = "block";
+            }
+
             //post contact to backend to persist in database
             PostContactToBackend(contacts, source_title);
 
-            //send contact back to UI
+            //call callback functions
             onImport();
 
             var all = document.getElementsByClassName("initial__modal");
@@ -114,28 +117,37 @@ const ImportContactsDialog = ({ status, callback, onImport }) => {
               all[i].style.display = "none";
             }
 
-            // Open Create NFT Dialog
-            dispatch({ type: "createnft__open" });
+            if (firstImport) {
+              // If importing first time,
+              // open create NFT popup
+              dispatch({ type: "createnft__open" });
+              setFirstImport(!firstImport);
+            } else {
+              // Otherwise, open send NFT popup
+              dispatch({ type: "sendnft__open" });
+            }
 
             return false;
           },
           beforeLaunch: function () {
+            var all = document.getElementsByClassName("contactDialogBack");
+            for (var i = 0; i < all.length; i++) {
+              all[i].style.visibility = "hidden";
+            }
             var all = document.getElementsByClassName("initial__modal");
             for (var i = 0; i < all.length; i++) {
               all[i].style.display = "none";
             }
-
-            document.getElementById("contactDialogBack").style.visibility =
-              "hidden";
           },
           beforeClosing: function () {
+            var all = document.getElementsByClassName("contactDialogBack");
+            for (var i = 0; i < all.length; i++) {
+              all[i].style.visibility = "inherit";
+            }
             var all = document.getElementsByClassName("initial__modal");
             for (var i = 0; i < all.length; i++) {
               all[i].style.display = "block";
             }
-
-            document.getElementById("contactDialogBack").style.visibility =
-              "inherit";
           },
           afterImport: function (source, success) {
             let source_title =
@@ -192,7 +204,7 @@ const ImportContactsDialog = ({ status, callback, onImport }) => {
           style: { borderRadius: 20, cursor: "pointer", padding: 20 },
         }}
         onClose={callback}
-        id="contactDialogBack"
+        className="contactDialogBack"
       >
         <button
           className={classes.mainContainer + " " + "cloudsponge-launch"}

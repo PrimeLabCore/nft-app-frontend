@@ -40,6 +40,7 @@ const Home = () => {
   const importContact = (data) => {
     if (data) {
       setAllContacts(data);
+      console.log("data", data);
       dispatch({
         type: "getGoogleContactData",
         payload: data,
@@ -49,8 +50,17 @@ const Home = () => {
 
   const contactImportCallback = (error, source) => {
     setImportContactDialog(false);
+
+    // Handling clicks outside the import dialog box
+    if (source == "backdropClick") {
+      dispatch({ type: "createnft__open" });
+      return;
+    }
+
     if (error) {
-      toast.error(`Something Went Wrong Fetching Contacts From ${source}`);
+      if (source !== "backdropClick") {
+        toast.error(`Something Went Wrong Fetching Contacts From ${source}`);
+      }
       dispatch({ type: "createnft__open" });
       return;
     } else {

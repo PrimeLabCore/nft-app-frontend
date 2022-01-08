@@ -84,6 +84,7 @@
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  border-radius: 8px;
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
@@ -92,12 +93,14 @@
 .uploaded__file img {
   width: 50%;
 }
+
 @media only screen and (max-width: 767px) {
   .uploaded__file img {
     width: auto;
     max-height: 150px;
     max-width: 100%;
-    box-shadow: 0 0 3px 0px;
+    -webkit-box-shadow: 0 0 3px 0px;
+            box-shadow: 0 0 3px 0px;
   }
 }
 /*# sourceMappingURL=filepond.css.map */

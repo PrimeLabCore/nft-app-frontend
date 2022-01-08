@@ -124,7 +124,7 @@ const Verification = () => {
       </div>
 
       <div className={styles.childContainer}>
-        <p>We've sent a 6-digit Authentication code on your{otp_medium}.</p>
+        <p>We've sent a 6-digit verification code on your {otp_medium}.</p>
 
         <div className={styles.verficationContainer}>
           <p className={styles.enterCode}>Enter Verification Code</p>

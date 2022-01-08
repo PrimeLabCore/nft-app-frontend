@@ -192,16 +192,4 @@
   color: #808080;
   margin-bottom: 0px;
 }
-@media only screen and (max-width: 600px) {
-    .transaction__wrapper .transaction__list__wrapper .transaction__list .transaction__action h6{
-        font-size: 14px;
-        width: 180px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-    .transaction__wrapper .transaction__list__wrapper .transaction__list .transaction__time p {
-        font-size: 12px;
-    }
-}
 /*# sourceMappingURL=transactions.module.css.map */

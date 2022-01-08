@@ -42,6 +42,7 @@ const ContactPopup = ({
 
   //get contacts
   useEffect(() => {
+    if (!show) return;
     setIsloading(true);
 
     //Ajax Request to create user
@@ -60,7 +61,7 @@ const ContactPopup = ({
       .finally(() => {
         setIsloading(false);
       });
-  }, []);
+  }, [show]);
 
   const getPrimaryEmail = (contact) => {
     if (contact.email.length > 0) {
