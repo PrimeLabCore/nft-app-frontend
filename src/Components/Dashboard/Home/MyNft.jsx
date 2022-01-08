@@ -247,7 +247,7 @@ const MyNft = ({ isLink }) => {
                           <div
                             className={styles.mynft__box__description__wrapper}
                           >
-                            <h2 className="text-truncate">{data?.title}</h2>
+                            <h2>{data?.title}</h2>
                             <p>{data?.nft_id}</p>
                           </div>
                         </div>

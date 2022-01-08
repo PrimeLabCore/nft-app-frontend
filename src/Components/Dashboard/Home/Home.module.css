@@ -335,7 +335,11 @@
       .mynft__wrapper .mynft__box__wrapper .mynft__box .mynft__box__description__wrapper h2 {
         font-size: 19.2px;
         margin-bottom: 0px;
-        padding-bottom: 10px; }
+        margin-bottom: 10px;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
+        -webkit-box-orient: vertical; }
       .mynft__wrapper .mynft__box__wrapper .mynft__box .mynft__box__description__wrapper p {
         font-size: 16.8px;
         color: #808080;
