@@ -90,12 +90,31 @@ const CreateNft = (props) => {
 
   const inputEvent = (e) => {
     const { name, value } = e.target;
-    setDetails((preValue) => {
-      return {
-        ...preValue,
-        [name]: value,
-      };
-    });
+    if(name === "description" && value.trim().length <= 100){
+      setDetails((preValue) => {
+        return {
+          ...preValue,
+          [name]: value,
+        };
+      });
+    }
+    if(name === "title" && value.trim().length <= 60){
+      setDetails((preValue) => {
+        return {
+          ...preValue,
+          [name]: value,
+        };
+      });
+    }
+    if(name !== "description" && name !== "title"){
+      setDetails((preValue) => {
+        return {
+          ...preValue,
+          [name]: value,
+        };
+      });
+    }
+
   };
 
   const sendNftModal = () => {
@@ -336,6 +355,7 @@ const CreateNft = (props) => {
                   <video
                     style={{ width: "100%", borderRadius: "8px" }}
                     src={URL.createObjectURL(selectedFile)}
+                    controls
                   />
                 </div>
               ) : selectedFile?.type?.includes("audio") ? (
@@ -408,6 +428,7 @@ const CreateNft = (props) => {
                   name="title"
                   value={details.title}
                   onChange={inputEvent}
+                  onPaste={(event => inputEvent({ target: {name: "title", value: event.clipboardData.getData('Text').substring(0, 60)}}))}
                   placeholder="Ex. Redeemable Art"
                   required
                 />
@@ -418,6 +439,7 @@ const CreateNft = (props) => {
                   rows={5}
                   name="description"
                   value={details.description}
+                  onPaste={(event => inputEvent({ target: {name: "description", value: event.clipboardData.getData('Text').substring(0, 100)}}))}
                   onChange={inputEvent}
                   placeholder="Ex. Redeemable Art"
                   required
@@ -526,6 +548,7 @@ const CreateNft = (props) => {
                     <video
                       style={{ width: "100%", borderRadius: "8px" }}
                       src={URL.createObjectURL(selectedFile)}
+                      controls
                     />
                   ) : selectedFile?.type?.includes("audio") ? (
                     <audio

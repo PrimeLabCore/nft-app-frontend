@@ -65,10 +65,18 @@ const TransactionHistory = () => {
     dispatch({ type: "nft__detail", payload: data });
     navigate("/nft/detail/claim");
   };
+  const displayTransactions=transactions
+  .filter((data) =>
+    tabs === "sent"
+      ? !!data.sender
+      : tabs === "received"
+      ? !data.sender
+      : data
+  )
   return (
     <>
       <div className={styles.transaction__wrapper}>
-        <div className={styles.transaction__header}>
+        <div className={styles.transaction__header} style={{height:"32px"}}>
           <h5>History</h5>
           {!windowstate && (
             <div className={styles.transaction__tab} onClick={handleTabClick}>
@@ -104,7 +112,7 @@ const TransactionHistory = () => {
                 Send NFT
               </button>
             ) : (
-              <span> </span>
+              <div style={{ width: '128px' }}> </div>
             )}
           </div>
         </div>
@@ -135,71 +143,65 @@ const TransactionHistory = () => {
             </div>
           </div>
         )}
-        {transactions?.length && (
+    
           <div className={styles.transaction__list__wrapper}>
-            {transactions
-              .filter((data) =>
-                tabs === "sent"
-                  ? !!data.sender
-                  : tabs === "received"
-                  ? !data.sender
-                  : data
-              )
-              .map((data) => {
-                return (
-                  <Fragment key={nanoid()}>
-                    <div
-                      className={styles.transaction__list}
-                      style={{
-                        cursor: !!data.sender ? "pointer" : null,
-                      }}
-                      onClick={() => !data.sender && openClaim(data)}
-                    >
-                      <div className={styles.transaction__action}>
-                        <div className={styles.icon__wrapper}>
-                          {data.sender ? (
-                            <BsArrowUpRight />
-                          ) : (
-                            <BsArrowDownLeft />
-                          )}
-                        </div>
-                        <h6>
-                          <span>{user.wallet_id}</span> <br />
-                          {data.sender ? "Sent to" : "Received from"}{" "}
-                          {/* <a
-                          href="https://explorer.near.org/"
-                          target="_blank"
-                          rel="noreferrer"
-                          className={styles.transaction__name}
-                        >
-                          {data.receiver.email}
-                        </a> */}
-                          <span
-                            //   href="https://explorer.near.org/"
-                            //   target="_blank"
-                            //   rel="noreferrer"
+            {displayTransactions?.length?
+              displayTransactions?.map((data) => {
+                  return (
+                    <Fragment key={nanoid()}>
+                      <div
+                        className={styles.transaction__list}
+                        style={{
+                          cursor: !!data.sender ? "pointer" : null,
+                        }}
+                        onClick={() => !data.sender && openClaim(data)}
+                      >
+                        <div className={styles.transaction__action}>
+                          <div className={styles.icon__wrapper}>
+                            {data.sender ? (
+                              <BsArrowUpRight />
+                            ) : (
+                              <BsArrowDownLeft />
+                            )}
+                          </div>
+                          <h6>
+                            <span>{user.wallet_id}</span> <br />
+                            {data.sender ? "Sent to" : "Received from"}{" "}
+                            {/* <a
+                            href="https://explorer.near.org/"
+                            target="_blank"
+                            rel="noreferrer"
                             className={styles.transaction__name}
                           >
-                            {data.counterparty?.email}
-                          </span>
-                        </h6>
+                            {data.receiver.email}
+                          </a> */}
+                            <span
+                              //   href="https://explorer.near.org/"
+                              //   target="_blank"
+                              //   rel="noreferrer"
+                              className={styles.transaction__name}
+                            >
+                              {data.counterparty?.email}
+                            </span>
+                          </h6>
+                        </div>
+                        <div className={styles.transaction__time}>
+                          {/* <p>{data.time}</p> */}
+                          <p>
+                            {moment
+                              .utc(data.created)
+                              .local()
+                              .startOf("seconds")
+                              .fromNow()}
+                          </p>
+                        </div>
                       </div>
-                      <div className={styles.transaction__time}>
-                        {/* <p>{data.time}</p> */}
-                        <p>
-                          {moment
-                            .utc(data.created)
-                            .local()
-                            .startOf("seconds")
-                            .fromNow()}
-                        </p>
-                      </div>
-                    </div>
-                  </Fragment>
-                );
-              })}
+                    </Fragment>
+                  );
+                }):
+                <div align="center" className={styles.transaction__action}>No transactions available</div>
+                }
           </div>
-        )}
       </div>
     </>
   );

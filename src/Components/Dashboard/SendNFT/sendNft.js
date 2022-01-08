@@ -12,6 +12,7 @@ import ContactPopup from "../../../common/components/ContactPopup";
 import { API_BASE_URL } from "../../../Utils/config";
 import ImportContactsDialog from "../../ImportContactsDialog/ImportContactsDialog";
 import styles from "./sendNft.module.css";
+import {get_url_extension} from "../../../Utils/common"
 
 const responsive = {
   superLargeDesktop: {
@@ -216,8 +217,9 @@ const SendNft = () => {
     setimportContactDialog(true);
   };
 
-  const urlArray = selected?.image?.split(".");
-  const fileType = urlArray?.length ? urlArray[urlArray.length - 1] : "";
+  // const urlArray = selected?.file_url?.split(".");
+  const fileType =  get_url_extension(selected?.file_url)
+  console.log(selected);
   return (
     <>
       {/* NFT Selection Modal */}
@@ -261,11 +263,10 @@ const SendNft = () => {
                     data?.file_url.lastIndexOf("/") + 1
                   );
                   const urlArray = filename?.split(".");
-                  const fileType = urlArray.length
-                    ? urlArray[urlArray.length - 1]
-                    : "";
+                  const fileType = get_url_extension(data?.file_url)
+                  console.log(fileType);
 
-                  return (
+    return (
                     <Fragment key={nanoid()}>
                       <div
                         className={`${styles.mynft__box} ${
@@ -277,12 +278,12 @@ const SendNft = () => {
                       >
                         <div className={styles.mynft__box__image__wrapper}>
                           <div className={styles.mynft__box__image}>
-                            {fileType.toLowerCase() === "mp4" ? (
+                            {fileType?.toLowerCase() === "mp4" ? (
                               <video
                                 style={{ width: "100%", borderRadius: "8px" }}
                                 src={data?.file_url}
-                              />
-                            ) : fileType.toLowerCase() === "mp3" ? (
+                                controls />
+                            ) : fileType?.toLowerCase() === "mp3" ? (
                               <div style={{ width: "100%", padding: "0 2px" }}>
                                 <audio
                                   style={{
@@ -295,7 +296,7 @@ const SendNft = () => {
                                 </audio>
                               </div>
                             ) : (
-                              <img src={data?.file_url} alt={data.title} />
+                              <img src={data?.file_url} alt={data?.title} />
                             )}
                           </div>
                           <div className={styles.mynft__box__cat}>
@@ -392,12 +393,13 @@ const SendNft = () => {
           <div className={styles.modal__body__wrapper}>
             <div className={styles.mint__info__wrapper}>
               <div className={styles.mint__image}>
-                {fileType.toLowerCase() === "mp4" ? (
+                {fileType?.toLowerCase() === "mp4" ? (
                   <video
                     style={{ width: "100%", borderRadius: "8px" }}
                     src={selected?.file_url}
+                    controls
                   />
-                ) : fileType.toLowerCase() === "mp3" ? (
+                ) : fileType?.toLowerCase() === "mp3" ? (
                   <div style={{ width: "100%", padding: "0 2px" }}>
                     <audio
                       style={{ width: "inherit", marginTop: "60px" }}

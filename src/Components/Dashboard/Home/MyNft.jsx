@@ -150,12 +150,13 @@ const MyNft = ({ isLink }) => {
                       >
                         <div className={styles.mynft__box__image__wrapper}>
                           <div className={styles.mynft__box__image}>
-                            {fileType.toLowerCase() === "mp4" ? (
+                            {fileType?.toLowerCase() === "mp4" ? (
                               <video
                                 style={{ width: "100%", borderRadius: "8px" }}
                                 src={data?.file_url}
+                                controls
                               />
-                            ) : fileType.toLowerCase() === "mp3" ? (
+                            ) : fileType?.toLowerCase() === "mp3" ? (
                               <div style={{ width: "100%", padding: "0 2px" }}>
                                 <audio
                                   style={{
@@ -211,12 +212,13 @@ const MyNft = ({ isLink }) => {
                         >
                           <div className={styles.mynft__box__image__wrapper}>
                             <div className={styles.mynft__box__image}>
-                              {fileType.toLowerCase() === "mp4" ? (
+                              {fileType?.toLowerCase() === "mp4" ? (
                                 <video
                                   style={{ width: "100%", borderRadius: "8px" }}
                                   src={data?.file_url}
+                                  controls
                                 />
-                              ) : fileType.toLowerCase() === "mp3" ? (
+                              ) : fileType?.toLowerCase() === "mp3" ? (
                                 <div
                                   style={{
                                     width: "100%",
