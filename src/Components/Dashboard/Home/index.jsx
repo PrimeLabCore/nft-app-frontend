@@ -50,6 +50,13 @@ const Home = () => {
 
   const contactImportCallback = (error, source) => {
     setImportContactDialog(false);
+
+    // Handling clicks outside the import dialog box
+    if (source == "backdropClick") {
+      dispatch({ type: "createnft__open" });
+      return;
+    }
+
     if (error) {
       if (source !== "backdropClick") {
         toast.error(`Something Went Wrong Fetching Contacts From ${source}`);
