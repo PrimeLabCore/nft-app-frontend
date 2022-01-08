@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import { includes } from "lodash";
 import { API_BASE_URL } from "../../../Utils/config";
+import { isEmpty } from "../../../Utils/utils";
 import { LoaderIconBlue } from "../../Generic/icons";
 
 const audioRegex = /(audio)(\/\w+)+/g;
@@ -127,13 +128,15 @@ const CreateNft = (props) => {
     }
   };
   const handleNftPreview = async () => {
-    if (details.title && details.description && details.category) {
+    if(isEmpty(details.title)){
+      toast.error("Please enter the title");
+    }else if(isEmpty(details.description)){
+      toast.error("Please enter the description");
+    }else{
       dispatch({ type: "createnft__close" });
       setNftForm(false);
       setNftPreview(true);
       setNftMint(false);
-    } else {
-      toast.error("All fields are required");
     }
   };
 
@@ -195,9 +198,9 @@ const CreateNft = (props) => {
 
         //reset create nft form
         setDetails({
+          ...details,
           title: "",
           description: "",
-          category: "Digital Arts",
         });
         setSelectedFile("");
         setFormValues([]);
@@ -328,7 +331,7 @@ const CreateNft = (props) => {
                 required
               />
               <div className="file__upload__wrapper">
-                <label for="files">
+                <label htmlFor="files">
                   {selectedFile ? "Upload Another File" : "Choose File"}
                 </label>
               </div>
