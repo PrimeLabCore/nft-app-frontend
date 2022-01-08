@@ -541,3 +541,7 @@ Class to disable the dropdown
   -webkit-appearance: none;
   appearance: none;
 }
+
+.next__btn:disabled {
+  background-color: #bdbdbd !important;
+}

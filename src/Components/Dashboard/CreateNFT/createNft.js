@@ -579,7 +579,7 @@ const CreateNft = (props) => {
           <div className={styles.multiple__btn__wrapper}>
             <button
               onClick={() => mineNft("mint")}
-              // disabled={loading}
+              disabled={loading}
               className={styles.next__btn}
             >
               Mint NFT
