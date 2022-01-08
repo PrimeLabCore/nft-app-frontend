@@ -283,8 +283,6 @@ const CreateNft = (props) => {
     }
   };
 
-  console.log("details", details);
-
   return (
     <>
       {/* Initial Modal  */}
