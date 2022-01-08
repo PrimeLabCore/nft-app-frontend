@@ -10,6 +10,8 @@ const Details = () => {
   let dispatch = useDispatch();
   const { user } = useSelector((state) => state.authReducer);
 
+  
+
   const sendNft = () => {
     dispatch({ type: "sendnft__open" });
     dispatch({
@@ -30,6 +32,8 @@ const Details = () => {
   let navigate = useNavigate();
 
   const nft__detail = useSelector((state) => state.nft__detail);
+  console.log(useSelector(s => s.nft__detail));
+  console.log(nft__detail);
 
   return (
     <>
@@ -43,7 +47,7 @@ const Details = () => {
           <div className={styles.details__cat}>
             <h6>{nft__detail?.category}</h6>
           </div>
-          <h1>{nft__detail.name}</h1>
+          <h1>{nft__detail.title}</h1>
           <a href="https://explorer.near.org/" target="_blank" rel="noreferrer">
             {nft__detail.nftid}
           </a>
