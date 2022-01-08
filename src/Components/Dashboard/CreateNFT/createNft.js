@@ -12,6 +12,7 @@ import { includes } from "lodash";
 import { API_BASE_URL } from "../../../Utils/config";
 import { isEmpty } from "../../../Utils/utils";
 import { LoaderIconBlue } from "../../Generic/icons";
+import { mapNftDetails } from "../../../Utils/utils";
 
 const audioRegex = /(audio)(\/\w+)+/g;
 const videoRegex = /(video)(\/\w+)+/g;
@@ -75,7 +76,7 @@ const CreateNft = (props) => {
     // navigate(`/nft/${nanoid()}`);
     dispatch({
       type: "nft__detail",
-      payload: createNftResponse,
+      payload: mapNftDetails(createNftResponse),
     });
     navigate(`/nft/${createNftResponse.nft_id}`);
   };
