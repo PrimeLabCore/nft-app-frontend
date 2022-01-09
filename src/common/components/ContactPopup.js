@@ -50,7 +50,13 @@ const ContactPopup = ({
       .get(`${API_BASE_URL}/contacts/list/${user.user_id}`)
       .then((response) => {
         //save user details
-        let tempContacts = response.data.data;
+        // before saving contacts to the reducer make all the emails unique
+        const uniqueEmails = []
+        let tempContacts = response.data.data.filter((contactObj) =>
+          uniqueEmails.includes(contactObj.email[0].address)
+            ? false
+            : uniqueEmails.push(contactObj.email[0].address) && true
+        );
         dispatch({ type: "update_contacts", payload: tempContacts });
       })
       .catch((error) => {
