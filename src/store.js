@@ -4,6 +4,7 @@ import storage from 'redux-persist/lib/storage'
 import thunk from "redux-thunk";
 
 import rootReducer from "./Reducers";
+import { setupHttpClient } from './Services/httpClient';
 
 const persistConfig = {
   key: 'root',
@@ -30,3 +31,10 @@ export const store = createStore(
 );
 
 export const persistor = persistStore(store);
+
+persistor.subscribe(() => {
+  const { bootstrapped } = persistor.getState();
+  if (bootstrapped) {
+    setupHttpClient(store)
+  }
+});
