@@ -121,6 +121,7 @@ const ImportContactsDialog = ({ status, callback, onImport }) => {
             if (firstImport) {
               // If importing first time,
               // open create NFT popup
+              console.log("here for first import")
               dispatch({ type: "createnft__open" });
               setFirstImport(!firstImport);
             } else {
