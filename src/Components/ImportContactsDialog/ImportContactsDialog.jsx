@@ -56,8 +56,8 @@ const useStyles = makeStyles((theme) => ({
 
 const ImportContactsDialog = ({ status, callback, onImport }) => {
   const classes = useStyles();
-  const dispatch=useDispatch()
-  const [firstImport,setFirstImport]=useState(false)
+  const dispatch = useDispatch();
+  const [firstImport, setFirstImport] = useState(false);
   const { user } = useSelector((state) => state.authReducer);
 
   const PostContactToBackend = async (contacts, source) => {
