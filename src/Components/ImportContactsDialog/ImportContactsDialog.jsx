@@ -114,21 +114,6 @@ const ImportContactsDialog = ({ status, callback, onImport }) => {
             //call callback functions
             onImport();
 
-            var all = document.getElementsByClassName("initial__modal");
-            for (var i = 0; i < all.length; i++) {
-              all[i].style.display = "none";
-            }
-
-            if (firstImport) {
-              // If importing first time,
-              // open create NFT popup
-              dispatch({ type: "createnft__open" });
-              setFirstImport(!firstImport);
-            } else {
-              // Otherwise, open send NFT popup
-              dispatch({ type: "sendnft__open" });
-            }
-
             return false;
           },
           beforeLaunch: function () {
