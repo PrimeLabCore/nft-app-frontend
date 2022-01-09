@@ -62,7 +62,6 @@ const ImportContactsDialog = ({ status, callback, onImport }) => {
 
   const PostContactToBackend = async (contacts, source) => {
     //add owner infor to contacts
-    console.log("Importing Contacts: ", contacts);
 
     let newcontacts = contacts.map((c) => ({
       ...c,
