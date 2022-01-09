@@ -1,7 +1,7 @@
 import Dialog from "@material-ui/core/Dialog";
 import Slide from "@material-ui/core/Slide";
 import { makeStyles } from "@material-ui/core/styles";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { IoLogoApple, IoLogoMicrosoft } from "react-icons/io5";
 import { useSelector, useDispatch } from "react-redux";
@@ -56,6 +56,8 @@ const useStyles = makeStyles((theme) => ({
 
 const ImportContactsDialog = ({ status, callback, onImport }) => {
   const classes = useStyles();
+  const dispatch=useDispatch()
+  const [firstImport,setFirstImport]=useState(false)
   const { user } = useSelector((state) => state.authReducer);
 
   const PostContactToBackend = async (contacts, source) => {

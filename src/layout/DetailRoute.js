@@ -27,7 +27,7 @@ const Layout = ({ children }) => {
   }, []);
 
   const urlArray = nft__detail?.image?.split('.');
-  const fileType = urlArray.length ? urlArray[urlArray.length - 1] : "";
+  const fileType = urlArray?.length ? urlArray[urlArray?.length - 1] : "";
   return (
       <>
         <div className={`${styles.background} ${claim ? styles.lightbg : ""}`}>
