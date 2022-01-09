@@ -2,6 +2,7 @@ import { createStore, applyMiddleware, compose } from "redux";
 import { persistStore, persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 import thunk from "redux-thunk";
+import { createLogger } from 'redux-logger';
 
 import rootReducer from "./Reducers";
 import { setupHttpClient } from './Services/httpClient';
@@ -24,6 +25,10 @@ if (process.env.REACT_APP_ENV === 'development') {
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 const middleware = [thunk];
+
+if (process.env.REACT_APP_ENV === 'development') {
+  middleware.push(createLogger({ collapsed: true, duration: true }));
+}
 
 export const store = createStore(
   persistedReducer,
