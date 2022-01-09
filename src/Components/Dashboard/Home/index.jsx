@@ -66,7 +66,9 @@ const Home = () => {
     } else {
       toast.success(`Your Contacts Were Successfully Imported From ${source}`);
       HandleDialogClose();
-      setShowContactListPopup(true);
+      // setShowContactListPopup(true);
+      dispatch({ type: "createnft__open" });
+
       return;
     }
   };

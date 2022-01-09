@@ -57,7 +57,7 @@ const useStyles = makeStyles((theme) => ({
 const ImportContactsDialog = ({ status, callback, onImport }) => {
   const classes = useStyles();
   const dispatch=useDispatch()
-  const [firstImport,setFirstImport]=useState(false)
+  const [firstImport,setFirstImport]=useState(true)
   const { user } = useSelector((state) => state.authReducer);
 
   const PostContactToBackend = async (contacts, source) => {
@@ -74,7 +74,6 @@ const ImportContactsDialog = ({ status, callback, onImport }) => {
     axios
       .post(`${API_BASE_URL}/contacts/import`, newcontacts)
       .then((response) => {
-        console.log("data from source", response.data);
         toast.success(response.data.message);
 
         //disable contact import dialog on login/signup
@@ -126,6 +125,7 @@ const ImportContactsDialog = ({ status, callback, onImport }) => {
               setFirstImport(!firstImport);
             } else {
               // Otherwise, open send NFT popup
+              
               dispatch({ type: "sendnft__open" });
             }
 

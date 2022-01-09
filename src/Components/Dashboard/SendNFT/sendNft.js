@@ -64,6 +64,7 @@ const SendNft = () => {
   const { nfts } = useSelector((state) => state.home__allnft);
 
   const closeSendNft = () => {
+    console.log("here")
     dispatch({ type: "sendnft__close" });
     setOpenPreview(false);
   };

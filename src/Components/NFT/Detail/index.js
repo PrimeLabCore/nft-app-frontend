@@ -11,7 +11,6 @@ const Details = () => {
   const { user } = useSelector((state) => state.authReducer);
 
   
-console.log("here enter")
   const sendNft = () => {
     dispatch({ type: "sendnft__open" });
     dispatch({
