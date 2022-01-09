@@ -3,11 +3,12 @@ import ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import ReactGA from 'react-ga';
+import { PersistGate } from 'redux-persist/integration/react';
 
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import store from "./store";
+import { persistor, store } from "./store";
 
 ReactGA.initialize('G-VHQDFLX5Y2');
 ReactGA.pageview(window.location.pathname + window.location.search);
@@ -15,9 +16,12 @@ ReactGA.pageview(window.location.pathname + window.location.search);
 ReactDOM.render(
   <BrowserRouter>
     <Provider store={store}>
-      <App />
+      <PersistGate loading={null} persistor={persistor}>
+        <App />
+      </PersistGate>
     </Provider>
   </BrowserRouter>,
   document.getElementById("root")
 );
+
 reportWebVitals();
