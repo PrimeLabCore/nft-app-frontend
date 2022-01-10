@@ -26,12 +26,14 @@ const Claim = () => {
   let params = useParams();
   const dispatch = useDispatch();
 
+
   const fetchNft = async () => {
     setLoading(true);
     const response = await axios.get(
       `${API_BASE_URL}/nfts/${params?.invoiceId}`
     );
     const { data, success } = response.data;
+    console.log("Data",data)
     if (success) {
       setNftDetail(data);
       dispatch({

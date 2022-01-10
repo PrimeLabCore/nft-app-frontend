@@ -8,14 +8,21 @@ import { IoIosArrowForward } from "react-icons/io";
 import { AiOutlinePlus } from "react-icons/ai";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { includes } from "lodash";
+
+import fileHelper from "../../../Services/fileHelper";
 import { API_BASE_URL } from "../../../Utils/config";
 import { isEmpty } from "../../../Utils/utils";
-import { LoaderIconBlue } from "../../Generic/icons";
 import { mapNftDetails } from "../../../Utils/utils";
 
 const audioRegex = /(audio)(\/\w+)+/g;
 const videoRegex = /(video)(\/\w+)+/g;
+
+const allowedUploadCount = 1;
+const requiredFileExtensions = ['.png', '.jpg', '.jpeg', '.gif', '.mp4', '.mp3', '.webp'];
+const requiredFileExtensionsDescription = 
+  requiredFileExtensions.map(extension => extension.substring(1).toUpperCase()).join(', ')
+  + ' or ' +
+  requiredFileExtensions[requiredFileExtensions.length - 1].substring(1).toUpperCase();
 
 const CreateNft = (props) => {
   let navigate = useNavigate();
@@ -23,6 +30,7 @@ const CreateNft = (props) => {
 
   const [selectedFile, setSelectedFile] = useState("");
   const [selectedFileType, setSelectedFileType] = useState("image");
+
   const [loading, setLoading] = useState(false);
   const [createNftResponse, setCreateNftResponse] = useState({
     name: "",
@@ -246,46 +254,27 @@ const CreateNft = (props) => {
   //   navigate("/nft-details");
   // };
 
-  const changeHandler = async (event) => {
-    // FileReader support
-    const imageSizeLimit = 100000000; // 50 mb
-    const acceptedFileTypes = [
-      "audio/mpeg",
-      "video/mp4",
-      "image/png",
-      "image/gif",
-      "image/webp",
-      "image/jpeg",
-      "image/jpg",
-    ];
-    let target = event.target || window.event.srcElement,
-      files = target.files;
-    if (FileReader && files && files.length) {
-      if (!includes(acceptedFileTypes, files[0].type)) {
-        toast.error("Unsupported file format");
-        return;
-      }
+  /**
+   * Saves new files in state, or shows error modal if error in upload
+   * @param {array} files array of files returned from upload event
+   */
+  async function handleNewFileUpload(files) {
+    const errorObject = fileHelper.validateFilesForUpload(files, allowedUploadCount, requiredFileExtensions);
 
-      if (files[0].size <= imageSizeLimit) {
-        let file__reader = new FileReader();
-        file__reader.onload = function () {
-          setSelectedFile(files[0]);
-          if (videoRegex.test(files[0].type)) {
-            setSelectedFileType("video");
-          } else if (audioRegex.test(files[0].type)) {
-            setSelectedFileType("audio");
-          } else {
-            setSelectedFileType("image");
-          }
-          //toast.success("File Uploaded");
-        };
-        file__reader.readAsDataURL(files[0]);
+    if (errorObject) {
+      toast.error(errorObject.message);
+    } else {
+      const newFile = files[0];
+      setSelectedFile(newFile);
+      if (videoRegex.test(newFile.type)) {
+        setSelectedFileType('video');
+      } else if (audioRegex.test(newFile.type)) {
+        setSelectedFileType('audio');
       } else {
-        // display error if image is larger then 50 mb
-        toast.error("Image file too large");
+        setSelectedFileType('image');
       }
     }
-  };
+  }
 
   return (
     <>
@@ -326,8 +315,8 @@ const CreateNft = (props) => {
                 type="file"
                 id="files"
                 name="file"
-                onChange={changeHandler}
-                accept="image/png, image/jpg, image/jpeg, video/mp4, audio/mp3, image/webp"
+                onChange={(e) => handleNewFileUpload(e.target.files)}
+                accept={requiredFileExtensions.join(', ')}
                 style={{ display: "none" }}
                 required
               />
@@ -336,7 +325,8 @@ const CreateNft = (props) => {
                   {selectedFile ? "Upload Another File" : "Choose File"}
                 </label>
               </div>
-              <p>PNG, GIF, WEBP, MP4 or MP3. Max 100mb.</p>
+              <p>{requiredFileExtensionsDescription}</p>
+              <p>Max {fileHelper.convertBytesToMB(fileHelper.DEFAULT_MAX_FILE_SIZE_IN_BYTES)}MB</p>
             </div>
 
             {selectedFile &&

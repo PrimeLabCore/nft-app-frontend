@@ -26,7 +26,7 @@ const Transactions = () => {
         setTransactions(fetchedTransactions);
         dispatch({
           type: "fetch_transactions",
-          payload: [fetchedTransactions],
+          payload: fetchedTransactions,
         });
       }
     }
@@ -45,42 +45,40 @@ const Transactions = () => {
           <h5>Recent Transactions</h5>
           <Link to="/transactions">See All</Link>
         </div>
-        <div className={styles.transaction__list__wrapper}>
-          {transactions.map((data) => {
-            return (
-              <Fragment key={nanoid()}>
-                <div className={styles.transaction__list}>
-                  <div className={styles.transaction__action}>
-                    <div>
-                      {data.sender === true ? (
-                        <BsArrowUpRight />
-                      ) : (
-                        <BsArrowDownLeft />
-                      )}
+        {transactions?.length && (
+          <div className={styles.transaction__list__wrapper}>
+            {transactions.map((data) => {
+              return (
+                <Fragment key={nanoid()}>
+                  <div className={styles.transaction__list}>
+                    <div className={styles.transaction__action}>
+                      <div>
+                        {data.sender ? <BsArrowUpRight /> : <BsArrowDownLeft />}
+                      </div>
+                      <h6>
+                        {/* <span>{data.id}</span>{" "} */}
+                        <span>{user.wallet_id}</span> <br />
+                        {data.sender ? "Sent to" : "Received from"}{" "}
+                        <a
+                          href="https://explorer.near.org/"
+                          rel="noreferrer"
+                          target="_blank"
+                          className={styles.transaction__name}
+                        >
+                          {/* {data.name} */}
+                          {data.counterparty?.email}
+                        </a>
+                      </h6>
                     </div>
-                    <h6>
-                      {/* <span>{data.id}</span>{" "} */}
-                      <span>{user.wallet_id}</span>{" "}
-                      {data.sender === true ? "sent to" : "received from"}{" "}
-                      <a
-                        href="https://explorer.near.org/"
-                        rel="noreferrer"
-                        target="_blank"
-                        className={styles.transaction__name}
-                      >
-                        {/* {data.name} */}
-                        {data.counterparty?.email}
-                      </a>
-                    </h6>
+                    <div className={styles.transaction__time}>
+                      <p>{data.formattedtime}</p>
+                    </div>
                   </div>
-                  <div className={styles.transaction__time}>
-                    <p>{data.formattedtime}</p>
-                  </div>
-                </div>
-              </Fragment>
-            );
-          })}
-        </div>
+                </Fragment>
+              );
+            })}
+          </div>
+        )}
       </div>
     </>
   );
