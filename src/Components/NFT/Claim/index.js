@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styles from "./claim.module.css";
 import { Modal } from "react-bootstrap";
-// import {BiArrowBack} from "react-icons/bi"
 import { BsArrowUpRight } from "react-icons/bs";
 import { Accordion } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,46 +10,38 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
 import { API_BASE_URL } from "../../../Utils/config";
-
-// import {MdCancel} from "react-icons/md"
-// dispatch({ type: "nft__detail", payload: data });
-//     navigate("/nft/detail/claim");
+import NFT_STATUSES from "../../../constants/nftStatuses";
 
 const Claim = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { nftId } = useParams();
+
+  const params = useParams();
+
   const [claimModal, setClaimModal] = useState(false);
   const nft__detail = useSelector((state) => state.nft__detail);
   const { user } = useSelector((state) => state.authReducer);
   const [nftDetail, setNftDetail] = useState();
-  const [loading, setLoading] = useState(true);
-  let navigate = useNavigate();
-  let params = useParams();
-  const dispatch = useDispatch();
 
-
-  const fetchNft = async () => {
-    setLoading(true);
-    const response = await axios.get(
-      `${API_BASE_URL}/nfts/${params?.invoiceId}`
-    );
-    const { data, success } = response.data;
-    console.log("Data",data)
-    if (success) {
-      setNftDetail(data);
-      dispatch({
-        type: "nft__detail",
-        payload: data,
-      });
+  useEffect(() => {
+    async function getNftDetails() {
+      try {
+        const response = await axios.get(`${API_BASE_URL}/nfts/${nftId}`);
+        const { data } = response.data;
+  
+        setNftDetail(data);
+        dispatch({
+          type: "nft__detail",
+          payload: data,
+        });
+      } catch (error) {
+        console.error(error);
+      }
     }
-    setLoading(false);
-  };
 
-  useEffect(() => {
-    params?.invoiceId && fetchNft();
-  }, [params?.invoiceId]);
-
-  useEffect(() => {
-    !params?.invoiceId && setNftDetail(nftDetail);
-  }, [nftDetail]);
+    getNftDetails();
+  }, []);
 
   const hitClaim = async () => {
     const response = await axios.post(
@@ -86,7 +77,7 @@ const Claim = () => {
     // });
     // dispatch({
     //   type: "update_redirectUrl",
-    //   payload: `/nft/detail/claim/${params?.invoiceId}`,
+    //   payload: `/nft/detail/claim/${params?.nftId}`,
     // });
     // navigate("/signin");
 
@@ -105,7 +96,7 @@ const Claim = () => {
     });
     dispatch({
       type: "update_redirectUrl",
-      payload: `/nft/detail/claim/${params?.invoiceId}`,
+      payload: `/nft/detail/claim/${params?.nftId}`,
     });
     navigate("/signup");
   };
@@ -136,12 +127,9 @@ const Claim = () => {
             </div>
           </div>
         </div>
-        {nftDetail?.is_nft_claimed === false && (
+        {nftDetail?.status === NFT_STATUSES.unclaimed && (
           <button className={styles.claim__btn} onClick={handleClaim}>
-            Claim{" "}
-            <span>
-              <BsArrowUpRight />
-            </span>
+            Claim
           </button>
         )}
         <div className={styles.details__accords}>
@@ -186,6 +174,29 @@ const Claim = () => {
               </Accordion.Item>
             </div>
           </Accordion>
+          {nftDetail?.attributes?.length > 0 && (
+            <Accordion>
+              <div className={styles.accord}>
+                <Accordion.Item eventKey="1">
+                  <Accordion.Header>Properties</Accordion.Header>
+                  <Accordion.Body className={styles.accord__body}>
+                    {nftDetail.attributes.map((attr, index) => (
+                      <div key={index} className={styles.nft__info}>
+                        <p>{attr.attr_name}</p>
+                        <a
+                          href={nftDetail?.explorer_url}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          {attr.attr_value}
+                        </a>
+                      </div>
+                    ))}
+                  </Accordion.Body>
+                </Accordion.Item>
+              </div>
+            </Accordion>
+          )}
         </div>
 
         <Modal

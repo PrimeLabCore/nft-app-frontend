@@ -209,21 +209,14 @@ function App() {
 
         <Route path="/nft" render element={<DetailRoute />}>
           <Route
-            path=":nftid"
+            path=":nftId"
             element={
               <NFTDetail />
               // nft__detail.image ? <NFTDetail /> : <Navigate replace to="/" />
             }
           />
           <Route
-            path="detail/claim"
-            element={
-              <NFTClaim />
-              // nft__detail.image ? <NFTClaim /> : <Navigate replace to="/" />
-            }
-          />
-          <Route
-            path="detail/claim/:invoiceId"
+            path="detail/claim/:nftId"
             element={
               <NFTClaim />
               // nft__detail.image ? <NFTClaim /> : <Navigate replace to="/" />

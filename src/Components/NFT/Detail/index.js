@@ -13,7 +13,7 @@ import styles from "./details.module.css";
 const Details = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const nftIdFromUrl = useParams().nftid;
+  const nftIdFromUrl = useParams().nftId;
 
   const { user } = useSelector((state) => state.authReducer);
   const nftData = useSelector((state) => state.nft__detail);

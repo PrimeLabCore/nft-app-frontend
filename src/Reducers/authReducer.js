@@ -11,17 +11,17 @@ let initialvalue = {
 
 const authReducer = (state = initialvalue, action) => {
   switch (action.type) {
-    case 'auth/logout':
+    case "auth/logout":
       return {
         ...state,
         user: null,
-        jwt: null
+        jwt: null,
       };
     case "auth/set_session":
       return {
         ...state,
         user: action.payload.user,
-        jwt: action.payload.jwt
+        jwt: action.payload.jwt,
       };
 
     case "login_Successfully":
