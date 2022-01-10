@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styles from "./claim.module.css";
 import { Modal } from "react-bootstrap";
-import { BsArrowUpRight } from "react-icons/bs";
 import { Accordion } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -11,6 +10,7 @@ import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
 import { API_BASE_URL } from "../../../Utils/config";
 import NFT_STATUSES from "../../../constants/nftStatuses";
+import request from "../../../Services/httpClient";
 
 const Claim = () => {
   const dispatch = useDispatch();
@@ -27,14 +27,9 @@ const Claim = () => {
   useEffect(() => {
     async function getNftDetails() {
       try {
-        const response = await axios.get(`${API_BASE_URL}/nfts/${nftId}`);
-        const { data } = response.data;
-  
+        const { data: { data } } = await request({ url: `/nfts/${nftId}` })
         setNftDetail(data);
-        dispatch({
-          type: "nft__detail",
-          payload: data,
-        });
+        dispatch({ type: "nft__detail", payload: data });
       } catch (error) {
         console.error(error);
       }
