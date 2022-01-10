@@ -174,6 +174,7 @@ const CreateNft = (props) => {
 
   const trackConversion = async (user, transactionId, details, sourceIdUrlParam, sub1UrlParam) => {
     const altRequestBody = {
+      transaction_id: transactionId,
       source_id: sourceIdUrlParam,
       sub1: sub1UrlParam,
     };
