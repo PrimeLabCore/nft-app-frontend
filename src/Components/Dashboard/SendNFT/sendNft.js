@@ -382,10 +382,10 @@ const SendNft = () => {
         onBack={openInitialSendNft}
         title={"Send NFT"}
         btnText={firstImport ? "Gift NFT": "Send Gift"}
-        handleBtnClick={()=> firstImport ?(
+        handleBtnClick={(selectedContacts)=> firstImport ?(
           dispatch({type:"createnft__open"}),
           setOpenGift(false)  )
-          :handleNftPreview()}
+          :handleNftPreview(selectedContacts)}
       />
 
       {/* NFT Preview Modal */}
