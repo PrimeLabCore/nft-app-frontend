@@ -232,7 +232,7 @@ const ContactPopup = ({
               }}
               className={styles.next__btn}
             >
-              {firstImport ? "Gift NFT":btnText}
+              {btnText}
               <span>
                 <IoIosArrowForward />
               </span>
