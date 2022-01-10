@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export function setupHttpClient(store) {
+export function setupHttpClient(store, onUnauthorizedCallback) {
   const { authReducer: { jwt } } = store.getState();
 
   axios.interceptors.request.use(function (config) {
@@ -14,7 +14,10 @@ export function setupHttpClient(store) {
   });
 
   axios.interceptors.response.use(res => res, error => {
-    //@ToDo
+    const status = error.response && error.response.status;
+    if (status === 401) {
+      onUnauthorizedCallback()
+    }
     return Promise.reject(error);
   });
 }
