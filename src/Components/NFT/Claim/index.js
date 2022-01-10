@@ -5,10 +5,9 @@ import { Accordion } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { IoIosArrowForward } from "react-icons/io";
-import axios from "axios";
 import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
-import { API_BASE_URL } from "../../../Utils/config";
+
 import NFT_STATUSES from "../../../constants/nftStatuses";
 import request from "../../../Services/httpClient";
 
@@ -17,19 +16,19 @@ const Claim = () => {
   const navigate = useNavigate();
   const { nftId } = useParams();
 
-  const params = useParams();
-
   const [claimModal, setClaimModal] = useState(false);
-  const nft__detail = useSelector((state) => state.nft__detail);
   const { user } = useSelector((state) => state.authReducer);
   const [nftDetail, setNftDetail] = useState();
+
+  const isUserLoggedIn = !!user;
 
   useEffect(() => {
     async function getNftDetails() {
       try {
-        const { data: { data } } = await request({ url: `/nfts/${nftId}` })
+        const {
+          data: { data },
+        } = await request({ url: `/nfts/${nftId}` });
         setNftDetail(data);
-        dispatch({ type: "nft__detail", payload: data });
       } catch (error) {
         console.error(error);
       }
@@ -39,47 +38,54 @@ const Claim = () => {
   }, []);
 
   const hitClaim = async () => {
-    const response = await axios.post(
-      `${API_BASE_URL}/api/v1/user_images/claim_image?uuid=${nft__detail.uuid}`
-    );
-    const { status } = response;
-    const { success, message } = response.data;
-    if (success) {
+    try {
+      const {
+        data: { message },
+      } = await request({
+        method: "post",
+        url: `/nfts/${nftId}/claim`,
+        body: {
+          owner_id: user.user_id,
+        },
+      });
+
       toast.success(message);
       navigate("/");
-    } else if (status === 200) {
-      toast.error(message);
+    } catch (error) {
+      toast.error(
+        "There was an error while claim the NFT. Please try again later"
+      );
+      console.error(error);
     }
   };
 
   const handleClaim = () => {
-    user === null ? setClaimModal(true) : hitClaim();
+    if (isUserLoggedIn) {
+      hitClaim();
+    } else {
+      setClaimModal(true);
+    }
   };
 
   const closeClaimModal = () => {
     setClaimModal(false);
   };
 
-  const Login = () => {
-    // window.dataLayer.push({
-    //   event: "event",
-    //   eventProps: {
-    //     category: "Claim NFT",
-    //     action: "Redirected To Login",
-    //     label: "Claim NFT",
-    //     value: "Claim NFT",
-    //   },
-    // });
-    // dispatch({
-    //   type: "update_redirectUrl",
-    //   payload: `/nft/detail/claim/${params?.nftId}`,
-    // });
-    // navigate("/signin");
+  function handleLoginWithWallet() {
+    window.dataLayer.push({
+      event: "event",
+      eventProps: {
+        category: "Claim NFT",
+        action: "Redirected To Login",
+        label: "Claim NFT",
+        value: "Claim NFT",
+      },
+    });
 
-    window.open(`${API_BASE_URL}/near_login/login.html`, "_self");
-  };
+    navigate("/signin");
+  }
 
-  const createNewWallet = () => {
+  function handleCreateNewWallet() {
     window.dataLayer.push({
       event: "event",
       eventProps: {
@@ -89,12 +95,9 @@ const Claim = () => {
         value: "Claim NFT",
       },
     });
-    dispatch({
-      type: "update_redirectUrl",
-      payload: `/nft/detail/claim/${params?.nftId}`,
-    });
+
     navigate("/signup");
-  };
+  }
 
   return (
     <>
@@ -213,16 +216,19 @@ const Claim = () => {
           <Modal.Body>
             <div className={styles.btn__wrapper}>
               <button
-                onClick={createNewWallet}
+                onClick={handleCreateNewWallet}
                 className={styles.secondary__btn}
               >
-                Create New Wallet{" "}
+                Create New Wallet
                 <span>
                   <IoIosArrowForward />
                 </span>
               </button>
-              <button onClick={Login} className={styles.primary__btn}>
-                Login with NEAR wallet{" "}
+              <button
+                onClick={handleLoginWithWallet}
+                className={styles.primary__btn}
+              >
+                Login with NEAR wallet
                 <span>
                   <IoIosArrowForward />
                 </span>
