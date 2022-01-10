@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { nanoid } from "nanoid";
 import { Modal, ProgressBar } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import styles from "./createNft.module.css";
@@ -36,6 +35,7 @@ const CreateNft = (props) => {
     name: "",
   });
   const { user } = useSelector((state) => state.authReducer);
+  const { adTracker } = useSelector((state) => state.nftReducer);
 
   // getting all NFT detail
   const home__allnft = useSelector((state) => state.home__allnft);
@@ -172,10 +172,7 @@ const CreateNft = (props) => {
     let nftDetail = { ...details };
     nftDetail.attributes = formValues;
     nftDetail.owner_id = user.user_id;
-    nftDetail.tracker = {
-      id: '13', // random value. it may need to be static or linked to a specific customer in the future
-      value: transactionId
-    }
+    nftDetail.tracker = adTracker
 
     if (type === "mint") {
       nftDetail.action_type = "mine";
