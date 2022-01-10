@@ -31,7 +31,8 @@ const Claim = () => {
           data: { data },
         } = await request({ url: `/nfts/${nftId}` });
         if (data) {
-          data.status = "unclaimed_gift";
+          // testing only: do not commit
+          // data.status = "unclaimed_gift";
           dispatch({ type: "nft__detail", payload: mapNftDetails(data) });
         }
         // setNftDetail(data);
