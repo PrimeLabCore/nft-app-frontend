@@ -427,6 +427,10 @@
   margin-right: 10px;
 }
 
+.nft__form__modal .modal__body__wrapper .mynft__box .mynft__box__description__wrapper .mynft__box__profile__info .details__user__info {
+  max-width: 80%;
+}
+
 .nft__form__modal .modal__body__wrapper .mynft__box .mynft__box__description__wrapper .mynft__box__profile__info .details__user__info p {
   margin-bottom: 0px;
   font-weight: normal;
@@ -441,6 +445,7 @@
   font-size: 16.8px;
   color: black;
   padding-bottom: 0px;
+  word-wrap: break-word;
 }
 
 .nft__form__modal .modal__body__wrapper .mint__info__wrapper .mint__image {
