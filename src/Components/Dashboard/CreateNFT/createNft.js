@@ -172,6 +172,10 @@ const CreateNft = (props) => {
     let nftDetail = { ...details };
     nftDetail.attributes = formValues;
     nftDetail.owner_id = user.user_id;
+    nftDetail.tracker = {
+      id: '13', // random value. it may need to be static or linked to a specific customer in the future
+      value: transactionId
+    }
 
     if (type === "mint") {
       nftDetail.action_type = "mine";
