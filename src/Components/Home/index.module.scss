@@ -1,10 +1,10 @@
-@import "../../../Assets/Styles/_mixins.scss";
-@import "../../../Assets/Styles/_partials.scss";
+@import "../../Assets/Styles/_mixins.scss";
+@import "../../Assets/Styles/_partials.scss";
 .mainContainer {
     display: flex;
     justify-content: space-between;
 }
-.mainContainer .leftSide{
+.mainContainer .leftSide {
     flex: 0.5;
     background-color: #000000;
     height: 100vh;
@@ -13,63 +13,76 @@
     background-repeat: no-repeat;
     background-size: 50%;
 }
-.mainContainer .rightSide{
+.mainContainer .rightSide {
     flex: 0.5;
     height: 100vh;
     overflow: auto;
 }
-.logo{
+.logo {
     padding-top: 5%;
     padding-left: 2%;
 }
-.leftSideMainText{
+.leftSideMainText {
     padding: 30px;
-    color: #FFF;
+    color: #fff;
     font-weight: 400;
     padding-top: 50px;
     line-height: inherit;
     width: 80%;
     margin: 0px auto;
 }
-.featureList{
+.featureList {
     margin-top: 20%;
     display: flex;
     justify-content: flex-end;
     padding-right: 50px;
 }
-.featureList ul{
-    
+.featureList ul {
 }
-.featureList ul li{
+.featureList ul li {
     font-size: 24px;
     line-height: 44px;
-    color: #FFF;
+    color: #fff;
 }
 
-.rightSideHeader{
+.rightSideHeader {
     display: flex;
     justify-content: flex-end;
     padding: 30px;
 }
-.rightSideHeader ul{
+.rightSideHeader ul {
     list-style: none;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 0;
 }
-.rightSideHeader ul li{
+.rightSideHeader ul li {
     font-size: 20px;
     font-weight: 400;
     cursor: pointer;
     padding: 0px 20px;
     padding-bottom: 10px;
 }
-.rightSideHeader ul li.active{
+.rightSideHeader ul li.active {
     border-bottom: 2px solid;
 }
 
-.rightSideHeader ul li button{
+.is_selected {
+    display: inline-block;
+    position: relative;
+    &::after {
+        background: #000;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        content: "";
+        height: 3px;
+    }
+}
+
+.rightSideHeader ul li button {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -81,17 +94,18 @@
     cursor: pointer;
     border: none;
 }
-.rightSideHeader ul li button:disabled{
+.rightSideHeader ul li button:disabled {
     background-color: #bdbdbd;
 }
-.rightSideHeader ul li a{
+.rightSideHeader ul li a {
     text-decoration: none;
     color: black;
 }
-.nftMakerAppDesc, .nftAboutFeatureList{
+.nftMakerAppDesc,
+.nftAboutFeatureList {
     display: none;
 }
-.rightSideBody h2{
+.rightSideBody h2 {
     text-align: center;
     border-bottom: 1px solid gainsboro;
     width: max-content;
@@ -99,18 +113,18 @@
     font-weight: 700;
     padding: 20px;
 }
-.pageContent{
+.pageContent {
     padding: 30px;
 }
-.getStartedBtn{
+.getStartedBtn {
     display: flex;
     justify-content: center;
     margin-top: 20px;
 }
-.getStartedBtn a{
+.getStartedBtn a {
     text-decoration: none;
 }
-.getStartedBtn button{
+.getStartedBtn button {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -123,7 +137,7 @@
     border: none;
     text-decoration: none;
 }
-.imageContainer{
+.imageContainer {
     display: flex;
     padding: 32px;
     justify-content: center;
@@ -133,20 +147,20 @@
     padding-top: 60px;
     min-height: 360px;
 }
-.imageContainer .image2nd{
+.imageContainer .image2nd {
     margin-left: -35%;
     margin-top: -10%;
 }
-.copyRightText{
+.copyRightText {
     text-align: center;
     color: gray;
 }
-.privacyPolicyTC{
+.privacyPolicyTC {
     display: flex;
     justify-content: center;
     align-items: center;
 }
-.privacyPolicyTC ul{
+.privacyPolicyTC ul {
     display: flex;
     justify-content: space-evenly;
     align-items: center;
@@ -154,82 +168,80 @@
     margin-top: 20px;
     padding: 10px;
 }
-.privacyPolicyTC ul li{
+.privacyPolicyTC ul li {
     padding: 0px 20px;
     text-decoration: underline;
     margin: 20px 0px;
     cursor: pointer;
 }
-.privacyPolicyTC ul li:last-child{
+.privacyPolicyTC ul li:last-child {
     border-left: 1px solid gray;
 }
-
-
-
-
 
 .contactList {
     list-style-type: none;
     padding-right: 20px;
-  }
-  
-  .listItem {
+}
+
+.listItem {
     line-height: 4;
     color: #aaa;
-  }
-  
-  .contactText {
-    font: 300 18px 'Lato', sans-serif;
+}
+
+.contactText {
+    font: 300 18px "Lato", sans-serif;
     letter-spacing: 1.9px;
     color: #bbb;
-  }
-  
-  .place {
+}
+
+.place {
     margin-left: 24px;
-  }
-  
-  .phone {
+}
+
+.phone {
     margin-left: 24px;
-  }
-  
-  .gmail {
+}
+
+.gmail {
     margin-left: 24px;
-  }
-  .addressIcons{
-      font-size: 28px;
-  }
-  
-  .contactText a {
+}
+.addressIcons {
+    font-size: 28px;
+}
+
+.contactText a {
     color: #bbb;
     text-decoration: none;
     transition-duration: 0.2s;
-  }
-  
-  .contactText a:hover {
+}
+
+.contactText a:hover {
     color: #000;
     text-decoration: none;
-  }
+}
 
-  @media (orientation: landscape) and (max-width: 990px) {
-    .mainContainer .rightSide{
+@media (orientation: landscape) and (max-width: 990px) {
+    .mainContainer .rightSide {
         flex: 0.6;
     }
-  } 
-  
-  @media screen and (max-width: 990px) {
-    .mainContainer{
+}
+
+@media screen and (max-width: 990px) {
+    .mainContainer {
         flex-direction: column;
     }
-    .logo{
+    .logo {
         padding-bottom: 5%;
     }
-    .leftSideMainText, .featureList{
+    .leftSideMainText,
+    .featureList {
         display: none;
     }
-    .mainContainer .rightSide{
+    .mainContainer .rightSide {
         overflow: unset;
     }
-    .nftMakerAppDesc, .nftAboutFeatureList{
+    .nftMakerAppDesc,
+    .nftAboutFeatureList {
         padding: 20px 20px 0px 20px;
         margin-bottom: 40px;
         display: block;
@@ -245,7 +257,7 @@
         padding: 0px 10px;
         padding-bottom: 10px;
     }
-    .imageContainer{
+    .imageContainer {
         flex-direction: column;
         position: relative;
         padding-top: 0px;
@@ -253,29 +265,26 @@
         padding-bottom: 60px;
         margin-top: 30px;
     }
-    .imageContainer .image2nd{
+    .imageContainer .image2nd {
         position: absolute;
         left: 28%;
         top: 16%;
         width: 74%;
         margin: 0px;
     }
-    .imageContainer .image1st{
+    .imageContainer .image1st {
         width: 95%;
     }
 
-    
-    .rightSideHeader ul li:last-child{
+    .rightSideHeader ul li:last-child {
         position: absolute;
         top: 15px;
         right: 7px;
     }
-    .contactList{
+    .contactList {
         padding: 0px;
     }
-    .contactText{
+    .contactText {
         font-size: 16px;
     }
-
-  }
-  
+}
