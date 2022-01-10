@@ -14,14 +14,15 @@ export const mapNftDetails = (data) => {
     nftid: data.nft_id,
     description: data.description,
     attributes: data.attributes,
+    owner: data.owner?.wallet_id,
   };
 };
 
 export const mapUserSession = (data) => ({
-  user: data['user_info'],
+  user: data["user_info"],
   jwt: {
-    jwt_access_token: data['jwt_access_token'],
-    jwt_id_token: data['jwt_id_token'],
-    jwt_refresh_token: data['jwt_refresh_token'],
-  }
+    jwt_access_token: data["jwt_access_token"],
+    jwt_id_token: data["jwt_id_token"],
+    jwt_refresh_token: data["jwt_refresh_token"],
+  },
 });
