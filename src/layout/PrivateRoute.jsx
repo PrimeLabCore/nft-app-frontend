@@ -1,13 +1,14 @@
 import React from "react";
-import { Outlet, Navigate } from "react-router-dom";
-import Menu from "../Components/Dashboard/Widgets/Menu";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { Navigate, Outlet } from "react-router-dom";
 // import Cookies from 'js-cookie'
 // import {cookieAuth} from "../Utils/config"
 import CreateNftPopup from "../Components/Dashboard/CreateNFT/createNft";
 import SendNft from "../Components/Dashboard/SendNFT/sendNft";
+import Menu from "../Components/Dashboard/Widgets/Menu";
+import axios from "axios";
 
-const PrivateLayout = props => {
+const PrivateLayout = (props) => {
   const { children, transactionId } = props;
 
   let dispatch = useDispatch();
@@ -48,15 +49,26 @@ const PrivateLayout = props => {
 };
 
 const PrivateRoute = (props) => {
-  // let navigate = useNavigate()
-  // let isAuth = Cookies.get(cookieAuth) || false // => 'value'
-  // let isAuth = true; // => 'value'
-  const { user } = useSelector((state) => state.authReducer); //Defined in reducer function
-  // let isAuth = JSON.parse(localStorage.getItem("user")) ? true : false;
+  let dispatch = useDispatch();
+
+  // @ToDo
+  const user = JSON.parse(localStorage.getItem("user"));
   let isAuthenticated = user ? true : false;
+
+  if (isAuthenticated) {
+    //save user details in redux state
+    dispatch({ type: "login_Successfully", payload: user.user_info });
+
+    //adding JWT Authorization token to axios requests
+    axios.interceptors.request.use(function (config) {
+      config.headers.Authorization = `Bearer ${user.jwt_access_token}`;
+      return config;
+    });
+  }
+
   return (
     <>
-      <PrivateLayout {...props} >
+      <PrivateLayout {...props}>
         {isAuthenticated ? <Outlet /> : <Navigate replace to="/home" />}
       </PrivateLayout>
     </>

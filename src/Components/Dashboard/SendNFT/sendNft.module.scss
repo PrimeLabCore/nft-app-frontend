@@ -34,21 +34,21 @@
       color: #808080;
       text-align: center;
     }
-    .search__wrapper{
+    .search__wrapper {
       display: flex;
       // justify-content:space-between;
       align-items: center;
-      .search__inner__wrapper{
+      .search__inner__wrapper {
         width: 100%;
-        .searchIcon{
-          color: #818C99;
+        .searchIcon {
+          color: #818c99;
           display: flex;
           padding: 0px 16px;
           z-index: 20;
           position: absolute;
           pointer-events: none;
           justify-content: center;
-          svg{
+          svg {
             fill: currentColor;
             width: 1em;
             height: 1em;
@@ -59,7 +59,7 @@
             user-select: none;
           }
         }
-        .search__input{
+        .search__input {
           color: rgba(0, 0, 0, 0.87);
           cursor: text;
           display: inline-flex;
@@ -67,42 +67,41 @@
           font-size: 1rem;
           align-items: center;
           width: 100%;
-          input{
+          input {
             padding: 10px;
             z-index: 1;
             max-width: 400px;
-            background: #EBEDF0;
+            background: #ebedf0;
             transition: width 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
             padding-left: calc(1em + 32px);
             border-radius: 12px;
             border: none;
-            min-width:100%;
-            &:focus{
+            min-width: 100%;
+            &:focus {
               outline: none;
             }
           }
         }
-        
       }
 
-      button{
-        color: #2F80ED;
+      button {
+        color: #2f80ed;
         font-size: 20.4px;
         font-weight: normal;
         margin-left: 20px;
-        border:none;
+        border: none;
         background-color: transparent;
         letter-spacing: -0.4896px;
-        &:focus{
+        &:focus {
           outline: none;
         }
       }
     }
-    .data__wrapper{
+    .data__wrapper {
       // margin: 15px auto;
       // overflow: scroll;
       // overflow-x: hidden;
-      
+
       .data_row_container {
         display: flex;
         align-items: center;
@@ -119,7 +118,7 @@
           justify-content: center;
           color: rgba(0, 0, 0, 0.55);
           font-size: 16.8px;
-          img{
+          img {
             width: 100%;
             border-radius: 50%;
           }
@@ -134,6 +133,9 @@
           p {
             margin: 0;
             padding: 0;
+            max-width: 350px;
+            text-overflow: ellipsis;
+            overflow: hidden;
           }
           h6 {
             font-weight: 500;
@@ -260,15 +262,17 @@
       align-items: center;
       justify-content: space-between;
       .mynft__box__description {
+        max-width: 80%;
         h2 {
           font-size: 19.2px;
           margin-bottom: 0px;
           padding-bottom: 10px;
         }
-        p {
+        span {
           font-size: 16.8px;
           color: #808080;
           margin-bottom: 0px;
+          word-wrap: break-word;
         }
       }
       .checked {
@@ -285,32 +289,42 @@
       }
     }
   }
-  .selected__nft{
-      border:2px solid $primary__color;
-      box-shadow: none;
-    }
+  .selected__nft {
+    border: 2px solid $primary__color;
+    box-shadow: none;
+  }
 }
 
-@media only screen and (max-width:"767px"){
-  .mynft__box__wrapper{
-    .selected__mynft__box__description__wrapper{
-      .checked{
+@media only screen and (max-width: "767px") {
+  .mynft__box__wrapper {
+    .selected__mynft__box__description__wrapper {
+      .checked {
         width: 20px !important;
         height: 20px !important;
-        padding:3px ;
+        padding: 3px;
       }
     }
   }
-  .initial__nft__modal  {
-    .modal__body__wrapper{
+  .initial__nft__modal {
+    .modal__body__wrapper {
       margin: 0px auto;
     }
   }
   .textContainer {
-    p{
+    p {
       max-width: 240px;
       text-overflow: ellipsis;
       overflow: hidden;
     }
   }
 }
+
+// .sendNft_mynft__box__description__23YnY {
+//   max-width: 80%;
+//   .sendNft_mynft__box__description__text__3VK3J {
+//     font-size: 16.8px;
+//     color: #808080;
+//     margin-bottom: 0px;
+//     word-wrap: break-word;
+//   }
+// }

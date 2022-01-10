@@ -1,20 +1,27 @@
-import React from "react";
-import styles from "./details.module.css";
-// import {BiArrowBack} from "react-icons/bi"
+import React, { useEffect } from "react";
 import { BsArrowUpRight } from "react-icons/bs";
 import { Accordion } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
-// import {MdCancel} from "react-icons/md"
+import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
+
+import { mapNftDetails } from "../../../Utils/utils";
+import request from "../../../Services/httpClient";
+import styles from "./details.module.css";
+
 const Details = () => {
-  let dispatch = useDispatch();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const nftIdFromUrl = useParams().nftId;
+
   const { user } = useSelector((state) => state.authReducer);
+  const nftData = useSelector((state) => state.nft__detail);
 
   const sendNft = () => {
     dispatch({ type: "sendnft__open" });
     dispatch({
       type: "current_selected_nft",
-      payload: nft__detail,
+      payload: nftData,
     });
     navigate("/");
     window.dataLayer.push({
@@ -27,11 +34,26 @@ const Details = () => {
       },
     });
   };
-  let navigate = useNavigate();
 
-  const nft__detail = useSelector((state) => state.nft__detail);
+  useEffect(() => {
+    async function getNftDetails() {
+      try {
+        const { data: { data } } = await request({ url: `/nfts/${nftIdFromUrl}` });
+        if (data) {
+          dispatch({ type: "nft__detail", payload: mapNftDetails(data) });
+        }
+      } catch (error) {
+        if (error.response.data) {
+          toast.error(error.response.data.message);
+        }
+      }
+    }
 
-  console.log(`nft__detail`, nft__detail);
+    // if the user is taken straight to this page via a direct URL, then the redux store won't have the nft details. this will cause a bug.
+    if (!nftData || nftIdFromUrl !== nftData.id) {
+      getNftDetails();
+    }
+  }, [nftData]);
 
   return (
     <>
@@ -43,11 +65,11 @@ const Details = () => {
         </div>
         <div className={styles.details__head}>
           <div className={styles.details__cat}>
-            <h6>{nft__detail?.category}</h6>
+            <h6>{nftData?.category}</h6>
           </div>
-          <h1>{nft__detail.name}</h1>
+          <h1>{nftData.title}</h1>
           <a href="https://explorer.near.org/" target="_blank" rel="noreferrer">
-            {nft__detail.nftid}
+            {nftData.nftid}
           </a>
         </div>
         <div className={styles.details__info}>
@@ -59,7 +81,7 @@ const Details = () => {
             </div>
           </div>
 
-          {!nft__detail?.is_nft_claimed && (
+          {!nftData?.is_nft_claimed && (
             <button onClick={() => sendNft()}>
               Send{" "}
               <span>
@@ -74,7 +96,7 @@ const Details = () => {
               <Accordion.Item eventKey="0">
                 <Accordion.Header>Descriptions</Accordion.Header>
                 <Accordion.Body className={styles.accord__body}>
-                  <p>{nft__detail.description}</p>
+                  <p>{nftData.description}</p>
                 </Accordion.Body>
               </Accordion.Item>
             </div>
@@ -91,13 +113,13 @@ const Details = () => {
                       target="_blank"
                       rel="noreferrer"
                     >
-                      {nft__detail?.token_id ? nft__detail?.token_id : ""}
+                      {nftData?.token_id ? nftData?.token_id : ""}
                     </a>
                   </div>
                   <div className={styles.nft__info}>
                     <p>Contract Address</p>
                     <a
-                      href={nft__detail?.explorer_url}
+                      href={nftData?.explorer_url}
                       target="_blank"
                       rel="noreferrer"
                     >
@@ -108,6 +130,29 @@ const Details = () => {
               </Accordion.Item>
             </div>
           </Accordion>
+          {nftData?.attributes?.length > 0 && (
+            <Accordion>
+              <div className={styles.accord}>
+                <Accordion.Item eventKey="1">
+                  <Accordion.Header>Properties</Accordion.Header>
+                  <Accordion.Body className={styles.accord__body}>
+                    {nftData.attributes.map((attr, index) => (
+                      <div key={index} className={styles.nft__info}>
+                        <p>{attr.attr_name}</p>
+                        <a
+                          href={nftData?.explorer_url}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          {attr.attr_value}
+                        </a>
+                      </div>
+                    ))}
+                  </Accordion.Body>
+                </Accordion.Item>
+              </div>
+            </Accordion>
+          )}
         </div>
       </div>
     </>

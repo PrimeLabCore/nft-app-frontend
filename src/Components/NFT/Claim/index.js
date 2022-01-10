@@ -1,101 +1,91 @@
 import React, { useEffect, useState } from "react";
 import styles from "./claim.module.css";
 import { Modal } from "react-bootstrap";
-// import {BiArrowBack} from "react-icons/bi"
-import { BsArrowUpRight } from "react-icons/bs";
 import { Accordion } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { IoIosArrowForward } from "react-icons/io";
-import axios from "axios";
 import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
-import { API_BASE_URL } from "../../../Utils/config";
 
-// import {MdCancel} from "react-icons/md"
-// dispatch({ type: "nft__detail", payload: data });
-//     navigate("/nft/detail/claim");
+import NFT_STATUSES from "../../../constants/nftStatuses";
+import request from "../../../Services/httpClient";
 
 const Claim = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { nftId } = useParams();
+
   const [claimModal, setClaimModal] = useState(false);
-  const nft__detail = useSelector((state) => state.nft__detail);
   const { user } = useSelector((state) => state.authReducer);
   const [nftDetail, setNftDetail] = useState();
-  const [loading, setLoading] = useState(true);
-  let navigate = useNavigate();
-  let params = useParams();
-  const dispatch = useDispatch();
 
-  console.log(`invoiceId`, params?.invoiceId);
+  const isUserLoggedIn = !!user;
 
-  const fetchNft = async () => {
-    setLoading(true);
-    const response = await axios.get(
-      `${API_BASE_URL}/api/v1/user_images/fetch_user_image?uuid=${params?.invoiceId}`
-    );
-    const { data, success } = response.data;
-    console.log(`response`, data);
-    if (success) {
-      setNftDetail(data);
-      dispatch({
-        type: "nft__detail",
-        payload: data,
-      });
+  useEffect(() => {
+    async function getNftDetails() {
+      try {
+        const {
+          data: { data },
+        } = await request({ url: `/nfts/${nftId}` });
+        setNftDetail(data);
+      } catch (error) {
+        console.error(error);
+      }
     }
-    setLoading(false);
-  };
 
-  useEffect(() => {
-    params?.invoiceId && fetchNft();
-  }, [params?.invoiceId]);
-
-  useEffect(() => {
-    !params?.invoiceId && setNftDetail(nftDetail);
-  }, [nftDetail]);
+    getNftDetails();
+  }, []);
 
   const hitClaim = async () => {
-    const response = await axios.post(
-      `${API_BASE_URL}/api/v1/user_images/claim_image?uuid=${nft__detail.uuid}`
-    );
-    const { status } = response;
-    const { success, message } = response.data;
-    console.log(`response`, response.data);
-    if (success) {
+    try {
+      const {
+        data: { message },
+      } = await request({
+        method: "post",
+        url: `/nfts/${nftId}/claim`,
+        body: {
+          owner_id: user.user_id,
+        },
+      });
+
       toast.success(message);
       navigate("/");
-    } else if (status === 200) {
-      toast.error(message);
+    } catch (error) {
+      toast.error(
+        "There was an error while claim the NFT. Please try again later"
+      );
+      console.error(error);
     }
   };
 
   const handleClaim = () => {
-    user === null ? setClaimModal(true) : hitClaim();
+    if (isUserLoggedIn) {
+      hitClaim();
+    } else {
+      setClaimModal(true);
+    }
   };
 
   const closeClaimModal = () => {
     setClaimModal(false);
   };
 
-  const Login = () => {
-    // window.dataLayer.push({
-    //   event: "event",
-    //   eventProps: {
-    //     category: "Claim NFT",
-    //     action: "Redirected To Login",
-    //     label: "Claim NFT",
-    //     value: "Claim NFT",
-    //   },
-    // });
-    // dispatch({
-    //   type: "update_redirectUrl",
-    //   payload: `/nft/detail/claim/${params?.invoiceId}`,
-    // });
-    // navigate("/signin");
+  function handleLoginWithWallet() {
+    window.dataLayer.push({
+      event: "event",
+      eventProps: {
+        category: "Claim NFT",
+        action: "Redirected To Login",
+        label: "Claim NFT",
+        value: "Claim NFT",
+      },
+    });
 
-    window.open(`${API_BASE_URL}/near_login/login.html`, "_self");
-  };
+    navigate("/signin");
+  }
 
-  const createNewWallet = () => {
+  function handleCreateNewWallet() {
     window.dataLayer.push({
       event: "event",
       eventProps: {
@@ -105,14 +95,10 @@ const Claim = () => {
         value: "Claim NFT",
       },
     });
-    dispatch({
-      type: "update_redirectUrl",
-      payload: `/nft/detail/claim/${params?.invoiceId}`,
-    });
-    navigate("/signup");
-  };
 
-  console.log(`nftDetail`, nftDetail);
+    navigate("/signup");
+  }
+
   return (
     <>
       <div className={styles.details__wrapper}>
@@ -139,12 +125,9 @@ const Claim = () => {
             </div>
           </div>
         </div>
-        {nftDetail?.is_nft_claimed === false && (
+        {nftDetail?.status === NFT_STATUSES.unclaimed && (
           <button className={styles.claim__btn} onClick={handleClaim}>
-            Claim{" "}
-            <span>
-              <BsArrowUpRight />
-            </span>
+            Claim
           </button>
         )}
         <div className={styles.details__accords}>
@@ -189,6 +172,29 @@ const Claim = () => {
               </Accordion.Item>
             </div>
           </Accordion>
+          {nftDetail?.attributes?.length > 0 && (
+            <Accordion>
+              <div className={styles.accord}>
+                <Accordion.Item eventKey="1">
+                  <Accordion.Header>Properties</Accordion.Header>
+                  <Accordion.Body className={styles.accord__body}>
+                    {nftDetail.attributes.map((attr, index) => (
+                      <div key={index} className={styles.nft__info}>
+                        <p>{attr.attr_name}</p>
+                        <a
+                          href={nftDetail?.explorer_url}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          {attr.attr_value}
+                        </a>
+                      </div>
+                    ))}
+                  </Accordion.Body>
+                </Accordion.Item>
+              </div>
+            </Accordion>
+          )}
         </div>
 
         <Modal
@@ -210,16 +216,19 @@ const Claim = () => {
           <Modal.Body>
             <div className={styles.btn__wrapper}>
               <button
-                onClick={createNewWallet}
+                onClick={handleCreateNewWallet}
                 className={styles.secondary__btn}
               >
-                Create New Wallet{" "}
+                Create New Wallet
                 <span>
                   <IoIosArrowForward />
                 </span>
               </button>
-              <button onClick={Login} className={styles.primary__btn}>
-                Login with NEAR wallet{" "}
+              <button
+                onClick={handleLoginWithWallet}
+                className={styles.primary__btn}
+              >
+                Login with NEAR wallet
                 <span>
                   <IoIosArrowForward />
                 </span>

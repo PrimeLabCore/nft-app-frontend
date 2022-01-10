@@ -1,23 +1,18 @@
-import React, { Fragment, useEffect, useState } from "react";
-import { nanoid } from "nanoid";
-import styles from "./sendNft.module.css";
-import { useNavigate } from "react-router-dom";
-import { Modal } from "react-bootstrap";
-import Carousel from "react-multi-carousel";
-import { IoIosArrowForward } from "react-icons/io";
-import GiftAnNft from "../../GiftAnNftDialog/GiftAnNft";
-import { useSelector, useDispatch } from "react-redux";
-import dummy__img from "../../../Assets/Images/dummy-card1.png";
-import { AiOutlineCheck } from "react-icons/ai";
-import SearchIcon from "@material-ui/icons/Search";
-import { BsCheckCircleFill } from "react-icons/bs";
-import { GoPrimitiveDot } from "react-icons/go";
-import ImportContactsDialog from "../../ImportContactsDialog/ImportContactsDialog";
 import axios from "axios";
-import Cookies from "js-cookie";
-import { API_BASE_URL, googleAccess } from "../../../Utils/config";
+import { nanoid } from "nanoid";
+import React, { Fragment, useEffect, useState } from "react";
+import { Modal } from "react-bootstrap";
+import { AiOutlineCheck } from "react-icons/ai";
+import { IoIosArrowForward } from "react-icons/io";
+import Carousel from "react-multi-carousel";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import ContactPopup from "../../../common/components/ContactPopup";
+import { API_BASE_URL } from "../../../Utils/config";
+import ImportContactsDialog from "../../ImportContactsDialog/ImportContactsDialog";
+import styles from "./sendNft.module.css";
+
 const responsive = {
   superLargeDesktop: {
     // the naming can be any, depends on you.
@@ -37,6 +32,7 @@ const responsive = {
     items: 1.5,
   },
 };
+
 const checkAllContacts = (data) =>
   data.map((item) => ({ checked: true, email: item.primary_email }));
 
@@ -48,29 +44,27 @@ const findIfChecked = (email, array) => {
 
 const SendNft = () => {
   let navigate = useNavigate();
+  const { user } = useSelector((state) => state.authReducer);
   const dispatch = useDispatch();
   const { nft } = useSelector((state) => state.authReducer);
   const giftNFT__contactData = useSelector(
     (state) => state.giftNFT__contactData
   );
 
-  // const [data, setdata] = useState(dummyContacts)
-  const [filteredData, setFilteredData] = useState(
-    giftNFT__contactData ? giftNFT__contactData : []
-  );
+  const [filteredData, setFilteredData] = useState([]);
 
   const [openPreview, setOpenPreview] = useState(false);
   const [openGift, setOpenGift] = useState(false);
   const [selected, setSelected] = useState(nft ? nft : "");
+
   const [sendGiftEmail, setSendGiftEmail] = useState("");
-  // const [selected,setSelected] = useState({
-  //     value:false,
-  //     id:""
-  // })
-  // const [data,setdata] = useState(useSelector((state) => state.home__allnft))
-  const sendnft__popup = useSelector((state) => state.sendnft__popup); //Defined in reducer function
-  const home__allnft = useSelector((state) => state.home__allnft); //Defined in reducer function
-  // let updatedNFT = useSelector((state) => state.home__allnft); //Defined in reducer function
+  const [isLoading, setIsloading] = useState(false);
+
+  const sendnft__popup = useSelector((state) => state.sendnft__popup);
+  const { nfts } = useSelector((state) => state.home__allnft);
+
+  const firstImport=localStorage.getItem("firstImport")
+
   const closeSendNft = () => {
     dispatch({ type: "sendnft__close" });
     setOpenPreview(false);
@@ -78,11 +72,9 @@ const SendNft = () => {
   const [checkedState, setCheckedState] = useState(
     checkAllContacts(giftNFT__contactData || [])
   );
+
   // for checked and unchecked items
   const HandleClick = (email) => {
-    // const find_index_of_clicked_item = (data.findIndex(value => Number(value.id) === Number(id)))
-    // data[find_index_of_clicked_item] = { ...data[find_index_of_clicked_item], checked: !data[find_index_of_clicked_item].checked }
-    // setdata([...data])
     const updatedCheckedState = checkedState.map((item) =>
       item.email === email
         ? { ...item, checked: !item.checked }
@@ -90,46 +82,84 @@ const SendNft = () => {
     );
     setCheckedState(updatedCheckedState);
   };
+
   const closegiftNft = () => {
     setOpenGift(false);
+    dispatch({type:"createnft__open"})
   };
 
   useEffect(() => {
-    console.log(`nft`, nft);
+    if (giftNFT__contactData) {
+      setFilteredData(giftNFT__contactData);
+    } else {
+      console.log("empty dataaa.................");
+    }
+  }, [giftNFT__contactData]);
+
+  //fetch all the nfts of the user - in future use pagination
+  useEffect(() => {
+    setIsloading(true);
+
+    axios
+      .get(`${API_BASE_URL}/nfts?user_id=${user?.user_id}`)
+      .then((response) => {
+        let tempNfts = response.data.data;
+        dispatch({ type: "update_nfts", payload: tempNfts });
+      })
+      .catch((error) => {
+        if (error.response.data) {
+          toast.error(error.response.data.message);
+        }
+      })
+      .finally(() => {
+        setIsloading(false);
+      });
+  }, []);
+
+  useEffect(() => {
     nft && setSelected(nft);
   }, [nft]);
 
   const handleNftGift = () => {
     dispatch({ type: "sendnft__close" });
-    if (filteredData.length === 0) {
-      setimportContactDialog(true);
-    } else {
-      setOpenGift(true);
-    }
+
     setOpenPreview(false);
+    setOpenGift(true);
   };
 
-  const handleNftPreview = async () => {
-    const fd = new FormData();
-    const email_array = filteredData
-      .filter((item) => findIfChecked(item.email, checkedState))
-      .map((item) => item.email);
-    // fd.append("email", [sendGiftEmail].toString());
+  const handleNftPreview = async (selectedContacts) => {
+   
+  if( selectedContacts && selectedContacts.length >0){
+    setFilteredData(selectedContacts);
+    let nftDetail = {
+      sender_id: user.user_id,
+      recipient_id: selectedContacts,
+      transaction_item_id: selected.nft_id,
+      transaction_value: "NA",
+      type: "gift",
+    };
 
-    let final = sendGiftEmail?.length > 5 ? sendGiftEmail : email_array;
-    const resp = await axios.post(
-      `${API_BASE_URL}/api/v1/user_images/send_image?uuid=${
-        selected.uuid
-      }&emails=${[final].toString()}`,
-      fd
-    );
+    axios
+      .post(`${API_BASE_URL}/transactions`, nftDetail)
+      .then((response) => {
+        console.log(response.data);
+        toast.success(response.data.message);
 
-    console.log(`resp`, resp);
-
-    dispatch({ type: "sendnft__close" });
-    dispatch({ type: "close_dialog_gift_nft" });
-    setOpenGift(false);
-    setOpenPreview(true);
+        dispatch({ type: "sendnft__close" });
+        dispatch({ type: "close_dialog_gift_nft" });
+        setOpenGift(false);
+        setOpenPreview(true);
+      })
+      .catch((error) => {
+        if (error.response.data) {
+          toast.error(error.response.data.message);
+        }
+      })
+      .finally(() => {});
+    }else{
+      toast.error("Please select some contact!");
+    }
+  
   };
 
   const openInitialSendNft = () => {
@@ -143,29 +173,18 @@ const SendNft = () => {
     navigate("/transactions");
   };
 
-  const nftClicked = (e, i) => {
-    if (selected === i) {
+  const nftClicked = (data, i) => {
+    /* if (selected === i) {
       setSelected("");
     } else {
       setSelected(e);
-    }
+    } */
+    setSelected(data);
   };
 
   useEffect(() => {
     dispatch({ type: "close_dialog_gift_nft" });
   }, []);
-
-  console.log(`selected`, selected);
-
-  const handleSearch = (event) => {
-    let value = event.target.value.toLowerCase();
-    let result = [];
-    result = giftNFT__contactData.filter((data) => {
-      return data.primary_email.toLowerCase().search(value) !== -1;
-    });
-    setFilteredData(result);
-    setSendGiftEmail(event.target.value.toLowerCase());
-  };
 
   const [importContactDialog, setimportContactDialog] = useState(false);
   const HandleDialogClose = () => {
@@ -174,10 +193,6 @@ const SendNft = () => {
 
   const importContact = (data) => {
     if (data) {
-      dispatch({
-        type: "getGoogleContactData",
-        payload: data,
-      });
       setCheckedState(checkAllContacts(data));
       setimportContactDialog(false);
       setFilteredData(data);
@@ -205,6 +220,8 @@ const SendNft = () => {
     setimportContactDialog(true);
   };
 
+  const urlArray = selected?.image?.split(".");
+  const fileType = urlArray?.length ? urlArray[urlArray.length - 1] : "";
   return (
     <>
       {/* NFT Selection Modal */}
@@ -243,12 +260,20 @@ const SendNft = () => {
                 swipeable={true}
                 draggable={true}
               >
-                {home__allnft.map((data, i) => {
+                {nfts.map((data, i) => {
+                  let filename = data?.file_url.substring(
+                    data?.file_url.lastIndexOf("/") + 1
+                  );
+                  const urlArray = filename?.split(".");
+                  const fileType = urlArray.length
+                    ? urlArray[urlArray.length - 1]
+                    : "";
+
                   return (
                     <Fragment key={nanoid()}>
                       <div
                         className={`${styles.mynft__box} ${
-                          selected.uuid === data.uuid
+                          selected.nft_id === data.nft_id
                             ? styles.selected__nft
                             : ""
                         }`}
@@ -256,14 +281,33 @@ const SendNft = () => {
                       >
                         <div className={styles.mynft__box__image__wrapper}>
                           <div className={styles.mynft__box__image}>
-                            <img src={data.image} alt={data.title} />
+                            {fileType.toLowerCase() === "mp4" ? (
+                              <video
+                                style={{ width: "100%", borderRadius: "8px" }}
+                                src={data?.file_url}
+                              />
+                            ) : fileType.toLowerCase() === "mp3" ? (
+                              <div style={{ width: "100%", padding: "0 2px" }}>
+                                <audio
+                                  style={{
+                                    width: "inherit",
+                                    marginTop: "60px",
+                                  }}
+                                  controls
+                                >
+                                  <source src={data?.file_url} />
+                                </audio>
+                              </div>
+                            ) : (
+                              <img src={data?.file_url} alt={data.title} />
+                            )}
                           </div>
                           <div className={styles.mynft__box__cat}>
-                            <h6>{data.cat}</h6>
+                            <h6>{data.category}</h6>
                           </div>
                         </div>
 
-                        {selected.uuid === data.uuid ? (
+                        {selected.nft_id === data.nft_id ? (
                           <>
                             <div
                               className={
@@ -272,7 +316,13 @@ const SendNft = () => {
                             >
                               <div className={styles.mynft__box__description}>
                                 <h2>{data.title}</h2>
-                                <p>{data.id}</p>
+                                <span
+                                  className={
+                                    styles.mynft__box__description__text
+                                  }
+                                >
+                                  {data.nft_id}
+                                </span>
                               </div>
                               <div className={styles.checked}>
                                 <AiOutlineCheck />
@@ -287,7 +337,7 @@ const SendNft = () => {
                               }
                             >
                               <h2>{data.title}</h2>
-                              <p>{data.id}</p>
+                              <p>{data.nft_id}</p>
                             </div>
                           </>
                         )}
@@ -326,18 +376,16 @@ const SendNft = () => {
       />
 
       <ContactPopup
-        data={filteredData}
+        displayImportContact={false}
         show={openGift}
         onClose={closegiftNft}
         onBack={openInitialSendNft}
         title={"Send NFT"}
-        // handleSearch={handleSearch}
-        // HandleDialogOpen={HandleDialogOpen}
-        btnText={"Send Gift"}
-        handleBtnClick={handleNftPreview}
-        // findIfChecked={findIfChecked}
-        // HandleClick={HandleClick}
-        // checkedState={checkedState}
+        btnText={firstImport ? "Gift NFT": "Send Gift"}
+        handleBtnClick={(selectedContacts)=> firstImport ?(
+          dispatch({type:"createnft__open"}),
+          setOpenGift(false)  )
+          :handleNftPreview(selectedContacts)}
       />
 
       {/* NFT Preview Modal */}
@@ -357,19 +405,28 @@ const SendNft = () => {
           <div className={styles.modal__body__wrapper}>
             <div className={styles.mint__info__wrapper}>
               <div className={styles.mint__image}>
-                <img src={selected.image} alt="NFT Vecotry Illustartion" />
+                {fileType.toLowerCase() === "mp4" ? (
+                  <video
+                    style={{ width: "100%", borderRadius: "8px" }}
+                    src={selected?.file_url}
+                  />
+                ) : fileType.toLowerCase() === "mp3" ? (
+                  <div style={{ width: "100%", padding: "0 2px" }}>
+                    <audio
+                      style={{ width: "inherit", marginTop: "60px" }}
+                      controls
+                    >
+                      <source src={selected?.file_url} />
+                    </audio>
+                  </div>
+                ) : (
+                  <img src={selected?.file_url} alt={selected.title} />
+                )}
               </div>
               <h1>
-                {selected.name} <br /> sent successfully to
+                {selected.title} <br /> sent successfully to
               </h1>
-              <h6>
-                {sendGiftEmail?.length > 5
-                  ? sendGiftEmail.split(",").length
-                  : filteredData.filter((item) =>
-                      findIfChecked(item.primary_email, checkedState)
-                    ).length}{" "}
-                contacts
-              </h6>
+              <h6>{filteredData.length} contacts</h6>
             </div>
           </div>
           <div

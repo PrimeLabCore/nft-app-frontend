@@ -1,9 +1,13 @@
 import Dialog from "@material-ui/core/Dialog";
 import Slide from "@material-ui/core/Slide";
 import { makeStyles } from "@material-ui/core/styles";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { IoLogoApple, IoLogoMicrosoft } from "react-icons/io5";
+import { useSelector, useDispatch } from "react-redux";
+import { API_BASE_URL } from "../../Utils/config";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -52,6 +56,36 @@ const useStyles = makeStyles((theme) => ({
 
 const ImportContactsDialog = ({ status, callback, onImport }) => {
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const [firstImport, setFirstImport] = useState(false);
+  const { user } = useSelector((state) => state.authReducer);
+
+  const PostContactToBackend = async (contacts, source) => {
+    //add owner infor to contacts
+
+    let newcontacts = contacts.map((c) => ({
+      ...c,
+      owner_id: user.user_id,
+      app_id: "NFT Maker App",
+      source,
+    }));
+
+    //Ajax Request to create user
+    axios
+      .post(`${API_BASE_URL}/contacts/import`, newcontacts)
+      .then((response) => {
+        toast.success(response.data.message);
+
+        //disable contact import dialog on login/signup
+        localStorage.removeItem("welcome");
+      })
+      .catch((error) => {
+        if (error.response.data) {
+          toast.error(error.response.data.message);
+        }
+      })
+      .finally(() => {});
+  };
 
   useEffect(() => {
     LoadCloudSponge(() => {
@@ -61,49 +95,45 @@ const ImportContactsDialog = ({ status, callback, onImport }) => {
           skipSourceMenu: true,
           rootNodeSelector: "#cloudsponge-widget-container",
           beforeDisplayContacts: function (contacts, source, owner) {
-            //normalize contacts
-            let contactsNormalized = contacts.map((contact) => {
-              return {
-                fullname: contact.fullName(),
-                primary_phone: contact.primaryPhone(),
-                primary_email: contact.primaryEmail(),
-                first_name: contact.first_name,
-                last_name: contact.last_name,
-                phones: contact.phone,
-                emails: contact.email,
-              };
-            });
-
-            //post this normalized contact to backend to persist in database
-            console.log(contactsNormalized);
-
-            //send this normalized contact back to UI
-            onImport(contactsNormalized);
+            let source_title =
+              source === "office365"
+                ? "Microsoft"
+                : source === "icloud"
+                ? "Apple"
+                : "Google";
 
             var all = document.getElementsByClassName("initial__modal");
             for (var i = 0; i < all.length; i++) {
               all[i].style.display = "block";
             }
 
-            //return false;
+            //post contact to backend to persist in database
+            PostContactToBackend(contacts, source_title);
+
+            //call callback functions
+            onImport();
+
+            return false;
           },
           beforeLaunch: function () {
+            var all = document.getElementsByClassName("contactDialogBack");
+            for (var i = 0; i < all.length; i++) {
+              all[i].style.visibility = "hidden";
+            }
             var all = document.getElementsByClassName("initial__modal");
             for (var i = 0; i < all.length; i++) {
               all[i].style.display = "none";
             }
-
-            document.getElementById("contactDialogBack").style.visibility =
-              "hidden";
           },
           beforeClosing: function () {
+            var all = document.getElementsByClassName("contactDialogBack");
+            for (var i = 0; i < all.length; i++) {
+              all[i].style.visibility = "inherit";
+            }
             var all = document.getElementsByClassName("initial__modal");
             for (var i = 0; i < all.length; i++) {
               all[i].style.display = "block";
             }
-
-            document.getElementById("contactDialogBack").style.visibility =
-              "inherit";
           },
           afterImport: function (source, success) {
             let source_title =
@@ -160,7 +190,7 @@ const ImportContactsDialog = ({ status, callback, onImport }) => {
           style: { borderRadius: 20, cursor: "pointer", padding: 20 },
         }}
         onClose={callback}
-        id="contactDialogBack"
+        className="contactDialogBack"
       >
         <button
           className={classes.mainContainer + " " + "cloudsponge-launch"}

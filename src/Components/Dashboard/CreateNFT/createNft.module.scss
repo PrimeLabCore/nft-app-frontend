@@ -161,6 +161,10 @@
               outline: none;
             }
           }
+          input {
+            width: 100%;
+            margin: 5px;
+          }
         }
         .addFieldsBtn {
           background-color: transparent;
@@ -183,6 +187,9 @@
       margin-bottom: 10px;
       .mynft__box__image__wrapper {
         position: relative;
+        img {
+          width: 100%;
+        }
         .mynft__box__image {
           img {
             width: 100%;
@@ -235,6 +242,7 @@
             margin-right: 10px;
           }
           .details__user__info {
+            max-width: 80%;
             p {
               margin-bottom: 0px;
               font-weight: normal;
@@ -248,6 +256,7 @@
               font-size: 16.8px;
               color: black;
               padding-bottom: 0px;
+              word-wrap: break-word;
             }
           }
         }

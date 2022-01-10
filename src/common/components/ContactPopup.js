@@ -1,26 +1,19 @@
-import React, { useState, useEffect } from "react";
-import PhoneInput from "react-phone-input-2";
-import "react-phone-input-2/lib/style.css";
 import SearchIcon from "@material-ui/icons/Search";
-import { Modal } from "react-bootstrap";
+import axios from "axios";
 import { nanoid } from "nanoid";
+import React, { useEffect, useState } from "react";
+import { Modal } from "react-bootstrap";
 import { BsCheckCircleFill } from "react-icons/bs";
 import { GoPrimitiveDot } from "react-icons/go";
 import { IoIosArrowForward } from "react-icons/io";
-import styles from "../../Components/Dashboard/SendNFT/sendNft.module.css";
-import { useNavigate } from "react-router";
+import "react-phone-input-2/lib/style.css";
 import { useDispatch, useSelector } from "react-redux";
-import ImportContactsDialog from "../../Components/ImportContactsDialog/ImportContactsDialog";
+import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
-
-const checkAllContacts = (data) =>
-  data.map((item) => ({ checked: true, email: item.primary_email }));
-
-const findIfChecked = (email, array) => {
-  const foundItem = array.find((item) => item.email === email);
-  if (foundItem) return foundItem.checked;
-  else return false;
-};
+import styles from "../../Components/Dashboard/SendNFT/sendNft.module.css";
+import { LoaderIconBlue } from "../../Components/Generic/icons";
+import ImportContactsDialog from "../../Components/ImportContactsDialog/ImportContactsDialog";
+import { API_BASE_URL } from "../../Utils/config";
 
 const ContactPopup = ({
   show,
@@ -29,52 +22,103 @@ const ContactPopup = ({
   title,
   btnText,
   handleBtnClick,
-  data,
+  displayImportContact,
+  // firstImport
 }) => {
   let navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const giftNFT__contactData = useSelector(
-    (state) => state.giftNFT__contactData
-  );
+  const [selectedContacts, setSelectedContacts] = useState([]);
 
-  const [filteredData, setFilteredData] = useState(
-    data ? data : giftNFT__contactData ? giftNFT__contactData : []
-  );
+  const { user, contacts } = useSelector((state) => state.authReducer);
 
-  const [checkedState, setCheckedState] = useState(
-    checkAllContacts(data ? data : giftNFT__contactData || [])
-  );
+  const [isLoading, setIsloading] = useState(false);
 
-  const [importContactDialog, setimportContactDialog] = useState(false);
+  const [filteredData, setFilteredData] = useState(contacts);
 
-  const [sendGiftEmail, setSendGiftEmail] = useState("");
+  const firstImport=localStorage.getItem("firstImport")
+  useEffect(() => {
+    setFilteredData(contacts);
+    checkAllContacts(contacts);
+  }, [contacts,isLoading]);
 
-  const HandleClick = (email) => {
-    const updatedCheckedState = checkedState.map((item) =>
-      item.email === email
-        ? { ...item, checked: !item.checked }
-        : { ...item, checked: item.checked }
-    );
-    setCheckedState(updatedCheckedState);
+  //get contacts
+  useEffect(() => {
+    if (!show) return;
+    setIsloading(true);
+
+    //Ajax Request to create user
+    axios
+      .get(`${API_BASE_URL}/contacts/list/${user.user_id}`)
+      .then((response) => {
+        //save user details
+        // before saving contacts to the reducer make all the emails unique
+        const uniqueEmails = []
+        let tempContacts = response.data.data.filter((contactObj) =>
+          uniqueEmails.includes(contactObj.email[0].address)
+            ? false
+            : uniqueEmails.push(contactObj.email[0].address) && true
+        );
+        setIsloading(true)
+        dispatch({ type: "update_contacts", payload: tempContacts });
+      })
+      .catch((error) => {
+        if (error.response.data) {
+          toast.error(error.response.data.message);
+        }
+      })
+      .finally(() => {
+        setIsloading(false);
+      });
+  }, [show]);
+
+  const getPrimaryEmail = (contact) => {
+    if (contact.email.length > 0) {
+      return contact.email[0].address;
+    } else {
+      return "";
+    }
+  };
+
+  const getPrimaryPhone = (contact) => {
+    if (contact.phone.length > 0) {
+      return contact.phone[0].number;
+    } else {
+      return "";
+    }
+  };
+
+  const getFulllName = (contact) => {
+    return contact.first_name + " " + contact.last_name;
+  };
+
+  const findIfChecked = (contact_id) => {
+    return selectedContacts.includes(contact_id);
+  };
+
+  const checkAllContacts = (data) => {
+    //selecting all the contacts
+    setSelectedContacts(data.map((contact) => contact.contact_id));
+  };
+
+  const [importContactDialog, setimportContactDialog] =
+    useState(displayImportContact);
+
+  const HandleClick = (contact_id) => {
+    if (selectedContacts.includes(contact_id)) {
+      setSelectedContacts(selectedContacts.filter((cId) => cId !== contact_id));
+    } else {
+      setSelectedContacts([...selectedContacts, contact_id]);
+    }
   };
 
   const importContact = (data) => {
     if (data) {
-      dispatch({
-        type: "getGoogleContactData",
-        payload: data,
-      });
-      setCheckedState(checkAllContacts(data));
+      checkAllContacts(data);
       setimportContactDialog(false);
       setFilteredData(data);
     }
   };
-
-  useEffect(() => {
-    setFilteredData(data);
-    setCheckedState(checkAllContacts(data));
-  }, [data]);
 
   const contactImportCallback = (error, source) => {
     setimportContactDialog(false);
@@ -95,11 +139,14 @@ const ContactPopup = ({
   const handleSearch = (event) => {
     let value = event.target.value.toLowerCase();
     let result = [];
-    result = giftNFT__contactData.filter((data) => {
-      return data.primary_email.toLowerCase().search(value) !== -1;
+    result = contacts.filter((data) => {
+      return (
+        getFulllName(data).toLowerCase().search(value) !== -1 ||
+        getPrimaryEmail(data).toLowerCase().search(value) !== -1 ||
+        getPrimaryPhone(data).toLowerCase().search(value) !== -1
+      );
     });
     setFilteredData(result);
-    setSendGiftEmail(event.target.value.toLowerCase());
   };
 
   return (
@@ -151,26 +198,21 @@ const ContactPopup = ({
               </button>
             </div>
             <div className={styles.data__wrapper}>
-              {filteredData.map((value, index) => (
+              <div>{isLoading && <LoaderIconBlue />}</div>
+
+              {filteredData.map((contact, index) => (
                 <div className={styles.data_row_container} key={nanoid()}>
-                  {/* AVATAR */}
-                  {/* <div className={styles.avatar}>
-                    <img
-                      src={value.photos[0].url}
-                      alt={value.names[0].displayName}
-                    />
-                  </div> */}
                   {/* TEXT */}
                   <div className={styles.textContainer}>
-                    <h6>{value.fullname}</h6>
-                    <p>{value.primary_email}</p>
+                    <h6>{getFulllName(contact)}</h6>
+                    <p>{getPrimaryEmail(contact)}</p>
                   </div>
                   {/* ICONS */}
                   <div
                     className={styles.icon}
-                    onClick={() => HandleClick(value.primary_email)}
+                    onClick={() => HandleClick(contact.contact_id)}
                   >
-                    {findIfChecked(value.primary_email, checkedState) ? (
+                    {findIfChecked(contact.contact_id) ? (
                       <BsCheckCircleFill className={styles.checked} />
                     ) : (
                       <GoPrimitiveDot className={styles.unchecked} />
@@ -181,7 +223,15 @@ const ContactPopup = ({
             </div>
           </div>
           <div className={styles.multiple__btn__wrapper}>
-            <button onClick={handleBtnClick} className={styles.next__btn}>
+            <button
+              disabled={firstImport ? false : selectedContacts.length === 0 ? true : false
+              }
+              onClick={() => {
+                  handleBtnClick(selectedContacts);
+                
+              }}
+              className={styles.next__btn}
+            >
               {btnText}
               <span>
                 <IoIosArrowForward />
@@ -191,11 +241,13 @@ const ContactPopup = ({
         </Modal.Body>
       </Modal>
 
-      <ImportContactsDialog
-        onImport={importContact}
-        status={importContactDialog}
-        callback={contactImportCallback}
-      />
+      {importContactDialog ? (
+        <ImportContactsDialog
+          onImport={importContact}
+          status={importContactDialog}
+          callback={contactImportCallback}
+        />
+      ) : null}
     </>
   );
 };

@@ -7,11 +7,13 @@ import PropTypes from "prop-types";
 import { AiOutlinePlus } from "react-icons/ai";
 import { Row, Col } from "react-bootstrap";
 import Carousel from "react-multi-carousel";
+import { toast } from "react-toastify";
 
 import { useDispatch } from "react-redux";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { API_BASE_URL } from "../../../Utils/config";
+import { mapNftDetails } from "../../../Utils/utils";
 
 const responsive = {
   superLargeDesktop: {
@@ -34,23 +36,23 @@ const responsive = {
 };
 
 const MyNft = ({ isLink }) => {
-  const [alldata, setAlldata] = useState([]);
   let navigate = useNavigate();
   let dispatch = useDispatch(); //Direct assigning right now
   const [windowstate, setWindow] = useState(window.innerWidth < 767);
-  const allNft = useSelector((state) => state.home__allnft);
+  const nfts = useSelector((state) => state.home__allnft);
+  const { user } = useSelector((state) => state.authReducer);
+  const [alldata, setAlldata] = useState([]);
+
+  const [isLoading, setIsloading] = useState(false);
 
   const getAllImages = async () => {
-    const response = await axios.get(`${API_BASE_URL}/api/v1/user_images`);
-    console.log(`response.data`, response.data);
-    const { success, data } = response.data;
+    const response = await axios.get(
+      `${API_BASE_URL}/nfts?user_id=${user.user_id}`
+    );
 
-    // open the create NFT by default if no nft images found
-    // if(response.data.data.length === 0) {
-    //   dispatch({ type: "createnft__open" });
-    // }
+    const data = response.data?.data;
 
-    if (success) {
+    if (data) {
       setAlldata(data);
       dispatch({ type: "getNft", payload: data });
     }
@@ -65,60 +67,47 @@ const MyNft = ({ isLink }) => {
       },
       false
     );
-    getAllImages();
+    //getAllImages();
   }, [windowstate]);
 
-  //   let mynft = [
-  //     {
-  //       image: image1,
-  //       cat: "Digital Art",
-  //       title: "Vecotry Illustration ",
-  //       selected: false,
-  //       id: "#17372",
-  //       nftid: nanoid(),
-  //       description:
-  //         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-  //     },
-  //     {
-  //       image: image2,
-  //       cat: "Digital Art",
-  //       title: "Nature Illustration ",
-  //       selected: false,
-  //       id: "#3783",
-  //       nftid: nanoid(),
-  //       description:
-  //         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-  //     },
-  //   ];
-
+  //fetch all the nfts of the user
   useEffect(() => {
-    // mynft = [];
-    // dispatch({ type: "getNft", payload: mynft });
-    setAlldata(allNft);
-  }, [allNft]);
+    setIsloading(true);
+
+    //Ajax Request to create user
+    axios
+      .get(`${API_BASE_URL}/nfts?user_id=${user.user_id}`)
+      .then((response) => {
+        //save user details
+        let tempNfts = response.data.data;
+        // console.log("data nfts", tempNfts);
+        setAlldata(tempNfts);
+        dispatch({ type: "update_nfts", payload: tempNfts });
+      })
+      .catch((error) => {
+        if (error.response.data) {
+          toast.error(error.response.data.message);
+        }
+      })
+      .finally(() => {
+        setIsloading(false);
+      });
+  }, []);
 
   const handleChange = () => {
     dispatch({ type: "createnft__open" });
   };
-  //   const detailPage = (id, index) => {
-  //     // dispatch({ type: "nft__detail", payload: mynft[index] });
-  //     navigate(`/nft/${id}`);
-  //   };
 
   const detailPage = (data, index) => {
-    console.log(`data`, data);
-    dispatch({ type: "nft__detail", payload: data });
-    navigate(`/nft/${data.uuid}`);
+    dispatch({ type: "nft__detail", payload: mapNftDetails(data) });
+    navigate(`/nft/${data.nft_id}`);
   };
 
-  // const nft__data = useSelector((state)=> state.home__allnft) //Defined in reducer function
-  console.log(`alldata`, alldata);
   return (
     <>
       <div
-        className={`${styles.mynft__wrapper} ${
-          !isLink ? styles.mynft__page__wrapper : ""
-        }`}
+        className={`${styles.mynft__wrapper} ${!isLink ? styles.mynft__page__wrapper : ""
+          }`}
       >
         <div className={styles.mynft__header}>
           <h5>My NFTs</h5>
@@ -150,6 +139,10 @@ const MyNft = ({ isLink }) => {
                 draggable={true}
               >
                 {alldata.map((data, i) => {
+                  const urlArray = data?.file_url?.split(".");
+                  const fileType = urlArray.length
+                    ? urlArray[urlArray.length - 1]
+                    : "";
                   return (
                     <Fragment key={nanoid()}>
                       <div
@@ -159,7 +152,26 @@ const MyNft = ({ isLink }) => {
                       >
                         <div className={styles.mynft__box__image__wrapper}>
                           <div className={styles.mynft__box__image}>
-                            <img src={data.image} alt={data.title} />
+                            {fileType.toLowerCase() === "mp4" ? (
+                              <video
+                                style={{ width: "100%", borderRadius: "8px" }}
+                                src={data?.file_url}
+                              />
+                            ) : fileType.toLowerCase() === "mp3" ? (
+                              <div style={{ width: "100%", padding: "0 2px" }}>
+                                <audio
+                                  style={{
+                                    width: "inherit",
+                                    marginTop: "60px",
+                                  }}
+                                  controls
+                                >
+                                  <source src={data?.file_url} />
+                                </audio>
+                              </div>
+                            ) : (
+                              <img src={data?.file_url} alt={data.title} />
+                            )}
                           </div>
                           <div className={styles.mynft__box__cat}>
                             <h6>{data?.category}</h6>
@@ -168,7 +180,7 @@ const MyNft = ({ isLink }) => {
                         <div
                           className={styles.mynft__box__description__wrapper}
                         >
-                          <h2>{data?.name}</h2>
+                          <h2>{data?.title}</h2>
                           <p>{data?.nft_id}</p>
                         </div>
                       </div>
@@ -181,6 +193,10 @@ const MyNft = ({ isLink }) => {
             <>
               <Row>
                 {alldata.map((data, i) => {
+                  const urlArray = data?.file_url?.split(".");
+                  const fileType = urlArray.length
+                    ? urlArray[urlArray.length - 1]
+                    : "";
                   return (
                     <Fragment key={nanoid()}>
                       <Col
@@ -197,7 +213,32 @@ const MyNft = ({ isLink }) => {
                         >
                           <div className={styles.mynft__box__image__wrapper}>
                             <div className={styles.mynft__box__image}>
-                              <img src={data.image} alt={data.title} />
+                              {fileType.toLowerCase() === "mp4" ? (
+                                <video
+                                  style={{ width: "100%", borderRadius: "8px" }}
+                                  src={data?.file_url}
+                                />
+                              ) : fileType.toLowerCase() === "mp3" ? (
+                                <div
+                                  style={{
+                                    width: "100%",
+                                    paddingRight: "10px",
+                                  }}
+                                >
+                                  <audio
+                                    style={{
+                                      width: "inherit",
+                                      marginTop: "60px",
+                                      marginLeft: "5px",
+                                    }}
+                                    controls
+                                  >
+                                    <source src={data?.file_url} />
+                                  </audio>
+                                </div>
+                              ) : (
+                                <img src={data?.file_url} alt={data.title} />
+                              )}
                             </div>
                             <div className={styles.mynft__box__cat}>
                               <h6>{data?.category}</h6>
@@ -206,7 +247,7 @@ const MyNft = ({ isLink }) => {
                           <div
                             className={styles.mynft__box__description__wrapper}
                           >
-                            <h2>{data?.name}</h2>
+                            <h2>{data?.title}</h2>
                             <p>{data?.nft_id}</p>
                           </div>
                         </div>

@@ -1,8 +1,4 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
-
-iframe{
-  height: 0 !important;
-}
 body {
   margin: 0;
   padding: 0;
@@ -28,6 +24,7 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+
 .app-spinner {
   position: fixed;
   background: #00000059;
@@ -36,8 +33,14 @@ body {
   top: 0;
   left: 0;
   z-index: 99;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
 /*# sourceMappingURL=index.css.map */

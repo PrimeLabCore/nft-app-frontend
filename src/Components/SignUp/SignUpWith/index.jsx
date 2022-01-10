@@ -12,11 +12,15 @@ import CustomPhoneInput from "../../../common/components/CustomPhoneInput/Custom
 import SignIn from "../../SignIn/SignIn";
 
 const validateEmail = (email) => {
-  return String(email)
-    .toLowerCase()
-    .match(
-      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-    );
+  const splitEmail = email.split("@");
+
+  if (splitEmail.length > 2) return false;
+
+  const t = /[ `!@#$%^&*()+\=\[\]{};':"\\|,<>\/?~]/;
+
+  var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+  return re.test(email) && !t.test(splitEmail[0]);
 };
 
 // Date : Jan 4 2021, 09:27 AM IST, Rohit Yadav
@@ -84,7 +88,6 @@ const SignUpWith = () => {
         `${API_BASE_URL}/check_account_id?account_id=${par.account_id}`
       );
 
-      console.log(`response`, response.data);
       const { success } = response.data;
       if (success) {
         handleSignup(par);
@@ -181,6 +184,10 @@ const SignUpWith = () => {
     window.open(`${API_BASE_URL}/near_login/login.html`, "_self");
   };
 
+  const SignIn = () => {
+    navigate("/signin");
+  };
+
   const handleLogin = async (email) => {
     const fd = new FormData();
     if (!email) {
@@ -204,7 +211,6 @@ const SignUpWith = () => {
 
         return config;
       });
-      console.log("data", redirectUrl);
       dispatch({
         type: "login_Successfully",
         payload: { ...data, token: authorization },
@@ -222,7 +228,6 @@ const SignUpWith = () => {
   const handleValidation = () => {
     let errors = {};
     let formIsValid = true;
-    console.log(`inputFields.email.length`, inputFields.email.length < 1);
     if (!validateEmail(inputFields.email)) {
       formIsValid = false;
       errors["email"] = "Email is not valid";
@@ -236,7 +241,6 @@ const SignUpWith = () => {
   const handlePhoneValidation = () => {
     let errors = {};
     let formIsValid = true;
-    console.log(`inputFields.email.length`, inputFields.phone.length < 1);
     if (!validatePhone(inputFields.phone)) {
       formIsValid = false;
       errors["email"] = "Phone is not valid";
@@ -320,23 +324,28 @@ const SignUpWith = () => {
       loginForm === "email" ? oldHandleSignup() : phoneNumberSignUp();
     }
   };
+
+  const clearFieldData = (field) => {
+    setinputFields({ ...inputFields, [field]: "" });
+  }
+
   return (
     <div className={styles.half_container}>
       {/* EMAIL AND PHONE SIGNUP CONATINER */}
       <div className={styles.buttonContainer} onClick={handleClick}>
         <button
+          onClick={() => { clearFieldData("phone") }}
           value="email"
-          className={`${styles.button} ${styles.secondary} ${
-            loginForm === "email" ? styles.active : ""
-          }`}
+          className={`${styles.button} ${styles.secondary} ${loginForm === "email" ? styles.active : ""
+            }`}
         >
           Email
         </button>
         <button
           value="phone"
-          className={`${styles.button} ${styles.secondary} ${
-            loginForm === "phone" ? styles.active : ""
-          }`}
+          onClick={() => { clearFieldData("email") }}
+          className={`${styles.button} ${styles.secondary} ${loginForm === "phone" ? styles.active : ""
+            }`}
         >
           Phone
         </button>
@@ -348,6 +357,7 @@ const SignUpWith = () => {
           <CustomPhoneInput
             variant="outlined"
             placeholder="Ex. (373) 378 8383"
+            containerStyle={{ margin: "10px 0px", }}
             type={"tel"}
             value={inputFields.phone}
             onChange={HandleInputChange("phone")}
@@ -386,14 +396,13 @@ const SignUpWith = () => {
           onClick={() =>
             loginForm === "email" ? oldHandleSignup() : phoneNumberSignUp()
           }
-          className={`${styles.button} ${
-            inputFields.email || inputFields.phone
-              ? styles.primaryColor
-              : styles.secondaryColor
-          }`}
+          className={`${styles.button} ${inputFields.email || inputFields.phone
+            ? styles.primaryColor
+            : styles.secondaryColor
+            }`}
           disabled={
             loginForm === "email"
-              ? inputFields.email.length < 0
+              ? inputFields.email.length == 0
               : inputFields.phone.length < 2
           }
         >
@@ -425,21 +434,7 @@ const SignUpWith = () => {
 
         <h6 className={styles.link}>Already have Near Account?</h6>
 
-        <TextFieldComponent
-          variant="outlined"
-          placeholder="walletName.near"
-          type={"email"}
-          InputValue={loginFields.username}
-          HandleInputChange={handleInputUserName}
-          HandelKeyPress={(e) => {
-            // CheckAndSubmitForm(e);
-          }}
-        />
-        <button
-          disabled={loginFields.username.length > 2 ? false : true}
-          className={styles.button}
-          onClick={() => handleLogin(loginFields.username)}
-        >
+        <button className={styles.button} onClick={SignIn}>
           Login
           {
             <span>

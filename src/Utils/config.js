@@ -10,7 +10,10 @@ let cookieData = "general"; //Name for user data cookie
 let cookieAuth = "protected"; //Name for JWT cookie
 let googleAccess = "googleAccess";
 let googleRefresh = "googleRefresh";
-let API_BASE_URL = "https://nftmaker.nearapps.net";
+//let API_BASE_URL = "https://nftmaker.nearapps.net";
+
+let API_BASE_URL = "https://api.nearlogin.io";
+
 export {
   baseurl,
   imagebaseurl,
