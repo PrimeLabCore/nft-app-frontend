@@ -106,8 +106,9 @@ const MyNft = ({ isLink }) => {
   return (
     <>
       <div
-        className={`${styles.mynft__wrapper} ${!isLink ? styles.mynft__page__wrapper : ""
-          }`}
+        className={`${styles.mynft__wrapper} ${
+          !isLink ? styles.mynft__page__wrapper : ""
+        }`}
       >
         <div className={styles.mynft__header}>
           <h5>My NFTs</h5>
@@ -143,6 +144,9 @@ const MyNft = ({ isLink }) => {
                   const fileType = urlArray.length
                     ? urlArray[urlArray.length - 1]
                     : "";
+                  if (data.status === "unclaimed_gift" && data.parent_id) {
+                    return;
+                  }
                   return (
                     <Fragment key={nanoid()}>
                       <div
@@ -197,6 +201,9 @@ const MyNft = ({ isLink }) => {
                   const fileType = urlArray.length
                     ? urlArray[urlArray.length - 1]
                     : "";
+                  if (data.status === "unclaimed_gift" && data.parent_id) {
+                    return;
+                  }
                   return (
                     <Fragment key={nanoid()}>
                       <Col
