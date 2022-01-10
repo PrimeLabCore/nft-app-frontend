@@ -83,6 +83,8 @@ function App() {
     const { transaction_id } = urlParams;
 
     if (transaction_id) {
+      dispatch({ type: 'nft/set-tracker', payload: urlParams })
+
       setTransactionId(transaction_id);
     }
   }, [urlParams]);
