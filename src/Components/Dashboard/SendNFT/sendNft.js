@@ -128,6 +128,7 @@ const SendNft = () => {
 
   const handleNftPreview = async (selectedContacts) => {
     if(firstImport){
+      console.log("entered herer")
       dispatch({ type: "sendnft__close" });
         dispatch({ type: "close_dialog_gift_nft" });
       dispatch({ type: "createnft__open" });

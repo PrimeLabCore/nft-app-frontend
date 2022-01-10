@@ -76,6 +76,7 @@ const Home = () => {
 
   const openCreateNFTPopup = () => {
     setShowContactListPopup(false);
+    console.log("entered herer")
     dispatch({ type: "createnft__open" });
   };
 

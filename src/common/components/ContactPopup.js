@@ -59,7 +59,7 @@ const ContactPopup = ({
             ? false
             : uniqueEmails.push(contactObj.email[0].address) && true
         );
-        setIsloading(true)
+        setFilteredData(tempContacts);
         dispatch({ type: "update_contacts", payload: tempContacts });
       })
       .catch((error) => {
