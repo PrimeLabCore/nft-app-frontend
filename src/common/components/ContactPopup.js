@@ -184,8 +184,13 @@ const ContactPopup = ({
                   </div>
                   <input
                     type="text"
-                    placeholder="Search People"
+                    placeholder="Search Current Contacts"
                     onChange={handleSearch}
+                    // onKeyPress={(event)=>{
+                    //   if (event.which === 13 ) {
+                    //     handleBtnClick(selectedContacts)
+                    //   }
+                    // }}
                   />
                 </div>
               </div>
