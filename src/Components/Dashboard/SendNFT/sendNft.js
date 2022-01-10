@@ -85,6 +85,7 @@ const SendNft = () => {
 
   const closegiftNft = () => {
     setOpenGift(false);
+    dispatch({type:"createnft__open"})
   };
 
   useEffect(() => {
@@ -127,12 +128,7 @@ const SendNft = () => {
   };
 
   const handleNftPreview = async (selectedContacts) => {
-    if(firstImport){
-      dispatch({ type: "sendnft__close" });
-        dispatch({ type: "close_dialog_gift_nft" });
-      dispatch({ type: "createnft__open" });
-      localStorage.removeItem("firstImport")
-    }else{
+   
   if( selectedContacts && selectedContacts.length >0){
     setFilteredData(selectedContacts);
     let nftDetail = {
@@ -163,7 +159,7 @@ const SendNft = () => {
     }else{
       toast.error("Please select some contact!");
     }
-  }
+  
   };
 
   const openInitialSendNft = () => {
@@ -385,8 +381,11 @@ const SendNft = () => {
         onClose={closegiftNft}
         onBack={openInitialSendNft}
         title={"Send NFT"}
-        btnText={"Send Gift"}
-        handleBtnClick={handleNftPreview}
+        btnText={firstImport ? "Gift NFT": "Send Gift"}
+        handleBtnClick={()=> firstImport ?(
+          dispatch({type:"createnft__open"}),
+          setOpenGift(false)  )
+          :handleNftPreview()}
       />
 
       {/* NFT Preview Modal */}
