@@ -1,19 +1,18 @@
 import React, { useEffect } from "react";
-import axios from "axios";
 import { BsArrowUpRight } from "react-icons/bs";
 import { Accordion } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
-import { API_BASE_URL } from "../../../Utils/config";
 import { mapNftDetails } from "../../../Utils/utils";
+import request from "../../../Services/httpClient";
 import styles from "./details.module.css";
 
 const Details = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const nftIdFromUrl = useParams().nftid;
+  const nftIdFromUrl = useParams().nftId;
 
   const { user } = useSelector((state) => state.authReducer);
   const nftData = useSelector((state) => state.nft__detail);
@@ -39,9 +38,9 @@ const Details = () => {
   useEffect(() => {
     async function getNftDetails() {
       try {
-        const response = await axios.get(`${API_BASE_URL}/nfts/${nftIdFromUrl}`);
-        if (response.data.data) {
-          dispatch({ type: "nft__detail", payload: mapNftDetails(response.data.data) });
+        const { data: { data } } = await request({ url: `/nfts/${nftIdFromUrl}` });
+        if (data) {
+          dispatch({ type: "nft__detail", payload: mapNftDetails(data) });
         }
       } catch (error) {
         if (error.response.data) {
