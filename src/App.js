@@ -77,14 +77,24 @@ function App() {
   // However, it ensures the local state property picks up the URL param
   // For some reason, the <PrivateRoute> was not re-rendering with the updated value from the local state for transactionId so this is a workaround
   const [transactionId, setTransactionId] = useState(urlParams.transaction_id);
+  const [sourceId, setSourceId] = useState(urlParams.source_id);
+  const [sub1Param, setSub1Param] = useState(urlParams.sub1);
 
   useEffect(() => {
     // The splash/home page will redirect, clearing the transaction_id
     // Make sure to grab the value and hold onto it in local state, so it can be used in the NFT Creation flow
-    const { transaction_id } = urlParams;
+    const { transaction_id, source_id, sub1 } = urlParams;
 
     if (transaction_id) { 
       setTransactionId(transaction_id);
+    }
+
+    if (source_id) { 
+      setSourceId(source_id);
+    }
+
+    if (sub1) { 
+      setSub1Param(sub1);
     }
   }, [urlParams]);
 
@@ -171,7 +181,7 @@ function App() {
         </Route>
 
 
-        <Route path="/" element={<PrivateRoute transactionId={transactionId} />}>
+        <Route path="/" element={<PrivateRoute transactionId={transactionId} sourceId={sourceId} sub1Param={sub1Param} />}>
           <Route index element={<Dashboard />} />
           <Route path="transactions" element={<Transactions />} />
           <Route path="all-nft" element={<AllNft />} />
@@ -181,7 +191,7 @@ function App() {
           <Route index element={<Settings />} />
         </Route>
 
-        <Route path="/signup" element={<PublicRoute transactionId={transactionId} />}>
+        <Route path="/signup" element={<PublicRoute transactionId={transactionId} sourceId={sourceId} sub1Param={sub1Param}/>}>
           <Route index element={<SignUp />} />
           <Route path="verification" element={<Verification />} />
           <Route path="create-account" element={<CreateAnAccount />} />

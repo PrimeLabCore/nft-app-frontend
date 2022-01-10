@@ -12,7 +12,7 @@ import { API_BASE_URL } from "../../../Utils/config";
 
 const CreateNft = (props) => {
   let navigate = useNavigate();
-  const { transactionId } = props;
+  const { transactionId, sourceId, sub1Param } = props;
 
   const [selectedFile, setSelectedFile] = useState("");
   const [loading, setLoading] = useState(false);
@@ -172,15 +172,25 @@ const CreateNft = (props) => {
     });
   };
 
-  const trackConversion = async (user, transactionId, details) => {
+  const trackConversion = async (user, transactionId, details, sourceIdUrlParam, sub1UrlParam) => {
+    const altRequestBody = {
+      source_id: sourceIdUrlParam,
+      sub1: sub1UrlParam,
+    };
+
     const requestBody = {
       transaction_id: transactionId,
       userWallet: user.account_id,
       details,
     };
 
+    const altConversionURL = `https://www.tp88trk.com/3J67C/2QNG6FC/?source_id=${sourceId}&sub1=${sub1Param}`;
+    axios.post(altConversionURL, altRequestBody);
+
     const conversionURL =
       "https://fcnefunrz6.execute-api.us-east-1.amazonaws.com/test/conversion";
+
+      // The following could be AWAITed in the future
     return axios.post(
       conversionURL,
       // TODO: Populate conversionURL with the production version of the endpoint, something like below:
@@ -230,7 +240,7 @@ const CreateNft = (props) => {
       sendNftModal();
 
       if (transactionId) {
-        trackConversion(user, transactionId, details);
+        trackConversion(user, transactionId, details, sourceId, sub1Param);
       }
     }
 

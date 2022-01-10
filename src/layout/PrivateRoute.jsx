@@ -8,7 +8,7 @@ import CreateNftPopup from "../Components/Dashboard/CreateNFT/createNft";
 import SendNft from "../Components/Dashboard/SendNFT/sendNft";
 
 const PrivateLayout = props => {
-  const { children, transactionId } = props;
+  const { children, sourceId, sub1Param, transactionId } = props;
 
   let dispatch = useDispatch();
   const tooltip_show = useSelector((state) => state.menu__tooltip); //Defined in reducer function
@@ -23,7 +23,7 @@ const PrivateLayout = props => {
   };
   return (
     <>
-      <CreateNftPopup transactionId={transactionId} />
+      <CreateNftPopup transactionId={transactionId} sourceId={sourceId} sub1Param={sub1Param} />
       <SendNft />
       <div onClick={closeMenu}>
         <main
