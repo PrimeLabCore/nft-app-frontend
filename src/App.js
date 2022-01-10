@@ -41,7 +41,6 @@ import TagManager from "react-gtm-module";
 import axios from "axios";
 import { API_BASE_URL } from "./Utils/config";
 
-
 const tagManagerArgs = {
   gtmId: "GTM-TJSWG5R",
 };
@@ -165,7 +164,7 @@ function App() {
 
       <ToastContainer hideProgressBar theme="dark" closeButton={false} />
 
-      <Banners />
+      {/* <Banners /> */}
 
       <Routes>
         <Route path="/">

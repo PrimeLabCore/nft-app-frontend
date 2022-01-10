@@ -38,7 +38,9 @@ const Details = () => {
   useEffect(() => {
     async function getNftDetails() {
       try {
-        const { data: { data } } = await request({ url: `/nfts/${nftIdFromUrl}` });
+        const {
+          data: { data },
+        } = await request({ url: `/nfts/${nftIdFromUrl}` });
         if (data) {
           dispatch({ type: "nft__detail", payload: mapNftDetails(data) });
         }
@@ -76,7 +78,7 @@ const Details = () => {
           <div className={styles.details__profile}>
             <div className={styles.details__profile__picture}></div>
             <div className={styles.details__user__info}>
-              <p>Creater</p>
+              <p>{nftData.owner}</p>
               <h6>{user?.account_id}</h6>
             </div>
           </div>

@@ -17,11 +17,23 @@ const audioRegex = /(audio)(\/\w+)+/g;
 const videoRegex = /(video)(\/\w+)+/g;
 
 const allowedUploadCount = 1;
-const requiredFileExtensions = ['.png', '.jpg', '.jpeg', '.gif', '.mp4', '.mp3', '.webp'];
-const requiredFileExtensionsDescription = 
-  requiredFileExtensions.map(extension => extension.substring(1).toUpperCase()).join(', ')
-  + ' or ' +
-  requiredFileExtensions[requiredFileExtensions.length - 1].substring(1).toUpperCase();
+const requiredFileExtensions = [
+  ".png",
+  ".jpg",
+  ".jpeg",
+  ".gif",
+  ".mp4",
+  ".mp3",
+  ".webp",
+];
+const requiredFileExtensionsDescription =
+  requiredFileExtensions
+    .map((extension) => extension.substring(1).toUpperCase())
+    .join(", ") +
+  " or " +
+  requiredFileExtensions[requiredFileExtensions.length - 1]
+    .substring(1)
+    .toUpperCase();
 
 const CreateNft = (props) => {
   let navigate = useNavigate();
@@ -137,11 +149,11 @@ const CreateNft = (props) => {
     }
   };
   const handleNftPreview = async () => {
-    if(isEmpty(details.title)){
+    if (isEmpty(details.title)) {
       toast.error("Please enter the title");
-    }else if(isEmpty(details.description)){
+    } else if (isEmpty(details.description)) {
       toast.error("Please enter the description");
-    }else{
+    } else {
       dispatch({ type: "createnft__close" });
       setNftForm(false);
       setNftPreview(true);
@@ -172,7 +184,7 @@ const CreateNft = (props) => {
     let nftDetail = { ...details };
     nftDetail.attributes = formValues;
     nftDetail.owner_id = user.user_id;
-    nftDetail.tracker = adTracker
+    nftDetail.tracker = adTracker;
 
     if (type === "mint") {
       nftDetail.action_type = "mine";
@@ -203,11 +215,11 @@ const CreateNft = (props) => {
         );
 
         axios
-      .get(`${API_BASE_URL}/nfts?user_id=${user?.user_id}`)
-      .then((response) => {
-        let tempNfts = response.data.data;
-        dispatch({ type: "update_nfts", payload: tempNfts });
-      })
+          .get(`${API_BASE_URL}/nfts?user_id=${user?.user_id}`)
+          .then((response) => {
+            let tempNfts = response.data.data;
+            dispatch({ type: "update_nfts", payload: tempNfts });
+          });
 
         dispatch({ type: "createnft__close" });
         setNftForm(false);
@@ -267,7 +279,11 @@ const CreateNft = (props) => {
    * @param {array} files array of files returned from upload event
    */
   async function handleNewFileUpload(files) {
-    const errorObject = fileHelper.validateFilesForUpload(files, allowedUploadCount, requiredFileExtensions);
+    const errorObject = fileHelper.validateFilesForUpload(
+      files,
+      allowedUploadCount,
+      requiredFileExtensions
+    );
 
     if (errorObject) {
       toast.error(errorObject.message);
@@ -275,11 +291,11 @@ const CreateNft = (props) => {
       const newFile = files[0];
       setSelectedFile(newFile);
       if (videoRegex.test(newFile.type)) {
-        setSelectedFileType('video');
+        setSelectedFileType("video");
       } else if (audioRegex.test(newFile.type)) {
-        setSelectedFileType('audio');
+        setSelectedFileType("audio");
       } else {
-        setSelectedFileType('image');
+        setSelectedFileType("image");
       }
     }
   }
@@ -324,7 +340,7 @@ const CreateNft = (props) => {
                 id="files"
                 name="file"
                 onChange={(e) => handleNewFileUpload(e.target.files)}
-                accept={requiredFileExtensions.join(', ')}
+                accept={requiredFileExtensions.join(", ")}
                 style={{ display: "none" }}
                 required
               />
@@ -334,7 +350,13 @@ const CreateNft = (props) => {
                 </label>
               </div>
               <p>{requiredFileExtensionsDescription}</p>
-              <p>Max {fileHelper.convertBytesToMB(fileHelper.DEFAULT_MAX_FILE_SIZE_IN_BYTES)}MB</p>
+              <p>
+                Max{" "}
+                {fileHelper.convertBytesToMB(
+                  fileHelper.DEFAULT_MAX_FILE_SIZE_IN_BYTES
+                )}
+                MB
+              </p>
             </div>
 
             {selectedFile &&
@@ -580,9 +602,10 @@ const CreateNft = (props) => {
           </div>
           <div className={styles.multiple__btn__wrapper}>
             <button
-              onClick={() => {mineNft("mint")
-              localStorage.removeItem("firstImport")
-            }}
+              onClick={() => {
+                mineNft("mint");
+                localStorage.removeItem("firstImport");
+              }}
               disabled={loading}
               className={styles.next__btn}
             >
@@ -592,9 +615,10 @@ const CreateNft = (props) => {
               </span>
             </button>
             <button
-              onClick={() => {mineNft("gift")
-              localStorage.removeItem("firstImport")
-            }}
+              onClick={() => {
+                mineNft("gift");
+                localStorage.removeItem("firstImport");
+              }}
               disabled={loading}
               className={styles.next__btn}
             >
