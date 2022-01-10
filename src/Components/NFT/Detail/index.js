@@ -128,6 +128,29 @@ const Details = () => {
               </Accordion.Item>
             </div>
           </Accordion>
+          {nftData?.attributes?.length > 0 && (
+            <Accordion>
+              <div className={styles.accord}>
+                <Accordion.Item eventKey="1">
+                  <Accordion.Header>Properties</Accordion.Header>
+                  <Accordion.Body className={styles.accord__body}>
+                    {nftData.attributes.map((attr) => (
+                      <div className={styles.nft__info}>
+                        <p>{attr.attr_name}</p>
+                        <a
+                          href={nftData?.explorer_url}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          {attr.attr_value}
+                        </a>
+                      </div>
+                    ))}
+                  </Accordion.Body>
+                </Accordion.Item>
+              </div>
+            </Accordion>
+          )}
         </div>
       </div>
     </>

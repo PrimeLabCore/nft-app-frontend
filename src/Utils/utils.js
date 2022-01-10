@@ -13,5 +13,6 @@ export const mapNftDetails = (data) => {
         id: data.nft_id,
         nftid: data.nft_id,
         description: data.description,
+        attributes: data.attributes
     };
 }
