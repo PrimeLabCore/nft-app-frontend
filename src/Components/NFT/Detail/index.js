@@ -11,8 +11,12 @@ import { mapNftDetails } from "../../../Utils/utils";
 import styles from "./details.module.css";
 
 const Details = () => {
-  let dispatch = useDispatch();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const nftIdFromUrl = useParams().nftid;
+
   const { user } = useSelector((state) => state.authReducer);
+  const nftData = useSelector((state) => state.nft__detail);
 
   const sendNft = () => {
     dispatch({ type: "sendnft__open" });
@@ -31,16 +35,14 @@ const Details = () => {
       },
     });
   };
-  let navigate = useNavigate();
-
-  const nftData = useSelector((state) => state.nft__detail);
-  const nftIdFromUrl = useParams().nftid;
 
   useEffect(() => {
     async function getNftDetails() {
       try {
         const response = await axios.get(`${API_BASE_URL}/nfts/${nftIdFromUrl}`);
-        dispatch({ type: "nft__detail", payload: mapNftDetails(response.data.data) });
+        if (response.data.data) {
+          dispatch({ type: "nft__detail", payload: mapNftDetails(response.data.data) });
+        }
       } catch (error) {
         if (error.response.data) {
           toast.error(error.response.data.message);
@@ -48,6 +50,7 @@ const Details = () => {
       }
     }
 
+    // if the user is taken straight to this page via a direct URL, then the redux store won't have the nft details. this will cause a bug.
     if (!nftData || nftIdFromUrl !== nftData.id) {
       getNftDetails();
     }

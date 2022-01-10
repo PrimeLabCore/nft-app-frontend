@@ -6,12 +6,12 @@ import { AiFillCloseCircle } from "react-icons/ai";
 import { IoIosArrowForward } from "react-icons/io";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import VerificationInput from "react-verification-input";
-import { cookieAuth } from "../../../Utils/config";
 import styles from "./index.module.css";
 import AppLoader from "../../Generic/AppLoader";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { API_BASE_URL } from "../../../Utils/config";
+import { mapUserSession } from "../../../Utils/utils";
 
 const Verification = () => {
   const dispatch = useDispatch();
@@ -74,17 +74,14 @@ const Verification = () => {
         nonce: details.verification,
       })
       .then((response) => {
-        dispatch({
-          type: "auth/set_session",
-          payload: {
-            user: response.data['user_info'],
-            jwt: {
-              jwt_access_token: response.data['jwt_access_token'],
-              jwt_id_token: response.data['jwt_id_token'],
-              jwt_refresh_token: response.data['jwt_refresh_token'],
-            }
-          },
-        });
+        const actionPayload = mapUserSession(response.data);
+
+        if (actionPayload) {
+          dispatch({
+            type: "auth/set_session",
+            payload: actionPayload,
+          });
+        }
 
         // @ToDo
         //save user details

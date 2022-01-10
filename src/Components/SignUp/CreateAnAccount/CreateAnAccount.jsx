@@ -9,6 +9,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import TextFieldComponent from "../../../Assets/FrequentlUsedComponents/TextFieldComponent";
 import { API_BASE_URL } from "../../../Utils/config";
+import { mapUserSession } from "../../../Utils/utils";
 import AppLoader from "../../Generic/AppLoader";
 import styles from "./CreateAnAccount.module.css";
 
@@ -135,17 +136,13 @@ const CreateAnAccount = () => {
     axios
       .post(`${API_BASE_URL}/user/create`, user)
       .then((response) => {
-        dispatch({
-          type: "auth/set_session",
-          payload: {
-            user: response.data['user_info'],
-            jwt: {
-              jwt_access_token: response.data['jwt_access_token'],
-              jwt_id_token: response.data['jwt_id_token'],
-              jwt_refresh_token: response.data['jwt_refresh_token'],
-            }
-          },
-        });
+        const actionPayload = mapUserSession(response.data);
+        if (actionPayload) {
+          dispatch({
+            type: "auth/set_session",
+            payload: actionPayload,
+          });
+        }
 
         // @ToDo
         //save user details
