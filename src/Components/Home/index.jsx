@@ -202,12 +202,14 @@ const HomePage = (props) => {
                   </ul>
                 </div>
                 <div className={styles.getStartedBtn}>
+                <Link to="/signup">
                   <button>
                     Get Started
                     <span>
                       <IoIosArrowForward />
                     </span>
                   </button>
+                  </Link>
                   {/* <Link to="/signup">
                     <button>
                       Get Started
