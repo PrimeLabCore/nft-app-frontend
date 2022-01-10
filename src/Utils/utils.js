@@ -5,6 +5,7 @@ export const isEmpty = (str) => {
 
 // function maps the response from nft details api to nft__details store
 export const mapNftDetails = (data) => {
+  console.log(data);
   return {
     image: data.file_url,
     category: data.category,
@@ -14,14 +15,16 @@ export const mapNftDetails = (data) => {
     nftid: data.nft_id,
     description: data.description,
     attributes: data.attributes,
+    owner: data.owner?.wallet_id,
+    status: data.status,
   };
 };
 
 export const mapUserSession = (data) => ({
-  user: data['user_info'],
+  user: data["user_info"],
   jwt: {
-    jwt_access_token: data['jwt_access_token'],
-    jwt_id_token: data['jwt_id_token'],
-    jwt_refresh_token: data['jwt_refresh_token'],
-  }
+    jwt_access_token: data["jwt_access_token"],
+    jwt_id_token: data["jwt_id_token"],
+    jwt_refresh_token: data["jwt_refresh_token"],
+  },
 });

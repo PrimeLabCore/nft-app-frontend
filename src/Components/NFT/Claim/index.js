@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { IoIosArrowForward } from "react-icons/io";
 import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
+import { mapNftDetails } from "../../../Utils/utils";
 
 import NFT_STATUSES from "../../../constants/nftStatuses";
 import request from "../../../Services/httpClient";
@@ -18,7 +19,8 @@ const Claim = () => {
 
   const [claimModal, setClaimModal] = useState(false);
   const { user } = useSelector((state) => state.authReducer);
-  const [nftDetail, setNftDetail] = useState();
+  // const [nftDetail, setNftDetail] = useState();
+  const nftDetail = useSelector((state) => state.nft__detail);
 
   const isUserLoggedIn = !!user;
 
@@ -28,14 +30,21 @@ const Claim = () => {
         const {
           data: { data },
         } = await request({ url: `/nfts/${nftId}` });
-        setNftDetail(data);
+        if (data) {
+          // testing only: do not commit
+          // data.status = "unclaimed_gift";
+          dispatch({ type: "nft__detail", payload: mapNftDetails(data) });
+        }
+        // setNftDetail(data);
       } catch (error) {
         console.error(error);
       }
     }
 
-    getNftDetails();
-  }, []);
+    if (!nftDetail || nftId !== nftDetail.id) {
+      getNftDetails();
+    }
+  }, [nftDetail]);
 
   const hitClaim = async () => {
     try {
@@ -82,6 +91,11 @@ const Claim = () => {
       },
     });
 
+    dispatch({
+      type: "update_redirectUrl",
+      payload: `/nft/detail/claim/${nftId}`,
+    });
+
     navigate("/signin");
   }
 
@@ -94,6 +108,11 @@ const Claim = () => {
         label: "Claim NFT",
         value: "Claim NFT",
       },
+    });
+
+    dispatch({
+      type: "update_redirectUrl",
+      payload: `/nft/details/claim/${nftId}`,
     });
 
     navigate("/signup");
@@ -113,14 +132,14 @@ const Claim = () => {
           </div>
           <h1>{nftDetail?.title}</h1>
           <a href="https://explorer.near.org/" target="_blank" rel="noreferrer">
-            {nftDetail?.nftid}
+            {nftDetail?.id}
           </a>
         </div>
         <div className={styles.details__info}>
           <div className={styles.details__profile}>
             <div className={styles.details__profile__picture}></div>
             <div className={styles.details__user__info}>
-              <p>Creater</p>
+              <p>{nftDetail?.owner}</p>
               <h6>{nftDetail?.name}</h6>
             </div>
           </div>
@@ -149,11 +168,11 @@ const Claim = () => {
                   <div className={styles.nft__info}>
                     <p>Token ID</p>
                     <a
-                      href={nftDetail?.token_id ? nftDetail?.token_id : ""}
+                      href={nftDetail?.id ? nftDetail?.id : ""}
                       target="_blank"
                       rel="noreferrer"
                     >
-                      {nftDetail?.token_id ? nftDetail?.token_id : ""}
+                      {nftDetail?.id ? nftDetail?.id : ""}
                     </a>
                   </div>
                   <div className={styles.nft__info}>
