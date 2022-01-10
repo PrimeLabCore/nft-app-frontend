@@ -1,10 +1,10 @@
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { InputAdornment } from "@material-ui/core";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
 import { ProgressBar } from "react-bootstrap";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { IoIosArrowForward } from "react-icons/io";
-import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import TextFieldComponent from "../../../Assets/FrequentlUsedComponents/TextFieldComponent";
@@ -13,6 +13,8 @@ import AppLoader from "../../Generic/AppLoader";
 import styles from "./CreateAnAccount.module.css";
 
 const CreateAnAccount = () => {
+  const dispatch = useDispatch();
+
   const { signupEmail, signupPhone } = useSelector(
     (state) => state.authReducer
   );
@@ -23,7 +25,7 @@ const CreateAnAccount = () => {
   const { LoginFormMethod } = useSelector((state) => state);
 
   const { accId } = useParams();
-  const dispatch = useDispatch();
+
   let navigate = useNavigate();
   const [details, setDetails] = useState({
     id: `${accId ? accId : ""}`,
@@ -133,6 +135,19 @@ const CreateAnAccount = () => {
     axios
       .post(`${API_BASE_URL}/user/create`, user)
       .then((response) => {
+        dispatch({
+          type: "auth/set_session",
+          payload: {
+            user: response.data['user_info'],
+            jwt: {
+              jwt_access_token: response.data['jwt_access_token'],
+              jwt_id_token: response.data['jwt_id_token'],
+              jwt_refresh_token: response.data['jwt_refresh_token'],
+            }
+          },
+        });
+
+        // @ToDo
         //save user details
         localStorage.setItem("user", JSON.stringify(response.data));
 

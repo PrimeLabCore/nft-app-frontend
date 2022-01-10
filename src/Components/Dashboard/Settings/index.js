@@ -162,6 +162,7 @@ const Settings = () => {
   };
 
   const SignOut = () => {
+    dispatch({ type: "auth/logout" });
     localStorage.removeItem("user");
     navigate("/");
   };

@@ -50,6 +50,8 @@ const PrivateLayout = (props) => {
 
 const PrivateRoute = (props) => {
   let dispatch = useDispatch();
+
+  // @ToDo
   const user = JSON.parse(localStorage.getItem("user"));
   let isAuthenticated = user ? true : false;
 
