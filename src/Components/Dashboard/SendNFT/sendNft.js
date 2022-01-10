@@ -63,6 +63,8 @@ const SendNft = () => {
   const sendnft__popup = useSelector((state) => state.sendnft__popup);
   const { nfts } = useSelector((state) => state.home__allnft);
 
+  const firstImport=localStorage.getItem("firstImport")
+
   const closeSendNft = () => {
     dispatch({ type: "sendnft__close" });
     setOpenPreview(false);
@@ -125,7 +127,13 @@ const SendNft = () => {
   };
 
   const handleNftPreview = async (selectedContacts) => {
-  if(selectedContacts && selectedContacts.length >0){
+    if(firstImport){
+      dispatch({ type: "sendnft__close" });
+        dispatch({ type: "close_dialog_gift_nft" });
+      dispatch({ type: "createnft__open" });
+      localStorage.removeItem("firstImport")
+    }else{
+  if( selectedContacts && selectedContacts.length >0){
     setFilteredData(selectedContacts);
     let nftDetail = {
       sender_id: user.user_id,
@@ -155,6 +163,7 @@ const SendNft = () => {
     }else{
       toast.error("Please select some contact!");
     }
+  }
   };
 
   const openInitialSendNft = () => {

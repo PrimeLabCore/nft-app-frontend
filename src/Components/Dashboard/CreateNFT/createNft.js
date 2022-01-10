@@ -576,7 +576,9 @@ const CreateNft = (props) => {
           </div>
           <div className={styles.multiple__btn__wrapper}>
             <button
-              onClick={() => mineNft("mint")}
+              onClick={() => {mineNft("mint")
+              localStorage.removeItem("firstImport")
+            }}
               disabled={loading}
               className={styles.next__btn}
             >
@@ -586,7 +588,9 @@ const CreateNft = (props) => {
               </span>
             </button>
             <button
-              onClick={() => mineNft("gift")}
+              onClick={() => {mineNft("gift")
+              localStorage.removeItem("firstImport")
+            }}
               disabled={loading}
               className={styles.next__btn}
             >

@@ -74,7 +74,6 @@ const ImportContactsDialog = ({ status, callback, onImport }) => {
     axios
       .post(`${API_BASE_URL}/contacts/import`, newcontacts)
       .then((response) => {
-        console.log("data from source", response.data);
         toast.success(response.data.message);
 
         //disable contact import dialog on login/signup

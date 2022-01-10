@@ -163,6 +163,8 @@ const Settings = () => {
 
   const SignOut = () => {
     localStorage.removeItem("user");
+    localStorage.removeItem("welcome")
+    localStorage.removeItem("firstImport")
     navigate("/");
   };
 

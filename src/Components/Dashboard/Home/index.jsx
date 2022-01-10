@@ -21,6 +21,9 @@ const Home = () => {
   const [showContactListPopup, setShowContactListPopup] = useState(false);
   const [allContacts, setAllContacts] = useState([]);
 
+  const firstImport=localStorage.getItem("firstImport")
+
+
   useEffect(() => {
     if (localStorage.getItem("welcome") === "true") {
       HandleDialogOpen();
@@ -76,6 +79,7 @@ const Home = () => {
     dispatch({ type: "createnft__open" });
   };
 
+
   return (
     <>
       <div className={styles.home__main__wrapper}>
@@ -100,10 +104,11 @@ const Home = () => {
               openCreateNFTPopup();
             }}
             title={"Gift an NFT"}
-            btnText={"Send Gift"}
+            btnText={firstImport ? "Gift NFT":"Send NFT"}
             handleBtnClick={() => {
               openCreateNFTPopup();
             }}
+            firstImport={firstImport}
           />
 
           {/* Home Create NFT Container */}
@@ -114,7 +119,9 @@ const Home = () => {
                   Start Creating Your <strong>NFTs</strong> Today
                 </h1>
                 <div className={styles.btn__wrapper}>
-                  <button onClick={() => dispatch({ type: "createnft__open" })}>
+                  <button onClick={() => {
+                    dispatch({ type: "createnft__open" })
+                    localStorage.removeItem("firstImport")}}>
                     Create NFT{" "}
                     <span>
                       <IoIosArrowForward />
