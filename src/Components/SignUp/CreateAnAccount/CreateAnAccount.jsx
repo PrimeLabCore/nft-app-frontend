@@ -100,7 +100,7 @@ const CreateAnAccount = () => {
     const { value } = e.target;
 
     if (!value || doesAccountStringHaveValidCharacters(value)) {
-      setAccountId(value);
+      if (value.length <= 56) setAccountId(value);
     }
 
     // setDetails((preValue) => {
