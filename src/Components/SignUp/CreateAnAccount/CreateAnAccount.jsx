@@ -94,7 +94,7 @@ const CreateAnAccount = () => {
   };
 
   const doesAccountIdHaveValidLength = (accountString) =>
-    accountString.length > 1 && accountString.length <= 64;
+    accountString.length > 1 && accountString.length <= 56;
 
   const onAccountChange = (e) => {
     const { value } = e.target;
@@ -118,7 +118,7 @@ const CreateAnAccount = () => {
   const handleSignup = async () => {
     //validate account id
     if (!doesAccountIdHaveValidLength(accountId)) {
-      toast.warn("Please enter an account ID of between 2 and 64 characters.");
+      toast.warn("Please enter an account ID of between 2 and 56 characters.");
       return;
     }
 
