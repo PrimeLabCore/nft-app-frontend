@@ -9,10 +9,8 @@ import SendNft__Popup from "./sendnft__popup";
 import NFT__Detail from "./nft__detail";
 import GiftNFT_Dialog_Box from "./GiftNFT_Dialog_Box";
 import giftNFT__contactData from "./giftNFT__contactData";
-
 import authReducer from "./authReducer";
 import transactionsReducer from "./transactionsReducer";
-import nftReducer from './nftReducer';
 
 // Here all reducers will get combined
 export default combineReducers({
@@ -25,6 +23,5 @@ export default combineReducers({
   nft__detail: NFT__Detail,
   GiftNFT_Dialog_Box: GiftNFT_Dialog_Box,
   authReducer,
-  transactionsReducer,
-  nftReducer
+  transactionsReducer
 });

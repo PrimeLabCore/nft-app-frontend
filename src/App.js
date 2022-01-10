@@ -36,11 +36,11 @@ import GiftAnNftDialog from "./Components/GiftAnNftDialog/GiftAnNft";
 import SignIn from "./Components/SignIn/SignIn";
 import Settings from "./Components/Dashboard/Settings";
 import HomePage from "./Components/Home/index";
-import Banners from "./Components/Banners";
 import TagManager from "react-gtm-module";
 import axios from "axios";
 import { API_BASE_URL } from "./Utils/config";
 
+import { PersistGate } from "redux-persist/integration/react";
 
 const tagManagerArgs = {
   gtmId: "GTM-TJSWG5R",
@@ -162,9 +162,6 @@ function App() {
       </CookieConsent>
 
       <ToastContainer hideProgressBar theme="dark" closeButton={false} />
-
-      <Banners />
-
       <Routes>
         <Route path="/">
           <Route path="home" element={<HomePage />} />
@@ -212,14 +209,21 @@ function App() {
 
         <Route path="/nft" render element={<DetailRoute />}>
           <Route
-            path=":nftId"
+            path=":nftid"
             element={
               <NFTDetail />
               // nft__detail.image ? <NFTDetail /> : <Navigate replace to="/" />
             }
           />
           <Route
-            path="detail/claim/:nftId"
+            path="detail/claim"
+            element={
+              <NFTClaim />
+              // nft__detail.image ? <NFTClaim /> : <Navigate replace to="/" />
+            }
+          />
+          <Route
+            path="detail/claim/:invoiceId"
             element={
               <NFTClaim />
               // nft__detail.image ? <NFTClaim /> : <Navigate replace to="/" />

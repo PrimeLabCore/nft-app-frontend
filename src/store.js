@@ -35,16 +35,11 @@ export const store = createStore(
   composeEnhancers(applyMiddleware(...middleware))
 );
 
-const dispatch = store.dispatch;
-const onUnauthorizedCallback = () => {
-  dispatch({ type: "auth/logout" });
-};
-
 export const persistor = persistStore(store);
 
 persistor.subscribe(() => {
   const { bootstrapped } = persistor.getState();
   if (bootstrapped) {
-    setupHttpClient(store, onUnauthorizedCallback)
+    setupHttpClient(store)
   }
 });
