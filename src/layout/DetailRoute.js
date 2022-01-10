@@ -57,7 +57,7 @@ const Layout = ({ children }) => {
                       (
                           <img
                               src={nft__detail?.image}
-                              alt={nft__detail.name}
+                              alt={nft__detail?.name}
                           />
                       )}
             </div>

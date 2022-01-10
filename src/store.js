@@ -1,33 +1,45 @@
 import { createStore, applyMiddleware, compose } from "redux";
 import { persistStore, persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
+import thunk from "redux-thunk";
+import { createLogger } from 'redux-logger';
 
 import rootReducer from "./Reducers";
-import thunk from "redux-thunk";
+import { setupHttpClient } from './Services/httpClient';
 
 const persistConfig = {
   key: 'root',
   storage,
+  whitelist: ['authReducer'] // which reducer want to store
+};
+
+let composeEnhancers = compose;
+
+if (process.env.REACT_APP_ENV === 'development') {
+  const composeWithDevToolsExtension = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__;
+  if (typeof composeWithDevToolsExtension === 'function') {
+    composeEnhancers = composeWithDevToolsExtension;
+  }
 }
 
-const composeEnhancers =
-  window["__REDUX_DEVTOOLS_EXTENSION_COMPOSE__"] || compose;
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-// const store = createStore(
-//   rootReducer,
-//   composeEnhancers(applyMiddleware(thunk))
-// );
+const middleware = [thunk];
 
-const persistedReducer = persistReducer(persistConfig, rootReducer)
- 
-// export default () => {
-  const store = createStore(
-    persistedReducer,
-    composeEnhancers(applyMiddleware(thunk))
-  );
+if (process.env.REACT_APP_ENV === 'development') {
+  middleware.push(createLogger({ collapsed: true, duration: true }));
+}
 
-//   let persistor = persistStore(store)
-//   return { store, persistor }
-// }
+export const store = createStore(
+  persistedReducer,
+  composeEnhancers(applyMiddleware(...middleware))
+);
 
-export default store;
+export const persistor = persistStore(store);
+
+persistor.subscribe(() => {
+  const { bootstrapped } = persistor.getState();
+  if (bootstrapped) {
+    setupHttpClient(store)
+  }
+});

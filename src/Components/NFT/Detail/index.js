@@ -1,21 +1,28 @@
-import React from "react";
-import styles from "./details.module.css";
-// import {BiArrowBack} from "react-icons/bi"
+import React, { useEffect } from "react";
+import axios from "axios";
 import { BsArrowUpRight } from "react-icons/bs";
 import { Accordion } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
-// import {MdCancel} from "react-icons/md"
-const Details = () => {
-  let dispatch = useDispatch();
-  const { user } = useSelector((state) => state.authReducer);
+import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 
-  
+import { API_BASE_URL } from "../../../Utils/config";
+import { mapNftDetails } from "../../../Utils/utils";
+import styles from "./details.module.css";
+
+const Details = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const nftIdFromUrl = useParams().nftid;
+
+  const { user } = useSelector((state) => state.authReducer);
+  const nftData = useSelector((state) => state.nft__detail);
+
   const sendNft = () => {
     dispatch({ type: "sendnft__open" });
     dispatch({
       type: "current_selected_nft",
-      payload: nft__detail,
+      payload: nftData,
     });
     navigate("/");
     window.dataLayer.push({
@@ -28,11 +35,26 @@ const Details = () => {
       },
     });
   };
-  let navigate = useNavigate();
 
-  const nft__detail = useSelector((state) => state.nft__detail);
-  console.log(useSelector(s => s.nft__detail));
-  console.log(nft__detail);
+  useEffect(() => {
+    async function getNftDetails() {
+      try {
+        const response = await axios.get(`${API_BASE_URL}/nfts/${nftIdFromUrl}`);
+        if (response.data.data) {
+          dispatch({ type: "nft__detail", payload: mapNftDetails(response.data.data) });
+        }
+      } catch (error) {
+        if (error.response.data) {
+          toast.error(error.response.data.message);
+        }
+      }
+    }
+
+    // if the user is taken straight to this page via a direct URL, then the redux store won't have the nft details. this will cause a bug.
+    if (!nftData || nftIdFromUrl !== nftData.id) {
+      getNftDetails();
+    }
+  }, [nftData]);
 
   return (
     <>
@@ -44,11 +66,11 @@ const Details = () => {
         </div>
         <div className={styles.details__head}>
           <div className={styles.details__cat}>
-            <h6>{nft__detail?.category}</h6>
+            <h6>{nftData?.category}</h6>
           </div>
-          <h1>{nft__detail.title}</h1>
+          <h1>{nftData.title}</h1>
           <a href="https://explorer.near.org/" target="_blank" rel="noreferrer">
-            {nft__detail.nftid}
+            {nftData.nftid}
           </a>
         </div>
         <div className={styles.details__info}>
@@ -60,7 +82,7 @@ const Details = () => {
             </div>
           </div>
 
-          {!nft__detail?.is_nft_claimed && (
+          {!nftData?.is_nft_claimed && (
             <button onClick={() => sendNft()}>
               Send{" "}
               <span>
@@ -75,7 +97,7 @@ const Details = () => {
               <Accordion.Item eventKey="0">
                 <Accordion.Header>Descriptions</Accordion.Header>
                 <Accordion.Body className={styles.accord__body}>
-                  <p>{nft__detail.description}</p>
+                  <p>{nftData.description}</p>
                 </Accordion.Body>
               </Accordion.Item>
             </div>
@@ -92,13 +114,13 @@ const Details = () => {
                       target="_blank"
                       rel="noreferrer"
                     >
-                      {nft__detail?.token_id ? nft__detail?.token_id : ""}
+                      {nftData?.token_id ? nftData?.token_id : ""}
                     </a>
                   </div>
                   <div className={styles.nft__info}>
                     <p>Contract Address</p>
                     <a
-                      href={nft__detail?.explorer_url}
+                      href={nftData?.explorer_url}
                       target="_blank"
                       rel="noreferrer"
                     >
@@ -109,6 +131,29 @@ const Details = () => {
               </Accordion.Item>
             </div>
           </Accordion>
+          {nftData?.attributes?.length > 0 && (
+            <Accordion>
+              <div className={styles.accord}>
+                <Accordion.Item eventKey="1">
+                  <Accordion.Header>Properties</Accordion.Header>
+                  <Accordion.Body className={styles.accord__body}>
+                    {nftData.attributes.map((attr, index) => (
+                      <div key={index} className={styles.nft__info}>
+                        <p>{attr.attr_name}</p>
+                        <a
+                          href={nftData?.explorer_url}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          {attr.attr_value}
+                        </a>
+                      </div>
+                    ))}
+                  </Accordion.Body>
+                </Accordion.Item>
+              </div>
+            </Accordion>
+          )}
         </div>
       </div>
     </>
