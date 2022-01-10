@@ -18,7 +18,8 @@ const validateEmail = (email) => {
 
   const t = /[ `!@#$%^&*()+\=\[\]{};':"\\|,<>\/?~]/;
 
-  var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  var re =
+    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
   return re.test(email) && !t.test(splitEmail[0]);
 };
@@ -327,25 +328,31 @@ const SignUpWith = () => {
 
   const clearFieldData = (field) => {
     setinputFields({ ...inputFields, [field]: "" });
-  }
+  };
 
   return (
     <div className={styles.half_container}>
       {/* EMAIL AND PHONE SIGNUP CONATINER */}
       <div className={styles.buttonContainer} onClick={handleClick}>
         <button
-          onClick={() => { clearFieldData("phone") }}
+          onClick={() => {
+            clearFieldData("phone");
+          }}
           value="email"
-          className={`${styles.button} ${styles.secondary} ${loginForm === "email" ? styles.active : ""
-            }`}
+          className={`${styles.button} ${styles.secondary} ${
+            loginForm === "email" ? styles.active : ""
+          }`}
         >
           Email
         </button>
         <button
           value="phone"
-          onClick={() => { clearFieldData("email") }}
-          className={`${styles.button} ${styles.secondary} ${loginForm === "phone" ? styles.active : ""
-            }`}
+          onClick={() => {
+            clearFieldData("email");
+          }}
+          className={`${styles.button} ${styles.secondary} ${
+            loginForm === "phone" ? styles.active : ""
+          }`}
         >
           Phone
         </button>
@@ -357,7 +364,7 @@ const SignUpWith = () => {
           <CustomPhoneInput
             variant="outlined"
             placeholder="Ex. (373) 378 8383"
-            containerStyle={{ margin: "10px 0px", }}
+            containerStyle={{ margin: "10px 0px" }}
             type={"tel"}
             value={inputFields.phone}
             onChange={HandleInputChange("phone")}
@@ -396,10 +403,11 @@ const SignUpWith = () => {
           onClick={() =>
             loginForm === "email" ? oldHandleSignup() : phoneNumberSignUp()
           }
-          className={`${styles.button} ${inputFields.email || inputFields.phone
-            ? styles.primaryColor
-            : styles.secondaryColor
-            }`}
+          className={`${styles.button} ${
+            inputFields.email || inputFields.phone
+              ? styles.primaryColor
+              : styles.secondaryColor
+          }`}
           disabled={
             loginForm === "email"
               ? inputFields.email.length == 0

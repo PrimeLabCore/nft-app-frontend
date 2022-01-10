@@ -9,6 +9,7 @@ let initialvalue = {
   nftid: nanoid(),
   description: "",
   owner: "",
+  status: "",
 };
 
 const NFTDetail = (state = initialvalue, action) => {

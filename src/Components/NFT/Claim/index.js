@@ -31,6 +31,7 @@ const Claim = () => {
           data: { data },
         } = await request({ url: `/nfts/${nftId}` });
         if (data) {
+          data.status = "unclaimed_gift";
           dispatch({ type: "nft__detail", payload: mapNftDetails(data) });
         }
         // setNftDetail(data);
@@ -89,6 +90,11 @@ const Claim = () => {
       },
     });
 
+    dispatch({
+      type: "update_redirectUrl",
+      payload: `/nft/detail/claim/${nftId}`,
+    });
+
     navigate("/signin");
   }
 
@@ -101,6 +107,11 @@ const Claim = () => {
         label: "Claim NFT",
         value: "Claim NFT",
       },
+    });
+
+    dispatch({
+      type: "update_redirectUrl",
+      payload: `/nft/details/claim/${nftId}`,
     });
 
     navigate("/signup");
