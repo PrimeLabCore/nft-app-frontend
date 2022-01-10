@@ -1,18 +1,21 @@
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { InputAdornment } from "@material-ui/core";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
 import { ProgressBar } from "react-bootstrap";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { IoIosArrowForward } from "react-icons/io";
-import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import TextFieldComponent from "../../../Assets/FrequentlUsedComponents/TextFieldComponent";
 import { API_BASE_URL } from "../../../Utils/config";
+import { mapUserSession } from "../../../Utils/utils";
 import AppLoader from "../../Generic/AppLoader";
 import styles from "./CreateAnAccount.module.css";
 
 const CreateAnAccount = () => {
+  const dispatch = useDispatch();
+
   const { signupEmail, signupPhone } = useSelector(
     (state) => state.authReducer
   );
@@ -23,7 +26,7 @@ const CreateAnAccount = () => {
   const { LoginFormMethod } = useSelector((state) => state);
 
   const { accId } = useParams();
-  const dispatch = useDispatch();
+
   let navigate = useNavigate();
   const [details, setDetails] = useState({
     id: `${accId ? accId : ""}`,
@@ -133,6 +136,15 @@ const CreateAnAccount = () => {
     axios
       .post(`${API_BASE_URL}/user/create`, user)
       .then((response) => {
+        const actionPayload = mapUserSession(response.data);
+        if (actionPayload) {
+          dispatch({
+            type: "auth/set_session",
+            payload: actionPayload,
+          });
+        }
+
+        // @ToDo
         //save user details
         localStorage.setItem("user", JSON.stringify(response.data));
 

@@ -1,5 +1,6 @@
 let initialvalue = {
   user: null,
+  jwt: null,
   signupEmail: "",
   signupPhone: "",
   nft: null,
@@ -10,6 +11,19 @@ let initialvalue = {
 
 const authReducer = (state = initialvalue, action) => {
   switch (action.type) {
+    case 'auth/logout':
+      return {
+        ...state,
+        user: null,
+        jwt: null
+      };
+    case "auth/set_session":
+      return {
+        ...state,
+        user: action.payload.user,
+        jwt: action.payload.jwt
+      };
+
     case "login_Successfully":
       return {
         ...state,
@@ -53,4 +67,5 @@ const authReducer = (state = initialvalue, action) => {
       return state;
   }
 };
+
 export default authReducer;

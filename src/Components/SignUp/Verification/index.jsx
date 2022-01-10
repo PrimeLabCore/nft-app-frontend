@@ -1,19 +1,21 @@
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { ProgressBar } from "react-bootstrap";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { IoIosArrowForward } from "react-icons/io";
-import { useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import VerificationInput from "react-verification-input";
-import { cookieAuth } from "../../../Utils/config";
 import styles from "./index.module.css";
 import AppLoader from "../../Generic/AppLoader";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { API_BASE_URL } from "../../../Utils/config";
+import { mapUserSession } from "../../../Utils/utils";
 
 const Verification = () => {
+  const dispatch = useDispatch();
+
   const loginMethodUsedByUser = useSelector((state) => state.LoginFormMethod);
   const email = useSelector((state) => state.authReducer.signupEmail);
   const [windowstate, setWindow] = useState(window.innerWidth < 767);
@@ -72,6 +74,16 @@ const Verification = () => {
         nonce: details.verification,
       })
       .then((response) => {
+        const actionPayload = mapUserSession(response.data);
+
+        if (actionPayload) {
+          dispatch({
+            type: "auth/set_session",
+            payload: actionPayload,
+          });
+        }
+
+        // @ToDo
         //save user details
         localStorage.setItem("user", JSON.stringify(response.data));
 
