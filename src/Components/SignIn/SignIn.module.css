@@ -167,9 +167,9 @@
 @media screen and (max-width: 800px) {
   .half_container {
     position: absolute;
-    top: 47vh;
+    top: 100vh;
     max-width: 100%;
-    min-height: 56vh;
+    min-height: 100vh;
     margin-left: 0;
     right: 0;
     left: 0;
