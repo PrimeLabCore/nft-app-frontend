@@ -98,7 +98,7 @@ const SendNft = () => {
     setIsloading(true);
 
     axios
-      .get(`${API_BASE_URL}/nfts?user_id=${user ?. user.user_id}`)
+      .get(`${API_BASE_URL}/nfts?user_id=${user?.user_id}`)
       .then((response) => {
         let tempNfts = response.data.data;
         dispatch({ type: "update_nfts", payload: tempNfts });
