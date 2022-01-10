@@ -23,6 +23,7 @@ const ContactPopup = ({
   btnText,
   handleBtnClick,
   displayImportContact,
+  // firstImport
 }) => {
   let navigate = useNavigate();
   const dispatch = useDispatch();
@@ -35,10 +36,11 @@ const ContactPopup = ({
 
   const [filteredData, setFilteredData] = useState(contacts);
 
+  const firstImport=localStorage.getItem("firstImport")
   useEffect(() => {
     setFilteredData(contacts);
     checkAllContacts(contacts);
-  }, [contacts]);
+  }, [contacts,isLoading]);
 
   //get contacts
   useEffect(() => {
@@ -57,6 +59,7 @@ const ContactPopup = ({
             ? false
             : uniqueEmails.push(contactObj.email[0].address) && true
         );
+        setIsloading(true)
         dispatch({ type: "update_contacts", payload: tempContacts });
       })
       .catch((error) => {
@@ -221,13 +224,15 @@ const ContactPopup = ({
           </div>
           <div className={styles.multiple__btn__wrapper}>
             <button
-              disabled={selectedContacts.length === 0 ? true : false}
+              disabled={firstImport ? false : selectedContacts.length === 0 ? true : false
+              }
               onClick={() => {
-                handleBtnClick(selectedContacts);
+                  handleBtnClick(selectedContacts);
+                
               }}
               className={styles.next__btn}
             >
-              {btnText}
+              {firstImport ? "Gift NFT":btnText}
               <span>
                 <IoIosArrowForward />
               </span>

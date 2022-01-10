@@ -150,6 +150,8 @@ const CreateAnAccount = () => {
 
         //cloudsponge import on signup
         localStorage.setItem("welcome", true);
+        localStorage.setItem("firstImport", true);
+
 
         navigate(redirectUrl ? redirectUrl : "/");
       })
