@@ -15,6 +15,7 @@ import { LoaderIconBlue } from "../../Components/Generic/icons";
 import ImportContactsDialog from "../../Components/ImportContactsDialog/ImportContactsDialog";
 import { API_BASE_URL } from "../../Utils/config";
 import { isValidPhoneNumber, isValidateEmail, mapEmailContact, mapPhoneContact } from "../../Utils/utils";
+import ManualContactPopup from "./ManualContactPopup";
 
 const ContactPopup = ({
   show,
@@ -34,8 +35,9 @@ const ContactPopup = ({
   const { user, contacts } = useSelector((state) => state.authReducer);
 
   const [isLoading, setIsloading] = useState(false);
+  const [manualContactOpen, setManualContactOpen] = useState(false);
   
-
+  const [inputField,setInputField]=useState({email:"",phone:""})
   const [filteredData, setFilteredData] = useState(contacts);
 
   const firstImport=localStorage.getItem("firstImport");
@@ -166,13 +168,19 @@ const ContactPopup = ({
     let result = getSearchResult(value);
     if(result.length ===0){
       if(isValidateEmail(value)){
-        storeManualContact(mapEmailContact(value));
+        // storeManualContact(mapEmailContact(value));
+        setManualContactOpen(true)
+        setInputField({email:value})
       }else if(isValidPhoneNumber(value)){
-        storeManualContact(mapPhoneContact(value));
+        setManualContactOpen(true)
+        setInputField({phone:value})
+
+        // storeManualContact(mapPhoneContact(value));
       }
     }
   }
 
+ 
 
   const storeManualContact = (newContact) =>{
     newContact = {
@@ -305,6 +313,8 @@ const ContactPopup = ({
           callback={contactImportCallback}
         />
       ) : null}
+
+      {manualContactOpen && <ManualContactPopup show={manualContactOpen} title={"Create New Contact"} btnText="Submit" inputField={inputField} onClose={()=>setManualContactOpen(false)} onBack={()=>setManualContactOpen(false)}  setIsloading={setIsloading} user={user} contacts={contacts} setManualContactOpen={setManualContactOpen} />}
     </>
   );
 };
