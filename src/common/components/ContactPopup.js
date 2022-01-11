@@ -167,14 +167,13 @@ const ContactPopup = ({
     let result = getSearchResult(value);
     if(result.length ===0){
       if(isValidateEmail(value)){
-        // storeManualContact(mapEmailContact(value));
         setManualContactOpen(true)
         setInputField({email:value})
+        setSearchText("")
       }else if(isValidPhoneNumber(value)){
         setManualContactOpen(true)
         setInputField({phone:value})
-
-        // storeManualContact(mapPhoneContact(value));
+        setSearchText("")
       }
     }
   }
