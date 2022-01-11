@@ -178,7 +178,7 @@ const CreateNft = (props) => {
     );
   };
 
-  const mineNft = async (type) => {
+  const mineNft = async (type) => { 
     setLoading(true);
 
     let nftDetail = { ...details };
@@ -269,6 +269,10 @@ const CreateNft = (props) => {
       setNftMint(false);
     }
   };
+
+  const handleCorruptedFile = () => {
+    toast.error("Selected file does not exist.")
+  }
 
   // const openNftDesc = () => {
   //   navigate("/nft-details");
@@ -379,10 +383,12 @@ const CreateNft = (props) => {
                   <img
                     src={URL.createObjectURL(selectedFile)}
                     alt="Uploaded File"
+                    onError={() => handleCorruptedFile()}
                   />
                 </div>
               ))}
           </div>
+
           <div className={styles.next__btn__wrapper}>
             <button
               onClick={() =>
@@ -566,11 +572,13 @@ const CreateNft = (props) => {
                     <video
                       style={{ width: "100%", borderRadius: "8px" }}
                       src={URL.createObjectURL(selectedFile)}
+                      onError={() => handleCorruptedFile()}
                     />
                   ) : selectedFile?.type?.includes("audio") ? (
                     <audio
                       style={{ marginTop: "60px", marginLeft: "5px" }}
                       controls
+                      onError={() => handleCorruptedFile()}
                     >
                       <source src={URL.createObjectURL(selectedFile)} />
                     </audio>
@@ -578,6 +586,7 @@ const CreateNft = (props) => {
                     <img
                       src={URL.createObjectURL(selectedFile)}
                       alt={formInfo.title}
+                      onError={() => handleCorruptedFile()}
                     />
                   ))}
                 {!audioRegex.test(selectedFile.type) && (
