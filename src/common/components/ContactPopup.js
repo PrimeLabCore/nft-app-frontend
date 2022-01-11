@@ -68,7 +68,7 @@ const ContactPopup = ({
         dispatch({ type: "update_contacts", payload: tempContacts });
       })
       .catch((error) => {
-        if (error.response.data) {
+        if (error?.response?.data) {
           toast.error(error.response.data.message);
         }
       })
@@ -184,14 +184,17 @@ const ContactPopup = ({
     axios
       .post(`${API_BASE_URL}/contacts`, newContact)
       .then((response) => {
-        console.log("response=>>>", response)
         setIsloading(false)
         setSearchText("")
-        dispatch({ type: "update_contacts", payload: [...contacts, newContact] });
+        dispatch({ type: "update_contacts", payload: [...contacts, {
+          ...newContact, 
+          contact_id: response.data.data.contact_id
+        }]
+      });
         toast.success(response.data.message);
       })
       .catch((error) => {
-        if (error.response.data) {
+        if (error?.response?.data) {
           toast.error(error.response.data.message);
         }
       })
