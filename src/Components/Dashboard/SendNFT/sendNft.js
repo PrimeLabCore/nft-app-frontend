@@ -11,6 +11,7 @@ import { toast } from "react-toastify";
 import ContactPopup from "../../../common/components/ContactPopup";
 import { API_BASE_URL } from "../../../Utils/config";
 import ImportContactsDialog from "../../ImportContactsDialog/ImportContactsDialog";
+import {LoaderIconBlue} from '../../Generic/icons'
 import styles from "./sendNft.module.css";
 
 const responsive = {
@@ -247,7 +248,9 @@ const SendNft = () => {
           <div className={styles.modal__body__wrapper}>
             <h6>Select NFT you want to send</h6>
             <div className={styles.mynft__box__wrapper}>
-              <Carousel
+              {isLoading 
+              ? <LoaderIconBlue/>
+              : <Carousel
                 removeArrowOnDeviceType={[
                   "tablet",
                   "mobile",
@@ -345,7 +348,7 @@ const SendNft = () => {
                     </Fragment>
                   );
                 })}
-              </Carousel>
+              </Carousel>}
             </div>
           </div>
 
