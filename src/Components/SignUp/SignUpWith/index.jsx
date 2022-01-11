@@ -49,6 +49,7 @@ const SignUpWith = () => {
   const [loginFields, setLoginFields] = useState({ username: "" });
   const [validateUserLoading, setValidateUserLoading] = useState(true);
   const [isUserIDAvailable, setIsUserIDAvailable] = useState(false);
+  const [countryValue, setCountry] = useState({});
   const { redirectUrl } = useSelector((state) => state.authReducer);
 
   const [errors, setErrors] = useState({});
@@ -363,6 +364,8 @@ const SignUpWith = () => {
         {loginForm === "phone" && (
           <CustomPhoneInput
             variant="outlined"
+            setCountry={setCountry}
+            countryValue={countryValue}
             placeholder="Ex. (373) 378 8383"
             containerStyle={{ margin: "10px 0px" }}
             type={"tel"}
@@ -371,6 +374,8 @@ const SignUpWith = () => {
             HandelKeyPress={(e) => {
               CheckAndSubmitForm(e);
             }}
+            setinputFields={setinputFields}
+            signUp
           />
         )}
 
