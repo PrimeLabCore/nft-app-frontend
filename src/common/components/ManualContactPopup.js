@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import CustomPhoneInput from "./CustomPhoneInput/CustomPhoneInput";
 import { IoIosArrowForward } from "react-icons/io";
 import TextFieldComponent from "../../Assets/FrequentlUsedComponents/TextFieldComponent";
-import { mapContact, mapEmailContact } from "../../Utils/utils";
+import { mapContact } from "../../Utils/utils";
 import { API_BASE_URL } from "../../Utils/config";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
@@ -121,6 +121,10 @@ const ManualContactPopup=({show,
                   InputValue={inputFields.first_name}
                   HandleInputChange={HandleInputChange("first_name")}
                   onFocus={() => HandleFocus("first_name")}
+                  HandelKeyPress={(event)=>{
+                    if (event.which === 13 ) {
+                        handleBtnClick()
+                    }}}
                 />
                  <TextFieldComponent
                   variant="outlined"
@@ -129,6 +133,10 @@ const ManualContactPopup=({show,
                   InputValue={inputFields.last_name}
                   HandleInputChange={HandleInputChange("last_name")}
                   onFocus={() => HandleFocus("last_name")}
+                  HandelKeyPress={(event)=>{
+                    if (event.which === 13 ) {
+                        handleBtnClick()
+                    }}}
                 />
                 <TextFieldComponent
                   variant="outlined"
@@ -137,12 +145,20 @@ const ManualContactPopup=({show,
                   InputValue={inputFields.email}
                   HandleInputChange={HandleInputChange("email")}
                   onFocus={() => HandleFocus("email")}
+                  HandelKeyPress={(event)=>{
+                    if (event.which === 13 ) {
+                        handleBtnClick()
+                    }}}
                 />
                   <CustomPhoneInput
                     value={inputFields.phone}
                     onFocus={() => HandleFocus("name")}
                     placeholder={"Phone Number"}
                     onChange={HandleInputChange("phone")}
+                    HandelKeyPress={(event)=>{
+                        if (event.which === 13 ) {
+                            handleBtnClick()
+                        }}}
                   />
                 </>
                 <div className={styles.multiple__btn__wrapper}>

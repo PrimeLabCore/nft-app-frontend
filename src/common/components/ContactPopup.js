@@ -14,7 +14,7 @@ import styles from "../../Components/Dashboard/SendNFT/sendNft.module.css";
 import { LoaderIconBlue } from "../../Components/Generic/icons";
 import ImportContactsDialog from "../../Components/ImportContactsDialog/ImportContactsDialog";
 import { API_BASE_URL } from "../../Utils/config";
-import { isValidPhoneNumber, isValidateEmail, mapEmailContact, mapPhoneContact } from "../../Utils/utils";
+import { isValidPhoneNumber, isValidateEmail,} from "../../Utils/utils";
 import ManualContactPopup from "./ManualContactPopup";
 
 const ContactPopup = ({
@@ -27,7 +27,6 @@ const ContactPopup = ({
   displayImportContact,
   // firstImport
 }) => {
-  let navigate = useNavigate();
   const dispatch = useDispatch();
 
   const [selectedContacts, setSelectedContacts] = useState([]);
@@ -178,34 +177,6 @@ const ContactPopup = ({
         // storeManualContact(mapPhoneContact(value));
       }
     }
-  }
-
- 
-
-  const storeManualContact = (newContact) =>{
-    newContact = {
-      ...newContact,
-      owner_id: user.user_id,
-      app_id: "NFT Maker App",
-    }
-    setIsloading(true);
-    axios
-      .post(`${API_BASE_URL}/contacts`, newContact)
-      .then((response) => {
-        setIsloading(false)
-        setSearchText("")
-        dispatch({ type: "update_contacts", payload: [...contacts, {
-          ...newContact, 
-          contact_id: response.data.data.contact_id
-        }]
-      });
-        toast.success(response.data.message);
-      })
-      .catch((error) => {
-        if (error?.response?.data) {
-          toast.error(error.response.data.message);
-        }
-      })
   }
 
   return (
