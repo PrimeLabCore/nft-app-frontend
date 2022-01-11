@@ -14,7 +14,6 @@ import styles from "../../Components/Dashboard/SendNFT/sendNft.module.css";
 import { LoaderIconBlue } from "../../Components/Generic/icons";
 import ImportContactsDialog from "../../Components/ImportContactsDialog/ImportContactsDialog";
 import { API_BASE_URL } from "../../Utils/config";
-import { isValidPhoneNumber, isValidateEmail, mapEmailContact, mapPhoneContact } from "../../Utils/utils";
 
 const ContactPopup = ({
   show,
@@ -34,14 +33,10 @@ const ContactPopup = ({
   const { user, contacts } = useSelector((state) => state.authReducer);
 
   const [isLoading, setIsloading] = useState(false);
-  
 
   const [filteredData, setFilteredData] = useState(contacts);
 
-  const firstImport=localStorage.getItem("firstImport");
-
-  const [searchText, setSearchText] = useState('');
-
+  const firstImport=localStorage.getItem("firstImport")
   useEffect(() => {
     setFilteredData(contacts);
     checkAllContacts(contacts);
@@ -141,61 +136,18 @@ const ContactPopup = ({
     }
   };
 
-  const getSearchResult = (text) =>{
+  const handleSearch = (event) => {
+    let value = event.target.value.toLowerCase();
     let result = [];
     result = contacts.filter((data) => {
       return (
-        getFulllName(data).toLowerCase().search(text) !== -1 ||
-        getPrimaryEmail(data).toLowerCase().search(text) !== -1 ||
-        getPrimaryPhone(data).toLowerCase().search(text) !== -1
+        getFulllName(data).toLowerCase().search(value) !== -1 ||
+        getPrimaryEmail(data).toLowerCase().search(value) !== -1 ||
+        getPrimaryPhone(data).toLowerCase().search(value) !== -1
       );
     });
-    return result;
-  }
-
-  const handleSearch = (event, addNew) => {
-    let value = event.target.value.toLowerCase();
-    setSearchText(value);
-    let result = getSearchResult(value);
     setFilteredData(result);
   };
-  
-
-  const addManualContact = (event) =>{
-    let value = event.target.value.toLowerCase();
-    let result = getSearchResult(value);
-    if(result.length ===0){
-      if(isValidateEmail(value)){
-        storeManualContact(mapEmailContact(value));
-      }else if(isValidPhoneNumber(value)){
-        storeManualContact(mapPhoneContact(value));
-      }
-    }
-  }
-
-
-  const storeManualContact = (newContact) =>{
-    newContact = {
-      ...newContact,
-      owner_id: user.user_id,
-      app_id: "NFT Maker App",
-    }
-    setIsloading(true);
-    axios
-      .post(`${API_BASE_URL}/contacts`, newContact)
-      .then((response) => {
-        console.log("response=>>>", response)
-        setIsloading(false)
-        setSearchText("")
-        dispatch({ type: "update_contacts", payload: [...contacts, newContact] });
-        toast.success(response.data.message);
-      })
-      .catch((error) => {
-        if (error.response.data) {
-          toast.error(error.response.data.message);
-        }
-      })
-  }
 
   return (
     <>
@@ -234,12 +186,11 @@ const ContactPopup = ({
                     type="text"
                     placeholder="Search Current Contacts"
                     onChange={handleSearch}
-                    onKeyPress={(event)=>{
-                      if (event.which === 13 ) {
-                        addManualContact(event)
-                      }
-                    }}
-                    value={searchText}
+                    // onKeyPress={(event)=>{
+                    //   if (event.which === 13 ) {
+                    //     handleBtnClick(selectedContacts)
+                    //   }
+                    // }}
                   />
                 </div>
               </div>
