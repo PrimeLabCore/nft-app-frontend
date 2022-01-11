@@ -48,17 +48,20 @@ export const isValidPhoneNumber = (phone) => {
 
 
 
-export const mapEmailContact = (emailId) => {
+export const mapContact = (inputFields) => {
   return {
-    "first_name": "",
-    "email": [
+    "first_name": inputFields?.first_name ? inputFields?.first_name:"",
+    "email":inputFields?.email ? [
       {
-        "address": emailId,
+        "address": inputFields?.email,
         "type": "home"
       }
-    ],
-    "phone": [],
-    "last_name": "",
+    ]:[],
+    "phone": inputFields?.phone ? [{
+      "number": inputFields?.phone,
+      "type": "mobile"
+  },]:[],
+    "last_name":inputFields?.last_name? inputFields?.last_name :  "",
     "address": [],
     "job_title": "",
     "companies": [],
@@ -71,25 +74,4 @@ export const mapEmailContact = (emailId) => {
   };
 }
 
-export const mapPhoneContact = (phone) => {
-  return {
-    "first_name": "",
-    "email": [],
-    "phone": [
-      {
-          "number": phone,
-          "type": "mobile"
-      },
-    ],
-    "last_name": "",
-    "address": [],
-    "job_title": "",
-    "companies": [],
-    "groups": [],
-    "dob": "",
-    "birthday": "",
-    "import_source": "manual",
-    "app_id": "",
-    "owner_id": ""
-  };
-}
+

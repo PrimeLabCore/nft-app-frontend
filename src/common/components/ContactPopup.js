@@ -14,7 +14,8 @@ import styles from "../../Components/Dashboard/SendNFT/sendNft.module.css";
 import { LoaderIconBlue } from "../../Components/Generic/icons";
 import ImportContactsDialog from "../../Components/ImportContactsDialog/ImportContactsDialog";
 import { API_BASE_URL } from "../../Utils/config";
-import { isValidPhoneNumber, isValidateEmail, mapEmailContact, mapPhoneContact } from "../../Utils/utils";
+import { isValidPhoneNumber, isValidateEmail,} from "../../Utils/utils";
+import ManualContactPopup from "./ManualContactPopup";
 
 const ContactPopup = ({
   show,
@@ -26,7 +27,6 @@ const ContactPopup = ({
   displayImportContact,
   // firstImport
 }) => {
-  let navigate = useNavigate();
   const dispatch = useDispatch();
 
   const [selectedContacts, setSelectedContacts] = useState([]);
@@ -34,8 +34,9 @@ const ContactPopup = ({
   const { user, contacts } = useSelector((state) => state.authReducer);
 
   const [isLoading, setIsloading] = useState(false);
+  const [manualContactOpen, setManualContactOpen] = useState(false);
   
-
+  const [inputField,setInputField]=useState({email:"",phone:""})
   const [filteredData, setFilteredData] = useState(contacts);
 
   const firstImport=localStorage.getItem("firstImport");
@@ -166,38 +167,15 @@ const ContactPopup = ({
     let result = getSearchResult(value);
     if(result.length ===0){
       if(isValidateEmail(value)){
-        storeManualContact(mapEmailContact(value));
+        setManualContactOpen(true)
+        setInputField({email:value})
+        setSearchText("")
       }else if(isValidPhoneNumber(value)){
-        storeManualContact(mapPhoneContact(value));
+        setManualContactOpen(true)
+        setInputField({phone:value})
+        setSearchText("")
       }
     }
-  }
-
-
-  const storeManualContact = (newContact) =>{
-    newContact = {
-      ...newContact,
-      owner_id: user.user_id,
-      app_id: "NFT Maker App",
-    }
-    setIsloading(true);
-    axios
-      .post(`${API_BASE_URL}/contacts`, newContact)
-      .then((response) => {
-        setIsloading(false)
-        setSearchText("")
-        dispatch({ type: "update_contacts", payload: [...contacts, {
-          ...newContact, 
-          contact_id: response.data.data.contact_id
-        }]
-      });
-        toast.success(response.data.message);
-      })
-      .catch((error) => {
-        if (error?.response?.data) {
-          toast.error(error.response.data.message);
-        }
-      })
   }
 
   return (
@@ -305,6 +283,8 @@ const ContactPopup = ({
           callback={contactImportCallback}
         />
       ) : null}
+
+      {manualContactOpen && <ManualContactPopup show={manualContactOpen} title={"Create New Contact"} btnText="Submit" inputField={inputField} onClose={()=>setManualContactOpen(false)} onBack={()=>setManualContactOpen(false)}  setIsloading={setIsloading} user={user} contacts={contacts} setManualContactOpen={setManualContactOpen} />}
     </>
   );
 };
