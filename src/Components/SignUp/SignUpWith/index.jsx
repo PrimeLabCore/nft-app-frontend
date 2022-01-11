@@ -314,8 +314,6 @@ const SignUpWith = () => {
 
   // HandleInputChange for text field component
   const HandleInputChange = (field) => (e) => {
-    console.log("value", countryValue);
-    // if(country?.name)
     setinputFields({ ...inputFields, [field]: e.target.value });
   };
 
@@ -332,8 +330,6 @@ const SignUpWith = () => {
   const clearFieldData = (field) => {
     setinputFields({ ...inputFields, [field]: "" });
   };
-
-  console.log("coutryvalue", countryValue);
 
   return (
     <div className={styles.half_container}>
