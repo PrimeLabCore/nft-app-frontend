@@ -10,7 +10,7 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { persistor, store } from "./store";
 
-ReactGA.initialize('G-VHQDFLX5Y2');
+ReactGA.initialize('G-4N8P08L7XC');
 ReactGA.pageview(window.location.pathname + window.location.search);
 
 ReactDOM.render(
