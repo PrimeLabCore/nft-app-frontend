@@ -340,6 +340,7 @@ const CreateNft = (props) => {
                 id="files"
                 name="file"
                 onChange={(e) => handleNewFileUpload(e.target.files)}
+                onClick={(e) => {e.target.value = null}}
                 accept={requiredFileExtensions.join(", ")}
                 style={{ display: "none" }}
                 required
