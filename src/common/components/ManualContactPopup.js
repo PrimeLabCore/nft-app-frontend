@@ -139,7 +139,7 @@ const ManualContactPopup=({show,
     return(
         <>
       <Modal
-        className={`${styles.initial__nft__modal} send__nft__mobile__modal initial__modal`}
+        className={`${styles.manual_contact__wrapper} send__nft__mobile__modal initial__modal`}
         show={show}
         onHide={onClose}
         backdrop="static"
