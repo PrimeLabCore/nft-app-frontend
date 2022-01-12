@@ -1,7 +1,7 @@
 import SearchIcon from "@material-ui/icons/Search";
 import axios from "axios";
 import { nanoid } from "nanoid";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Modal } from "react-bootstrap";
 import { BsCheckCircleFill } from "react-icons/bs";
 import { GoPrimitiveDot } from "react-icons/go";
@@ -16,7 +16,6 @@ import ImportContactsDialog from "../../Components/ImportContactsDialog/ImportCo
 import { API_BASE_URL } from "../../Utils/config";
 import { isValidPhoneNumber, isValidateEmail,} from "../../Utils/utils";
 import ManualContactPopup from "./ManualContactPopup";
-import useInfiniteScroll from 'react-infinite-scroll-hook';
 
 const ContactPopup = ({
   show,
@@ -130,6 +129,8 @@ const [importContactDialog, setimportContactDialog] =
   const contactImportCallback = (error, source) => {
     setimportContactDialog(false);
 
+    getContactList();
+
     if (error) {
       if (source === "backdropClick") {
         toast.error(`Please select a contact provider to import contacts`);
@@ -182,6 +183,7 @@ const [importContactDialog, setimportContactDialog] =
   // Fucntions for Infinite Scrolling
   const [currentSet, setCurrentSet] = useState(0);
   const numberOfBatchElements = 100;
+  const loadMoreOn = 10;
   const [shortContactsList, setShortContactsList] = useState([]);
 
   const getContactList = () => {
@@ -194,15 +196,27 @@ const [importContactDialog, setimportContactDialog] =
       )
       setCurrentSet(currentSet + 1);
     } else {
-      temporaryConatcts = filteredData.slice(
-        currentSet*numberOfBatchElements
-      )
+      if (!runJustOnce) {
+        temporaryConatcts = filteredData.slice(
+          currentSet*numberOfBatchElements
+        )
+        setRunJustOnce(!runJustOnce);
+      }
     }
 
     setShortContactsList([...shortContactsList, ...temporaryConatcts]);
   }
 
-  return (
+  const [runJustOnce, setRunJustOnce] = useState(true);
+
+  useEffect(() => {
+    if (filteredData.length > 1 && runJustOnce)
+      setRunJustOnce(false);
+      setIsloading(false);
+      getContactList();
+  }, [filteredData]);
+
+  return (  
     <>
       <Modal
         className={`${styles.initial__nft__modal} send__nft__mobile__modal initial__modal`}
@@ -256,37 +270,67 @@ const [importContactDialog, setimportContactDialog] =
                 Import
               </button>
             </div>
-            <div className={styles.data__wrapper}>
+            <div className={styles.data__wrapper} >
               <div>{isLoading && <LoaderIconBlue />}</div>
-              
+
               {/* {filteredData.map((contact, index) => ( */}
               {shortContactsList.map((contact, index) => (
-                <div className={styles.data_row_container} key={nanoid()}>
-                  {/* TEXT */}
-                  <div className={styles.textContainer}>
-                    <h6>{getFulllName(contact)}</h6>
-                    <p>{getPrimaryEmail(contact)}</p>
-                  </div>
-                  {/* ICONS */}
-                  <div
-                    className={styles.icon}
-                    onClick={() => HandleClick(contact.contact_id)}
+                index >= shortContactsList.length - loadMoreOn ? 
+                (
+                  <div 
+                    className={styles.data_row_container} 
+                    onMouseEnter={() => getContactList()} 
+                    id="last_contact_element" 
+                    key={nanoid()}
                   >
-                    {findIfChecked(contact.contact_id) ? (
-                      <BsCheckCircleFill className={styles.checked} />
-                    ) : (
-                      <GoPrimitiveDot className={styles.unchecked} />
-                    )}
+                    {/* TEXT */}
+                    <div className={styles.textContainer}>
+                      <h6>{getFulllName(contact)}</h6>
+                      <p>{getPrimaryEmail(contact)}</p>
+                    </div>
+                  
+                    {/* ICONS */}
+                    <div
+                      className={styles.icon}
+                      onClick={() => HandleClick(contact.contact_id)}
+                    >
+                      {findIfChecked(contact.contact_id) ? (
+                        <BsCheckCircleFill className={styles.checked} />
+                      ) : (
+                        <GoPrimitiveDot className={styles.unchecked} />
+                      )}
+                    </div>
                   </div>
-                </div>
+                )
+                : (
+                    <div className={styles.data_row_container} key={nanoid()}>
+                      {/* TEXT */}
+                      <div className={styles.textContainer}>
+                        <h6>{getFulllName(contact)}</h6>
+                        <p>{getPrimaryEmail(contact)}</p>
+                      </div>
+                      {/* ICONS */}
+                      <div
+                        className={styles.icon}
+                        onClick={() => HandleClick(contact.contact_id)}
+                      >
+                        {findIfChecked(contact.contact_id) ? (
+                          <BsCheckCircleFill className={styles.checked} />
+                        ) : (
+                          <GoPrimitiveDot className={styles.unchecked} />
+                        )}
+                      </div>
+                    </div>
+                  )
               ))}
-              <div className={styles.multiple__btn__wrapper}>
+
+              {/* <div className={styles.multiple__btn__wrapper}>
                 <button 
                   className={styles.next__btn} 
                   onClick={() => getContactList()}>
                     Show More
                 </button>
-              </div>
+              </div> */}
             </div>
           </div>
           <div className={styles.multiple__btn__wrapper}>
@@ -295,7 +339,6 @@ const [importContactDialog, setimportContactDialog] =
               }
               onClick={() => {
                   handleBtnClick(selectedContacts);
-                
               }}
               className={styles.next__btn}
             >
