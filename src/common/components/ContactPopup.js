@@ -14,8 +14,9 @@ import styles from "../../Components/Dashboard/SendNFT/sendNft.module.css";
 import { LoaderIconBlue } from "../../Components/Generic/icons";
 import ImportContactsDialog from "../../Components/ImportContactsDialog/ImportContactsDialog";
 import { API_BASE_URL } from "../../Utils/config";
-import { isValidPhoneNumber, isValidateEmail,} from "../../Utils/utils";
+import { isValidPhoneNumber, isValidateEmail, } from "../../Utils/utils";
 import ManualContactPopup from "./ManualContactPopup";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 const ContactPopup = ({
   show,
@@ -35,18 +36,23 @@ const ContactPopup = ({
 
   const [isLoading, setIsloading] = useState(false);
   const [manualContactOpen, setManualContactOpen] = useState(false);
-  
-  const [inputField,setInputField]=useState({email:"",phone:""})
+
+  const [inputField, setInputField] = useState({ email: "", phone: "" })
   const [filteredData, setFilteredData] = useState(contacts);
 
-  const firstImport=localStorage.getItem("firstImport");
+  const firstImport = localStorage.getItem("firstImport");
 
   const [searchText, setSearchText] = useState('');
+  ///
+
+  const [items, setItems] = useState([])
+  const [hasMore, setHasMore] = useState(false)
 
   useEffect(() => {
     setFilteredData(contacts);
     checkAllContacts(contacts);
-  }, [contacts,isLoading]);
+    setShortContactsList(contacts);
+  }, [contacts, isLoading]);
 
   //get contacts
   useEffect(() => {
@@ -78,6 +84,13 @@ const ContactPopup = ({
       });
   }, [show]);
 
+  const style = {
+    height: 30,
+    border: "1px solid green",
+    margin: 6,
+    padding: 8
+  };
+
   const getPrimaryEmail = (contact) => {
     if (contact.email.length > 0) {
       return contact.email[0].address;
@@ -94,6 +107,20 @@ const ContactPopup = ({
     }
   };
 
+  const fetchMoreData = () => {
+    if (!isLoading && filteredData.length && !shortContactsList.length) {
+      setHasMore(false);
+      return;
+    }
+
+    const newData = [...shortContactsList]
+    newData.slice(0.10)
+    const newItems = newData.splice(10)
+    setItems(items.concat(newData))
+    setShortContactsList(newItems)
+
+  };
+
   const getFulllName = (contact) => {
     return contact.first_name + " " + contact.last_name;
   };
@@ -107,8 +134,8 @@ const ContactPopup = ({
     setSelectedContacts(data.map((contact) => contact.contact_id));
   };
 
-const [importContactDialog, setimportContactDialog] =
-  useState(displayImportContact);
+  const [importContactDialog, setimportContactDialog] =
+    useState(displayImportContact);
 
   const HandleClick = (contact_id) => {
     if (selectedContacts.includes(contact_id)) {
@@ -120,9 +147,15 @@ const [importContactDialog, setimportContactDialog] =
 
   const importContact = (data) => {
     if (data) {
+      const copyData = [...data]
       checkAllContacts(data);
       setimportContactDialog(false);
       setFilteredData(data);
+      const getFirst = copyData.slice(0, 10)
+      setItems(getFirst);
+      setHasMore(copyData.length > 10 ? true : false)
+      const remaining = data.splice(10)
+      setShortContactsList(remaining)
     }
   };
 
@@ -144,7 +177,7 @@ const [importContactDialog, setimportContactDialog] =
     }
   };
 
-  const getSearchResult = (text) =>{
+  const getSearchResult = (text) => {
     let result = [];
     result = contacts.filter((data) => {
       return (
@@ -160,21 +193,27 @@ const [importContactDialog, setimportContactDialog] =
     let value = event.target.value.toLowerCase();
     setSearchText(value);
     let result = getSearchResult(value);
+    const copyData = [...result]
     setFilteredData(result);
+    const getFirst = copyData.slice(0, 10)
+    setItems(getFirst);
+    setHasMore(copyData.length > 10 ? true : false)
+    const remaining = result.splice(10)
+    setShortContactsList(remaining)
   };
-  
 
-  const addManualContact = (event) =>{
+
+  const addManualContact = (event) => {
     let value = event.target.value.toLowerCase();
     let result = getSearchResult(value);
-    if(result.length ===0){
-      if(isValidateEmail(value)){
+    if (result.length === 0) {
+      if (isValidateEmail(value)) {
         setManualContactOpen(true)
-        setInputField({email:value})
+        setInputField({ email: value })
         setSearchText("")
-      }else if(isValidPhoneNumber(value)){
+      } else if (isValidPhoneNumber(value)) {
         setManualContactOpen(true)
-        setInputField({phone:value})
+        setInputField({ phone: value })
         setSearchText("")
       }
     }
@@ -182,23 +221,24 @@ const [importContactDialog, setimportContactDialog] =
 
   // Fucntions for Infinite Scrolling
   const [currentSet, setCurrentSet] = useState(0);
-  const numberOfBatchElements = 100;
+  const numberOfBatchElements = 10;
   const loadMoreOn = 10;
   const [shortContactsList, setShortContactsList] = useState([]);
 
   const getContactList = () => {
+
     let temporaryConatcts = [];
 
-    if ((currentSet+1)*numberOfBatchElements < filteredData.length){
-       temporaryConatcts = filteredData.slice(
-        currentSet*numberOfBatchElements,
-        (currentSet+1)*numberOfBatchElements
+    if ((currentSet + 1) * numberOfBatchElements < filteredData.length) {
+      temporaryConatcts = filteredData.slice(
+        currentSet * numberOfBatchElements,
+        (currentSet + 1) * numberOfBatchElements
       )
       setCurrentSet(currentSet + 1);
     } else {
       if (!runJustOnce) {
         temporaryConatcts = filteredData.slice(
-          currentSet*numberOfBatchElements
+          currentSet * numberOfBatchElements
         )
         setRunJustOnce(!runJustOnce);
       }
@@ -212,11 +252,10 @@ const [importContactDialog, setimportContactDialog] =
   useEffect(() => {
     if (filteredData.length > 1 && runJustOnce)
       setRunJustOnce(false);
-      setIsloading(false);
-      getContactList();
+    setIsloading(false);
+    getContactList();
   }, [filteredData]);
-
-  return (  
+  return (
     <>
       <Modal
         className={`${styles.initial__nft__modal} send__nft__mobile__modal initial__modal`}
@@ -253,8 +292,8 @@ const [importContactDialog, setimportContactDialog] =
                     type="text"
                     placeholder="Search Current Contacts"
                     onChange={handleSearch}
-                    onKeyPress={(event)=>{
-                      if (event.which === 13 ) {
+                    onKeyPress={(event) => {
+                      if (event.which === 13) {
                         addManualContact(event)
                       }
                     }}
@@ -274,13 +313,22 @@ const [importContactDialog, setimportContactDialog] =
               <div>{isLoading && <LoaderIconBlue />}</div>
 
               {/* {filteredData.map((contact, index) => ( */}
-              {shortContactsList.map((contact, index) => (
-                index >= shortContactsList.length - loadMoreOn ? 
-                (
-                  <div 
-                    className={styles.data_row_container} 
-                    onMouseEnter={() => getContactList()} 
-                    id="last_contact_element" 
+              <InfiniteScroll
+                dataLength={items.length}
+                next={fetchMoreData}
+                hasMore={hasMore}
+                loader={<h4>Loading...</h4>}
+                height={400}
+                endMessage={
+                  <p style={{ textAlign: "center" }}>
+                    <b>Yay! You have seen it all</b>
+                  </p>
+                }
+              >
+                {items.map((contact, index) => (
+                  <div
+                    className={styles.data_row_container}
+                    id="last_contact_element"
                     key={nanoid()}
                   >
                     {/* TEXT */}
@@ -288,7 +336,7 @@ const [importContactDialog, setimportContactDialog] =
                       <h6>{getFulllName(contact)}</h6>
                       <p>{getPrimaryEmail(contact)}</p>
                     </div>
-                  
+
                     {/* ICONS */}
                     <div
                       className={styles.icon}
@@ -301,36 +349,10 @@ const [importContactDialog, setimportContactDialog] =
                       )}
                     </div>
                   </div>
-                )
-                : (
-                    <div className={styles.data_row_container} key={nanoid()}>
-                      {/* TEXT */}
-                      <div className={styles.textContainer}>
-                        <h6>{getFulllName(contact)}</h6>
-                        <p>{getPrimaryEmail(contact)}</p>
-                      </div>
-                      {/* ICONS */}
-                      <div
-                        className={styles.icon}
-                        onClick={() => HandleClick(contact.contact_id)}
-                      >
-                        {findIfChecked(contact.contact_id) ? (
-                          <BsCheckCircleFill className={styles.checked} />
-                        ) : (
-                          <GoPrimitiveDot className={styles.unchecked} />
-                        )}
-                      </div>
-                    </div>
-                  )
-              ))}
+                ))}
 
-              {/* <div className={styles.multiple__btn__wrapper}>
-                <button 
-                  className={styles.next__btn} 
-                  onClick={() => getContactList()}>
-                    Show More
-                </button>
-              </div> */}
+
+              </InfiniteScroll>
             </div>
           </div>
           <div className={styles.multiple__btn__wrapper}>
@@ -338,7 +360,7 @@ const [importContactDialog, setimportContactDialog] =
               disabled={firstImport ? false : selectedContacts.length === 0 ? true : false
               }
               onClick={() => {
-                  handleBtnClick(selectedContacts);
+                handleBtnClick(selectedContacts);
               }}
               className={styles.next__btn}
             >
@@ -359,7 +381,7 @@ const [importContactDialog, setimportContactDialog] =
         />
       ) : null}
 
-      {manualContactOpen && <ManualContactPopup show={manualContactOpen} title={"Create New Contact"} btnText="Submit" inputField={inputField} onClose={()=>setManualContactOpen(false)} onBack={()=>setManualContactOpen(false)}  setIsloading={setIsloading} user={user} contacts={contacts} setManualContactOpen={setManualContactOpen} />}
+      {manualContactOpen && <ManualContactPopup show={manualContactOpen} title={"Create New Contact"} btnText="Submit" inputField={inputField} onClose={() => setManualContactOpen(false)} onBack={() => setManualContactOpen(false)} setIsloading={setIsloading} user={user} contacts={contacts} setManualContactOpen={setManualContactOpen} />}
     </>
   );
 };
