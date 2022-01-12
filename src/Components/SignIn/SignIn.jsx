@@ -98,10 +98,7 @@ const SignIn = () => {
             This does not allow the app to transfer
             <br /> any tokens.
           </p>
-          <div className={styles.MoreInfo}>More Info</div>
-
-          {/* TEXT FIELD */}
-
+          
           <div className={styles.textField}>
             <TextFieldComponent
               label="ACCOUNT ID"
