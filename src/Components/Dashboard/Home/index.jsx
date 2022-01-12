@@ -21,7 +21,7 @@ const Home = () => {
   const [showContactListPopup, setShowContactListPopup] = useState(false);
   const [allContacts, setAllContacts] = useState([]);
 
-  const firstImport=localStorage.getItem("firstImport")
+  const firstImport = localStorage.getItem("firstImport")
 
 
   useEffect(() => {
@@ -67,7 +67,7 @@ const Home = () => {
       dispatch({ type: "createnft__open" });
       return;
     } else {
-      toast.success(`Your Contacts Were Successfully Imported From ${source}`);
+      toast.success(`Your contacts were successfully imported from ${source}`);
       HandleDialogClose();
       // setShowContactListPopup(true);
       openCreateNFTPopup();
@@ -105,7 +105,7 @@ const Home = () => {
               openCreateNFTPopup();
             }}
             title={"Gift an NFT"}
-            btnText={firstImport ? "Gift NFT":"Send NFT"}
+            btnText={firstImport ? "Gift NFT" : "Send NFT"}
             handleBtnClick={() => {
               openCreateNFTPopup();
             }}
@@ -122,7 +122,8 @@ const Home = () => {
                 <div className={styles.btn__wrapper}>
                   <button onClick={() => {
                     dispatch({ type: "createnft__open" })
-                    localStorage.removeItem("firstImport")}}>
+                    localStorage.removeItem("firstImport")
+                  }}>
                     Create NFT{" "}
                     <span>
                       <IoIosArrowForward />
