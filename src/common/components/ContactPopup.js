@@ -58,12 +58,10 @@ const ContactPopup = ({
       .then((response) => {
         //save user details
         // before saving contacts to the reducer make all the emails unique
-        const { data } = response;
-        let { data: contacts } = data ? data : {};
-        contacts = contacts ? contacts : [];
+        const { data: { data: contacts = [] } } = response;
         const uniqueEmails = [];
         console.log(`Got ${contacts.length} contacts from server`);
-        let uniqueContacts = contacts.filter((contactObj) => {
+        const uniqueContacts = contacts.filter((contactObj) => {
           if (contactObj.email && contactObj.email.length) {
             let emailExists = false;
             for (let i=0; i < contactObj.email.length; i++) {
