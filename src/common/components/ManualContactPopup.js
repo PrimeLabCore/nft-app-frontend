@@ -9,6 +9,7 @@ import { API_BASE_URL } from "../../Utils/config";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import axios from "axios";
+import { isEmpty } from "lodash";
 
 const ManualContactPopup=({show,
     onClose,
@@ -43,8 +44,12 @@ const ManualContactPopup=({show,
           };
 
           const handleBtnClick=()=>{
+            if(isEmpty(inputFields?.email) || isEmpty(inputFields?.phone) ){
+              toast.error(`Email or phone must be filled`)
+            }else{
             storeManualContact(mapContact(inputFields));
             setManualContactOpen(false)
+            }
           }
 
           

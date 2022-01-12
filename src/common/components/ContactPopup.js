@@ -179,7 +179,7 @@ const ContactPopup = ({
   };
 
   const addManualContact = (event) => {
-    let value = event?.target?.value ?event?.target?.value.toLowerCase():event.toLowerCase();
+    let value = event?.target?.value ? event?.target?.value.toLowerCase():event.toLowerCase();
     let result = getSearchResult(value);
     if (result.length === 0) {
       if (isValidateEmail(value)) {
@@ -193,6 +193,10 @@ const ContactPopup = ({
       }
     }
   };
+
+  const handlePlusIcon=(event)=>{
+    setManualContactOpen(true)
+  }
 
   return (
     <>
@@ -238,14 +242,16 @@ const ContactPopup = ({
                     }}
                     value={searchText}
                   />
-                </div>
-              </div>
-              <div className={styles.send_nft__plus___icon}>
+                   <div className={styles.send_nft__plus___icon}>
                 <BsPlusLg  onClick={(event) => {
-                      
+                      searchText===""? handlePlusIcon():
                         addManualContact(searchText);
                     }} />
               </div>
+                </div>
+               
+              </div>
+              
               <button
                 onClick={() => {
                   setimportContactDialog(true);
