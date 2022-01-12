@@ -74,8 +74,6 @@ const ImportContactsDialog = ({ status, callback, onImport }) => {
     axios
       .post(`${API_BASE_URL}/contacts/import`, newcontacts)
       .then((response) => {
-        toast.success(response.data.message);
-
         //disable contact import dialog on login/signup
         localStorage.removeItem("welcome");
       })
@@ -84,7 +82,7 @@ const ImportContactsDialog = ({ status, callback, onImport }) => {
           toast.error(error.response.data.message);
         }
       })
-      .finally(() => {});
+      .finally(() => { });
   };
 
   useEffect(() => {
@@ -99,8 +97,8 @@ const ImportContactsDialog = ({ status, callback, onImport }) => {
               source === "office365"
                 ? "Microsoft"
                 : source === "icloud"
-                ? "Apple"
-                : "Google";
+                  ? "Apple"
+                  : "Google";
 
             var all = document.getElementsByClassName("initial__modal");
             for (var i = 0; i < all.length; i++) {
@@ -140,8 +138,8 @@ const ImportContactsDialog = ({ status, callback, onImport }) => {
               source === "office365"
                 ? "Microsoft 365"
                 : source === "icloud"
-                ? "Apple Contacts (iCloud)"
-                : "Google";
+                  ? "Apple Contacts (iCloud)"
+                  : "Google";
             callback(!success, source_title);
           },
         });

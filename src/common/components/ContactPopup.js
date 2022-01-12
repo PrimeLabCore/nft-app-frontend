@@ -154,7 +154,7 @@ const ContactPopup = ({
       toast.error(`Something Went Wrong Fetching Contacts From ${source}`);
       return;
     } else {
-      toast.success(`Your Contacts Were Successfully Imported From ${source}`);
+      toast.success(`Your contacts were successfully imported from ${source}`);
       return;
     }
   };
