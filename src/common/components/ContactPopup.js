@@ -52,21 +52,38 @@ const ContactPopup = ({
   useEffect(() => {
     if (!show) return;
     setIsloading(true);
-
     //Ajax Request to create user
     axios
       .get(`${API_BASE_URL}/contacts/list/${user.user_id}`)
       .then((response) => {
         //save user details
         // before saving contacts to the reducer make all the emails unique
-        const uniqueEmails = []
-        let tempContacts = response.data.data.filter((contactObj) =>
-          uniqueEmails.includes(contactObj.email[0].address)
-            ? false
-            : uniqueEmails.push(contactObj.email[0].address) && true
-        );
-        setIsloading(true)
-        dispatch({ type: "update_contacts", payload: tempContacts });
+        const { data: { data: contacts = [] } } = response;
+        const uniqueEmails = [];
+        console.log(`Got ${contacts.length} contacts from server`);
+        const uniqueContacts = contacts.filter((contactObj) => {
+          if (contactObj.email && contactObj.email.length) {
+            let emailExists = false;
+            for (let i=0; i < contactObj.email.length; i++) {
+              const emailObj = {...contactObj.email[i]};
+              if (emailObj && emailObj.address && uniqueEmails.indexOf(emailObj.address) !== -1) {
+                emailExists = true;
+                break;
+              } else {
+                uniqueEmails.push(emailObj.address);
+              }
+            }
+            if (emailExists) {
+              return false;
+            } else {
+              return true;
+            }
+          } else {
+            return true;
+          }
+        });
+        setIsloading(true);
+        dispatch({ type: "update_contacts", payload: uniqueContacts });
       })
       .catch((error) => {
         if (error?.response?.data) {
