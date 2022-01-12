@@ -70,6 +70,12 @@
   margin: 15px 0px;
 }
 
+button[disabled] {
+  cursor: pointer !important;
+  background-color: rgb(201 201 201) !important;
+  border: 1px solid lightgray !important;
+}
+
 .initial__nft__modal .next__btn__wrapper .next__btn {
   display: -webkit-box;
   display: -ms-flexbox;

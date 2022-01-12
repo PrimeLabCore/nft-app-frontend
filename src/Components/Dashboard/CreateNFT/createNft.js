@@ -43,6 +43,7 @@ const CreateNft = (props) => {
   const [selectedFileType, setSelectedFileType] = useState("image");
 
   const [loading, setLoading] = useState(false);
+  const [corruptedFile, setCorruptedFile] = useState(false);
   const [createNftResponse, setCreateNftResponse] = useState({
     name: "",
   });
@@ -257,6 +258,8 @@ const CreateNft = (props) => {
   };
 
   const goBack = (modalName) => {
+    setCorruptedFile(false);
+
     if (modalName === "initalForm") {
       dispatch({ type: "createnft__open" });
       setNftForm(false);
@@ -271,7 +274,8 @@ const CreateNft = (props) => {
   };
 
   const handleCorruptedFile = () => {
-    toast.error("Selected file does not exist.")
+    toast.error("Selected file does not exist.");
+    setCorruptedFile(true);
   }
 
   // const openNftDesc = () => {
@@ -301,6 +305,8 @@ const CreateNft = (props) => {
       } else {
         setSelectedFileType("image");
       }
+
+      setCorruptedFile(false);
     }
   }
 
@@ -396,7 +402,7 @@ const CreateNft = (props) => {
                   ? handleNftForm()
                   : toast.error("Please upload files.")
               }
-              disabled={selectedFile ? false : true}
+              disabled={(selectedFile ? false : true) || corruptedFile}
               className={styles.next__btn}
             >
               Next
@@ -616,7 +622,7 @@ const CreateNft = (props) => {
                 mineNft("mint");
                 localStorage.removeItem("firstImport");
               }}
-              disabled={loading}
+              disabled={loading ||  corruptedFile}
               className={styles.next__btn}
             >
               Mint NFT
@@ -629,7 +635,7 @@ const CreateNft = (props) => {
                 mineNft("gift");
                 localStorage.removeItem("firstImport");
               }}
-              disabled={loading}
+              disabled={loading ||  corruptedFile}
               className={styles.next__btn}
             >
               Gift NFT
