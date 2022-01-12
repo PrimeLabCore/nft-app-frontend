@@ -58,6 +58,9 @@ const Claim = () => {
       });
 
       toast.success(message);
+
+      dispatch({ type: "update_redirectUrl", payload: null });
+
       navigate("/");
     } catch (error) {
       toast.error(
