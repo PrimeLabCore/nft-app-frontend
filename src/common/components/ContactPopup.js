@@ -16,6 +16,7 @@ import ImportContactsDialog from "../../Components/ImportContactsDialog/ImportCo
 import { API_BASE_URL } from "../../Utils/config";
 import { isValidPhoneNumber, isValidateEmail,} from "../../Utils/utils";
 import ManualContactPopup from "./ManualContactPopup";
+import useInfiniteScroll from 'react-infinite-scroll-hook';
 
 const ContactPopup = ({
   show,
@@ -107,8 +108,8 @@ const ContactPopup = ({
     setSelectedContacts(data.map((contact) => contact.contact_id));
   };
 
-  const [importContactDialog, setimportContactDialog] =
-    useState(displayImportContact);
+const [importContactDialog, setimportContactDialog] =
+  useState(displayImportContact);
 
   const HandleClick = (contact_id) => {
     if (selectedContacts.includes(contact_id)) {
@@ -178,6 +179,29 @@ const ContactPopup = ({
     }
   }
 
+  // Fucntions for Infinite Scrolling
+  const [currentSet, setCurrentSet] = useState(0);
+  const numberOfBatchElements = 100;
+  const [shortContactsList, setShortContactsList] = useState([]);
+
+  const getContactList = () => {
+    let temporaryConatcts = [];
+
+    if ((currentSet+1)*numberOfBatchElements < filteredData.length){
+       temporaryConatcts = filteredData.slice(
+        currentSet*numberOfBatchElements,
+        (currentSet+1)*numberOfBatchElements
+      )
+      setCurrentSet(currentSet + 1);
+    } else {
+      temporaryConatcts = filteredData.slice(
+        currentSet*numberOfBatchElements
+      )
+    }
+
+    setShortContactsList([...shortContactsList, ...temporaryConatcts]);
+  }
+
   return (
     <>
       <Modal
@@ -234,8 +258,9 @@ const ContactPopup = ({
             </div>
             <div className={styles.data__wrapper}>
               <div>{isLoading && <LoaderIconBlue />}</div>
-
-              {filteredData.map((contact, index) => (
+              
+              {/* {filteredData.map((contact, index) => ( */}
+              {shortContactsList.map((contact, index) => (
                 <div className={styles.data_row_container} key={nanoid()}>
                   {/* TEXT */}
                   <div className={styles.textContainer}>
@@ -255,6 +280,13 @@ const ContactPopup = ({
                   </div>
                 </div>
               ))}
+              <div className={styles.multiple__btn__wrapper}>
+                <button 
+                  className={styles.next__btn} 
+                  onClick={() => getContactList()}>
+                    Show More
+                </button>
+              </div>
             </div>
           </div>
           <div className={styles.multiple__btn__wrapper}>
