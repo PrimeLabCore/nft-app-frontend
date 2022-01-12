@@ -9,7 +9,6 @@ import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
 import { mapNftDetails } from "../../../Utils/utils";
 
-import NFT_STATUSES from "../../../constants/nftStatuses";
 import request from "../../../Services/httpClient";
 
 const Claim = () => {
@@ -59,6 +58,9 @@ const Claim = () => {
       });
 
       toast.success(message);
+
+      dispatch({ type: "update_redirectUrl", payload: null });
+
       navigate("/");
     } catch (error) {
       toast.error(
@@ -144,11 +146,9 @@ const Claim = () => {
             </div>
           </div>
         </div>
-        {nftDetail?.status === NFT_STATUSES.unclaimed && (
-          <button className={styles.claim__btn} onClick={handleClaim}>
-            Claim
-          </button>
-        )}
+        <button className={styles.claim__btn} onClick={handleClaim}>
+          Claim
+        </button>
         <div className={styles.details__accords}>
           <Accordion>
             <div className={styles.accord}>

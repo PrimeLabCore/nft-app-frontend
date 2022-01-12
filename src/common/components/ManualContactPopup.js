@@ -188,6 +188,7 @@ const ManualContactPopup=({show,
                     }}
                 />
                   <CustomPhoneInput
+                  setinputFields={setinputFields}
                     value={inputFields.phone}
                     onFocus={() => HandleFocus("name")}
                     placeholder={"Phone Number"}

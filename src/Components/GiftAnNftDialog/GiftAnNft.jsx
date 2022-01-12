@@ -180,7 +180,7 @@ export default function GiftAnNft({ closebutton, sendGiftButton, dashboard }) {
       toast.error(`Something Went Wrong Fetching Contacts From ${source}`);
       return;
     } else {
-      toast.success(`Your Contacts Were Successfully Imported From ${source}`);
+      toast.success(`Your contacts were successfully imported from ${source}`);
       return;
     }
   };
@@ -272,10 +272,9 @@ export default function GiftAnNft({ closebutton, sendGiftButton, dashboard }) {
 
           {/* DATA */}
           <div
-          style={{backgroundColor: "red"}}
-            className={`${
-              dashboard ? styles.dashboardContainer : styles.dataContainer
-            }`}
+            style={{ backgroundColor: "red" }}
+            className={`${dashboard ? styles.dashboardContainer : styles.dataContainer
+              }`}
           >
             {filteredContactData.map((value, index) => (
               <div className={styles.data_row_container} key={nanoid()}>
