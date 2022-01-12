@@ -110,6 +110,11 @@
   outline: none;
 }
 
+.initial__nft__modal .modal__body__wrapper .search__wrapper .send_nft__plus___icon {
+  cursor: pointer;
+  margin-left: 4px;
+}
+
 .initial__nft__modal .modal__body__wrapper .search__wrapper button {
   color: #2f80ed;
   font-size: 20.4px;

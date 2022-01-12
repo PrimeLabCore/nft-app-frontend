@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import CustomPhoneInput from "./CustomPhoneInput/CustomPhoneInput";
 import { IoIosArrowForward } from "react-icons/io";
 import TextFieldComponent from "../../Assets/FrequentlUsedComponents/TextFieldComponent";
-import { mapContact } from "../../Utils/utils";
+import { isValidateEmail, mapContact } from "../../Utils/utils";
 import { API_BASE_URL } from "../../Utils/config";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
@@ -23,6 +23,7 @@ const ManualContactPopup=({show,
     })=>{
         const dispatch=useDispatch()
         const [info, setinfo] = useState("");
+        const [errors, setErrors] = useState({});
         const [inputFields, setinputFields] = useState({
             email: "",
             phone: "",
@@ -79,6 +80,48 @@ const ManualContactPopup=({show,
       })
   }
 
+  const handleValidation = () => {
+    let errors = {};
+    let formIsValid = true;
+    if (!isValidateEmail(inputFields.email)) {
+      formIsValid = false;
+      errors["email"] = "Email is not valid";
+    }
+
+    setErrors(errors);
+    return formIsValid;
+  };
+
+  const validateFirstName = (event) => {
+    if (inputFields?.first_name.length<2) {
+     return toast.error("First Name should be equal or more than 2 characters");
+   }else{
+     if (event.which === 13 ) {
+       handleBtnClick()
+   }
+   }
+  }
+
+   const validateLastName = (event) => {
+    if (inputFields?.last_name.length<2) {
+     return toast.error("Last Name should be equal or more than 2 characters");
+   }else{
+     if (event.which === 13 ) {
+       handleBtnClick()
+   }
+  }
+ };
+  const oldHandleSignup = (event) => {
+     if (!handleValidation()) {
+      return toast.error("Email is not valid");
+    }else{
+      if (event.which === 13 ) {
+        handleBtnClick()
+    }
+    }
+    
+  };
+
           useEffect(()=>{
               if(inputField?.email){
                   setinputFields({email:inputField?.email})
@@ -87,7 +130,6 @@ const ManualContactPopup=({show,
               }
           },[inputField])
 
-        console.log("value",inputFields)
 
     return(
         <>
@@ -122,9 +164,7 @@ const ManualContactPopup=({show,
                   HandleInputChange={HandleInputChange("first_name")}
                   onFocus={() => HandleFocus("first_name")}
                   HandelKeyPress={(event)=>{
-                    if (event.which === 13 ) {
-                        handleBtnClick()
-                    }}}
+                    validateFirstName(event)}}
                 />
                  <TextFieldComponent
                   variant="outlined"
@@ -134,9 +174,7 @@ const ManualContactPopup=({show,
                   HandleInputChange={HandleInputChange("last_name")}
                   onFocus={() => HandleFocus("last_name")}
                   HandelKeyPress={(event)=>{
-                    if (event.which === 13 ) {
-                        handleBtnClick()
-                    }}}
+                    validateLastName(event)}}
                 />
                 <TextFieldComponent
                   variant="outlined"
@@ -145,10 +183,9 @@ const ManualContactPopup=({show,
                   InputValue={inputFields.email}
                   HandleInputChange={HandleInputChange("email")}
                   onFocus={() => HandleFocus("email")}
-                  HandelKeyPress={(event)=>{
-                    if (event.which === 13 ) {
-                        handleBtnClick()
-                    }}}
+                  HandelKeyPress={(e)=>{
+                    oldHandleSignup(e);
+                    }}
                 />
                   <CustomPhoneInput
                     value={inputFields.phone}

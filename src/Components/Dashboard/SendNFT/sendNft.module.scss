@@ -38,6 +38,7 @@
       display: flex;
       // justify-content:space-between;
       align-items: center;
+
       .search__inner__wrapper {
         width: 100%;
         .searchIcon {
@@ -59,6 +60,7 @@
             user-select: none;
           }
         }
+
         .search__input {
           color: rgba(0, 0, 0, 0.87);
           cursor: text;
@@ -83,7 +85,10 @@
           }
         }
       }
-
+      .send_nft__plus___icon {
+        cursor: pointer;
+        margin-left: 4px;
+      }
       button {
         color: #2f80ed;
         font-size: 20.4px;

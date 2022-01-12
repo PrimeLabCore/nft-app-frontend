@@ -3,7 +3,7 @@ import axios from "axios";
 import { nanoid } from "nanoid";
 import React, { useEffect, useState } from "react";
 import { Modal } from "react-bootstrap";
-import { BsCheckCircleFill } from "react-icons/bs";
+import { BsCheckCircleFill, BsPlusLg } from "react-icons/bs";
 import { GoPrimitiveDot } from "react-icons/go";
 import { IoIosArrowForward } from "react-icons/io";
 import "react-phone-input-2/lib/style.css";
@@ -14,7 +14,7 @@ import styles from "../../Components/Dashboard/SendNFT/sendNft.module.css";
 import { LoaderIconBlue } from "../../Components/Generic/icons";
 import ImportContactsDialog from "../../Components/ImportContactsDialog/ImportContactsDialog";
 import { API_BASE_URL } from "../../Utils/config";
-import { isValidPhoneNumber, isValidateEmail,} from "../../Utils/utils";
+import { isValidPhoneNumber, isValidateEmail } from "../../Utils/utils";
 import ManualContactPopup from "./ManualContactPopup";
 
 const ContactPopup = ({
@@ -35,18 +35,18 @@ const ContactPopup = ({
 
   const [isLoading, setIsloading] = useState(false);
   const [manualContactOpen, setManualContactOpen] = useState(false);
-  
-  const [inputField,setInputField]=useState({email:"",phone:""})
+
+  const [inputField, setInputField] = useState({ email: "", phone: "" });
   const [filteredData, setFilteredData] = useState(contacts);
 
-  const firstImport=localStorage.getItem("firstImport");
+  const firstImport = localStorage.getItem("firstImport");
 
-  const [searchText, setSearchText] = useState('');
+  const [searchText, setSearchText] = useState("");
 
   useEffect(() => {
     setFilteredData(contacts);
     checkAllContacts(contacts);
-  }, [contacts,isLoading]);
+  }, [contacts, isLoading]);
 
   //get contacts
   useEffect(() => {
@@ -59,13 +59,13 @@ const ContactPopup = ({
       .then((response) => {
         //save user details
         // before saving contacts to the reducer make all the emails unique
-        const uniqueEmails = []
+        const uniqueEmails = [];
         let tempContacts = response.data.data.filter((contactObj) =>
           uniqueEmails.includes(contactObj.email[0].address)
             ? false
             : uniqueEmails.push(contactObj.email[0].address) && true
         );
-        setIsloading(true)
+        setIsloading(true);
         dispatch({ type: "update_contacts", payload: tempContacts });
       })
       .catch((error) => {
@@ -142,7 +142,7 @@ const ContactPopup = ({
     }
   };
 
-  const getSearchResult = (text) =>{
+  const getSearchResult = (text) => {
     let result = [];
     result = contacts.filter((data) => {
       return (
@@ -152,7 +152,7 @@ const ContactPopup = ({
       );
     });
     return result;
-  }
+  };
 
   const handleSearch = (event, addNew) => {
     let value = event.target.value.toLowerCase();
@@ -160,23 +160,22 @@ const ContactPopup = ({
     let result = getSearchResult(value);
     setFilteredData(result);
   };
-  
 
-  const addManualContact = (event) =>{
-    let value = event.target.value.toLowerCase();
+  const addManualContact = (event) => {
+    let value = event?.target?.value ?event?.target?.value.toLowerCase():event.toLowerCase();
     let result = getSearchResult(value);
-    if(result.length ===0){
-      if(isValidateEmail(value)){
-        setManualContactOpen(true)
-        setInputField({email:value})
-        setSearchText("")
-      }else if(isValidPhoneNumber(value)){
-        setManualContactOpen(true)
-        setInputField({phone:value})
-        setSearchText("")
+    if (result.length === 0) {
+      if (isValidateEmail(value)) {
+        setManualContactOpen(true);
+        setInputField({ email: value });
+        setSearchText("");
+      } else if (isValidPhoneNumber(value)) {
+        setManualContactOpen(true);
+        setInputField({ phone: value });
+        setSearchText("");
       }
     }
-  }
+  };
 
   return (
     <>
@@ -213,16 +212,22 @@ const ContactPopup = ({
                   </div>
                   <input
                     type="text"
-                    placeholder="Search Current Contacts"
+                    placeholder="Search Existing & Add New Contacts"
                     onChange={handleSearch}
-                    onKeyPress={(event)=>{
-                      if (event.which === 13 ) {
-                        addManualContact(event)
+                    onKeyPress={(event) => {
+                      if (event.which === 13) {
+                        addManualContact(event);
                       }
                     }}
                     value={searchText}
                   />
                 </div>
+              </div>
+              <div className={styles.send_nft__plus___icon}>
+                <BsPlusLg  onClick={(event) => {
+                      
+                        addManualContact(searchText);
+                    }} />
               </div>
               <button
                 onClick={() => {
@@ -259,11 +264,15 @@ const ContactPopup = ({
           </div>
           <div className={styles.multiple__btn__wrapper}>
             <button
-              disabled={firstImport ? false : selectedContacts.length === 0 ? true : false
+              disabled={
+                firstImport
+                  ? false
+                  : selectedContacts.length === 0
+                  ? true
+                  : false
               }
               onClick={() => {
-                  handleBtnClick(selectedContacts);
-                
+                handleBtnClick(selectedContacts);
               }}
               className={styles.next__btn}
             >
@@ -284,7 +293,20 @@ const ContactPopup = ({
         />
       ) : null}
 
-      {manualContactOpen && <ManualContactPopup show={manualContactOpen} title={"Create New Contact"} btnText="Submit" inputField={inputField} onClose={()=>setManualContactOpen(false)} onBack={()=>setManualContactOpen(false)}  setIsloading={setIsloading} user={user} contacts={contacts} setManualContactOpen={setManualContactOpen} />}
+      {manualContactOpen && (
+        <ManualContactPopup
+          show={manualContactOpen}
+          title={"Create New Contact"}
+          btnText="Submit"
+          inputField={inputField}
+          onClose={() => setManualContactOpen(false)}
+          onBack={() => setManualContactOpen(false)}
+          setIsloading={setIsloading}
+          user={user}
+          contacts={contacts}
+          setManualContactOpen={setManualContactOpen}
+        />
+      )}
     </>
   );
 };
