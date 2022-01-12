@@ -45,6 +45,19 @@ export const persistor = persistStore(store);
 persistor.subscribe(() => {
   const { bootstrapped } = persistor.getState();
   if (bootstrapped) {
+    // Set up the http client upon rehydrating the persisted store.
     setupHttpClient(store, onUnauthorizedCallback)
   }
 });
+
+let currentJwt;
+
+store.subscribe(() => {
+  let prevJwt = currentJwt;
+  currentJwt = store.getState().authReducer.jwt;
+
+  if (prevJwt !== currentJwt) {
+    // Set up the http client upon the auth session update.
+    setupHttpClient(store, onUnauthorizedCallback);
+  }
+})
