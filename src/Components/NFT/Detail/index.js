@@ -19,6 +19,7 @@ const Details = () => {
 
   const sendNft = () => {
     dispatch({ type: "sendnft__open" });
+    localStorage.setItem("sendNftId",JSON.stringify(nftData))
     dispatch({
       type: "current_selected_nft",
       payload: nftData,
