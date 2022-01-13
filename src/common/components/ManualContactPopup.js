@@ -44,7 +44,7 @@ const ManualContactPopup=({show,
           };
 
           const handleBtnClick=()=>{
-            if(isEmpty(inputFields?.email) || isEmpty(inputFields?.phone) ){
+            if(isEmpty(inputFields?.email) && isEmpty(inputFields?.phone) ){
               toast.error(`Email or phone must be filled`)
             }else{
             storeManualContact(mapContact(inputFields));
@@ -53,7 +53,6 @@ const ManualContactPopup=({show,
           }
 
           
-        //   console.log("new contaact",contacts)
 
   const storeManualContact = (newContact) =>{
     newContact = {
@@ -72,10 +71,6 @@ const ManualContactPopup=({show,
           contact_id: response.data.data.contact_id
         }]
       });
-      console.log("data",[...contacts, {
-        ...newContact, 
-        contact_id: response.data.data.contact_id
-      }])
         toast.success(response.data.message);
       })
       .catch((error) => {
@@ -120,9 +115,7 @@ const ManualContactPopup=({show,
      if (!handleValidation()) {
       return toast.error("Email is not valid");
     }else{
-      if (event.which === 13 ) {
         handleBtnClick()
-    }
     }
     
   };
@@ -162,14 +155,16 @@ const ManualContactPopup=({show,
         <Modal.Body>
         <>
         <TextFieldComponent
+                  autoFocus={true}
                   variant="outlined"
                   placeholder={`First Name`}
                   type={"name"}
                   InputValue={inputFields.first_name}
                   HandleInputChange={HandleInputChange("first_name")}
-                  onFocus={() => HandleFocus("first_name")}
+                  // onFocus={() => HandleFocus("first_name")}
                   HandelKeyPress={(event)=>{
-                    validateFirstName(event)}}
+                    if (event.which === 13 ) {
+                    validateFirstName(event)}}}
                 />
                  <TextFieldComponent
                   variant="outlined"
@@ -179,7 +174,8 @@ const ManualContactPopup=({show,
                   HandleInputChange={HandleInputChange("last_name")}
                   onFocus={() => HandleFocus("last_name")}
                   HandelKeyPress={(event)=>{
-                    validateLastName(event)}}
+                    if (event.which === 13 ) {
+                    validateLastName(event)}}}
                 />
                 <TextFieldComponent
                   variant="outlined"
@@ -189,8 +185,9 @@ const ManualContactPopup=({show,
                   HandleInputChange={HandleInputChange("email")}
                   onFocus={() => HandleFocus("email")}
                   HandelKeyPress={(e)=>{
+                    if (e.which === 13 ) {
                     oldHandleSignup(e);
-                    }}
+                    }}}
                 />
                   <CustomPhoneInput
                   setinputFields={setinputFields}
