@@ -13,6 +13,7 @@ import { API_BASE_URL } from "../../../Utils/config";
 import ImportContactsDialog from "../../ImportContactsDialog/ImportContactsDialog";
 import { LoaderIconBlue } from "../../Generic/icons";
 import styles from "./sendNft.module.css";
+import { isEmpty } from "lodash";
 
 const responsive = {
   superLargeDesktop: {
@@ -85,8 +86,12 @@ const SendNft = () => {
   };
 
   const closegiftNft = () => {
+    if(isEmpty(nfts)){
     setOpenGift(false);
     dispatch({ type: "createnft__open" });
+    }else{
+    setOpenGift(false);
+    }
   };
 
   useEffect(() => {
