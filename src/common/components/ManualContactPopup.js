@@ -31,7 +31,12 @@ const ManualContactPopup=({show,
             first_name: "",
             last_name: "",
           });
+          
+  const doesAccountStringHaveValidCharacters = (accountString) => {
+    const matchesCharacterRequirements = /^[a-z]+$/i.test(accountString);
 
+    return matchesCharacterRequirements 
+  };
 
 
           const HandleInputChange = (field) => (e) => {
@@ -44,12 +49,20 @@ const ManualContactPopup=({show,
           };
 
           const handleBtnClick=()=>{
-            if(isEmpty(inputFields?.email) && isEmpty(inputFields?.phone) ){
-              toast.error(`Email or phone must be filled`)
-            }else{
-            storeManualContact(mapContact(inputFields));
-            setManualContactOpen(false)
-            }
+              if(isEmpty(inputFields?.email) && isEmpty(inputFields?.phone) ){
+                toast.error(`Email or phone must be filled`)
+              }
+              else if(!isEmpty(inputFields?.first_name) && !doesAccountStringHaveValidCharacters(inputFields?.first_name)){
+                toast.error("First name must be valid")
+              }
+              else if(!isEmpty(inputFields?.last_name) && !doesAccountStringHaveValidCharacters(inputFields?.last_name)){
+                toast.error("Last name must be valid")
+              }
+              else{
+              storeManualContact(mapContact(inputFields));
+              setManualContactOpen(false)
+              }
+            
           }
 
           
@@ -96,9 +109,7 @@ const ManualContactPopup=({show,
     if (inputFields?.first_name.length<2) {
      return toast.error("First Name should be equal or more than 2 characters");
    }else{
-     if (event.which === 13 ) {
        handleBtnClick()
-   }
    }
   }
 
@@ -106,9 +117,7 @@ const ManualContactPopup=({show,
     if (inputFields?.last_name.length<2) {
      return toast.error("Last Name should be equal or more than 2 characters");
    }else{
-     if (event.which === 13 ) {
        handleBtnClick()
-   }
   }
  };
   const oldHandleSignup = (event) => {
