@@ -45,7 +45,7 @@ const Transactions = () => {
           <h5>Recent Transactions</h5>
           <Link to="/transactions">See All</Link>
         </div>
-        {transactions?.length && (
+        {(transactions?.length > 0) && (
           <div className={styles.transaction__list__wrapper}>
             {transactions.map((data) => {
               return (
