@@ -14,6 +14,7 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { API_BASE_URL } from "../../../Utils/config";
 import { mapNftDetails } from "../../../Utils/utils";
+import { isEmpty } from "lodash";
 
 const responsive = {
   superLargeDesktop: {
@@ -73,7 +74,7 @@ const MyNft = ({ isLink }) => {
   //fetch all the nfts of the user
   useEffect(() => {
     setIsloading(true);
-
+console.log("entererd here")
     //Ajax Request to create user
     axios
       .get(`${API_BASE_URL}/nfts?user_id=${user.user_id}`)
@@ -83,6 +84,9 @@ const MyNft = ({ isLink }) => {
         // console.log("data nfts", tempNfts);
         setAlldata(tempNfts);
         dispatch({ type: "update_nfts", payload: tempNfts });
+        if(isEmpty(tempNfts)){
+          dispatch({type:"createnft__open"})
+        }
       })
       .catch((error) => {
         if (error.response.data) {
