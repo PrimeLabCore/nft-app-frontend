@@ -228,7 +228,6 @@ const SendNft = () => {
 
   useEffect(()=>{
 if(localStorage.getItem("sendNftId")){
-  console.log("herer")
 
   setSelected(JSON.parse(localStorage.getItem("sendNftId")))
   localStorage.removeItem("sendNftId")
@@ -237,7 +236,6 @@ if(localStorage.getItem("sendNftId")){
 }
   },[])
 
-  console.log("selecteddata",localStorage.getItem("sendNftId"))
   return (
     <>
       {/* NFT Selection Modal */}
