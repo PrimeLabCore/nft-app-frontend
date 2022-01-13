@@ -14,8 +14,15 @@ import styles from "../../Components/Dashboard/SendNFT/sendNft.module.css";
 import { LoaderIconBlue } from "../../Components/Generic/icons";
 import ImportContactsDialog from "../../Components/ImportContactsDialog/ImportContactsDialog";
 import { API_BASE_URL } from "../../Utils/config";
-import { isValidPhoneNumber, isValidateEmail } from "../../Utils/utils";
+import { isValidPhoneNumber, isValidateEmail, isValidFullName, isOnlyNumber } from "../../Utils/utils";
 import ManualContactPopup from "./ManualContactPopup";
+
+const contactFormFields = {
+  email: "",
+  phone: "",
+  first_name: "",
+  last_name: "",
+}
 
 const ContactPopup = ({
   show,
@@ -36,7 +43,7 @@ const ContactPopup = ({
   const [isLoading, setIsloading] = useState(false);
   const [manualContactOpen, setManualContactOpen] = useState(false);
 
-  const [inputField, setInputField] = useState({ email: "", phone: "" });
+  const [inputField, setInputField] = useState({...contactFormFields});
   const [filteredData, setFilteredData] = useState(contacts);
 
   const firstImport = localStorage.getItem("firstImport");
@@ -199,19 +206,28 @@ const ContactPopup = ({
     let result = getSearchResult(value);
     if (result.length === 0) {
       if (isValidateEmail(value)) {
-        setManualContactOpen(true);
         setInputField({ email: value });
-        setSearchText("");
       } else if (isValidPhoneNumber(value)) {
-        setManualContactOpen(true);
         setInputField({ phone: value });
-        setSearchText("");
+      }else if(isValidFullName(value)){
+        setInputField({ first_name: value.split(' ')[0] || "", last_name:value.split(' ')[1] || "" });
+      }else if(isOnlyNumber(value)){
+        setInputField({ phone: value });
       }
+      setManualContactOpen(true);
     }
   };
 
   const handlePlusIcon=(event)=>{
     setManualContactOpen(true)
+  }
+
+  const handleManualContactClose=()=>{
+    setManualContactOpen(false);
+    setSearchText("");
+    setInputField({...contactFormFields});
+    let result = getSearchResult("");
+    setFilteredData(result);
   }
 
   return (
@@ -338,12 +354,12 @@ const ContactPopup = ({
           title={"Create New Contact"}
           btnText="Submit"
           inputField={inputField}
-          onClose={() => setManualContactOpen(false)}
-          onBack={() => setManualContactOpen(false)}
+          onClose={() => handleManualContactClose}
+          onBack={() => handleManualContactClose}
           setIsloading={setIsloading}
           user={user}
           contacts={contacts}
-          setManualContactOpen={setManualContactOpen}
+          setManualContactOpen={handleManualContactClose}
         />
       )}
     </>
