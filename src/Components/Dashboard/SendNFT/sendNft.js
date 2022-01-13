@@ -224,6 +224,18 @@ const SendNft = () => {
 
   const urlArray = selected?.image?.split(".");
   const fileType = urlArray?.length ? urlArray[urlArray.length - 1] : "";
+
+
+  useEffect(()=>{
+if(localStorage.getItem("sendNftId")){
+
+  setSelected(JSON.parse(localStorage.getItem("sendNftId")))
+  localStorage.removeItem("sendNftId")
+}else{
+  setSelected("")
+}
+  },[])
+
   return (
     <>
       {/* NFT Selection Modal */}
@@ -278,7 +290,7 @@ const SendNft = () => {
                       <Fragment key={nanoid()}>
                         <div
                           className={`${styles.mynft__box} ${
-                            selected.nft_id === data.nft_id
+                            selected.nft_id === data.nft_id || selected?.nftid===data.nft_id
                               ? styles.selected__nft
                               : ""
                           }`}
@@ -314,7 +326,7 @@ const SendNft = () => {
                             </div>
                           </div>
 
-                          {selected.nft_id === data.nft_id ? (
+                          {selected.nft_id === data.nft_id || selected?.nftid===data.nft_id ? (
                             <>
                               <div
                                 className={
