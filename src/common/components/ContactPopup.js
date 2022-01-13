@@ -58,15 +58,21 @@ const ContactPopup = ({
       .then((response) => {
         //save user details
         // before saving contacts to the reducer make all the emails unique
-        const { data: { data: contacts = [] } } = response;
+        const {
+          data: { data: contacts = [] },
+        } = response;
         const uniqueEmails = [];
         console.log(`Got ${contacts.length} contacts from server`);
         const uniqueContacts = contacts.filter((contactObj) => {
           if (contactObj.email && contactObj.email.length) {
             let emailExists = false;
-            for (let i=0; i < contactObj.email.length; i++) {
-              const emailObj = {...contactObj.email[i]};
-              if (emailObj && emailObj.address && uniqueEmails.indexOf(emailObj.address) !== -1) {
+            for (let i = 0; i < contactObj.email.length; i++) {
+              const emailObj = { ...contactObj.email[i] };
+              if (
+                emailObj &&
+                emailObj.address &&
+                uniqueEmails.indexOf(emailObj.address) !== -1
+              ) {
                 emailExists = true;
                 break;
               } else {
@@ -116,22 +122,32 @@ const ContactPopup = ({
   };
 
   const findIfChecked = (contact_id) => {
-    return selectedContacts.includes(contact_id);
+    return !!selectedContacts.find(
+      (contact) => contact.contact_id === contact_id
+    );
   };
 
   const checkAllContacts = (data) => {
     //selecting all the contacts
-    setSelectedContacts(data.map((contact) => contact.contact_id));
+    setSelectedContacts(data);
   };
 
   const [importContactDialog, setimportContactDialog] =
     useState(displayImportContact);
 
-  const HandleClick = (contact_id) => {
-    if (selectedContacts.includes(contact_id)) {
-      setSelectedContacts(selectedContacts.filter((cId) => cId !== contact_id));
+  const handleToggleContactSelection = (targetContact) => {
+    const wasSelected = !!selectedContacts.find(
+      (contact) => contact.contact_id === targetContact.contact_id
+    );
+
+    if (wasSelected) {
+      setSelectedContacts(
+        selectedContacts.filter(
+          (contact) => contact.contact_id !== targetContact.contact_id
+        )
+      );
     } else {
-      setSelectedContacts([...selectedContacts, contact_id]);
+      setSelectedContacts([...selectedContacts, targetContact]);
     }
   };
 
@@ -273,7 +289,7 @@ const ContactPopup = ({
                   {/* ICONS */}
                   <div
                     className={styles.icon}
-                    onClick={() => HandleClick(contact.contact_id)}
+                    onClick={() => handleToggleContactSelection(contact)}
                   >
                     {findIfChecked(contact.contact_id) ? (
                       <BsCheckCircleFill className={styles.checked} />

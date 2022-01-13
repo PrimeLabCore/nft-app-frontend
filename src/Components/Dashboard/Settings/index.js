@@ -14,6 +14,12 @@ import { API_BASE_URL } from "../../../Utils/config";
 import AppLoader from "../../Generic/AppLoader";
 import axios from "axios";
 
+const labels = {
+  email: "Email Address",
+  phone: "Phone Number",
+  full_name: "Full Name",
+}
+
 const Settings = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -333,7 +339,7 @@ const Settings = () => {
             <div className="modal__title__wrapper">
               <Modal.Title>
                 <div className={styles.modal__header}>
-                  <h2>Change {details.replace(/_/g, " ")}</h2>
+                  <h2>Change {labels[details]}</h2>
                 </div>
               </Modal.Title>
             </div>
@@ -343,13 +349,7 @@ const Settings = () => {
               {details !== "phone" ? (
                 <TextFieldComponent
                   variant="outlined"
-                  placeholder={`${
-                    details === "full_name"
-                      ? "Name"
-                      : details === "email"
-                      ? "Email"
-                      : ""
-                  }`}
+                  placeholder={labels[details]}
                   type={"email"}
                   InputValue={inputFields[`${details}`]}
                   HandleInputChange={HandleInputChange(details)}
