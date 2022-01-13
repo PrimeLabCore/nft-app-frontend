@@ -55,12 +55,14 @@ const TextFieldComponent = ({
   disabled,
   InputProps,
   HandelKeyUp,
-  HandelKeyPress
+  HandelKeyPress,
+  autoFocus
 }) => {
   const classes = useStyles();
   return (
     <>
       <CssTextField
+      autoFocus={autoFocus}
         variant={variant}
         label={label}
         placeholder={placeholder}

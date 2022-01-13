@@ -4,52 +4,80 @@ import React, { useEffect, useState } from 'react'
 import CustomPhoneInput from "./CustomPhoneInput/CustomPhoneInput";
 import { IoIosArrowForward } from "react-icons/io";
 import TextFieldComponent from "../../Assets/FrequentlUsedComponents/TextFieldComponent";
-import { mapContact } from "../../Utils/utils";
+import { isValidateEmail, isValidName, isValidPhoneNumber, mapContact } from "../../Utils/utils";
 import { API_BASE_URL } from "../../Utils/config";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import axios from "axios";
+import { isEmpty } from "lodash";
 
-const ManualContactPopup=({show,
-    onClose,
-    onBack,
-    title,
-    btnText,
-    inputField,
-    setIsloading,
-    user,
-    contacts,
-    setManualContactOpen
-    })=>{
-        const dispatch=useDispatch()
-        const [info, setinfo] = useState("");
-        const [inputFields, setinputFields] = useState({
-            email: "",
-            phone: "",
-            first_name: "",
-            last_name: "",
-          });
+const contactFormFields = {
+  email: "",
+  phone: "",
+  first_name: "",
+  last_name: "",
+}
+const ManualContactPopup = ({ show,
+  onClose,
+  onBack,
+  title,
+  btnText,
+  inputField,
+  setIsloading,
+  user,
+  contacts,
+  setManualContactOpen
+}) => {
+  const dispatch = useDispatch()
+  const [info, setinfo] = useState("");
+  const [errors, setErrors] = useState({});
+  const [inputFields, setinputFields] = useState({ ...contactFormFields });
 
 
 
-          const HandleInputChange = (field) => (e) => {
-            setinputFields({ ...inputFields, [field]: e.target.value });
-          };
-        
-          // HandleFocus for input
-          const HandleFocus = (ClickedInput) => {
-            setinfo(ClickedInput);
-          };
+  useEffect(() => {
+    let updatedContactForm = {...contactFormFields};
+    if (inputField?.email) {
+      updatedContactForm.email = inputField.email;
+    } 
+    if (inputField?.phone) {
+      updatedContactForm.phone = inputField.phone;
+    } 
+    if (inputField?.first_name) {
+      updatedContactForm.first_name = inputField.first_name;
+    } 
+    if (inputField?.last_name) {
+      updatedContactForm.last_name = inputField.last_name;
+    }
+    setinputFields(updatedContactForm)
+  }, [inputField])
 
-          const handleBtnClick=()=>{
-            storeManualContact(mapContact(inputFields));
-            setManualContactOpen(false)
-          }
 
-          
-        //   console.log("new contaact",contacts)
+  const HandleInputChange = (field) => (e) => {
+    setinputFields({ ...inputFields, [field]: e.target.value });
+  };
 
-  const storeManualContact = (newContact) =>{
+  const validateAndSubmit = () => {
+    if (!isEmpty(inputFields.first_name) && !isValidName(inputFields.first_name)) {
+      toast.error("Please enter a valid first name");
+    } else if (!isEmpty(inputFields.last_name) && !isValidName(inputFields.last_name)) {
+      toast.error("Please enter a valid last name");
+    } else if (isEmpty(inputFields.email) && isEmpty(inputFields.phone)) {
+      toast.error(`Please enter either email or phone number`)
+    } else if (!isEmpty(inputFields.email) && !isValidateEmail(inputFields.email)) {
+      toast.error(`Please enter a valid email`)
+    } else if (!isEmpty(inputFields.phone) && !isValidPhoneNumber(inputFields.phone)) {
+      toast.error(`Please enter a valid phone number`)
+    } else {
+      storeManualContact(mapContact({...inputFields}));
+      setManualContactOpen(false)
+      setinputFields({
+        ...contactFormFields
+      })
+    }
+  }
+
+  const storeManualContact = (newContact) => {
     newContact = {
       ...newContact,
       owner_id: user.user_id,
@@ -60,16 +88,12 @@ const ManualContactPopup=({show,
       .post(`${API_BASE_URL}/contacts`, newContact)
       .then((response) => {
         setIsloading(false)
-        // setSearchText("")
-        dispatch({ type: "update_contacts", payload: [...contacts, {
-          ...newContact, 
-          contact_id: response.data.data.contact_id
-        }]
-      });
-      console.log("data",[...contacts, {
-        ...newContact, 
-        contact_id: response.data.data.contact_id
-      }])
+        dispatch({
+          type: "update_contacts", payload: [...contacts, {
+            ...newContact,
+            contact_id: response.data.data.contact_id
+          }]
+        });
         toast.success(response.data.message);
       })
       .catch((error) => {
@@ -79,22 +103,28 @@ const ManualContactPopup=({show,
       })
   }
 
-          useEffect(()=>{
-              if(inputField?.email){
-                  setinputFields({email:inputField?.email})
-              }else if(inputField?.phone){
-                setinputFields({phone:inputField?.phone})
-              }
-          },[inputField])
+  const onCloseContactPopup = () =>{
+    setinputFields({
+      ...contactFormFields
+    });
+    setManualContactOpen()
+  }
 
-        console.log("value",inputFields)
 
-    return(
-        <>
+
+
+
+
+
+
+
+
+  return (
+    <>
       <Modal
-        className={`${styles.initial__nft__modal} send__nft__mobile__modal initial__modal`}
+        className={`${styles.manual_contact__wrapper} send__nft__mobile__modal initial__modal`}
         show={show}
-        onHide={onClose}
+        onHide={onCloseContactPopup}
         backdrop="static"
         size="lg"
         centered
@@ -102,7 +132,7 @@ const ManualContactPopup=({show,
       >
         <Modal.Header className={styles.modal__header__wrapper} closeButton>
           <div className="modal__multiple__wrapper">
-            <button onClick={onBack} className="back__btn">
+            <button onClick={onCloseContactPopup} className="back__btn">
               Back
             </button>
             <Modal.Title>
@@ -113,61 +143,62 @@ const ManualContactPopup=({show,
           </div>
         </Modal.Header>
         <Modal.Body>
-        <>
-        <TextFieldComponent
-                  variant="outlined"
-                  placeholder={`First Name`}
-                  type={"name"}
-                  InputValue={inputFields.first_name}
-                  HandleInputChange={HandleInputChange("first_name")}
-                  onFocus={() => HandleFocus("first_name")}
-                  HandelKeyPress={(event)=>{
-                    if (event.which === 13 ) {
-                        handleBtnClick()
-                    }}}
-                />
-                 <TextFieldComponent
-                  variant="outlined"
-                  placeholder={`Last Name`}
-                  type={"name"}
-                  InputValue={inputFields.last_name}
-                  HandleInputChange={HandleInputChange("last_name")}
-                  onFocus={() => HandleFocus("last_name")}
-                  HandelKeyPress={(event)=>{
-                    if (event.which === 13 ) {
-                        handleBtnClick()
-                    }}}
-                />
-                <TextFieldComponent
-                  variant="outlined"
-                  placeholder={`Email`}
-                  type={"email"}
-                  InputValue={inputFields.email}
-                  HandleInputChange={HandleInputChange("email")}
-                  onFocus={() => HandleFocus("email")}
-                  HandelKeyPress={(event)=>{
-                    if (event.which === 13 ) {
-                        handleBtnClick()
-                    }}}
-                />
-                  <CustomPhoneInput
-                  setinputFields={setinputFields}
-                    value={inputFields.phone}
-                    onFocus={() => HandleFocus("name")}
-                    placeholder={"Phone Number"}
-                    onChange={HandleInputChange("phone")}
-                    HandelKeyPress={(event)=>{
-                        if (event.which === 13 ) {
-                            handleBtnClick()
-                        }}}
-                  />
-                </>
-                <div className={styles.multiple__btn__wrapper}>
+          <>
+            <TextFieldComponent
+              autoFocus={true}
+              variant="outlined"
+              placeholder={`First Name`}
+              type={"name"}
+              InputValue={inputFields.first_name}
+              HandleInputChange={HandleInputChange("first_name")}
+              HandelKeyPress={(event) => {
+                if (event.which === 13) {
+                  validateAndSubmit();
+                }
+              }}
+            />
+            <TextFieldComponent
+              variant="outlined"
+              placeholder={`Last Name`}
+              type={"name"}
+              InputValue={inputFields.last_name}
+              HandleInputChange={HandleInputChange("last_name")}
+              HandelKeyPress={(event) => {
+                if (event.which === 13) {
+                  validateAndSubmit();
+                }
+              }}
+            />
+            <TextFieldComponent
+              variant="outlined"
+              placeholder={`Email`}
+              type={"email"}
+              InputValue={inputFields.email}
+              HandleInputChange={HandleInputChange("email")}
+              HandelKeyPress={(event) => {
+                if (event.which === 13) {
+                  validateAndSubmit();
+                }
+              }}
+            />
+            <CustomPhoneInput
+              setinputFields={setinputFields}
+              value={inputFields.phone}
+              placeholder={"Phone Number"}
+              onChange={HandleInputChange("phone")}
+              HandelKeyPress={(event) => {
+                if (event.which === 13) {
+                  validateAndSubmit();
+                }
+              }}
+            />
+          </>
+          <div className={styles.multiple__btn__wrapper}>
             <button
-              
+
               onClick={() => {
-                  handleBtnClick();
-                
+                validateAndSubmit();
+
               }}
               className={styles.next__btn}
             >
@@ -178,9 +209,9 @@ const ManualContactPopup=({show,
             </button>
           </div>
         </Modal.Body>
-        </Modal>
-        </>
-    )
+      </Modal>
+    </>
+  )
 }
 
 export default ManualContactPopup

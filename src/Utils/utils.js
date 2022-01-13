@@ -75,3 +75,17 @@ export const mapContact = (inputFields) => {
 }
 
 
+export const isValidName = (text) =>{
+  let regularExp = /^[a-z,.'-]+$/i
+  return regularExp.test(text);
+}
+
+export const isOnlyNumber = (number) =>{
+  let regularExp = /^[0-9+]+$/i
+  return regularExp.test(number);
+}
+
+export const isValidFullName = (text) =>{
+  let regularExp = /^[a-z ,.'-]+$/i
+  return regularExp.test(text);
+}
