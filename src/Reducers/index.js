@@ -15,7 +15,7 @@ import transactionsReducer from "./transactionsReducer";
 import nftReducer from './nftReducer';
 
 // Here all reducers will get combined
-export default combineReducers({
+const appReducer = combineReducers({
   giftNFT__contactData: giftNFT__contactData,
   menu__tooltip: Menu__ToolTip,
   home__allnft: Home__AllNft,
@@ -28,3 +28,12 @@ export default combineReducers({
   transactionsReducer,
   nftReducer
 });
+
+
+export default (state, action) => {
+  if(action.type === 'auth/logout'){
+    return appReducer(undefined, action)
+  }
+  return appReducer(state, action)
+}
+
