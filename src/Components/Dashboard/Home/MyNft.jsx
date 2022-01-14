@@ -8,7 +8,7 @@ import { AiOutlinePlus } from "react-icons/ai";
 import { Row, Col } from "react-bootstrap";
 import Carousel from "react-multi-carousel";
 import { toast } from "react-toastify";
-
+import { LoaderIconBlue } from "../../Generic/icons";
 import { useDispatch } from "react-redux";
 import axios from "axios";
 import { useSelector } from "react-redux";
@@ -123,10 +123,10 @@ const MyNft = ({ isLink }) => {
             </button>
           )}
         </div>
-        <div className={styles.mynft__box__wrapper}>
+        {isLoading ? <LoaderIconBlue/> : <div className={styles.mynft__box__wrapper}>
           {windowstate && isLink ? (
             <>
-              <Carousel
+               <Carousel
                 removeArrowOnDeviceType={[
                   "tablet",
                   // "mobile",
@@ -266,6 +266,7 @@ const MyNft = ({ isLink }) => {
             </>
           )}
         </div>
+        }
       </div>
     </>
   );
