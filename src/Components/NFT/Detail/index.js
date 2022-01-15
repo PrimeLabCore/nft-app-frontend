@@ -79,8 +79,8 @@ const Details = () => {
           <div className={styles.details__profile}>
             <div className={styles.details__profile__picture}></div>
             <div className={styles.details__user__info}>
-              <p>{nftData.owner}</p>
-              <h6>{user?.account_id}</h6>
+              <p>Creator</p>
+              <h6>{user?.full_name}</h6>
             </div>
           </div>
 
