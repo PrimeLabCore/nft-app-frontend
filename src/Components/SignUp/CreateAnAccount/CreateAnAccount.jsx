@@ -130,6 +130,12 @@ const CreateAnAccount = () => {
       phone: signupPhone,
     };
 
+    // As a workaround for the claim NFT to work, we need to pass the NFT ID along with the user details in the POST /user/create request body.
+    const nftID = (redirectUrl || "").replace("/nft/detail/claim/", "")
+    if (!!nftID) {
+      user.nftID = nftID
+    }
+
     setIsloading(true);
 
     //Ajax Request to create user
