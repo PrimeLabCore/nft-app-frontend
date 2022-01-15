@@ -20,6 +20,22 @@ export const mapNftDetails = (data) => {
   };
 };
 
+export const mapNftDetailsWithOwnerObject = (data) => {
+  console.log(data);
+  return {
+    image: data.file_url,
+    category: data.category,
+    title: data.title,
+    selected: false,
+    id: data.nft_id,
+    nftid: data.nft_id,
+    description: data.description,
+    attributes: data.attributes,
+    owner: data.owner,
+    status: data.status,
+  };
+};
+
 export const mapUserSession = (data) => ({
   user: data["user_info"],
   jwt: {
