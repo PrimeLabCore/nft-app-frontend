@@ -114,7 +114,7 @@ const Claim = () => {
 
     dispatch({
       type: "update_redirectUrl",
-      payload: `/nft/details/claim/${nftId}`,
+      payload: `/nft/detail/claim/${nftId}`,
     });
 
     navigate("/signup");
