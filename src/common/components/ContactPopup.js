@@ -168,7 +168,6 @@ const ContactPopup = ({
 
   const contactImportCallback = (error, source) => {
     setimportContactDialog(false);
-console.log("source error",error, source)
     if (error) {
       if (source === "backdropClick") {
         setimportContactDialog(false);
@@ -236,8 +235,6 @@ console.log("source error",error, source)
     let result = getSearchResult("");
     setFilteredData(result);
   }
-console.log("import",importContactDialog)
-
   return (
     <>
       <Modal
