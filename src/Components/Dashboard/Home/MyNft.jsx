@@ -39,7 +39,7 @@ const MyNft = ({ isLink }) => {
   let navigate = useNavigate();
   let dispatch = useDispatch(); //Direct assigning right now
   const [windowstate, setWindow] = useState(window.innerWidth < 767);
-  const nfts = useSelector((state) => state.home__allnft);
+  const nfts = useSelector((state) => state.home__allnft.nfts);
   const { user } = useSelector((state) => state.authReducer);
   const [alldata, setAlldata] = useState([]);
 
@@ -57,6 +57,11 @@ const MyNft = ({ isLink }) => {
       dispatch({ type: "getNft", payload: data });
     }
   };
+
+  // effect for keeping track of nfts change
+  useEffect(() => {
+    setAlldata([...nfts ])
+  }, [nfts])
 
   useEffect(() => {
     window.addEventListener(
