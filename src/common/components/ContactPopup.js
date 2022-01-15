@@ -167,16 +167,20 @@ const ContactPopup = ({
   };
 
   const contactImportCallback = (error, source) => {
+    console.log("hreredfs")
     setimportContactDialog(false);
 
     if (error) {
       if (source === "backdropClick") {
+        setimportContactDialog(false);
         toast.error(`Please select a contact provider to import contacts`);
         return;
       }
+      setimportContactDialog(false);
       toast.error(`Something Went Wrong Fetching Contacts From ${source}`);
       return;
     } else {
+      setimportContactDialog(false);
       toast.success(`Your contacts were successfully imported from ${source}`);
       return;
     }
@@ -229,6 +233,8 @@ const ContactPopup = ({
     let result = getSearchResult("");
     setFilteredData(result);
   }
+
+  console.log("import",importContactDialog)
 
   return (
     <>
@@ -341,11 +347,14 @@ const ContactPopup = ({
       </Modal>
 
       {importContactDialog ? (
+        <>
         <ImportContactsDialog
           onImport={importContact}
           status={importContactDialog}
           callback={contactImportCallback}
+          setStatus={setimportContactDialog}
         />
+        </>
       ) : null}
 
       {manualContactOpen && (

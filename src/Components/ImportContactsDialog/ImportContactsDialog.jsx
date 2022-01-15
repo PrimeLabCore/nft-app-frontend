@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ImportContactsDialog = ({ status, callback, onImport }) => {
+const ImportContactsDialog = ({ status, callback, onImport,setStatus }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [firstImport, setFirstImport] = useState(false);
@@ -99,7 +99,7 @@ const ImportContactsDialog = ({ status, callback, onImport }) => {
                 : source === "icloud"
                   ? "Apple"
                   : "Google";
-
+              setStatus(false)
             var all = document.getElementsByClassName("initial__modal");
             for (var i = 0; i < all.length; i++) {
               all[i].style.display = "block";
@@ -114,6 +114,7 @@ const ImportContactsDialog = ({ status, callback, onImport }) => {
             return false;
           },
           beforeLaunch: function () {
+            setStatus(false)
             var all = document.getElementsByClassName("contactDialogBack");
             for (var i = 0; i < all.length; i++) {
               all[i].style.visibility = "hidden";
@@ -124,6 +125,8 @@ const ImportContactsDialog = ({ status, callback, onImport }) => {
             }
           },
           beforeClosing: function () {
+            setStatus(false)
+
             var all = document.getElementsByClassName("contactDialogBack");
             for (var i = 0; i < all.length; i++) {
               all[i].style.visibility = "inherit";
@@ -134,6 +137,8 @@ const ImportContactsDialog = ({ status, callback, onImport }) => {
             }
           },
           afterImport: function (source, success) {
+            setStatus(false)
+
             let source_title =
               source === "office365"
                 ? "Microsoft 365"
