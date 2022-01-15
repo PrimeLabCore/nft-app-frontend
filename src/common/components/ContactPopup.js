@@ -167,12 +167,15 @@ const ContactPopup = ({
   };
 
   const contactImportCallback = (error, source) => {
-    console.log("hreredfs")
     setimportContactDialog(false);
-
+console.log("source error",error, source)
     if (error) {
       if (source === "backdropClick") {
         setimportContactDialog(false);
+        var all = document.getElementsByClassName("contactDialogBack");
+            for (var i = 0; i < all.length; i++) {
+              all[i].style.visibility = "hidden";
+            }
         toast.error(`Please select a contact provider to import contacts`);
         return;
       }
@@ -233,8 +236,7 @@ const ContactPopup = ({
     let result = getSearchResult("");
     setFilteredData(result);
   }
-
-  console.log("import",importContactDialog)
+console.log("import",importContactDialog)
 
   return (
     <>
