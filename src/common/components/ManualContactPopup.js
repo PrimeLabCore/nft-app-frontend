@@ -80,7 +80,7 @@ const ManualContactPopup = ({ show,
   const storeManualContact = (newContact) => {
     newContact = {
       ...newContact,
-      owner_id: user.user_id,
+      owner_id: user?.user_id,
       app_id: "NFT Maker App",
     }
     setIsloading(true);

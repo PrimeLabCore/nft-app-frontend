@@ -70,7 +70,7 @@
 
       let nftDetail = { ...details };
       nftDetail.attributes = formValues;
-      nftDetail.owner_id = user.user_id;
+      nftDetail.owner_id = user?.user_id;
  setLoading(true);
    let nftData = new FormData();
       nftData.append("file", selectedFile);

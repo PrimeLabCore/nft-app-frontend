@@ -53,7 +53,7 @@ const Claim = () => {
         method: "post",
         url: `/nfts/${nftId}/claim`,
         body: {
-          owner_id: user.user_id,
+          owner_id: user?.user_id,
         },
       });
 

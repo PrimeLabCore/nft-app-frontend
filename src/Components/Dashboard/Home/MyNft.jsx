@@ -47,7 +47,7 @@ const MyNft = ({ isLink }) => {
 
   const getAllImages = async () => {
     const response = await axios.get(
-      `${API_BASE_URL}/nfts?user_id=${user.user_id}`
+      `${API_BASE_URL}/nfts?user_id=${user?.user_id}`
     );
 
     const data = response.data?.data;
@@ -81,7 +81,7 @@ const MyNft = ({ isLink }) => {
 
     //Ajax Request to create user
     axios
-      .get(`${API_BASE_URL}/nfts?user_id=${user.user_id}`)
+      .get(`${API_BASE_URL}/nfts?user_id=${user?.user_id}`)
       .then((response) => {
         //save user details
         let tempNfts = response.data.data;
