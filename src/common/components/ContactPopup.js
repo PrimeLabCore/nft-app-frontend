@@ -301,7 +301,7 @@ const ContactPopup = ({
                   {/* TEXT */}
                   <div className={styles.textContainer}>
                     <h6>{getFulllName(contact)}</h6>
-                    <p>{getPrimaryEmail(contact)}</p>
+                    <p>{!isEmpty(getPrimaryEmail(contact))?getPrimaryEmail(contact):getPrimaryPhone(contact)}</p>
                   </div>
                   {/* ICONS */}
                   <div
