@@ -170,15 +170,21 @@ const ContactPopup = ({
 
   const contactImportCallback = (error, source) => {
     setimportContactDialog(false);
-
     if (error) {
       if (source === "backdropClick") {
+        setimportContactDialog(false);
+        var all = document.getElementsByClassName("contactDialogBack");
+            for (var i = 0; i < all.length; i++) {
+              all[i].style.visibility = "hidden";
+            }
         toast.error(`Please select a contact provider to import contacts`);
         return;
       }
+      setimportContactDialog(false);
       toast.error(`Something Went Wrong Fetching Contacts From ${source}`);
       return;
     } else {
+      setimportContactDialog(false);
       toast.success(`Your contacts were successfully imported from ${source}`);
       return;
     }
@@ -231,7 +237,6 @@ const ContactPopup = ({
     let result = getSearchResult("");
     setFilteredData(result);
   }
-
   return (
     <>
       <Modal
@@ -343,11 +348,14 @@ const ContactPopup = ({
       </Modal>
 
       {importContactDialog ? (
+        <>
         <ImportContactsDialog
           onImport={importContact}
           status={importContactDialog}
           callback={contactImportCallback}
+          setStatus={setimportContactDialog}
         />
+        </>
       ) : null}
 
       {manualContactOpen && (

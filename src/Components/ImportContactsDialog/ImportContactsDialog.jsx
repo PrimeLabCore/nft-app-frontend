@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ImportContactsDialog = ({ status, callback, onImport }) => {
+const ImportContactsDialog = ({ status, callback, onImport,setStatus }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [firstImport, setFirstImport] = useState(false);
@@ -110,6 +110,7 @@ const ImportContactsDialog = ({ status, callback, onImport }) => {
 
             //call callback functions
             onImport();
+            setStatus(false)
 
             return false;
           },
