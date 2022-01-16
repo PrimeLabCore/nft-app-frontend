@@ -99,6 +99,7 @@
 }
 
 .initial__modal .modal-content .modal-header .btn-close {
+  margin-right: 5px;
   background-color: #F0F1F3;
   padding: 7px;
   color: #818C99;

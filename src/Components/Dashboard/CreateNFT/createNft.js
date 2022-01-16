@@ -322,6 +322,7 @@ const CreateNft = (props) => {
           setSelectedFile("");
           setFormValues([{}]);
         }}
+        centered
         backdrop="static"
         keyboard={false}
       >

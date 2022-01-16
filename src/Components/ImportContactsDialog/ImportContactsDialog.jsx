@@ -65,7 +65,7 @@ const ImportContactsDialog = ({ status, callback, onImport }) => {
 
     let newcontacts = contacts.map((c) => ({
       ...c,
-      owner_id: user.user_id,
+      owner_id: user?.user_id,
       app_id: "NFT Maker App",
       source,
     }));

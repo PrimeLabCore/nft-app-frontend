@@ -32,7 +32,7 @@ const TransactionHistory = () => {
   useEffect(() => {
     async function fetchTransactions() {
       let response = await axios.get(
-        `${API_BASE_URL}/transactions/list/${user.user_id}`
+        `${API_BASE_URL}/transactions/list/${user?.user_id}`
       );
 
       const fetchedTransactions = response.data?.data;

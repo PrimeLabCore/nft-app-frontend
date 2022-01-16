@@ -58,10 +58,11 @@ const ContactPopup = ({
   //get contacts
   useEffect(() => {
     if (!show) return;
-    setIsloading(true);
+    if (!contacts?.length)
+      setIsloading(true);
     //Ajax Request to create user
     axios
-      .get(`${API_BASE_URL}/contacts/list/${user.user_id}`)
+      .get(`${API_BASE_URL}/contacts/list/${user?.user_id}`)
       .then((response) => {
         //save user details
         // before saving contacts to the reducer make all the emails unique
@@ -281,9 +282,9 @@ const ContactPopup = ({
                     }} />
               </div>
                 </div>
-               
+
               </div>
-              
+
               <button
                 onClick={() => {
                   setimportContactDialog(true);

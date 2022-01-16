@@ -138,7 +138,7 @@ const SendNft = () => {
       setFilteredData(selectedContacts.map((contact) => contact.contact_id));
 
       let nftDetail = {
-        sender_id: user.user_id,
+        sender_id: user?.user_id,
         recipient_id: selectedContacts.map(
           (contact) => contact.contact_user_id || contact.contact_id
         ),
