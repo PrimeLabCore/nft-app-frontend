@@ -43,4 +43,7 @@ body {
       -ms-flex-align: center;
           align-items: center;
 }
+.requiredIndicator{
+  color: red;
+}
 /*# sourceMappingURL=index.css.map */
