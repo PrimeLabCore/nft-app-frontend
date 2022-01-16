@@ -1,5 +1,6 @@
 import SearchIcon from "@material-ui/icons/Search";
 import axios from "axios";
+import { isEmpty } from "lodash";
 import { nanoid } from "nanoid";
 import React, { useEffect, useState } from "react";
 import { Modal } from "react-bootstrap";
@@ -301,7 +302,7 @@ const ContactPopup = ({
                   {/* TEXT */}
                   <div className={styles.textContainer}>
                     <h6>{getFulllName(contact)}</h6>
-                    <p>{getPrimaryEmail(contact)}</p>
+                    <p>{!isEmpty(getPrimaryEmail(contact))?getPrimaryEmail(contact):getPrimaryPhone(contact)}</p>
                   </div>
                   {/* ICONS */}
                   <div
