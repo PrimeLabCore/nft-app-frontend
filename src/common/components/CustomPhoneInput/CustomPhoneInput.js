@@ -25,8 +25,8 @@ const CustomPhoneInput = ({
 
           signUp && setCountry(country);
 
-          if (country?.name !== countryValue?.name) {
-            setinputFields({ phone: "+" + country?.dialCode });
+          if (countryValue && country?.name !== countryValue?.name) {
+            setinputFields({ phone: "+" + country?.dialCode});
           }
         }}
         value={value}
