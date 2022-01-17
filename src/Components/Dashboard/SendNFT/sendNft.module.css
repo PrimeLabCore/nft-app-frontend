@@ -45,6 +45,19 @@
           align-items: center;
 }
 
+.initial__nft__modal .modal__body__wrapper .search__wrapper .import__button {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.initial__nft__modal .modal__body__wrapper .search__wrapper .import__button .cloud__icon {
+  display: none;
+}
+
 .initial__nft__modal .modal__body__wrapper .search__wrapper .search__inner__wrapper {
   width: 100%;
 }
@@ -500,6 +513,37 @@
 }
 
 @media only screen and (max-width: 767px) {
+  .search__wrapper {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+  }
+  .search__wrapper .import__button {
+    -webkit-box-flex: 0.2;
+        -ms-flex: 0.2;
+            flex: 0.2;
+    margin-top: 12px;
+    background-color: #2f80ed !important;
+    width: 193px;
+    color: #ffffff !important;
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: 500;
+  }
+  .search__wrapper .import__button .cloud__icon {
+    display: block !important;
+  }
+  .search__wrapper .import__button span {
+    padding-right: 8px;
+  }
   .mynft__box__wrapper .selected__mynft__box__description__wrapper .checked {
     width: 20px !important;
     height: 20px !important;
