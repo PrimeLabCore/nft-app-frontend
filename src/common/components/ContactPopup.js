@@ -9,32 +9,36 @@ import { GoPrimitiveDot } from "react-icons/go";
 import { IoIosArrowForward } from "react-icons/io";
 import "react-phone-input-2/lib/style.css";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import styles from "../../Components/Dashboard/SendNFT/sendNft.module.css";
 import { LoaderIconBlue } from "../../Components/Generic/icons";
 import ImportContactsDialog from "../../Components/ImportContactsDialog/ImportContactsDialog";
 import { API_BASE_URL } from "../../Utils/config";
-import { isValidPhoneNumber, isValidateEmail, isValidFullName, isOnlyNumber } from "../../Utils/utils";
+import {
+  isOnlyNumber,
+  isValidateEmail,
+  isValidFullName,
+  isValidPhoneNumber
+} from "../../Utils/utils";
 import ManualContactPopup from "./ManualContactPopup";
 
 const contactFormFields = {
   email: "",
   phone: "",
   first_name: "",
-  last_name: "",
-}
+  last_name: ""
+};
 
-const ContactPopup = ({
+function ContactPopup({
   show,
   onClose,
   onBack,
   title,
   btnText,
   handleBtnClick,
-  displayImportContact,
+  displayImportContact
   // firstImport
-}) => {
+}) {
   const dispatch = useDispatch();
 
   const [selectedContacts, setSelectedContacts] = useState([]);
@@ -44,43 +48,45 @@ const ContactPopup = ({
   const [isLoading, setIsloading] = useState(false);
   const [manualContactOpen, setManualContactOpen] = useState(false);
 
-  const [inputField, setInputField] = useState({...contactFormFields});
+  const [inputField, setInputField] = useState({ ...contactFormFields });
   const [filteredData, setFilteredData] = useState(contacts);
 
   const firstImport = localStorage.getItem("firstImport");
 
   const [searchText, setSearchText] = useState("");
 
+  const checkAllContacts = (data) => {
+    // selecting all the contacts
+    setSelectedContacts(data);
+  };
+
   useEffect(() => {
     setFilteredData(contacts);
     checkAllContacts(contacts);
   }, [contacts, isLoading]);
 
-  //get contacts
+  // get contacts
   useEffect(() => {
     if (!show) return;
-    if (!contacts?.length)
-      setIsloading(true);
-    //Ajax Request to create user
+    if (!contacts?.length) setIsloading(true);
+    // Ajax Request to create user
     axios
       .get(`${API_BASE_URL}/contacts/list/${user?.user_id}`)
       .then((response) => {
-        //save user details
+        // save user details
         // before saving contacts to the reducer make all the emails unique
         const {
-          data: { data: contacts = [] },
+          data: { data: contacts = [] }
         } = response;
         const uniqueEmails = [];
-        console.log(`Got ${contacts.length} contacts from server`);
+        // console.log(`Got ${contacts.length} contacts from server`);
         const uniqueContacts = contacts.filter((contactObj) => {
           if (contactObj.email && contactObj.email.length) {
             let emailExists = false;
             for (let i = 0; i < contactObj.email.length; i++) {
               const emailObj = { ...contactObj.email[i] };
               if (
-                emailObj &&
-                emailObj.address &&
-                uniqueEmails.indexOf(emailObj.address) !== -1
+                emailObj && emailObj.address && uniqueEmails.indexOf(emailObj.address) !== -1
               ) {
                 emailExists = true;
                 break;
@@ -90,12 +96,10 @@ const ContactPopup = ({
             }
             if (emailExists) {
               return false;
-            } else {
-              return true;
             }
-          } else {
             return true;
           }
+          return true;
         });
         setIsloading(true);
         dispatch({ type: "update_contacts", payload: uniqueContacts });
@@ -113,36 +117,23 @@ const ContactPopup = ({
   const getPrimaryEmail = (contact) => {
     if (contact.email.length > 0) {
       return contact.email[0].address;
-    } else {
-      return "";
     }
+    return "";
   };
 
   const getPrimaryPhone = (contact) => {
     if (contact.phone.length > 0) {
       return contact.phone[0].number;
-    } else {
-      return "";
     }
+    return "";
   };
 
-  const getFulllName = (contact) => {
-    return contact.first_name + " " + contact.last_name;
-  };
+  const getFulllName = (contact) => `${contact.first_name} ${contact.last_name}`;
 
-  const findIfChecked = (contact_id) => {
-    return !!selectedContacts.find(
-      (contact) => contact.contact_id === contact_id
-    );
-  };
+  const findIfChecked = (contact_id) =>
+    !!selectedContacts.find((contact) => contact.contact_id === contact_id);
 
-  const checkAllContacts = (data) => {
-    //selecting all the contacts
-    setSelectedContacts(data);
-  };
-
-  const [importContactDialog, setimportContactDialog] =
-    useState(displayImportContact);
+  const [importContactDialog, setimportContactDialog] = useState(displayImportContact);
 
   const handleToggleContactSelection = (targetContact) => {
     const wasSelected = !!selectedContacts.find(
@@ -173,70 +164,71 @@ const ContactPopup = ({
     if (error) {
       if (source === "backdropClick") {
         setimportContactDialog(false);
-        var all = document.getElementsByClassName("contactDialogBack");
-            for (var i = 0; i < all.length; i++) {
-              all[i].style.visibility = "hidden";
-            }
+        const all = document.getElementsByClassName("contactDialogBack");
+        for (let i = 0; i < all.length; i++) {
+          all[i].style.visibility = "hidden";
+        }
         toast.error(`Please select a contact provider to import contacts`);
         return;
       }
       setimportContactDialog(false);
       toast.error(`Something Went Wrong Fetching Contacts From ${source}`);
-      return;
     } else {
       setimportContactDialog(false);
       toast.success(`Your contacts were successfully imported from ${source}`);
-      return;
     }
   };
 
   const getSearchResult = (text) => {
     let result = [];
-    result = contacts.filter((data) => {
-      return (
-        getFulllName(data).toLowerCase().search(text) !== -1 ||
-        getPrimaryEmail(data).toLowerCase().search(text) !== -1 ||
-        getPrimaryPhone(data).toLowerCase().search(text) !== -1
-      );
-    });
+    result = contacts.filter(
+      (data) => getFulllName(data).toLowerCase().search(text) !== -1
+      || getPrimaryEmail(data).toLowerCase().search(text) !== -1
+      || getPrimaryPhone(data).toLowerCase().search(text) !== -1
+    );
     return result;
   };
 
-  const handleSearch = (event, addNew) => {
-    let value = event.target.value.toLowerCase();
+  const handleSearch = (event) => {
+    const value = event.target.value.toLowerCase();
     setSearchText(value);
-    let result = getSearchResult(value);
+    const result = getSearchResult(value);
     setFilteredData(result);
   };
 
   const addManualContact = (event) => {
-    let value = event?.target?.value ? event?.target?.value.toLowerCase():event.toLowerCase();
-    let result = getSearchResult(value);
+    const value = event?.target?.value
+      ? event?.target?.value.toLowerCase()
+      : event.toLowerCase();
+    const result = getSearchResult(value);
     if (result.length === 0) {
       if (isValidateEmail(value)) {
         setInputField({ email: value });
       } else if (isValidPhoneNumber(value)) {
         setInputField({ phone: value });
-      }else if(isValidFullName(value)){
-        setInputField({ first_name: value.split(' ')[0] || "", last_name:value.split(' ')[1] || "" });
-      }else if(isOnlyNumber(value)){
+      } else if (isValidFullName(value)) {
+        setInputField({
+          first_name: value.split(" ")[0] || "",
+          last_name: value.split(" ")[1] || ""
+        });
+      } else if (isOnlyNumber(value)) {
         setInputField({ phone: value });
       }
       setManualContactOpen(true);
     }
   };
 
-  const handlePlusIcon=(event)=>{
-    setManualContactOpen(true)
-  }
+  const handlePlusIcon = () => {
+    setManualContactOpen(true);
+  };
 
-  const handleManualContactClose=()=>{
+  const handleManualContactClose = () => {
     setManualContactOpen(false);
     setSearchText("");
-    setInputField({...contactFormFields});
-    let result = getSearchResult("");
+    setInputField({ ...contactFormFields });
+    const result = getSearchResult("");
     setFilteredData(result);
-  }
+  };
   return (
     <>
       <Modal
@@ -281,16 +273,19 @@ const ContactPopup = ({
                     }}
                     value={searchText}
                   />
-                   <div className={styles.send_nft__plus___icon}>
-                <BsPlusLg  onClick={(event) => {
-                      searchText===""? handlePlusIcon():
-                        addManualContact(searchText);
-                    }} />
-              </div>
+                  <div className={styles.send_nft__plus___icon}>
+                    <BsPlusLg
+                      onClick={() => {
+                        searchText === ""
+                          ? handlePlusIcon()
+                          : addManualContact(searchText);
+                      }}
+                    />
+                  </div>
                 </div>
-
               </div>
-              <button className={styles.import__button}
+              <button
+                className={styles.import__button}
                 onClick={() => {
                   setimportContactDialog(true);
                 }}
@@ -304,12 +299,16 @@ const ContactPopup = ({
             <div className={styles.data__wrapper}>
               <div>{isLoading && <LoaderIconBlue />}</div>
 
-              {filteredData.map((contact, index) => (
+              {filteredData.map((contact) => (
                 <div className={styles.data_row_container} key={nanoid()}>
                   {/* TEXT */}
                   <div className={styles.textContainer}>
                     <h6>{getFulllName(contact)}</h6>
-                    <p>{!isEmpty(getPrimaryEmail(contact))?getPrimaryEmail(contact):getPrimaryPhone(contact)}</p>
+                    <p>
+                      {!isEmpty(getPrimaryEmail(contact))
+                        ? getPrimaryEmail(contact)
+                        : getPrimaryPhone(contact)}
+                    </p>
                   </div>
                   {/* ICONS */}
                   <div
@@ -328,13 +327,7 @@ const ContactPopup = ({
           </div>
           <div className={styles.multiple__btn__wrapper}>
             <button
-              disabled={
-                firstImport
-                  ? false
-                  : selectedContacts.length === 0
-                  ? true
-                  : false
-              }
+              disabled={firstImport ? false : selectedContacts.length === 0}
               onClick={() => {
                 handleBtnClick(selectedContacts);
               }}
@@ -350,20 +343,18 @@ const ContactPopup = ({
       </Modal>
 
       {importContactDialog ? (
-        <>
         <ImportContactsDialog
           onImport={importContact}
           status={importContactDialog}
           callback={contactImportCallback}
           setStatus={setimportContactDialog}
         />
-        </>
       ) : null}
 
       {manualContactOpen && (
         <ManualContactPopup
           show={manualContactOpen}
-          title={"Create New Contact"}
+          title="Create New Contact"
           btnText="Submit"
           inputField={inputField}
           onClose={() => handleManualContactClose}
@@ -376,5 +367,5 @@ const ContactPopup = ({
       )}
     </>
   );
-};
+}
 export default ContactPopup;

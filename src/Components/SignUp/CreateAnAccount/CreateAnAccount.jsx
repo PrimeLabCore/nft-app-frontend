@@ -21,16 +21,16 @@ const CreateAnAccount = () => {
   );
   const [isLoading, setIsloading] = useState(false);
 
-  const loginForm = useSelector((state) => state.LoginFormMethod);
+  // const loginForm = useSelector((state) => state.LoginFormMethod);
 
   const { LoginFormMethod } = useSelector((state) => state);
 
   const { accId } = useParams();
 
-  let navigate = useNavigate();
-  const [details, setDetails] = useState({
-    id: `${accId ? accId : ""}`,
-  });
+  const navigate = useNavigate();
+  // const [details, setDetails] = useState({
+  //   id: `${accId ? accId : ""}`,
+  // });
   const [fullname, setFullname] = useState("");
   const [accountId, setAccountId] = useState("");
   const [windowstate, setWindow] = useState(window.innerWidth < 767);
@@ -49,11 +49,15 @@ const CreateAnAccount = () => {
   // const dispatch = useDispatch()
   const [info, setinfo] = useState("");
 
+  const HandleClick = () => {
+    navigate("/signup");
+  };
+
   useEffect(() => {
-    if (signupEmail == "" && signupPhone == "") {
+    if (signupEmail === "" && signupPhone === "") {
       HandleClick();
     }
-  }, []);
+  }, [info]);
 
   useEffect(() => {
     if (LoginFormMethod === "email") {
@@ -70,13 +74,10 @@ const CreateAnAccount = () => {
   }, [signupEmail, signupPhone]);
 
   // HandleClick for cancel button
-  const HandleClick = () => {
-    navigate("/signup");
-  };
 
   // HandleLogin
   const HandleLogin = () => {
-    //window.open(`${API_BASE_URL}/near_login/login.html`, "_self");
+    // window.open(`${API_BASE_URL}/near_login/login.html`, "_self");
     navigate("/signin");
   };
 
@@ -116,29 +117,30 @@ const CreateAnAccount = () => {
   };
 
   const handleSignup = async () => {
-    //validate account id
+    // validate account id
     if (!doesAccountIdHaveValidLength(accountId)) {
       toast.warn("Please enter an account ID of between 2 and 56 characters.");
       return;
     }
 
-    //signup body
-    let user = {
+    // signup body
+    const user = {
       fullName: fullname.trim(),
-      walletName: accountId.includes(".near") ? accountId : accountId + ".near",
+      walletName: accountId.includes(".near") ? accountId : `${accountId}.near`,
       email: signupEmail,
-      phone: signupPhone,
+      phone: signupPhone
     };
 
-    // As a workaround for the claim NFT to work, we need to pass the NFT ID along with the user details in the POST /user/create request body.
-    const nftID = (redirectUrl || "").replace("/nft/detail/claim/", "")
+    // As a workaround for the claim NFT to work, we need to pass the NFT ID along with
+    // the user details in the POST /user/create request body.
+    const nftID = (redirectUrl || "").replace("/nft/detail/claim/", "");
     if (!!nftID) {
-      user.nftID = nftID
+      user.nftID = nftID;
     }
 
     setIsloading(true);
 
-    //Ajax Request to create user
+    // Ajax Request to create user
     axios
       .post(`${API_BASE_URL}/user/create`, user)
       .then((response) => {
@@ -146,18 +148,17 @@ const CreateAnAccount = () => {
         if (actionPayload) {
           dispatch({
             type: "auth/set_session",
-            payload: actionPayload,
+            payload: actionPayload
           });
         }
 
         // @ToDo
-        //save user details
+        // save user details
         localStorage.setItem("user", JSON.stringify(response.data));
 
-        //cloudsponge import on signup
+        // cloudsponge import on signup
         localStorage.setItem("welcome", true);
         localStorage.setItem("firstImport", true);
-
 
         navigate(redirectUrl ? redirectUrl : "/");
       })
@@ -172,23 +173,23 @@ const CreateAnAccount = () => {
   };
 
   const isFullNameValid = (fullname) => {
-    var format = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+    const format = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
     return format.test(fullname);
-  }
+  };
 
   const isFormValid = () => {
     let returnVal = true;
-    if (fullname == "") {
+    if (fullname === "") {
       returnVal = false;
     } else if (isFullNameValid(fullname)) {
       returnVal = false;
     } else if (
-      accountId == "" ||
-      !doesAccountStringHaveValidCharacters(accountId)
+      accountId === ""
+      || !doesAccountStringHaveValidCharacters(accountId)
     ) {
       returnVal = false;
     }
-    //console.log("isFormValid=>", returnVal);
+    // console.log("isFormValid=>", returnVal);
     return returnVal;
   };
 
@@ -213,9 +214,12 @@ const CreateAnAccount = () => {
 
       <div className={styles.childContainer}>
         <p className={styles.left}>
-          Enter an Account ID to use with your NEAR <br />
-          account. Your Account ID will be used for all NEAR <br />
-          operations, including sending and receiving <br />
+          Enter an Account ID to use with your NEAR&nbsp;
+          <br />
+          account. Your Account ID will be used for all NEAR&nbsp;
+          <br />
+          operations, including sending and receiving&nbsp;
+          <br />
           assets.
         </p>
 
@@ -257,26 +261,25 @@ const CreateAnAccount = () => {
                 >
                   <span>.near</span>
                 </InputAdornment>
-              ),
+              )
             }}
             HandleFocus={() => HandleFocus("id")}
-          // disabled
+            // disabled
           />
         </div>
 
         {/* create account button */}
         <button
           onClick={handleSignup} // createAccount
-          className={`${styles.secondary_button} ${isFormValid() ? styles.active_button : ""
-            }`}
+          className={`${styles.secondary_button} ${
+            isFormValid() ? styles.active_button : ""
+          }`}
           disabled={!isFormValid()}
         >
           Create an account
-          {
-            <span>
-              <IoIosArrowForward />
-            </span>
-          }
+          <span>
+            <IoIosArrowForward />
+          </span>
         </button>
         {/* <button onClick={createAccount} className={styles.createAccountButton}>
           <a
@@ -293,16 +296,25 @@ const CreateAnAccount = () => {
         </button> */}
 
         <p>
-          By creating a NEAR account, you agree to the <br />
-          NEAR Wallet{" "}
+          By creating a NEAR account, you agree to the&nbsp;
+          <br />
+          NEAR Wallet&nbsp;
           <span>
-            <a href="https://terms.nftmakerapp.io/" target={"_blank"}>
+            <a
+              href="https://terms.nftmakerapp.io/"
+              rel="noreferrer"
+              target={"_blank"}
+            >
               Terms of Service
             </a>
-          </span>{" "}
-          and{" "}
+          </span>
+          &nbsp; and&nbsp;
           <span>
-            <a href="https://privacy.nftmakerapp.io/" target={"_blank"}>
+            <a
+              href="https://privacy.nftmakerapp.io/"
+              rel="noreferrer"
+              target={"_blank"}
+            >
               Privacy Policy
             </a>
           </span>

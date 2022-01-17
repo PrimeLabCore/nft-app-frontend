@@ -1,0 +1,60 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "extends": ["plugin:react/recommended", "airbnb"],
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": 12,
+    "sourceType": "module"
+  },
+  "parser": "babel-eslint",
+  "plugins": ["react"],
+  "rules": {
+    "semi": 0,
+    "comma-dangle": 0,
+    "quotes": 0,
+    "linebreak-style": 0,
+    "prefer-destructuring": 0,
+    "eol-last": 0,
+    "camelcase": 0,
+    "arrow-parens": 0,
+    "react/prop-types": 0,
+    "jsx-a11y/media-has-caption": 0,
+    "no-nested-ternary": 0,
+    "no-param-reassign": 0,
+    "no-unused-expressions": 0,
+    "no-shadow": 0,
+    "no-plusplus": 0,
+    "no-useless-escape": 0,
+    "implicit-arrow-linebreak": 0,
+    "react/button-has-type": 0,
+    "no-extra-boolean-cast": 0,
+    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+    "react/jsx-curly-brace-presence": 0,
+    "no-unneeded-ternary": 0,
+    "no-confusing-arrow": 0,
+    "no-return-assign": 0,
+    "no-restricted-syntax": 0,
+    "jsx-a11y/click-events-have-key-events": 0,
+    "jsx-a11y/no-static-element-interactions": 0,
+    "default-param-last": 0,
+    "jsx-a11y/label-has-associated-control": 0,
+    "react/jsx-props-no-spreading": 0,
+    "jsx-a11y/control-has-associated-label": 0,
+    "import/no-extraneous-dependencies": 0,
+    "react/function-component-definition": [
+      1,
+      {
+        "namedComponents": [
+          "function-declaration",
+          "function-expression",
+          "arrow-function"
+        ]
+      }
+    ]
+  }
+}
