@@ -65,6 +65,15 @@ const TransactionHistory = () => {
     dispatch({ type: "nft__detail", payload: data });
     navigate("/nft/detail/claim");
   };
+
+  const displayTransaction=transactions
+      .filter((data) =>
+          tabs === "sent"
+              ? !!data.sender
+              : tabs === "received"
+              ? !data.sender
+              : data
+      );
   return (
     <>
       <div className={styles.transaction__wrapper}>
@@ -104,7 +113,7 @@ const TransactionHistory = () => {
                 Send NFT
               </button>
             ) : (
-              <span> </span>
+              <div style={{ width: '128px' }}> </div>
             )}
           </div>
         </div>
@@ -135,17 +144,9 @@ const TransactionHistory = () => {
             </div>
           </div>
         )}
-        {transactions?.length && (
+        {!!displayTransaction?.length ? (
           <div className={styles.transaction__list__wrapper}>
-            {transactions
-              .filter((data) =>
-                tabs === "sent"
-                  ? !!data.sender
-                  : tabs === "received"
-                  ? !data.sender
-                  : data
-              )
-              .map((data) => {
+            {displayTransaction.map((data) => {
                 return (
                   <Fragment key={nanoid()}>
                     <div
@@ -199,7 +200,8 @@ const TransactionHistory = () => {
                 );
               })}
           </div>
-        )}
+        ):
+            <div align="center">Transactions not available</div>}
       </div>
     </>
   );
