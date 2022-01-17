@@ -126,7 +126,8 @@
   outline: none;
 }
 
-.initial__nft__modal .modal__body__wrapper .search__wrapper button {
+.initial__nft__modal .modal__body__wrapper .search__wrapper span {
+  cursor: pointer;
   color: #2f80ed;
   font-size: 20.4px;
   font-weight: normal;
@@ -136,7 +137,7 @@
   letter-spacing: -0.4896px;
 }
 
-.initial__nft__modal .modal__body__wrapper .search__wrapper button:focus {
+.initial__nft__modal .modal__body__wrapper .search__wrapper span:focus {
   outline: none;
 }
 
@@ -500,6 +501,38 @@
 }
 
 @media only screen and (max-width: 767px) {
+  .search__wrapper {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+  }
+  .search__wrapper .import__button {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    margin-top: 12px;
+    background-color: #0072ce;
+    width: 200px;
+    cursor: pointer;
+  }
+  .search__wrapper .import__button span {
+    text-align: center;
+    padding: 8px;
+    color: #fff;
+  }
   .mynft__box__wrapper .selected__mynft__box__description__wrapper .checked {
     width: 20px !important;
     height: 20px !important;

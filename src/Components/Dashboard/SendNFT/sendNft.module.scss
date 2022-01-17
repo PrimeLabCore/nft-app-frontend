@@ -38,6 +38,11 @@
       display: flex;
       // justify-content:space-between;
       align-items: center;
+      // .import__button {
+      //   margin-top: 12px;
+      //   color: #ffffff;
+      //   width: 100px;
+      // }
 
       .search__inner__wrapper {
         width: 100%;
@@ -97,7 +102,8 @@
         }
       }
 
-      button {
+      span {
+        cursor: pointer;
         color: #2f80ed;
         font-size: 20.4px;
         font-weight: normal;
@@ -309,6 +315,27 @@
 }
 
 @media only screen and (max-width: "767px") {
+  .search__wrapper {
+    display: flex;
+    flex-direction: column;
+    // justify-content:space-between;
+
+    align-items: center;
+    .import__button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 12px;
+      background-color: #0072ce;
+      width: 200px;
+      cursor: pointer;
+      span {
+        text-align: center;
+        padding: 8px;
+        color: #fff;
+      }
+    }
+  }
   .mynft__box__wrapper {
     .selected__mynft__box__description__wrapper {
       .checked {

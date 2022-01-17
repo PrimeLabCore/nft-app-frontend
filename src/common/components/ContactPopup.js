@@ -290,14 +290,15 @@ const ContactPopup = ({
                 </div>
 
               </div>
-
-              <button
+<div className={styles.import__button}>
+              <span
+              
                 onClick={() => {
                   setimportContactDialog(true);
                 }}
               >
                 Import
-              </button>
+              </span></div>
             </div>
             <div className={styles.data__wrapper}>
               <div>{isLoading && <LoaderIconBlue />}</div>
