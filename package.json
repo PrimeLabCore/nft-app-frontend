@@ -53,11 +53,6 @@
     "lint": "eslint .",
     "fix-lint": "eslint . --fix"
   },
-  "husky":{
-    "hooks": {
-      "pre-commit": "npm run lint"
-    }
-  },
   "eslintConfig": {
     "extends": [
       "react-app",
@@ -83,6 +78,6 @@
     "eslint-plugin-jsx-a11y": "^6.5.1",
     "eslint-plugin-react": "^7.28.0",
     "eslint-plugin-react-hooks": "^4.3.0",
-    "husky": "^7.0.4"
+    "husky": "^7.0.0"
   }
 }
