@@ -53,7 +53,7 @@ const Claim = () => {
         method: "post",
         url: `/nfts/${nftId}/claim`,
         body: {
-          owner_id: user?.user_id,
+          owner_id: user.user_id,
         },
       });
 
@@ -64,7 +64,7 @@ const Claim = () => {
       navigate("/");
     } catch (error) {
       toast.error(
-        "There was an error while claim the NFT. Please try again later"
+        error?.response?.data?.message
       );
       console.error(error);
     }
@@ -114,7 +114,7 @@ const Claim = () => {
 
     dispatch({
       type: "update_redirectUrl",
-      payload: `/nft/detail/claim/${nftId}`,
+      payload: `/nft/details/claim/${nftId}`,
     });
 
     navigate("/signup");

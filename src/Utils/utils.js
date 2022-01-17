@@ -5,7 +5,7 @@ export const isEmpty = (str) => {
 
 // function maps the response from nft details api to nft__details store
 export const mapNftDetails = (data) => {
-  console.log(data);
+  console.log("sdsfsd",data);
   return {
     image: data.file_url,
     category: data.category,
@@ -21,7 +21,7 @@ export const mapNftDetails = (data) => {
 };
 
 export const mapNftDetailsWithOwnerObject = (data) => {
-  console.log(data);
+  console.log("dsfsf",data);
   return {
     image: data.file_url,
     category: data.category,
