@@ -64,9 +64,8 @@ const Claim = () => {
       navigate("/");
     } catch (error) {
       toast.error(
-        error?.response?.data?.message
+        error?.response?.data?.message ? error?.response?.data?.message : "There was an error while claim the NFT. Please try again later"
       );
-      console.error(error);
     }
   };
 
@@ -97,7 +96,6 @@ const Claim = () => {
       type: "update_redirectUrl",
       payload: `/nft/detail/claim/${nftId}`,
     });
-
     navigate("/signin");
   }
 
@@ -114,9 +112,8 @@ const Claim = () => {
 
     dispatch({
       type: "update_redirectUrl",
-      payload: `/nft/details/claim/${nftId}`,
+      payload: `/nft/detail/claim/${nftId}`,
     });
-
     navigate("/signup");
   }
 
