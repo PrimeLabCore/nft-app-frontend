@@ -45,6 +45,19 @@
           align-items: center;
 }
 
+.initial__nft__modal .modal__body__wrapper .search__wrapper .import__button {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.initial__nft__modal .modal__body__wrapper .search__wrapper .import__button .cloud__icon {
+  display: none;
+}
+
 .initial__nft__modal .modal__body__wrapper .search__wrapper .search__inner__wrapper {
   width: 100%;
 }
@@ -126,8 +139,7 @@
   outline: none;
 }
 
-.initial__nft__modal .modal__body__wrapper .search__wrapper span {
-  cursor: pointer;
+.initial__nft__modal .modal__body__wrapper .search__wrapper button {
   color: #2f80ed;
   font-size: 20.4px;
   font-weight: normal;
@@ -137,7 +149,7 @@
   letter-spacing: -0.4896px;
 }
 
-.initial__nft__modal .modal__body__wrapper .search__wrapper span:focus {
+.initial__nft__modal .modal__body__wrapper .search__wrapper button:focus {
   outline: none;
 }
 
@@ -514,24 +526,23 @@
             align-items: center;
   }
   .search__wrapper .import__button {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-align: center;
-        -ms-flex-align: center;
-            align-items: center;
-    -webkit-box-pack: center;
-        -ms-flex-pack: center;
-            justify-content: center;
+    -webkit-box-flex: 0.2;
+        -ms-flex: 0.2;
+            flex: 0.2;
     margin-top: 12px;
-    background-color: #0072ce;
-    width: 200px;
-    cursor: pointer;
+    background-color: #2f80ed !important;
+    width: 193px;
+    color: #ffffff !important;
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: 500;
+  }
+  .search__wrapper .import__button .cloud__icon {
+    display: block !important;
   }
   .search__wrapper .import__button span {
-    text-align: center;
-    padding: 8px;
-    color: #fff;
+    padding-right: 8px;
   }
   .mynft__box__wrapper .selected__mynft__box__description__wrapper .checked {
     width: 20px !important;

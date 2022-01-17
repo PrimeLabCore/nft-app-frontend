@@ -4,7 +4,7 @@ import { isEmpty } from "lodash";
 import { nanoid } from "nanoid";
 import React, { useEffect, useState } from "react";
 import { Modal } from "react-bootstrap";
-import { BsCheckCircleFill, BsPlusLg } from "react-icons/bs";
+import { BsCheckCircleFill, BsCloudUpload, BsPlusLg } from "react-icons/bs";
 import { GoPrimitiveDot } from "react-icons/go";
 import { IoIosArrowForward } from "react-icons/io";
 import "react-phone-input-2/lib/style.css";
@@ -290,15 +290,16 @@ const ContactPopup = ({
                 </div>
 
               </div>
-<div className={styles.import__button}>
-              <span
-              
+              <button className={styles.import__button}
                 onClick={() => {
                   setimportContactDialog(true);
                 }}
               >
+                <span className={styles.cloud__icon}>
+                  <BsCloudUpload />
+                </span>
                 Import
-              </span></div>
+              </button>
             </div>
             <div className={styles.data__wrapper}>
               <div>{isLoading && <LoaderIconBlue />}</div>
