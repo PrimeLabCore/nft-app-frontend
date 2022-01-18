@@ -26,6 +26,7 @@ const Home = () => {
 
   useEffect(() => {
     if (localStorage.getItem("welcome") === "true") {
+      console.log("entered here")
       HandleDialogOpen();
     }
   }, []);
@@ -56,6 +57,7 @@ const Home = () => {
 
     // Handling clicks outside the import dialog box
     if (source == "backdropClick") {
+      localStorage.removeItem("welcome")
       dispatch({ type: "createnft__open" });
       return;
     }
@@ -77,6 +79,7 @@ const Home = () => {
 
   const openCreateNFTPopup = () => {
     setShowContactListPopup(false);
+    localStorage.removeItem("welcome")
     dispatch({ type: "createnft__open" });
   };
 

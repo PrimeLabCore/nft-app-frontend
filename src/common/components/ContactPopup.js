@@ -72,6 +72,7 @@ const ContactPopup = ({
         } = response;
         const uniqueEmails = [];
         console.log(`Got ${contacts.length} contacts from server`);
+        contacts?.length===0 && setimportContactDialog(true)
         const uniqueContacts = contacts.filter((contactObj) => {
           if (contactObj.email && contactObj.email.length) {
             let emailExists = false;
