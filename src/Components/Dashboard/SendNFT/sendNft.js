@@ -61,6 +61,7 @@ const SendNft = () => {
 
   const [sendGiftEmail, setSendGiftEmail] = useState("");
   const [isLoading, setIsloading] = useState(false);
+  const [sendingGift, setSendingGift] = useState(false);
 
   const sendnft__popup = useSelector((state) => state.sendnft__popup);
   const { nfts } = useSelector((state) => state.home__allnft);
@@ -146,6 +147,8 @@ const SendNft = () => {
         transaction_value: "NA",
         type: "gift",
       };
+
+      setSendingGift(true);
 
       axios
         .post(`${API_BASE_URL}/transactions`, nftDetail)
@@ -412,6 +415,7 @@ if(localStorage.getItem("sendNftId")){
             ? (dispatch({ type: "createnft__open" }), setOpenGift(false))
             : handleNftPreview(selectedContacts)
         }
+        sendingGift={sendingGift}
       />
 
       {/* NFT Preview Modal */}

@@ -33,6 +33,7 @@ const ContactPopup = ({
   btnText,
   handleBtnClick,
   displayImportContact,
+  sendingGift,
   // firstImport
 }) => {
   const dispatch = useDispatch();
@@ -327,24 +328,31 @@ const ContactPopup = ({
             </div>
           </div>
           <div className={styles.multiple__btn__wrapper}>
-            <button
-              disabled={
-                firstImport
-                  ? false
-                  : selectedContacts.length === 0
-                  ? true
-                  : false
-              }
-              onClick={() => {
-                handleBtnClick(selectedContacts);
-              }}
-              className={styles.next__btn}
-            >
-              {btnText}
-              <span>
-                <IoIosArrowForward />
-              </span>
-            </button>
+            {/* Show an indicator when gift is being sent */}
+            {sendingGift === false && (
+              <button
+                disabled={
+                  firstImport
+                    ? false
+                    : selectedContacts.length === 0
+                    ? true
+                    : false
+                }
+                onClick={() => {
+                  handleBtnClick(selectedContacts);
+                }}
+                className={styles.next__btn}
+              >
+                {btnText}
+
+                <span>
+                  <IoIosArrowForward />
+                </span>
+              </button>
+            )}
+            {sendingGift === true && (
+              <div><LoaderIconBlue /></div>
+            )}
           </div>
         </Modal.Body>
       </Modal>
