@@ -51,7 +51,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint .",
-    "fix-lint": "eslint . --fix"
+    "fix-lint": "eslint . --fix",
+    "prepare": "husky install"
   },
   "eslintConfig": {
     "extends": [
