@@ -68,11 +68,13 @@ const CreateNft = (props) => {
   };
 
   let handleChange = (index, clikedInput) => (e) => {
-    formValues[index] = {
-      ...formValues[index],
-      [`${clikedInput}`]: e.target.value,
-    };
-    setFormValues([...formValues]);
+    if(e.target.value.length <30){
+      formValues[index] = {
+        ...formValues[index],
+        [`${clikedInput}`]: e.target.value,
+      };
+      setFormValues([...formValues]);
+    }
   };
 
   let addFormFields = () => {
@@ -486,6 +488,7 @@ const CreateNft = (props) => {
                       type="text"
                       value={val[`attr_name`]}
                       placeholder="Tag"
+                      maxLength={30}
                       onChange={handleChange(index, "attr_name")}
                     />
 
@@ -493,6 +496,7 @@ const CreateNft = (props) => {
                       type="text"
                       value={val[`attr_value`]}
                       placeholder="Value"
+                      maxLength={30}
                       onChange={handleChange(index, "attr_value")}
                     />
 
