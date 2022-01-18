@@ -110,7 +110,7 @@ const ImportContactsDialog = ({ status, callback, onImport,setStatus }) => {
             PostContactToBackend(contacts, source_title);
 
             //call callback functions
-            onImport();
+            onImport(contacts);
             setStatus(false)
 
             return false;
