@@ -448,6 +448,7 @@
   font-size: 19.2px;
   margin-bottom: 0px;
   padding-bottom: 10px;
+  word-break: break-word;
 }
 
 .mynft__box__wrapper .mynft__box .mynft__box__description__wrapper p {
@@ -477,13 +478,14 @@
   font-size: 19.2px;
   margin-bottom: 0px;
   padding-bottom: 10px;
+  word-break: break-word;
 }
 
 .mynft__box__wrapper .mynft__box .selected__mynft__box__description__wrapper .mynft__box__description span {
   font-size: 16.8px;
   color: #808080;
   margin-bottom: 0px;
-  word-wrap: break-word;
+  word-break: break-word;
 }
 
 .mynft__box__wrapper .mynft__box .selected__mynft__box__description__wrapper .checked {
