@@ -17,7 +17,6 @@ import { API_BASE_URL } from "../../../Utils/config";
 import AppLoader from "../../Generic/AppLoader";
 import { isValidFullName } from "../../../Utils/utils";
 
-
 const labels = {
   email: "Email Address",
   phone: "Phone Number",
@@ -94,16 +93,16 @@ function Settings() {
   };
 
   const validatePersonalInfo = () => {
-    let isValidForm =  true;
+    let isValidForm = true;
     switch (details) {
       case "full_name":
         if (!inputFields.full_name) {
           toast.error("Name can't be empty");
           isValidForm = false;
-        }else if (inputFields.full_name && !isValidFullName(inputFields.full_name)) {
+        } else if (inputFields.full_name && !isValidFullName(inputFields.full_name)) {
           toast.error("Invalid Name");
           isValidForm = false;
-        }else if (inputFields.full_name && inputFields.full_name.length > 70) {
+        } else if (inputFields.full_name && inputFields.full_name.length > 70) {
           toast.error("Name must less than 70 characters");
           isValidForm = false;
         }
@@ -112,7 +111,8 @@ function Settings() {
         if (!validateEmail(inputFields.email)) {
           toast.error("Email is not valid");
           isValidForm = false;
-        }else if (inputFields.email && inputFields.email.length > 64) {
+        }
+        if (inputFields.email && inputFields.email.length > 64) {
           toast.error("Name must less than 64 characters");
           isValidForm = false;
         }
@@ -131,15 +131,15 @@ function Settings() {
     return isValidForm;
   };
 
-  const savePersonalInfo = () =>{
-    if(!validatePersonalInfo()){
+  const savePersonalInfo = () => {
+    if (!validatePersonalInfo()) {
       return;
     }
     setChangeInfo(false);
     setIsloading(true);
     const payload = {};
     payload[`${details}`] = inputFields[`${details}`];
-    //Ajax Request to update user
+    // Ajax Request to update user
 
     axios
       .put(`${API_BASE_URL}/users/${user?.user_id}`, payload)
@@ -188,16 +188,18 @@ function Settings() {
     navigate("/");
   };
 
-  const HandleInputChange = (field) => (e) => {
-    if(details === "email" && e.target.value.length > 64){
+  const HandleInputChange = (field) => e => {
+    if (details === "email" && e.target.value.length > 64) {
       return false;
-    }else if(details === "full_name" && e.target.value.length > 70){
-      return false;
-    }else if(details === "phone" && e.target.value.length > 20){
-      return false;
-    }else{
-      setinputFields({ ...inputFields, [field]: e.target.value });
     }
+    if (details === "full_name" && e.target.value.length > 70) {
+      return false;
+    }
+    if (details === "phone" && e.target.value.length > 20) {
+      return false;
+    }
+    setinputFields({ ...inputFields, [field]: e.target.value });
+    return 0;
   };
 
   // HandleFocus for input
@@ -374,7 +376,7 @@ function Settings() {
                 <TextFieldComponent
                   variant="outlined"
                   placeholder={labels[details]}
-                  type={details === "email" ?"email":"text"}
+                  type={details === "email" ? "email" : "text"}
                   InputValue={inputFields[`${details}`]}
                   HandleInputChange={HandleInputChange(details)}
                   onFocus={() => HandleFocus("name")}
