@@ -26,7 +26,6 @@ const Home = () => {
 
   useEffect(() => {
     if (localStorage.getItem("welcome") === "true") {
-      console.log("entered here")
       HandleDialogOpen();
     }
   }, []);
@@ -44,7 +43,6 @@ const Home = () => {
   const importContact = (data) => {
     if (data) {
       setAllContacts(data);
-      console.log("data", data);
       dispatch({
         type: "getGoogleContactData",
         payload: data,
@@ -58,6 +56,7 @@ const Home = () => {
     // Handling clicks outside the import dialog box
     if (source == "backdropClick") {
       localStorage.removeItem("welcome")
+      localStorage.setItem("contactImport",true)
       dispatch({ type: "createnft__open" });
       return;
     }
@@ -82,7 +81,6 @@ const Home = () => {
     localStorage.removeItem("welcome")
     dispatch({ type: "createnft__open" });
   };
-
 
   return (
     <>
@@ -113,6 +111,7 @@ const Home = () => {
               openCreateNFTPopup();
             }}
             firstImport={firstImport}
+            setShowContactListPopup={setShowContactListPopup}
           />
 
           {/* Home Create NFT Container */}

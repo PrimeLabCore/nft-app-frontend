@@ -135,6 +135,7 @@ const ImportContactsDialog = ({ status, callback, onImport,setStatus }) => {
             }
           },
           afterImport: function (source, success) {
+            localStorage.removeItem("contactImport")
             let source_title =
               source === "office365"
                 ? "Microsoft 365"

@@ -130,7 +130,11 @@ const SendNft = () => {
     dispatch({ type: "sendnft__close" });
 
     setOpenPreview(false);
-    setOpenGift(true);
+    if(localStorage.getItem("contactImport")==="true"){ 
+      setimportContactDialog(true);
+    }else{
+      setOpenGift(true);
+    }
   };
 
   const handleNftPreview = async (selectedContacts) => {

@@ -72,8 +72,7 @@ const ContactPopup = ({
         } = response;
         const uniqueEmails = [];
         console.log(`Got ${contacts.length} contacts from server`);
-        contacts?.length===0 && setimportContactDialog(true)
-        const uniqueContacts = contacts.filter((contactObj) => {
+       const uniqueContacts = contacts.filter((contactObj) => {
           if (contactObj.email && contactObj.email.length) {
             let emailExists = false;
             for (let i = 0; i < contactObj.email.length; i++) {
@@ -173,6 +172,7 @@ const ContactPopup = ({
     setimportContactDialog(false);
     if (error) {
       if (source === "backdropClick") {
+        localStorage.setItem("contactImport",true)
         setimportContactDialog(false);
         var all = document.getElementsByClassName("contactDialogBack");
             for (var i = 0; i < all.length; i++) {
