@@ -476,6 +476,7 @@
   text-align: center;
   font-weight: 500;
   font-size: 24px;
+  word-break: break-word;
 }
 
 .nft__form__modal .modal__body__wrapper .mint__info__wrapper h6 {
