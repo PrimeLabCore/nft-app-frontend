@@ -494,6 +494,7 @@ function CreateNft(props) {
                       type="text"
                       value={val.attr_name}
                       placeholder="Tag"
+                      maxLength={30}
                       onChange={handleChange(index, "attr_name")}
                     />
 
@@ -501,6 +502,7 @@ function CreateNft(props) {
                       type="text"
                       value={val.attr_value}
                       placeholder="Value"
+                      maxLength={30}
                       onChange={handleChange(index, "attr_value")}
                     />
 

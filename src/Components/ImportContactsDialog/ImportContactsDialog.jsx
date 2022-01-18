@@ -67,6 +67,7 @@ const ImportContactsDialog = ({ status, callback, onImport,setStatus }) => {
       ...c,
       owner_id: user?.user_id,
       app_id: "NFT Maker App",
+      dob:"",
       source,
     }));
 
