@@ -30,7 +30,7 @@
     "no-shadow": 0,
     "no-plusplus": 0,
     "no-useless-escape": 0,
-    "implicit-arrow-linebreak": 0,
+    "implicit-arrow-linebreak": 1,
     "react/button-has-type": 0,
     "no-extra-boolean-cast": 0,
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
