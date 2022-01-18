@@ -15,6 +15,8 @@ import TextFieldComponent from "../../../Assets/FrequentlUsedComponents/TextFiel
 import CustomPhoneInput from "../../../common/components/CustomPhoneInput/CustomPhoneInput";
 import { API_BASE_URL } from "../../../Utils/config";
 import AppLoader from "../../Generic/AppLoader";
+import { isValidFullName } from "../../../Utils/utils";
+
 
 const labels = {
   email: "Email Address",
@@ -91,42 +93,54 @@ function Settings() {
       });
   };
 
-  const savePersonalInfo = () => {
-    setChangeInfo(false);
-
+  const validatePersonalInfo = () => {
+    let isValidForm =  true;
     switch (details) {
       case "full_name":
         if (!inputFields.full_name) {
           toast.error("Name can't be empty");
-          return;
+          isValidForm = false;
+        }else if (inputFields.full_name && !isValidFullName(inputFields.full_name)) {
+          toast.error("Invalid Name");
+          isValidForm = false;
+        }else if (inputFields.full_name && inputFields.full_name.length > 70) {
+          toast.error("Name must less than 70 characters");
+          isValidForm = false;
         }
         break;
-
       case "email":
         if (!validateEmail(inputFields.email)) {
           toast.error("Email is not valid");
-          return;
+          isValidForm = false;
+        }else if (inputFields.email && inputFields.email.length > 64) {
+          toast.error("Name must less than 64 characters");
+          isValidForm = false;
         }
         break;
 
       case "phone":
         if (!validatePhone(inputFields.phone)) {
           toast.error("Phone number is not valid");
-          return;
+          isValidForm = false;
         }
         break;
 
       default:
         break;
     }
+    return isValidForm;
+  };
 
+  const savePersonalInfo = () =>{
+    if(!validatePersonalInfo()){
+      return;
+    }
+    setChangeInfo(false);
     setIsloading(true);
-
     const payload = {};
-
     payload[`${details}`] = inputFields[`${details}`];
+    //Ajax Request to update user
 
-    // Ajax Request to update user
     axios
       .put(`${API_BASE_URL}/users/${user?.user_id}`, payload)
       .then((response) => {
@@ -135,7 +149,6 @@ function Settings() {
         // update user details in localstorage and redux state
         const temp = JSON.parse(localStorage.getItem("user"));
         temp.user_info = response.data;
-
         // localStorage.getItem("user");
         // localStorage.setItem("user", JSON.stringify(temp));
         // dispatch({ type: "login_Successfully", payload: response.data });
@@ -148,7 +161,7 @@ function Settings() {
       .finally(() => {
         setIsloading(false);
       });
-  };
+  }
 
   const closeConnectedModal = () => {
     setConnectedModal(false);
@@ -176,7 +189,15 @@ function Settings() {
   };
 
   const HandleInputChange = (field) => (e) => {
-    setinputFields({ ...inputFields, [field]: e.target.value });
+    if(details === "email" && e.target.value.length > 64){
+      return false;
+    }else if(details === "full_name" && e.target.value.length > 70){
+      return false;
+    }else if(details === "phone" && e.target.value.length > 20){
+      return false;
+    }else{
+      setinputFields({ ...inputFields, [field]: e.target.value });
+    }
   };
 
   // HandleFocus for input
@@ -224,7 +245,7 @@ function Settings() {
                         <div className={styles.personal__settings}>
                           <p>Name</p>
                           {/* <h6>{user.email.split("@")[0]}</h6> */}
-                          <h6>{user?.full_name}</h6>
+                          <h6 title={user?.full_name}>{user?.full_name}</h6>
                         </div>
                         <button>
                           <IoIosArrowForward />
@@ -236,7 +257,7 @@ function Settings() {
                       >
                         <div className={styles.personal__settings}>
                           <p>Email Address</p>
-                          <h6>{user?.email}</h6>
+                          <h6 title={user?.email}>{user?.email}</h6>
                         </div>
                         <button>
                           <IoIosArrowForward />
@@ -249,7 +270,7 @@ function Settings() {
                       >
                         <div className={styles.personal__settings}>
                           <p>Phone number</p>
-                          <h6>{user?.phone}</h6>
+                          <h6 title={user?.phone}>{user?.phone}</h6>
                         </div>
                         <button>
                           <IoIosArrowForward />
@@ -353,7 +374,7 @@ function Settings() {
                 <TextFieldComponent
                   variant="outlined"
                   placeholder={labels[details]}
-                  type="email"
+                  type={details === "email" ?"email":"text"}
                   InputValue={inputFields[`${details}`]}
                   HandleInputChange={HandleInputChange(details)}
                   onFocus={() => HandleFocus("name")}

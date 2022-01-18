@@ -247,6 +247,7 @@
 
 .details__wrapper .details__accords .accord__body .nft__info p {
   margin-bottom: 0px;
+  flex:0.4;
 }
 
 .details__wrapper .details__accords .accord__body .nft__info a {
@@ -255,6 +256,7 @@
   font-size: 16.8px;
   color: #0072CE;
   text-decoration: none;
+  flex:0.4;
 }
 
 .details__wrapper .details__accords .accord__body .nft__info:nth-last-child(1) {
