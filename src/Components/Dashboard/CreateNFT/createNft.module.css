@@ -70,12 +70,6 @@
   margin: 15px 0px;
 }
 
-button[disabled] {
-  cursor: pointer !important;
-  background-color: rgb(201 201 201) !important;
-  border: 1px solid lightgray !important;
-}
-
 .initial__nft__modal .next__btn__wrapper .next__btn {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -355,6 +349,12 @@ button[disabled] {
   padding-right: 10px;
 }
 
+.nft__form__modal .modal__body__wrapper form .form__group .descriptionCounter {
+  text-align: right;
+  font-size: 12px;
+  color: #808080;
+}
+
 .nft__form__modal .modal__body__wrapper .mynft__box {
   -webkit-box-shadow: 0px 4.8px 4.8px rgba(0, 0, 0, 0.1);
           box-shadow: 0px 4.8px 4.8px rgba(0, 0, 0, 0.1);
@@ -409,6 +409,7 @@ button[disabled] {
   color: #808080;
   font-weight: normal;
   margin-bottom: 0px;
+  word-break: break-word;
 }
 
 .nft__form__modal .modal__body__wrapper .mynft__box .mynft__box__description__wrapper .mynft__box__profile__info {
@@ -485,10 +486,5 @@ button[disabled] {
   -webkit-appearance: none;
   -moz-appearance: none;
        appearance: none;
-}
-.nft__form__modal .modal__body__wrapper form .form__group .descriptionCounter{
-  text-align: right;
-  font-size: 12px;
-  color: #808080;
 }
 /*# sourceMappingURL=createNft.module.css.map */
