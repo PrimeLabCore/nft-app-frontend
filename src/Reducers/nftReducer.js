@@ -1,8 +1,8 @@
-let initialState = {
+const initialState = {
 };
 
 export default (state = initialState, action) => {
-  switch(action.type) {
+  switch (action.type) {
     case 'nft/set-tracker':
       return {
         ...state,

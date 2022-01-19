@@ -1,15 +1,15 @@
-let initialvalue = false;
+const initialvalue = false;
 
-const handleCreateNftClick = (state = initialvalue,action) => {
-    switch (action.type) {
-        case "createnft__open":
-            return true;
+const handleCreateNftClick = (state = initialvalue, action) => {
+  switch (action.type) {
+    case "createnft__open":
+      return true;
 
-        case "createnft__close":
-            return false;
+    case "createnft__close":
+      return false;
 
-        default:
-            return state;
-    }
+    default:
+      return state;
+  }
 }
 export default handleCreateNftClick;

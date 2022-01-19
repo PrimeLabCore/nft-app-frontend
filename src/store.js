@@ -53,7 +53,7 @@ persistor.subscribe(() => {
 let currentJwt;
 
 store.subscribe(() => {
-  let prevJwt = currentJwt;
+  const prevJwt = currentJwt;
   currentJwt = store.getState().authReducer.jwt;
 
   if (prevJwt !== currentJwt) {
