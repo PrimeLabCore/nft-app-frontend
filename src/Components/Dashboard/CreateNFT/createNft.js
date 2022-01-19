@@ -151,8 +151,8 @@ function CreateNft(props) {
   const handleNftPreview = async () => {
     if (isEmpty(details.title)) {
       toast.error("Please enter the title");
-    } else if (details.title.length > 70) {
-      toast.error("Title character length should be less than 70");
+    } else if (details.title.length > 72) {
+      toast.error("Title character length should be less than 72");
     } else if (isEmpty(details.description)) {
       toast.error("Please enter the description");
     } else if (details.description.length > 500) {
@@ -456,15 +456,21 @@ function CreateNft(props) {
                   TITLE
                   <span className="requiredIndicator">*</span>
                 </label>
-                <input
+                <textarea
+                  rows={1}
                   type="text"
                   name="title"
                   value={details.title}
                   onChange={inputEvent}
                   placeholder="Ex. Redeemable Art"
                   required
-                  maxLength={70}
+                  maxLength={72}
                 />
+                <span className={styles.descriptionCounter}>
+                  {details.title.length}
+                  {' '}
+                  / 72
+                </span>
               </div>
               <div className={styles.form__group}>
                 <label>
