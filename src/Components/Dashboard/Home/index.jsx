@@ -52,6 +52,8 @@ const Home = () => {
 
     // Handling clicks outside the import dialog box
     if (source === "backdropClick") {
+      localStorage.removeItem("welcome")
+      localStorage.setItem("contactImport", true)
       dispatch({ type: "createnft__open" });
       return;
     }

@@ -160,6 +160,7 @@ const ImportContactsDialog = ({
             }
           },
           afterImport(source, success) {
+            localStorage.removeItem("contactImport")
             const source_title = source === "office365"
               ? "Microsoft 365"
               : source === "icloud"

@@ -68,50 +68,51 @@ function ContactPopup({
   // get contacts
   useEffect(() => {
     if (!show) return;
-    if (!contacts?.length) setIsloading(true);
-    // Ajax Request to create user
-    axios
-      .get(`${API_BASE_URL}/contacts/list/${user?.user_id}`)
-      .then((response) => {
-        // save user details
-        // before saving contacts to the reducer make all the emails unique
-        const {
-          data: { data: contacts = [] }
-        } = response;
-        const uniqueEmails = [];
-        // console.log(`Got ${contacts.length} contacts from server`);
-        const uniqueContacts = contacts.filter((contactObj) => {
-          if (contactObj.email && contactObj.email.length) {
-            let emailExists = false;
-            for (let i = 0; i < contactObj.email.length; i++) {
-              const emailObj = { ...contactObj.email[i] };
-              if (
-                emailObj && emailObj.address && uniqueEmails.indexOf(emailObj.address) !== -1
-              ) {
-                emailExists = true;
-                break;
-              } else {
-                uniqueEmails.push(emailObj.address);
+    setTimeout(() => {
+      if (!contacts?.length) setIsloading(true);
+      axios
+        .get(`${API_BASE_URL}/contacts/list/${user?.user_id}`)
+        .then((response) => {
+          // save user details
+          // before saving contacts to the reducer make all the emails unique
+          const {
+            data: { data: contacts = [] }
+          } = response;
+          const uniqueEmails = [];
+          // console.log(`Got ${contacts.length} contacts from server`);
+          const uniqueContacts = contacts.filter((contactObj) => {
+            if (contactObj.email && contactObj.email.length) {
+              let emailExists = false;
+              for (let i = 0; i < contactObj.email.length; i++) {
+                const emailObj = { ...contactObj.email[i] };
+                if (
+                  emailObj && emailObj.address && uniqueEmails.indexOf(emailObj.address) !== -1
+                ) {
+                  emailExists = true;
+                  break;
+                } else {
+                  uniqueEmails.push(emailObj.address);
+                }
               }
-            }
-            if (emailExists) {
-              return false;
+              if (emailExists) {
+                return false;
+              }
+              return true;
             }
             return true;
+          });
+          setIsloading(true);
+          dispatch({ type: "update_contacts", payload: uniqueContacts });
+        })
+        .catch((error) => {
+          if (error?.response?.data) {
+            toast.error(error.response.data.message);
           }
-          return true;
+        })
+        .finally(() => {
+          setIsloading(false);
         });
-        setIsloading(true);
-        dispatch({ type: "update_contacts", payload: uniqueContacts });
-      })
-      .catch((error) => {
-        if (error?.response?.data) {
-          toast.error(error.response.data.message);
-        }
-      })
-      .finally(() => {
-        setIsloading(false);
-      });
+    }, 1500)
   }, [show]);
 
   const getPrimaryEmail = (contact) => {
