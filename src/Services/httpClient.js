@@ -6,12 +6,13 @@ import { API_BASE_URL } from "../Utils/config";
 /**
  * Intercept the request and response of our http client - axios to improve its functionality.
  * @param {Store} store The redux store
- * @param {Function} onUnauthorizedCallback Upon receiving 401 response (unauthorized) from the server, call this callback function.
+ * @param {Function} onUnauthorizedCallback Upon receiving 401 response
+ *  (unauthorized) from the server, call this callback function.
  */
 export function setupHttpClient(store, onUnauthorizedCallback) {
   const { authReducer: { jwt } } = store.getState();
 
-  axios.interceptors.request.use(function (config) {
+  axios.interceptors.request.use((config) => {
     config.headers = config.headers || {};
 
     if (jwt) {
@@ -53,10 +54,9 @@ export default function request({
   const apiUrl = `${API_BASE_URL}${url}`;
   const formattedBody = stringify
     ? Object.keys(body).reduce((acc, key) => {
-        acc[key] =
-          typeof body[key] === 'object' ? JSON.stringify(body[key]) : body[key];
-        return acc;
-      }, {})
+      acc[key] = typeof body[key] === 'object' ? JSON.stringify(body[key]) : body[key];
+      return acc;
+    }, {})
     : body;
   return axios({
     method,
