@@ -5,7 +5,7 @@ import axios from "axios";
 import { ProgressBar } from "react-bootstrap";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { IoIosArrowForward } from "react-icons/io";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import TextFieldComponent from "../../../Assets/FrequentlUsedComponents/TextFieldComponent";
 import { API_BASE_URL } from "../../../Utils/config";
@@ -15,6 +15,7 @@ import styles from "./CreateAnAccount.module.css";
 
 const CreateAnAccount = () => {
   const dispatch = useDispatch();
+  const location = useLocation();
 
   const { signupEmail, signupPhone } = useSelector(
     (state) => state.authReducer
@@ -50,8 +51,18 @@ const CreateAnAccount = () => {
   const [info, setinfo] = useState("");
 
   const HandleClick = () => {
-    navigate("/signup");
+    if (location?.state?.user) {
+      navigate('/settings')
+    } else {
+      navigate("/signup");
+    }
   };
+
+  useEffect(() => {
+    if (location) {
+      setFullname(location?.state?.user?.full_name)
+    }
+  }, [location])
 
   useEffect(() => {
     if (signupEmail === "" && signupPhone === "") {
@@ -127,7 +138,7 @@ const CreateAnAccount = () => {
     const user = {
       fullName: fullname.trim(),
       walletName: accountId.includes(".near") ? accountId : `${accountId}.near`,
-      email: signupEmail,
+      email: location?.state?.user ? location?.state?.user?.email : signupEmail,
       phone: signupPhone
     };
 
