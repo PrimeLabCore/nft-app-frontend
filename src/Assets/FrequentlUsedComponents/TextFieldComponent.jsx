@@ -20,7 +20,7 @@ const CssTextField = withStyles({
   },
 })(TextField);
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   input: {
     background: "rgba(0, 0, 0, 0.03)",
     borderRadius: "10px",
@@ -62,7 +62,7 @@ const TextFieldComponent = ({
   return (
     <>
       <CssTextField
-      autoFocus={autoFocus}
+        autoFocus={autoFocus}
         variant={variant}
         label={label}
         placeholder={placeholder}

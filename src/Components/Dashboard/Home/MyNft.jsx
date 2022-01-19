@@ -1,19 +1,24 @@
-import React, { Fragment, memo, useEffect, useState } from "react";
+import { Col, Row } from "react-bootstrap";
+import React, {
+  Fragment,
+  memo,
+  useEffect,
+  useState
+} from "react";
+import { useDispatch, useSelector } from "react-redux";
+
+import { API_BASE_URL } from "../../../Utils/config";
+import { AiOutlinePlus } from "react-icons/ai";
+import Carousel from "react-multi-carousel";
+import { Link } from "react-router-dom";
+import { LoaderIconBlue } from "../../Generic/icons";
+import PropTypes from "prop-types";
+import axios from "axios";
+import { mapNftDetails } from "../../../Utils/utils";
 import { nanoid } from "nanoid";
 import styles from "./Home.module.css";
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router";
-import PropTypes from "prop-types";
-import { AiOutlinePlus } from "react-icons/ai";
-import { Row, Col } from "react-bootstrap";
-import Carousel from "react-multi-carousel";
 import { toast } from "react-toastify";
-import { LoaderIconBlue } from "../../Generic/icons";
-import { useDispatch } from "react-redux";
-import axios from "axios";
-import { useSelector } from "react-redux";
-import { API_BASE_URL } from "../../../Utils/config";
-import { mapNftDetails } from "../../../Utils/utils";
+import { useNavigate } from "react-router";
 
 const responsive = {
   superLargeDesktop: {
@@ -36,8 +41,8 @@ const responsive = {
 };
 
 const MyNft = ({ isLink }) => {
-  let navigate = useNavigate();
-  let dispatch = useDispatch(); //Direct assigning right now
+  const navigate = useNavigate();
+  const dispatch = useDispatch(); // Direct assigning right now
   const [windowstate, setWindow] = useState(window.innerWidth < 767);
   const nfts = useSelector((state) => state.home__allnft.nfts);
   const { user } = useSelector((state) => state.authReducer);
@@ -45,22 +50,9 @@ const MyNft = ({ isLink }) => {
 
   const [isLoading, setIsloading] = useState(false);
 
-  const getAllImages = async () => {
-    const response = await axios.get(
-      `${API_BASE_URL}/nfts?user_id=${user?.user_id}`
-    );
-
-    const data = response.data?.data;
-
-    if (data) {
-      setAlldata(data);
-      dispatch({ type: "getNft", payload: data });
-    }
-  };
-
   // effect for keeping track of nfts change
   useEffect(() => {
-    setAlldata([...nfts ])
+    setAlldata([...nfts])
   }, [nfts])
 
   useEffect(() => {
@@ -72,25 +64,24 @@ const MyNft = ({ isLink }) => {
       },
       false
     );
-    //getAllImages();
   }, [windowstate]);
 
-  //fetch all the nfts of the user
+  // fetch all the nfts of the user
   useEffect(() => {
     setIsloading(true);
 
-    //Ajax Request to create user
+    // Ajax Request to create user
     axios
       .get(`${API_BASE_URL}/nfts?user_id=${user?.user_id}`)
       .then((response) => {
-        //save user details
-        let tempNfts = response.data.data;
+        // save user details
+        const tempNfts = response.data.data;
         // console.log("data nfts", tempNfts);
         setAlldata(tempNfts);
         dispatch({ type: "update_nfts", payload: tempNfts });
       })
       .catch((error) => {
-        if (error.response.data) {
+        if (error?.response?.data) {
           toast.error(error.response.data.message);
         }
       })
@@ -103,7 +94,7 @@ const MyNft = ({ isLink }) => {
     dispatch({ type: "createnft__open" });
   };
 
-  const detailPage = (data, index) => {
+  const detailPage = (data) => {
     dispatch({ type: "nft__detail", payload: mapNftDetails(data) });
     navigate(`/nft/${data.nft_id}`);
   };
@@ -111,9 +102,8 @@ const MyNft = ({ isLink }) => {
   return (
     <>
       <div
-        className={`${styles.mynft__wrapper} ${
-          !isLink ? styles.mynft__page__wrapper : ""
-        }`}
+        className={`${styles.mynft__wrapper} ${!isLink ? styles.mynft__page__wrapper : ""
+          }`}
       >
         <div className={styles.mynft__header}>
           <h5>My NFTs</h5>
@@ -128,10 +118,10 @@ const MyNft = ({ isLink }) => {
             </button>
           )}
         </div>
-        {isLoading ? <LoaderIconBlue/> : <div className={styles.mynft__box__wrapper}>
+        {isLoading ? <LoaderIconBlue /> : <div className={styles.mynft__box__wrapper}>
           {windowstate && isLink ? (
             <>
-               <Carousel
+              <Carousel
                 removeArrowOnDeviceType={[
                   "tablet",
                   // "mobile",
@@ -157,7 +147,7 @@ const MyNft = ({ isLink }) => {
                       <div
                         className={`${styles.mynft__box} ${styles.mynft__small__screen}`}
                         // onClick={() => detailPage(data.nftid, i)}
-                        onClick={() => detailPage(data, i)}
+                        onClick={() => detailPage(data)}
                       >
                         <div className={styles.mynft__box__image__wrapper}>
                           <div className={styles.mynft__box__image}>
@@ -201,7 +191,7 @@ const MyNft = ({ isLink }) => {
           ) : (
             <>
               <Row>
-                {alldata.map((data, i) => {
+                {alldata.map((data) => {
                   const urlArray = data?.file_url?.split(".");
                   const fileType = urlArray.length
                     ? urlArray[urlArray.length - 1]
@@ -221,7 +211,7 @@ const MyNft = ({ isLink }) => {
                         <div
                           className={styles.mynft__box}
                           // onClick={() => detailPage(data.nftid, i)}
-                          onClick={() => detailPage(data, i)}
+                          onClick={() => detailPage(data)}
                         >
                           <div className={styles.mynft__box__image__wrapper}>
                             <div className={styles.mynft__box__image}>

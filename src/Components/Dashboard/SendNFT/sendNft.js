@@ -1,19 +1,20 @@
-import axios from "axios";
-import { nanoid } from "nanoid";
 import React, { Fragment, useEffect, useState } from "react";
-import { Modal } from "react-bootstrap";
-import { AiOutlineCheck } from "react-icons/ai";
-import { IoIosArrowForward } from "react-icons/io";
-import Carousel from "react-multi-carousel";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
-import { isEmpty } from "lodash";
-import ContactPopup from "../../../common/components/ContactPopup";
+
 import { API_BASE_URL } from "../../../Utils/config";
+import { AiOutlineCheck } from "react-icons/ai";
+import Carousel from "react-multi-carousel";
+import ContactPopup from "../../../common/components/ContactPopup";
 import ImportContactsDialog from "../../ImportContactsDialog/ImportContactsDialog";
+import { IoIosArrowForward } from "react-icons/io";
 import { LoaderIconBlue } from "../../Generic/icons";
+import { Modal } from "react-bootstrap";
+import axios from "axios";
+import { isEmpty } from "lodash";
+import { nanoid } from "nanoid";
 import styles from "./sendNft.module.css";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const responsive = {
   superLargeDesktop: {
@@ -118,7 +119,7 @@ function SendNft() {
         dispatch({ type: "update_nfts", payload: tempNfts });
       })
       .catch((error) => {
-        if (error.response.data) {
+        if (error?.response?.data) {
           toast.error(error.response.data.message);
         }
       })

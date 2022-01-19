@@ -1,12 +1,23 @@
-import React, { memo, Fragment, useEffect, useState } from "react";
-import styles from "./Home.module.css";
-import { Link } from "react-router-dom";
-import { nanoid } from "nanoid";
-import axios from "axios";
+import {
+  BsArrowDownLeft,
+  BsArrowUpRight
+} from "react-icons/bs";
+import React, {
+  Fragment,
+  memo,
+  useEffect,
+  useState
+} from "react";
+import {
+  useDispatch,
+  useSelector
+} from "react-redux";
 
-import { BsArrowUpRight, BsArrowDownLeft } from "react-icons/bs";
-import { useDispatch, useSelector } from "react-redux";
 import { API_BASE_URL } from "../../../Utils/config";
+import { Link } from "react-router-dom";
+import axios from "axios";
+import { nanoid } from "nanoid";
+import styles from "./Home.module.css";
 
 const Transactions = () => {
   const [transactions, setTransactions] = useState([]);
