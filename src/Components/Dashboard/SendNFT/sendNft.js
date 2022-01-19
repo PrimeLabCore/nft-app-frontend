@@ -1,20 +1,19 @@
-import React, { Fragment, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-
-import { API_BASE_URL } from "../../../Utils/config";
-import { AiOutlineCheck } from "react-icons/ai";
-import Carousel from "react-multi-carousel";
-import ContactPopup from "../../../common/components/ContactPopup";
-import ImportContactsDialog from "../../ImportContactsDialog/ImportContactsDialog";
-import { IoIosArrowForward } from "react-icons/io";
-import { LoaderIconBlue } from "../../Generic/icons";
-import { Modal } from "react-bootstrap";
 import axios from "axios";
 import { isEmpty } from "lodash";
 import { nanoid } from "nanoid";
-import styles from "./sendNft.module.css";
-import { toast } from "react-toastify";
+import React, { Fragment, useEffect, useState } from "react";
+import { Modal } from "react-bootstrap";
+import { AiOutlineCheck } from "react-icons/ai";
+import { IoIosArrowForward } from "react-icons/io";
+import Carousel from "react-multi-carousel";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import ContactPopup from "../../../common/components/ContactPopup";
+import { API_BASE_URL } from "../../../Utils/config";
+import { LoaderIconBlue } from "../../Generic/icons";
+import ImportContactsDialog from "../../ImportContactsDialog/ImportContactsDialog";
+import styles from "./sendNft.module.css";
 
 const responsive = {
   superLargeDesktop: {
