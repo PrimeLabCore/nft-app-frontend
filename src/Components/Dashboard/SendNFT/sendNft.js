@@ -417,8 +417,7 @@ function SendNft() {
         handleBtnClick={(selectedContacts) =>
           firstImport
             ? (dispatch({ type: "createnft__open" }), setOpenGift(false))
-            : handleNftPreview(selectedContacts)
-        }
+            : handleNftPreview(selectedContacts)}
         sendingGift={sendingGift}
       />
 
