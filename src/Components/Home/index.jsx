@@ -31,6 +31,14 @@ const HomePage = (props) => {
           The easiest way to Create NFTs and share them others. Start minting
           NFTs in NEAR&apos;s rapidly expanding ecosystem
         </h3>
+        <li className={styles.loginButton}>
+          <button onClick={HandleLoginWithNear}>
+            Login
+            <span>
+              <IoIosArrowForward />
+            </span>
+          </button>
+        </li>
         {/* <div className={styles.featureList}>
             <ul>
               <li>Create NFTs</li>
@@ -59,7 +67,7 @@ const HomePage = (props) => {
                   </button>
                 </Link>
               </li> */}
-            <li>
+            <li className={styles.menuLoginButton}>
               <button onClick={HandleLoginWithNear}>
                 Login
                 <span>
