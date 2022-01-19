@@ -15,7 +15,7 @@ const AllNFT = (state = initialvalue, action) => {
     case "update_nfts":
       return {
         ...state,
-        nfts: action.payload,
+        nfts: action.payload.filter(n => n.status !== "unclaimed_gift"),
       };
     default:
       return state;

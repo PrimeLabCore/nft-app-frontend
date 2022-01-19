@@ -39,6 +39,7 @@
 }
 
 .notfound__wrapper .notfound__content .btn__wrapper button {
+  z-index: 2;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
