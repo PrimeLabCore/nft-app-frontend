@@ -7,28 +7,28 @@ const CssTextField = withStyles({
     "& .MuiOutlinedInput-root": {
       "&.Mui-focused fieldset": {
         borderColor: "#2F80ED",
-        marginTop: "5px",
+        marginTop: "5px"
       },
       "& fieldset": {
         borderColor: "#BDBDBD",
-        marginTop: "5px",
+        marginTop: "5px"
       },
       "&:hover fieldset": {
-        borderColor: "#2F80ED",
-      },
-    },
-  },
+        borderColor: "#2F80ED"
+      }
+    }
+  }
 })(TextField);
 
 const useStyles = makeStyles(() => ({
   input: {
     background: "rgba(0, 0, 0, 0.03)",
-    borderRadius: "10px",
+    borderRadius: "10px"
   },
 
   inputfield: {
     width: "100%",
-    margin: "10px 0px",
+    margin: "10px 0px"
   },
   formLabel: {
     fontStyle: "normal",
@@ -38,9 +38,9 @@ const useStyles = makeStyles(() => ({
     top: "-22px",
     left: "-13px",
     "&.Mui-focused": {
-      color: "#2F80ED",
-    },
-  },
+      color: "#2F80ED"
+    }
+  }
 }));
 
 const TextFieldComponent = ({
@@ -60,28 +60,26 @@ const TextFieldComponent = ({
 }) => {
   const classes = useStyles();
   return (
-    <>
-      <CssTextField
-        autoFocus={autoFocus}
-        variant={variant}
-        label={label}
-        placeholder={placeholder}
-        type={type}
-        value={InputValue}
-        onChange={HandleInputChange}
-        className={`${classes.inputfield} ${classes.root}`}
-        InputLabelProps={{
-          shrink: true,
-          className: classes.formLabel,
-        }}
-        disabled={disabled ? disabled : false}
-        name={name}
-        onFocus={HandleFocus}
-        onKeyUp={HandelKeyUp}
-        onKeyPress={HandelKeyPress}
-        InputProps={{ ...InputProps, className: classes.input }}
-      />
-    </>
+    <CssTextField
+      autoFocus={autoFocus}
+      variant={variant}
+      label={label}
+      placeholder={placeholder}
+      type={type}
+      value={InputValue}
+      onChange={HandleInputChange}
+      className={`${classes.inputfield} ${classes.root}`}
+      InputLabelProps={{
+        shrink: true,
+        className: classes.formLabel
+      }}
+      disabled={disabled ? disabled : false}
+      name={name}
+      onFocus={HandleFocus}
+      onKeyUp={HandelKeyUp}
+      onKeyPress={HandelKeyPress}
+      InputProps={{ ...InputProps, className: classes.input }}
+    />
   );
 };
 

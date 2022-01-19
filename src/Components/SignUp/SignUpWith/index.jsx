@@ -10,8 +10,7 @@ import { API_BASE_URL } from "../../../Utils/config";
 import styles from "./index.module.css";
 
 const validateEmail = (email) => {
-  const re =
-    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   const splitEmail = email.split("@");
 
   if (splitEmail.length > 2) return false;
@@ -408,8 +407,7 @@ const SignUpWith = () => {
         <button
           //   onClick={handleSignup}
           onClick={() =>
-            loginForm === "email" ? oldHandleSignup() : phoneNumberSignUp()
-          }
+            loginForm === "email" ? oldHandleSignup() : phoneNumberSignUp()}
           className={`${styles.button} ${
             inputFields.email || inputFields.phone
               ? styles.primaryColor

@@ -19,6 +19,7 @@
     "quotes": 0,
     "linebreak-style": 0,
     "prefer-destructuring": 0,
+    "react/destructuring-assignment": 0,
     "eol-last": 0,
     "camelcase": 0,
     "arrow-parens": 0,
@@ -46,6 +47,8 @@
     "react/jsx-props-no-spreading": 0,
     "jsx-a11y/control-has-associated-label": 0,
     "import/no-extraneous-dependencies": 0,
+    "consistent-return": 0,
+    "jsx-a11y/no-noninteractive-element-interactions": 0,
     "react/function-component-definition": [
       1,
       {
