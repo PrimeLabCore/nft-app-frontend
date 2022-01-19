@@ -26,11 +26,9 @@ const requiredFileExtensions = [
 ];
 const requiredFileExtensionsDescription = `${requiredFileExtensions
   .map((extension) => extension.substring(1).toUpperCase())
-  .join(", ")
-} or ${
-  requiredFileExtensions[requiredFileExtensions.length - 1]
-    .substring(1)
-    .toUpperCase()}`;
+  .join(", ")} or ${requiredFileExtensions[requiredFileExtensions.length - 1]
+  .substring(1)
+  .toUpperCase()}`;
 
 function CreateNft(props) {
   const navigate = useNavigate();
@@ -184,7 +182,6 @@ function CreateNft(props) {
 
   const mineNft = async (type) => {
     setLoading(true);
-
     const nftDetail = { ...details };
     nftDetail.attributes = formValues;
     nftDetail.owner_id = user.user_id;
@@ -209,7 +206,6 @@ function CreateNft(props) {
           type: "current_selected_nft",
           payload: response.data?.data,
         });
-
         setCreateNftResponse(response.data?.data);
 
         toast.success(
@@ -279,7 +275,7 @@ function CreateNft(props) {
   const handleCorruptedFile = () => {
     toast.error("Selected file does not exist.");
     setCorruptedFile(true);
-  }
+  };
 
   // const openNftDesc = () => {
   //   navigate("/nft-details");
@@ -355,7 +351,9 @@ function CreateNft(props) {
                 name="file"
                 data-testid="file-uploader"
                 onChange={(e) => handleNewFileUpload(e.target.files)}
-                onClick={(e) => { e.target.value = null }}
+                onClick={(e) => {
+                  e.target.value = null;
+                }}
                 accept={requiredFileExtensions.join(", ")}
                 style={{ display: "none" }}
                 required
@@ -377,36 +375,37 @@ function CreateNft(props) {
             </div>
 
             {selectedFile
-              && (selectedFile?.type?.includes("video") ? (
-                <div className="uploaded__file">
-                  <video
-                    style={{ width: "100%", borderRadius: "8px" }}
-                    src={URL.createObjectURL(selectedFile)}
-                  />
-                </div>
-              ) : selectedFile?.type?.includes("audio") ? (
-                <div className="uploaded__file">
-                  <audio controls>
-                    <source src={URL.createObjectURL(selectedFile)} />
-                  </audio>
-                </div>
-              ) : (
-                <div className="uploaded__file">
-                  <img
-                    src={URL.createObjectURL(selectedFile)}
-                    alt="Uploaded File"
-                    onError={() => handleCorruptedFile()}
-                  />
-                </div>
-              ))}
+            && (selectedFile?.type?.includes("video") ? (
+              <div className="uploaded__file">
+                <video
+                  style={{ width: "100%", borderRadius: "8px" }}
+                  src={URL.createObjectURL(selectedFile)}
+                />
+              </div>
+            ) : selectedFile?.type?.includes("audio") ? (
+              <div className="uploaded__file">
+                <audio controls>
+                  <source src={URL.createObjectURL(selectedFile)} />
+                </audio>
+              </div>
+            ) : (
+              <div className="uploaded__file">
+                <img
+                  src={URL.createObjectURL(selectedFile)}
+                  alt="Uploaded File"
+                  onError={() => handleCorruptedFile()}
+                />
+              </div>
+            ))}
           </div>
 
           <div className={styles.next__btn__wrapper}>
             <button
-              onClick={() => (selectedFile
-                ? handleNftForm()
-                : toast.error("Please upload files."))}
-              disabled={(!selectedFile) || corruptedFile}
+              onClick={() =>
+                selectedFile
+                  ? handleNftForm()
+                  : toast.error("Please upload files.")}
+              disabled={!selectedFile || corruptedFile}
               className={styles.next__btn}
               data-testid="next-button"
             >
@@ -486,14 +485,16 @@ function CreateNft(props) {
                 />
                 <span className={styles.descriptionCounter}>
                   {details.description.length}
-                  {' '}
                   / 500
                 </span>
               </div>
               <div className={styles.form__group}>
                 <label>PROPERTIES</label>
                 {formValues.map((val, index) => (
-                  <div className={styles.form__group__inner} key={val.attr_name}>
+                  <div
+                    className={styles.form__group__inner}
+                    key={val.attr_name}
+                  >
                     <input
                       type="text"
                       value={val.attr_name}
@@ -600,27 +601,27 @@ function CreateNft(props) {
             <div className={styles.mynft__box}>
               <div className={styles.mynft__box__image__wrapper}>
                 {selectedFile
-                  && (selectedFile?.type?.includes("video") ? (
-                    <video
-                      style={{ width: "100%", borderRadius: "8px" }}
-                      src={URL.createObjectURL(selectedFile)}
-                      onError={() => handleCorruptedFile()}
-                    />
-                  ) : selectedFile?.type?.includes("audio") ? (
-                    <audio
-                      style={{ marginTop: "60px", marginLeft: "5px" }}
-                      controls
-                      onError={() => handleCorruptedFile()}
-                    >
-                      <source src={URL.createObjectURL(selectedFile)} />
-                    </audio>
-                  ) : (
-                    <img
-                      src={URL.createObjectURL(selectedFile)}
-                      alt={formInfo.title}
-                      onError={() => handleCorruptedFile()}
-                    />
-                  ))}
+                && (selectedFile?.type?.includes("video") ? (
+                  <video
+                    style={{ width: "100%", borderRadius: "8px" }}
+                    src={URL.createObjectURL(selectedFile)}
+                    onError={() => handleCorruptedFile()}
+                  />
+                ) : selectedFile?.type?.includes("audio") ? (
+                  <audio
+                    style={{ marginTop: "60px", marginLeft: "5px" }}
+                    controls
+                    onError={() => handleCorruptedFile()}
+                  >
+                    <source src={URL.createObjectURL(selectedFile)} />
+                  </audio>
+                ) : (
+                  <img
+                    src={URL.createObjectURL(selectedFile)}
+                    alt={formInfo.title}
+                    onError={() => handleCorruptedFile()}
+                  />
+                ))}
                 {!audioRegex.test(selectedFile.type) && (
                   <div className={styles.mynft__box__cat}>
                     <h6>{details?.category}</h6>
@@ -689,7 +690,7 @@ function CreateNft(props) {
         />
         {/* <button onClick={allNft} className="btnclose">X</button> */}
         <Modal.Body className={styles.modal__body__top}>
-          <div className={`${styles.modal__body__wrapper}`}>
+          <div className={`${styles.modal__body__wrapper}`} data-testid="success-modal-body">
             <div className={styles.mint__info__wrapper}>
               <div className={styles.mint__image}>
                 <img
@@ -703,9 +704,7 @@ function CreateNft(props) {
               </div>
               <h1>
                 {createNftResponse.title}
-                {' '}
                 <br />
-                {' '}
                 Successfully Mined
               </h1>
               <h6>
