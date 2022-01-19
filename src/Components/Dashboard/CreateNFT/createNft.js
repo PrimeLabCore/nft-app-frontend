@@ -353,6 +353,7 @@ function CreateNft(props) {
                 type="file"
                 id="files"
                 name="file"
+                data-testid="file-uploader"
                 onChange={(e) => handleNewFileUpload(e.target.files)}
                 onClick={(e) => { e.target.value = null }}
                 accept={requiredFileExtensions.join(", ")}
@@ -407,6 +408,7 @@ function CreateNft(props) {
                 : toast.error("Please upload files."))}
               disabled={(!selectedFile) || corruptedFile}
               className={styles.next__btn}
+              data-testid="next-button"
             >
               Next
               <span>
@@ -459,6 +461,7 @@ function CreateNft(props) {
                 <input
                   type="text"
                   name="title"
+                  data-testid="nft-title"
                   value={details.title}
                   onChange={inputEvent}
                   placeholder="Ex. Redeemable Art"
@@ -479,6 +482,7 @@ function CreateNft(props) {
                   placeholder="Ex. Redeemable Art"
                   required
                   maxLength={500}
+                  data-testid="nft-description"
                 />
                 <span className={styles.descriptionCounter}>
                   {details.description.length}
@@ -545,7 +549,11 @@ function CreateNft(props) {
             </form>
           </div>
           <div className={styles.multiple__btn__wrapper}>
-            <button onClick={handleNftPreview} className={styles.next__btn}>
+            <button
+              onClick={handleNftPreview}
+              className={styles.next__btn}
+              data-testid="details-next-button"
+            >
               Next
               <span>
                 <IoIosArrowForward />
@@ -642,6 +650,7 @@ function CreateNft(props) {
               }}
               disabled={loading || corruptedFile}
               className={styles.next__btn}
+              data-testid="mint-nft-button"
             >
               Mint NFT
               <span>
