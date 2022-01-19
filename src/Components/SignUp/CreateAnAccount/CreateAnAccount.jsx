@@ -73,7 +73,7 @@ const CreateAnAccount = () => {
   useEffect(() => {
     if (LoginFormMethod === "email") {
       setAccountId(
-        signupEmail?.split("@")[0]?.replace(".", "")
+        location?.state?.user ? "" : signupEmail?.split("@")[0]?.replace(".", "")
         // + ".near"
       );
     } else {
