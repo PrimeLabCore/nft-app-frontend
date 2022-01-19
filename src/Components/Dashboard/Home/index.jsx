@@ -52,7 +52,13 @@ const Home = () => {
 
     // Handling clicks outside the import dialog box
     if (source === "backdropClick") {
+      localStorage.removeItem("welcome")
+      localStorage.setItem("contactImport", true)
       dispatch({ type: "createnft__open" });
+      const all = document.getElementsByClassName("contactDialogBack");
+      for (let i = 0; i < all.length; i++) {
+        all[i].style.visibility = "hidden";
+      }
       return;
     }
 

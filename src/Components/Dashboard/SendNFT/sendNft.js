@@ -67,6 +67,7 @@ function SendNft() {
 
   const sendnft__popup = useSelector((state) => state.sendnft__popup);
   const { nfts } = useSelector((state) => state.home__allnft);
+  const [importContactDialog, setimportContactDialog] = useState(false);
 
   const firstImport = localStorage.getItem("firstImport");
 
@@ -135,7 +136,11 @@ function SendNft() {
     dispatch({ type: "sendnft__close" });
 
     setOpenPreview(false);
-    setOpenGift(true);
+    if (localStorage.getItem("contactImport") === "true") {
+      setimportContactDialog(true);
+    } else {
+      setOpenGift(true);
+    }
   };
 
   const handleNftPreview = async (selectedContacts) => {
@@ -198,7 +203,6 @@ function SendNft() {
     dispatch({ type: "close_dialog_gift_nft" });
   }, []);
 
-  const [importContactDialog, setimportContactDialog] = useState(false);
   const HandleDialogClose = () => {
     setimportContactDialog(false);
   };
