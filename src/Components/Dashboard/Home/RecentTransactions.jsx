@@ -3,7 +3,6 @@ import {
   BsArrowUpRight
 } from "react-icons/bs";
 import React, {
-  Fragment,
   memo,
   useEffect,
   useState
@@ -27,7 +26,7 @@ const Transactions = () => {
 
   useEffect(() => {
     async function fetchTransactions() {
-      let response = await axios.get(
+      const response = await axios.get(
         `${API_BASE_URL}/transactions/list/${user?.user_id}`
       );
 
@@ -60,32 +59,32 @@ const Transactions = () => {
           <div className={styles.transaction__list__wrapper}>
             {transactions.map((data) => {
               return (
-                <Fragment key={nanoid()}>
-                  <div className={styles.transaction__list}>
-                    <div className={styles.transaction__action}>
-                      <div>
-                        {data.sender ? <BsArrowUpRight /> : <BsArrowDownLeft />}
-                      </div>
-                      <h6>
-                        {/* <span>{data.id}</span>{" "} */}
-                        <span>{user.wallet_id}</span> <br />
-                        {data.sender ? "Sent to" : "Received from"}{" "}
-                        <a
-                          href="https://explorer.near.org/"
-                          rel="noreferrer"
-                          target="_blank"
-                          className={styles.transaction__name}
-                        >
-                          {/* {data.name} */}
-                          {data.counterparty?.email}
-                        </a>
-                      </h6>
+                <div className={styles.transaction__list} key={nanoid()}>
+                  <div className={styles.transaction__action}>
+                    <div>
+                      {data.sender ? <BsArrowUpRight /> : <BsArrowDownLeft />}
                     </div>
-                    <div className={styles.transaction__time}>
-                      <p>{data.formattedtime}</p>
-                    </div>
+                    <h6>
+                      {/* <span>{data.id}</span>{" "} */}
+                      <span>{user.wallet_id}</span> 
+                      <br />
+                      {data.sender ? "Sent to" : "Received from"}
+                      {" "}
+                      <a
+                        href="https://explorer.near.org/"
+                        rel="noreferrer"
+                        target="_blank"
+                        className={styles.transaction__name}
+                      >
+                        {/* {data.name} */}
+                        {data.counterparty?.email}
+                      </a>
+                    </h6>
                   </div>
-                </Fragment>
+                  <div className={styles.transaction__time}>
+                    <p>{data.formattedtime}</p>
+                  </div>
+                </div>
               );
             })}
           </div>

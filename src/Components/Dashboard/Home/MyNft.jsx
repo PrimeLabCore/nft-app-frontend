@@ -200,61 +200,60 @@ const MyNft = ({ isLink }) => {
                     return;
                   }
                   return (
-                    <Fragment key={nanoid()}>
-                      <Col
-                        lg={3}
-                        md={4}
-                        sm={6}
-                        xs={12}
-                        style={{ marginBottom: "15px" }}
+                    <Col
+                      lg={3}
+                      md={4}
+                      sm={6}
+                      xs={12}
+                      style={{ marginBottom: "15px" }}
+                      key={nanoid()}
+                    >
+                      <div
+                        className={styles.mynft__box}
+                        // onClick={() => detailPage(data.nftid, i)}
+                        onClick={() => detailPage(data)}
                       >
-                        <div
-                          className={styles.mynft__box}
-                          // onClick={() => detailPage(data.nftid, i)}
-                          onClick={() => detailPage(data)}
-                        >
-                          <div className={styles.mynft__box__image__wrapper}>
-                            <div className={styles.mynft__box__image}>
-                              {fileType.toLowerCase() === "mp4" ? (
-                                <video
-                                  style={{ width: "100%", borderRadius: "8px" }}
-                                  src={data?.file_url}
-                                />
-                              ) : fileType.toLowerCase() === "mp3" ? (
-                                <div
+                        <div className={styles.mynft__box__image__wrapper}>
+                          <div className={styles.mynft__box__image}>
+                            {fileType.toLowerCase() === "mp4" ? (
+                              <video
+                                style={{ width: "100%", borderRadius: "8px" }}
+                                src={data?.file_url}
+                              />
+                            ) : fileType.toLowerCase() === "mp3" ? (
+                              <div
+                                style={{
+                                  width: "100%",
+                                  paddingRight: "10px",
+                                }}
+                              >
+                                <audio
                                   style={{
-                                    width: "100%",
-                                    paddingRight: "10px",
+                                    width: "inherit",
+                                    marginTop: "60px",
+                                    marginLeft: "5px",
                                   }}
+                                  controls
                                 >
-                                  <audio
-                                    style={{
-                                      width: "inherit",
-                                      marginTop: "60px",
-                                      marginLeft: "5px",
-                                    }}
-                                    controls
-                                  >
-                                    <source src={data?.file_url} />
-                                  </audio>
-                                </div>
-                              ) : (
-                                <img src={data?.file_url} alt={data.title} />
-                              )}
-                            </div>
-                            <div className={styles.mynft__box__cat}>
-                              <h6>{data?.category}</h6>
-                            </div>
+                                  <source src={data?.file_url} />
+                                </audio>
+                              </div>
+                            ) : (
+                              <img src={data?.file_url} alt={data.title} />
+                            )}
                           </div>
-                          <div
-                            className={styles.mynft__box__description__wrapper}
-                          >
-                            <h2>{data?.title}</h2>
-                            <p>{data?.nft_id}</p>
+                          <div className={styles.mynft__box__cat}>
+                            <h6>{data?.category}</h6>
                           </div>
                         </div>
-                      </Col>
-                    </Fragment>
+                        <div
+                          className={styles.mynft__box__description__wrapper}
+                        >
+                          <h2>{data?.title}</h2>
+                          <p>{data?.nft_id}</p>
+                        </div>
+                      </div>
+                    </Col>
                   );
                 })}
               </Row>
