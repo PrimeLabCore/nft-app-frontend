@@ -19,6 +19,10 @@
   background-size: 50%;
 }
 
+.loginButton {
+  display: none;
+}
+
 .mainContainer .rightSide {
   -webkit-box-flex: 0.5;
       -ms-flex: 0.5;
@@ -299,6 +303,25 @@
   text-decoration: none;
 }
 
+.loginButton button {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  color: white;
+  background-color: #2f80ed;
+  padding: 7px 16px;
+  border-radius: 10px;
+  font-size: 17px;
+  cursor: pointer;
+  border: none;
+}
+
 @media (orientation: landscape) and (max-width: 990px) {
   .mainContainer .rightSide {
     -webkit-box-flex: 0.6;
@@ -313,13 +336,23 @@
     -webkit-box-direction: normal;
         -ms-flex-direction: column;
             flex-direction: column;
+  }  
+  .leftSide {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 4% 2%;
   }
   .logo {
     padding-bottom: 5%;
   }
   .leftSideMainText,
-  .featureList {
+  .featureList,
+  .menuLoginButton {
     display: none;
+  }
+  .loginButton {
+    display: block;
   }
   .mainContainer .rightSide {
     overflow: unset;
@@ -350,25 +383,26 @@
             flex-direction: column;
     position: relative;
     padding-top: 0px;
+    padding-left: 0px;
     min-height: auto;
     padding-bottom: 60px;
     margin-top: 30px;
   }
   .imageContainer .image2nd {
     position: absolute;
-    left: 28%;
+    left: 19%;
     top: 16%;
-    width: 74%;
+    width: 82%;
     margin: 0px;
   }
   .imageContainer .image1st {
     width: 95%;
   }
-  .rightSideHeader ul li:last-child {
+  /* .rightSideHeader ul li:last-child {
     position: absolute;
-    top: 15px;
+    top: 48px;
     right: 7px;
-  }
+  } */
   .contactList {
     padding: 0px;
   }
