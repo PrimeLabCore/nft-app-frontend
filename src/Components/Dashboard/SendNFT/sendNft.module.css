@@ -423,6 +423,7 @@
   border-top-right-radius: 12px;
   border-top-left-radius: 12px;
   pointer-events: none;
+  vertical-align: unset;
 }
 
 .mynft__box__wrapper .mynft__box .mynft__box__image__wrapper .mynft__box__cat {
