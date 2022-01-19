@@ -63,6 +63,12 @@ const SignIn = () => {
       });
   };
 
+  const CheckAndSubmitForm = (e) => {
+    if (e.which === 13) {
+      handleLogin();
+    }
+  };
+
   return (
     <div className={styles.half_container}>
       {isLoading && <AppLoader />}
@@ -101,6 +107,9 @@ const SignIn = () => {
                   <span>.near</span>
                 </InputAdornment>
               ),
+            }}
+            HandelKeyPress={(e) => {
+              CheckAndSubmitForm(e);
             }}
           />
         </div>
