@@ -383,15 +383,16 @@
             flex-direction: column;
     position: relative;
     padding-top: 0px;
+    padding-left: 0px;
     min-height: auto;
     padding-bottom: 60px;
     margin-top: 30px;
   }
   .imageContainer .image2nd {
     position: absolute;
-    left: 28%;
+    left: 19%;
     top: 16%;
-    width: 74%;
+    width: 82%;
     margin: 0px;
   }
   .imageContainer .image1st {
