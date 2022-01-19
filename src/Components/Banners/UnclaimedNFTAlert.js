@@ -33,7 +33,8 @@ function UnclaimedNFTAlert() {
       <>
         {nfts.map(nft => (
           <Alert key={nft.nft_id}>
-            You received an NFT. Claim it{" "}
+            You received an NFT. Claim it
+            {" "}
             <Alert.Link href="#" onClick={() => handleNftClick(nft)}>here</Alert.Link>
           </Alert>
         ))}

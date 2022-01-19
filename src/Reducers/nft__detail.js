@@ -1,6 +1,6 @@
 import { nanoid } from "nanoid";
 
-let initialvalue = {
+const initialvalue = {
   image: "",
   category: "",
   title: " ",

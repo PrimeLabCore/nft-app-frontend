@@ -1,26 +1,20 @@
 import React from "react";
 import { Outlet, Navigate } from "react-router-dom";
 
-const Layout = ({ children }) => {
-
+function Layout({ children }) {
   return (
-    <>
-      <main>{children}</main>
-    </>
+    <main>{children}</main>
   );
-};
-const LayoutRoute = () => {
+}
+function LayoutRoute() {
   // let navigate = useNavigate()
   // let isAuth = Cookies.get(cookieAuth) || false // => 'value'
-  let isAuth = true // => 'value'
-
+  const isAuth = true // => 'value'
 
   return (
-    <>
-      <Layout>
-        {isAuth ? <Outlet /> : <Navigate replace to="/signup" />}
-      </Layout>
-    </>
+    <Layout>
+      {isAuth ? <Outlet /> : <Navigate replace to="/signup" />}
+    </Layout>
   );
-};
+}
 export default LayoutRoute;

@@ -1,4 +1,5 @@
 import axios from "axios";
+import { isEmpty } from "lodash";
 import { nanoid } from "nanoid";
 import React, { Fragment, useEffect, useState } from "react";
 import { Modal } from "react-bootstrap";
@@ -10,42 +11,44 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import ContactPopup from "../../../common/components/ContactPopup";
 import { API_BASE_URL } from "../../../Utils/config";
-import ImportContactsDialog from "../../ImportContactsDialog/ImportContactsDialog";
 import { LoaderIconBlue } from "../../Generic/icons";
+import ImportContactsDialog from "../../ImportContactsDialog/ImportContactsDialog";
 import styles from "./sendNft.module.css";
-import { isEmpty } from "lodash";
 
 const responsive = {
   superLargeDesktop: {
     // the naming can be any, depends on you.
     breakpoint: { max: 4000, min: 3000 },
-    items: 1.5,
+    items: 1.5
   },
   desktop: {
     breakpoint: { max: 3000, min: 1024 },
-    items: 1.5,
+    items: 1.5
   },
   tablet: {
     breakpoint: { max: 1024, min: 464 },
-    items: 1.5,
+    items: 1.5
   },
   mobile: {
     breakpoint: { max: 464, min: 0 },
-    items: 1.5,
-  },
+    items: 1.5
+  }
 };
 
 const checkAllContacts = (data) =>
-  data.map((item) => ({ checked: true, email: item.primary_email }));
+  data.map((item) => ({
+    checked: true,
+    email: item.primary_email
+  }));
 
-const findIfChecked = (email, array) => {
-  const foundItem = array.find((item) => item.email === email);
-  if (foundItem) return foundItem.checked;
-  else return false;
-};
+// const findIfChecked = (email, array) => {
+//   const foundItem = array.find((item) => item.email === email);
+//   if (foundItem) return foundItem.checked;
+//   return false;
+// };
 
-const SendNft = () => {
-  let navigate = useNavigate();
+function SendNft() {
+  const navigate = useNavigate();
   const { user } = useSelector((state) => state.authReducer);
   const dispatch = useDispatch();
   const { nft } = useSelector((state) => state.authReducer);
@@ -57,13 +60,14 @@ const SendNft = () => {
 
   const [openPreview, setOpenPreview] = useState(false);
   const [openGift, setOpenGift] = useState(false);
-  const [selected, setSelected] = useState(nft ? nft : "");
+  const [selected, setSelected] = useState(nft || "");
 
-  const [sendGiftEmail, setSendGiftEmail] = useState("");
+  // const [sendGiftEmail, setSendGiftEmail] = useState("");
   const [isLoading, setIsloading] = useState(false);
 
   const sendnft__popup = useSelector((state) => state.sendnft__popup);
   const { nfts } = useSelector((state) => state.home__allnft);
+  const [importContactDialog, setimportContactDialog] = useState(false);
 
   const firstImport = localStorage.getItem("firstImport");
 
@@ -76,21 +80,23 @@ const SendNft = () => {
   );
 
   // for checked and unchecked items
-  const HandleClick = (email) => {
-    const updatedCheckedState = checkedState.map((item) =>
-      item.email === email
-        ? { ...item, checked: !item.checked }
-        : { ...item, checked: item.checked }
-    );
-    setCheckedState(updatedCheckedState);
-  };
+  // const HandleClick = (email) => {
+  //   const updatedCheckedState = checkedState.map((item) =>
+  //     item.email === email
+  //       ? { ...item, checked: !item.checked }
+  //       : { ...item, checked: item.checked }
+  //   );
+  //   setCheckedState(updatedCheckedState);
+  // };
+
+  useEffect(() => 0, [checkedState]);
 
   const closegiftNft = () => {
-    if(isEmpty(nfts)){
-    setOpenGift(false);
-    dispatch({ type: "createnft__open" });
-    }else{
-    setOpenGift(false);
+    if (isEmpty(nfts)) {
+      setOpenGift(false);
+      dispatch({ type: "createnft__open" });
+    } else {
+      setOpenGift(false);
     }
   };
 
@@ -98,22 +104,22 @@ const SendNft = () => {
     if (giftNFT__contactData) {
       setFilteredData(giftNFT__contactData);
     } else {
-      console.log("empty dataaa.................");
+      // console.log("empty dataaa.................");
     }
   }, [giftNFT__contactData]);
 
-  //fetch all the nfts of the user - in future use pagination
+  // fetch all the nfts of the user - in future use pagination
   useEffect(() => {
     setIsloading(true);
 
     axios
       .get(`${API_BASE_URL}/nfts?user_id=${user?.user_id}`)
       .then((response) => {
-        let tempNfts = response.data.data;
+        const tempNfts = response.data.data;
         dispatch({ type: "update_nfts", payload: tempNfts });
       })
       .catch((error) => {
-        if (error.response.data) {
+        if (error?.response?.data) {
           toast.error(error.response.data.message);
         }
       })
@@ -130,27 +136,31 @@ const SendNft = () => {
     dispatch({ type: "sendnft__close" });
 
     setOpenPreview(false);
-    setOpenGift(true);
+    if (localStorage.getItem("contactImport") === "true") {
+      setimportContactDialog(true);
+    } else {
+      setOpenGift(true);
+    }
   };
 
   const handleNftPreview = async (selectedContacts) => {
     if (selectedContacts && selectedContacts.length > 0) {
       setFilteredData(selectedContacts.map((contact) => contact.contact_id));
 
-      let nftDetail = {
+      const nftDetail = {
         sender_id: user?.user_id,
         recipient_id: selectedContacts.map(
           (contact) => contact.contact_user_id || contact.contact_id
         ),
         transaction_item_id: selected.nft_id,
         transaction_value: "NA",
-        type: "gift",
+        type: "gift"
       };
 
       axios
         .post(`${API_BASE_URL}/transactions`, nftDetail)
         .then((response) => {
-          console.log(response.data);
+          // console.log(response.data);
           toast.success(response.data.message);
 
           dispatch({ type: "sendnft__close" });
@@ -180,7 +190,7 @@ const SendNft = () => {
     navigate("/transactions");
   };
 
-  const nftClicked = (data, i) => {
+  const nftClicked = (data) => {
     /* if (selected === i) {
       setSelected("");
     } else {
@@ -193,7 +203,6 @@ const SendNft = () => {
     dispatch({ type: "close_dialog_gift_nft" });
   }, []);
 
-  const [importContactDialog, setimportContactDialog] = useState(false);
   const HandleDialogClose = () => {
     setimportContactDialog(false);
   };
@@ -215,31 +224,27 @@ const SendNft = () => {
         return;
       }
       toast.error(`Something Went Wrong Fetching Contacts From ${source}`);
-      return;
     } else {
       toast.success(`Your contacts were successfully imported from ${source}`);
       setOpenGift(true);
-      return;
     }
   };
 
-  const HandleDialogOpen = () => {
-    setimportContactDialog(true);
-  };
+  // const HandleDialogOpen = () => {
+  //   setimportContactDialog(true);
+  // };
 
   const urlArray = selected?.image?.split(".");
   const fileType = urlArray?.length ? urlArray[urlArray.length - 1] : "";
 
-
-  useEffect(()=>{
-if(localStorage.getItem("sendNftId")){
-
-  setSelected(JSON.parse(localStorage.getItem("sendNftId")))
-  localStorage.removeItem("sendNftId")
-}else{
-  setSelected("")
-}
-  },[])
+  useEffect(() => {
+    if (localStorage.getItem("sendNftId")) {
+      setSelected(JSON.parse(localStorage.getItem("sendNftId")));
+      localStorage.removeItem("sendNftId");
+    } else {
+      setSelected("");
+    }
+  }, []);
 
   return (
     <>
@@ -274,17 +279,17 @@ if(localStorage.getItem("sendNftId")){
                     "tablet",
                     "mobile",
                     "desktop",
-                    "superLargeDesktop",
+                    "superLargeDesktop"
                   ]}
                   responsive={responsive}
                   autoPlay={false}
                   infinite={false}
-                  swipeable={true}
-                  draggable={true}
+                  swipeable
+                  draggable
                 >
                   {nfts.map((data, i) => {
-                    let filename = data?.file_url.substring(
-                      data?.file_url.lastIndexOf("/") + 1
+                    const filename = data?.file_url.substring(
+                      data.file_url.lastIndexOf("/") + 1
                     );
                     const urlArray = filename?.split(".");
                     const fileType = urlArray.length
@@ -295,11 +300,12 @@ if(localStorage.getItem("sendNftId")){
                       <Fragment key={nanoid()}>
                         <div
                           className={`${styles.mynft__box} ${
-                            selected.nft_id === data.nft_id || selected?.nftid===data.nft_id
+                            selected.nft_id === data.nft_id
+                            || selected?.nftid === data.nft_id
                               ? styles.selected__nft
                               : ""
                           }`}
-                          onClick={(e) => nftClicked(data, i)}
+                          onClick={() => nftClicked(data, i)}
                         >
                           <div className={styles.mynft__box__image__wrapper}>
                             <div className={styles.mynft__box__image}>
@@ -315,7 +321,7 @@ if(localStorage.getItem("sendNftId")){
                                   <audio
                                     style={{
                                       width: "inherit",
-                                      marginTop: "60px",
+                                      marginTop: "60px"
                                     }}
                                     controls
                                   >
@@ -331,30 +337,28 @@ if(localStorage.getItem("sendNftId")){
                             </div>
                           </div>
 
-                          {selected.nft_id === data.nft_id || selected?.nftid===data.nft_id ? (
-                            <>
-                              <div
-                                className={
-                                  styles.selected__mynft__box__description__wrapper
-                                }
-                              >
-                                <div className={styles.mynft__box__description}>
-                                  <h2>{data.title}</h2>
-                                  <span
-                                    className={
-                                      styles.mynft__box__description__text
-                                    }
-                                  >
-                                    {data.nft_id}
-                                  </span>
-                                </div>
-                                <div className={styles.checked}>
-                                  <AiOutlineCheck />
-                                </div>
+                          {selected.nft_id === data.nft_id
+                          || selected?.nftid === data.nft_id ? (
+                            <div
+                              className={
+                                styles.selected__mynft__box__description__wrapper
+                              }
+                            >
+                              <div className={styles.mynft__box__description}>
+                                <h2>{data.title}</h2>
+                                <span
+                                  className={
+                                    styles.mynft__box__description__text
+                                  }
+                                >
+                                  {data.nft_id}
+                                </span>
                               </div>
-                            </>
-                          ) : (
-                            <>
+                              <div className={styles.checked}>
+                                <AiOutlineCheck />
+                              </div>
+                            </div>
+                            ) : (
                               <div
                                 className={
                                   styles.mynft__box__description__wrapper
@@ -363,8 +367,7 @@ if(localStorage.getItem("sendNftId")){
                                 <h2>{data.title}</h2>
                                 <p>{data.nft_id}</p>
                               </div>
-                            </>
-                          )}
+                            )}
                         </div>
                       </Fragment>
                     );
@@ -381,7 +384,7 @@ if(localStorage.getItem("sendNftId")){
               className={styles.next__btn}
             >
               {" "}
-              {/*handleNftGift*/}
+              {/* handleNftGift */}
               Next
               <span>
                 <IoIosArrowForward />
@@ -392,7 +395,8 @@ if(localStorage.getItem("sendNftId")){
       </Modal>
 
       {/* NFT Sender Modal */}
-      {/* {openGift && <GiftAnNft dashboard={true} closebutton={true} sendGiftButton={handleNftPreview}/>} */}
+      {/* {openGift && <GiftAnNft dashboard={true} closebutton={true}
+      sendGiftButton={handleNftPreview}/>} */}
 
       <ImportContactsDialog
         onImport={importContact}
@@ -405,13 +409,12 @@ if(localStorage.getItem("sendNftId")){
         show={openGift}
         onClose={closegiftNft}
         onBack={openInitialSendNft}
-        title={"Send NFT"}
+        title="Send NFT"
         btnText={firstImport ? "Gift NFT" : "Send Gift"}
         handleBtnClick={(selectedContacts) =>
           firstImport
             ? (dispatch({ type: "createnft__open" }), setOpenGift(false))
-            : handleNftPreview(selectedContacts)
-        }
+            : handleNftPreview(selectedContacts)}
       />
 
       {/* NFT Preview Modal */}
@@ -423,10 +426,7 @@ if(localStorage.getItem("sendNftId")){
         keyboard={false}
         centered
       >
-        <Modal.Header
-          className={styles.modal__header__wrapper}
-          closeButton
-        ></Modal.Header>
+        <Modal.Header className={styles.modal__header__wrapper} closeButton />
         <Modal.Body>
           <div className={styles.modal__body__wrapper}>
             <div className={styles.mint__info__wrapper}>
@@ -450,9 +450,14 @@ if(localStorage.getItem("sendNftId")){
                 )}
               </div>
               <h1>
-                {selected.title} <br /> sent successfully to
+                {selected.title}
+                <br />
+                &nbsp;sent successfully to
               </h1>
-              <h6>{filteredData.length} contacts</h6>
+              <h6>
+                {filteredData.length}
+                &nbsp;contacts
+              </h6>
             </div>
           </div>
           <div
@@ -466,5 +471,5 @@ if(localStorage.getItem("sendNftId")){
       </Modal>
     </>
   );
-};
+}
 export default SendNft;
