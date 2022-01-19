@@ -1,14 +1,14 @@
-let initialvalue = [];
+const initialvalue = [];
 
-const CreateNFTData = (state = initialvalue,action) => {
-    switch (action.type) {
-        case "createnftdata__store":
-            return [...state,action.payload];
+const CreateNFTData = (state = initialvalue, action) => {
+  switch (action.type) {
+    case "createnftdata__store":
+      return [...state, action.payload];
 
-        case "createnftdata__override":
-            return [action.payload];
-        default:
-            return state;
-    }
+    case "createnftdata__override":
+      return [action.payload];
+    default:
+      return state;
+  }
 }
 export default CreateNFTData;

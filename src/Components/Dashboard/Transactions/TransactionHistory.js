@@ -1,5 +1,6 @@
-import React, { memo, Fragment, useState, useEffect } from "react";
-import styles from "./transactions.module.css";
+import React, {
+  memo, Fragment, useState, useEffect
+} from "react";
 // import {Link} from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux";
 import { nanoid } from "nanoid";
@@ -7,15 +8,16 @@ import { BsArrowUpRight, BsArrowDownLeft } from "react-icons/bs";
 import axios from "axios";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
+import styles from "./transactions.module.css";
 import { API_BASE_URL } from "../../../Utils/config";
 
-const TransactionHistory = () => {
+function TransactionHistory() {
   const [tabs, setTabs] = useState("all");
   const dispatch = useDispatch();
   const [windowstate, setWindow] = useState(window.innerWidth < 767);
   const [transactions, setTransactions] = useState([]);
   const { allTransactions } = useSelector((state) => state.transactionsReducer);
-  let navigate = useNavigate();
+  const navigate = useNavigate();
   const { user } = useSelector((state) => state.authReducer);
 
   useEffect(() => {
@@ -31,7 +33,7 @@ const TransactionHistory = () => {
 
   useEffect(() => {
     async function fetchTransactions() {
-      let response = await axios.get(
+      const response = await axios.get(
         `${API_BASE_URL}/transactions/list/${user?.user_id}`
       );
 
@@ -66,108 +68,107 @@ const TransactionHistory = () => {
     navigate("/nft/detail/claim");
   };
 
-  const displayTransaction=transactions
-      .filter((data) =>
-          tabs === "sent"
-              ? !!data.sender
-              : tabs === "received"
-              ? !data.sender
-              : data
-      );
+  const displayTransaction = transactions
+    .filter((data) => (tabs === "sent"
+      ? !!data.sender
+      : tabs === "received"
+        ? !data.sender
+        : data));
   return (
-    <>
-      <div className={styles.transaction__wrapper}>
-        <div className={styles.transaction__header}>
-          <h5>History</h5>
-          {!windowstate && (
-            <div className={styles.transaction__tab} onClick={handleTabClick}>
-              <button
-                className={tabs === "all" ? styles.active : ""}
-                value="all"
-              >
-                All
-              </button>
-              <button
-                className={tabs === "sent" ? styles.active : ""}
-                value="sent"
-              >
-                Sent
-              </button>
-              <button
-                className={tabs === "received" ? styles.active : ""}
-                value="received"
-              >
-                Received
-              </button>
-            </div>
-          )}
-          <div>
-            {tabs !== "received" ? (
-              <button
-                className={styles.send__nft__mobile__button}
-                onClick={SendNft}
-              >
-                <span>
-                  <BsArrowUpRight />
-                </span>
-                Send NFT
-              </button>
-            ) : (
-              <div style={{ width: '128px' }}> </div>
-            )}
-          </div>
+    <div className={styles.transaction__wrapper}>
+      <div className={styles.transaction__header}>
+        <h5>History</h5>
+        {!windowstate && (
+        <div className={styles.transaction__tab} onClick={handleTabClick}>
+          <button
+            className={tabs === "all" ? styles.active : ""}
+            value="all"
+          >
+            All
+          </button>
+          <button
+            className={tabs === "sent" ? styles.active : ""}
+            value="sent"
+          >
+            Sent
+          </button>
+          <button
+            className={tabs === "received" ? styles.active : ""}
+            value="received"
+          >
+            Received
+          </button>
         </div>
-        {windowstate && (
-          <div className={styles.small__screen__transaction__wrapper}>
-            <div
-              className={styles.small__screen__transaction}
-              onClick={handleTabClick}
-            >
-              <button
-                className={tabs === "all" ? styles.active : ""}
-                value="all"
-              >
-                All
-              </button>
-              <button
-                className={tabs === "sent" ? styles.active : ""}
-                value="sent"
-              >
-                Sent
-              </button>
-              <button
-                className={tabs === "received" ? styles.active : ""}
-                value="received"
-              >
-                Received
-              </button>
-            </div>
-          </div>
         )}
-        {!!displayTransaction?.length ? (
-          <div className={styles.transaction__list__wrapper}>
-            {displayTransaction.map((data) => {
-                return (
-                  <Fragment key={nanoid()}>
-                    <div
-                      className={styles.transaction__list}
-                      style={{
-                        cursor: !!data.sender ? "pointer" : null,
-                      }}
-                      onClick={() => !data.sender && openClaim(data)}
-                    >
-                      <div className={styles.transaction__action}>
-                        <div className={styles.icon__wrapper}>
-                          {data.sender ? (
-                            <BsArrowUpRight />
-                          ) : (
-                            <BsArrowDownLeft />
-                          )}
-                        </div>
-                        <h6>
-                          <span>{user.wallet_id}</span> <br />
-                          {data.sender ? "Sent to" : "Received from"}{" "}
-                          {/* <a
+        <div>
+          {tabs !== "received" ? (
+            <button
+              className={styles.send__nft__mobile__button}
+              onClick={SendNft}
+            >
+              <span>
+                <BsArrowUpRight />
+              </span>
+              Send NFT
+            </button>
+          ) : (
+            <div style={{ width: '128px' }}> </div>
+          )}
+        </div>
+      </div>
+      {windowstate && (
+      <div className={styles.small__screen__transaction__wrapper}>
+        <div
+          className={styles.small__screen__transaction}
+          onClick={handleTabClick}
+        >
+          <button
+            className={tabs === "all" ? styles.active : ""}
+            value="all"
+          >
+            All
+          </button>
+          <button
+            className={tabs === "sent" ? styles.active : ""}
+            value="sent"
+          >
+            Sent
+          </button>
+          <button
+            className={tabs === "received" ? styles.active : ""}
+            value="received"
+          >
+            Received
+          </button>
+        </div>
+      </div>
+      )}
+      {displayTransaction?.length ? (
+        <div className={styles.transaction__list__wrapper}>
+          {displayTransaction.map((data) => (
+            <Fragment key={nanoid()}>
+              <div
+                className={styles.transaction__list}
+                style={{
+                  cursor: data.sender ? "pointer" : null,
+                }}
+                onClick={() => !data.sender && openClaim(data)}
+              >
+                <div className={styles.transaction__action}>
+                  <div className={styles.icon__wrapper}>
+                    {data.sender ? (
+                      <BsArrowUpRight />
+                    ) : (
+                      <BsArrowDownLeft />
+                    )}
+                  </div>
+                  <h6>
+                    <span>{user.wallet_id}</span>
+                    {' '}
+                    <br />
+                    {data.sender ? "Sent to" : "Received from"}
+                    {" "}
+                    {/* <a
                           href="https://explorer.near.org/"
                           target="_blank"
                           rel="noreferrer"
@@ -175,35 +176,33 @@ const TransactionHistory = () => {
                         >
                           {data.receiver.email}
                         </a> */}
-                          <span
+                    <span
                             //   href="https://explorer.near.org/"
                             //   target="_blank"
                             //   rel="noreferrer"
-                            className={styles.transaction__name}
-                          >
-                            {data.counterparty?.email}
-                          </span>
-                        </h6>
-                      </div>
-                      <div className={styles.transaction__time}>
-                        {/* <p>{data.time}</p> */}
-                        <p>
-                          {moment
-                            .utc(data.created)
-                            .local()
-                            .startOf("seconds")
-                            .fromNow()}
-                        </p>
-                      </div>
-                    </div>
-                  </Fragment>
-                );
-              })}
-          </div>
-        ):
-            <div align="center">Transactions not available</div>}
-      </div>
-    </>
+                      className={styles.transaction__name}
+                    >
+                      {data.counterparty?.email}
+                    </span>
+                  </h6>
+                </div>
+                <div className={styles.transaction__time}>
+                  {/* <p>{data.time}</p> */}
+                  <p>
+                    {moment
+                      .utc(data.created)
+                      .local()
+                      .startOf("seconds")
+                      .fromNow()}
+                  </p>
+                </div>
+              </div>
+            </Fragment>
+          ))}
+        </div>
+      )
+        : <div align="center">Transactions not available</div>}
+    </div>
   );
-};
+}
 export default memo(TransactionHistory);
