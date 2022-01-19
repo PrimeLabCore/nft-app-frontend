@@ -16,14 +16,14 @@
   .details__wrapper .details__head {
     margin-top: 20px !important;
   }
-  .details__wrapper .details__head .details__cat {
+  /* .details__wrapper .details__head .details__cat {
     position: absolute;
     top: 20%;
     background: white !important;
   }
   .details__wrapper .details__head .details__cat h6 {
     color: black !important;
-  }
+  } */
   .details__wrapper .details__info {
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
