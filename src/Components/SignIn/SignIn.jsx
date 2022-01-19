@@ -27,8 +27,8 @@ const SignIn = () => {
   const onAccountChange = (e) => {
     const { value } = e.target;
 
-    if (!value || doesAccountStringHaveValidCharacters(value)) {
-      setAccountId(value);
+    if (!value || doesAccountStringHaveValidCharacters(value.toLowerCase())) {
+      setAccountId(value.toLowerCase());
     }
   };
 

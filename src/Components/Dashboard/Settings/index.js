@@ -171,7 +171,9 @@ function Settings() {
     setConnectedModal(true);
   };
   const addNewWallet = () => {
-    navigate("/signup/create-account");
+    navigate("/signup/create-account", {
+      state: { user }
+    });
   };
   const check = (i) => {
     if (checked !== i) {
