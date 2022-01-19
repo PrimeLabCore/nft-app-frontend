@@ -1,15 +1,15 @@
-let initialvalue = false;
+const initialvalue = false;
 
-const handleTooltipClick = (state = initialvalue,action) => {
-    switch (action.type) {
-        case "toggle":
-            return !state
+const handleTooltipClick = (state = initialvalue, action) => {
+  switch (action.type) {
+    case "toggle":
+      return !state
 
-        case "handleTooltipClick__close":
-            return false;
+    case "handleTooltipClick__close":
+      return false;
 
-        default:
-            return state;
-    }
+    default:
+      return state;
+  }
 }
 export default handleTooltipClick;
