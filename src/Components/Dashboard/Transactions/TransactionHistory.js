@@ -144,7 +144,7 @@ function TransactionHistory() {
       </div>
       )}
       {displayTransaction?.length ? (
-        <div style={{ marginBottom: '100px' }} className={styles.transaction__list__wrapper}>
+        <div className={styles.transaction__list__wrapper}>
           {displayTransaction.map((data) => (
             <Fragment key={nanoid()}>
               <div
