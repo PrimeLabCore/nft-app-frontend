@@ -219,7 +219,7 @@ function CreateNft(props) {
         );
 
         axios
-          .get(`${API_BASE_URL}/nfts?user_id=${user?.user_id}`)
+          .get(`${API_BASE_URL}/nfts/list?owner_id=${user?.user_id}`)
           .then((response) => {
             const tempNfts = response.data.data;
             dispatch({ type: "update_nfts", payload: tempNfts });
