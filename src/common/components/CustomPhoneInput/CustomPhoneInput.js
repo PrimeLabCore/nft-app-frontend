@@ -35,6 +35,7 @@ function CustomPhoneInput({
         backgroundColor: "#f7f7f7",
         ...containerStyle
       }}
+      enableSearch
       onKeyDown={HandelKeyPress}
       buttonStyle={{ borderRadius: " 10px 0 0 10px " }}
       inputStyle={{
