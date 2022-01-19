@@ -14,7 +14,7 @@ function UnclaimedNFTAlert() {
 
   useEffect(() => {
     async function getNFTs() {
-      const { data: { data } } = await request({ url: `/nfts?user_id=${user?.user_id}` })
+      const { data: { data } } = await request({ url: `/nfts/list?owner_id=${user?.user_id}` })
       const unclaimedNFTs = data.filter(nft => nft.status === NFT_STATUSES.unclaimed)
       setNFTs(unclaimedNFTs)
     }
