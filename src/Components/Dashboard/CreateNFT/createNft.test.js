@@ -59,8 +59,8 @@ describe("createNft", () => {
       .reply(200, { data: { title: "test title" } });
 
     mock
-      .onGet(`${API_BASE_URL}/nfts?user_id=1`)
-      .reply(200, { data: { data: {} } });
+      .onGet(`${API_BASE_URL}/nfts/list?owner_id=1`)
+      .reply(200, { data: [] });
 
     const { getByTestId, getByText } = renderWithRedux(
       <BrowserRouter>
@@ -111,8 +111,10 @@ describe("createNft", () => {
     expect(successModalBody).toBeInTheDocument();
 
     // Check for success toast
-    await waitFor(() => getByText('NFT test title was successfully mined.'));
-    expect(getByText('NFT test title was successfully mined.')).toBeInTheDocument();
+    await waitFor(() => getByText("NFT test title was successfully mined."));
+    expect(
+      getByText("NFT test title was successfully mined.")
+    ).toBeInTheDocument();
   });
 
   test("NFT was failed to mint", async () => {
@@ -170,7 +172,7 @@ describe("createNft", () => {
     fireEvent.click(mintNftButton);
 
     // Check for error toast
-    await waitFor(() => getByText('failed to mint'));
-    expect(getByText('failed to mint')).toBeInTheDocument();
+    await waitFor(() => getByText("failed to mint"));
+    expect(getByText("failed to mint")).toBeInTheDocument();
   });
 });
