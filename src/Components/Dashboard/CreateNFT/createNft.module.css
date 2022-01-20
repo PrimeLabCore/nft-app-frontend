@@ -361,6 +361,7 @@
   border-radius: 12px;
   background-color: #fff;
   margin-bottom: 10px;
+  overflow: hidden;  
 }
 
 .nft__form__modal .modal__body__wrapper .mynft__box .mynft__box__image__wrapper {
