@@ -298,7 +298,7 @@ function SendNft() {
                   swipeable
                   draggable
                 >
-                  {displayNfts.sort(function(x,y){ return x.nft_id === nft.nft_id ? -1 : y.nft_id === nft.nft_id ? 1 : 0; }).map((data, i) => {
+                  {displayNfts.map((data, i) => {
                     const filename = data?.file_url.substring(
                       data?.file_url.lastIndexOf("/") + 1
                     );
