@@ -1,11 +1,11 @@
-import React, { useEffect } from "react";
-import { BsArrowUpRight } from "react-icons/bs";
-import { Accordion } from "react-bootstrap";
-import { useSelector, useDispatch } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
-import { toast } from "react-toastify";
+import React, {useEffect} from "react";
+import {BsArrowUpRight} from "react-icons/bs";
+import {Accordion} from "react-bootstrap";
+import {useSelector, useDispatch} from "react-redux";
+import {useNavigate, useParams} from "react-router-dom";
+import {toast} from "react-toastify";
 
-import { mapNftDetails } from "../../../Utils/utils";
+import {mapNftDetails} from "../../../Utils/utils";
 import request from "../../../Services/httpClient";
 import styles from "./details.module.css";
 
@@ -14,11 +14,11 @@ const Details = () => {
   const navigate = useNavigate();
   const nftIdFromUrl = useParams().nftId;
 
-  const { user } = useSelector((state) => state.authReducer);
+  const {user} = useSelector((state) => state.authReducer);
   const nftData = useSelector((state) => state.nft__detail);
 
   const sendNft = () => {
-    dispatch({ type: "sendnft__open" });
+    dispatch({type: "sendnft__open"});
     dispatch({
       type: "current_selected_nft",
       payload: nftData,
@@ -39,10 +39,10 @@ const Details = () => {
     async function getNftDetails() {
       try {
         const {
-          data: { data },
-        } = await request({ url: `/nfts/${nftIdFromUrl}` });
+          data: {data},
+        } = await request({url: `/nfts/${nftIdFromUrl}`});
         if (data) {
-          dispatch({ type: "nft__detail", payload: mapNftDetails(data) });
+          dispatch({type: "nft__detail", payload: mapNftDetails(data)});
         }
       } catch (error) {
         if (error.response.data) {
@@ -76,7 +76,7 @@ const Details = () => {
         </div>
         <div className={styles.details__info}>
           <div className={styles.details__profile}>
-            <div className={styles.details__profile__picture}></div>
+            <div className={styles.details__profile__picture}/>
             <div className={styles.details__user__info}>
               <p>{nftData.owner}</p>
               <h6>{user?.account_id}</h6>
@@ -87,7 +87,7 @@ const Details = () => {
             <button onClick={() => sendNft()}>
               Send{" "}
               <span>
-                <BsArrowUpRight />
+                <BsArrowUpRight/>
               </span>
             </button>
           )}
