@@ -36,7 +36,7 @@ const responsive = {
 };
 
 const checkAllContacts = (data) =>
-  data.map((item) => ({
+  data?.map((item) => ({
     checked: true,
     email: item.primary_email
   }));
@@ -68,7 +68,7 @@ function SendNft() {
   const sendnft__popup = useSelector((state) => state.sendnft__popup);
   const { nfts } = useSelector((state) => state.home__allnft);
   const [importContactDialog, setimportContactDialog] = useState(false);
-
+  const [displayNfts,setDisplayNfts]=useState(nfts||[]);
   const firstImport = localStorage.getItem("firstImport");
 
   const closeSendNft = () => {
@@ -115,7 +115,7 @@ function SendNft() {
     axios
       .get(`${API_BASE_URL}/nfts/list?owner_id=${user?.user_id}`)
       .then((response) => {
-        const tempNfts = response.data.data;
+        const tempNfts = response.data?.data;
         dispatch({ type: "update_nfts", payload: tempNfts });
       })
       .catch((error) => {
@@ -129,7 +129,17 @@ function SendNft() {
   }, []);
 
   useEffect(() => {
-    nft && setSelected(nft);
+    let displayNFTsArray=[...nfts];
+    if (nft) {
+      const index = nfts.findIndex(x=>x.nft_id===nft.nftid);
+      console.log(index)
+      if (index > -1) {
+        displayNFTsArray.splice(index, 1);
+      }
+      displayNFTsArray.unshift(nfts[index])
+      setSelected(nft);
+    }
+    setDisplayNfts(displayNFTsArray)
   }, [nft]);
 
   const handleNftGift = () => {
@@ -246,6 +256,7 @@ function SendNft() {
     }
   }, []);
 
+  // console.log(nfts.sort(function(x,y){ return x.nft_id === selected.nft_id ? -1 : y.nft_id === selected.nft_id ? 1 : 0; }))
   return (
     <>
       {/* NFT Selection Modal */}
@@ -287,12 +298,12 @@ function SendNft() {
                   swipeable
                   draggable
                 >
-                  {nfts.map((data, i) => {
+                  {displayNfts.sort(function(x,y){ return x.nft_id === nft.nft_id ? -1 : y.nft_id === nft.nft_id ? 1 : 0; }).map((data, i) => {
                     const filename = data?.file_url.substring(
-                      data.file_url.lastIndexOf("/") + 1
+                      data?.file_url.lastIndexOf("/") + 1
                     );
                     const urlArray = filename?.split(".");
-                    const fileType = urlArray.length
+                    const fileType = urlArray?.length
                       ? urlArray[urlArray.length - 1]
                       : "";
 
@@ -300,8 +311,8 @@ function SendNft() {
                       <Fragment key={nanoid()}>
                         <div
                           className={`${styles.mynft__box} ${
-                            selected.nft_id === data.nft_id
-                            || selected?.nftid === data.nft_id
+                            selected?.nft_id === data?.nft_id
+                            || selected?.nftid === data?.nft_id
                               ? styles.selected__nft
                               : ""
                           }`}
@@ -329,29 +340,29 @@ function SendNft() {
                                   </audio>
                                 </div>
                               ) : (
-                                <img src={data?.file_url} alt={data.title} />
+                                <img src={data?.file_url} alt={data?.title} />
                               )}
                             </div>
                             <div className={styles.mynft__box__cat}>
-                              <h6>{data.category}</h6>
+                              <h6>{data?.category}</h6>
                             </div>
                           </div>
 
-                          {selected.nft_id === data.nft_id
-                          || selected?.nftid === data.nft_id ? (
+                          {selected?.nft_id === data?.nft_id
+                          || selected?.nftid === data?.nft_id ? (
                             <div
                               className={
                                 styles.selected__mynft__box__description__wrapper
                               }
                             >
                               <div className={styles.mynft__box__description}>
-                                <h2>{data.title}</h2>
+                                <h2>{data?.title}</h2>
                                 <span
                                   className={
                                     styles.mynft__box__description__text
                                   }
                                 >
-                                  {data.nft_id}
+                                  {data?.nft_id}
                                 </span>
                               </div>
                               <div className={styles.checked}>
@@ -364,8 +375,8 @@ function SendNft() {
                                   styles.mynft__box__description__wrapper
                                 }
                               >
-                                <h2>{data.title}</h2>
-                                <p>{data.nft_id}</p>
+                                <h2>{data?.title}</h2>
+                                <p>{data?.nft_id}</p>
                               </div>
                             )}
                         </div>
