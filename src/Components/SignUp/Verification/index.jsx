@@ -10,7 +10,7 @@ import axios from "axios";
 import styles from "./index.module.css";
 import AppLoader from "../../Generic/AppLoader";
 import { API_BASE_URL } from "../../../Utils/config";
-import { isOnlyNumber, mapUserSession } from "../../../Utils/utils";
+import { mapUserSession } from "../../../Utils/utils";
 
 const Verification = () => {
   const dispatch = useDispatch();
@@ -44,10 +44,10 @@ const Verification = () => {
 
   const inputEvent = (e) => {
     const { name, value } = e.target;
-      setDetails((preValue) => ({
-        ...preValue,
-        [name]: value.slice(0,6),
-      }));
+    setDetails((preValue) => ({
+      ...preValue,
+      [name]: value.slice(0, 6),
+    }));
   };
 
   useEffect(() => {
@@ -151,7 +151,7 @@ const Verification = () => {
             length={6}
             value={details.verification}
             // value={""}
-            validChars={[0-9]}
+            validChars={[0 - 9]}
             inputProps={{
               value: details.verification,
               name: "verification",

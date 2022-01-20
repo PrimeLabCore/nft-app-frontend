@@ -68,7 +68,7 @@ function SendNft() {
   const sendnft__popup = useSelector((state) => state.sendnft__popup);
   const { nfts } = useSelector((state) => state.home__allnft);
   const [importContactDialog, setimportContactDialog] = useState(false);
-  const [displayNfts,setDisplayNfts]=useState(nfts||[]);
+  const [displayNfts, setDisplayNfts] = useState(nfts || []);
   const firstImport = localStorage.getItem("firstImport");
 
   const closeSendNft = () => {
@@ -129,9 +129,9 @@ function SendNft() {
   }, []);
 
   useEffect(() => {
-    let displayNFTsArray=[...nfts];
+    const displayNFTsArray = [...nfts];
     if (nft) {
-      const index = nfts.findIndex(x=>x.nft_id===nft.nftid);
+      const index = nfts.findIndex(x => x.nft_id === nft.nftid);
       console.log(index)
       if (index > -1) {
         displayNFTsArray.splice(index, 1);
@@ -183,7 +183,7 @@ function SendNft() {
             toast.error(error.response.data.message);
           }
         })
-        .finally(() => {});
+        .finally(() => { });
     } else {
       toast.error("Please select some contact!");
     }
@@ -256,7 +256,9 @@ function SendNft() {
     }
   }, []);
 
-  // console.log(nfts.sort(function(x,y){ return x.nft_id === selected.nft_id ? -1 : y.nft_id === selected.nft_id ? 1 : 0; }))
+  // console.log(nfts.sort(function(x,y)
+  //{ return x.nft_id === selected.nft_id ? 
+  //-1 : y.nft_id === selected.nft_id ? 1 : 0; }))
   return (
     <>
       {/* NFT Selection Modal */}
@@ -310,12 +312,11 @@ function SendNft() {
                     return (
                       <Fragment key={nanoid()}>
                         <div
-                          className={`${styles.mynft__box} ${
-                            selected?.nft_id === data?.nft_id
+                          className={`${styles.mynft__box} ${selected?.nft_id === data?.nft_id
                             || selected?.nftid === data?.nft_id
-                              ? styles.selected__nft
-                              : ""
-                          }`}
+                            ? styles.selected__nft
+                            : ""
+                            }`}
                           onClick={() => nftClicked(data, i)}
                         >
                           <div className={styles.mynft__box__image__wrapper}>
@@ -349,7 +350,7 @@ function SendNft() {
                           </div>
 
                           {selected?.nft_id === data?.nft_id
-                          || selected?.nftid === data?.nft_id ? (
+                            || selected?.nftid === data?.nft_id ? (
                             <div
                               className={
                                 styles.selected__mynft__box__description__wrapper
@@ -369,16 +370,16 @@ function SendNft() {
                                 <AiOutlineCheck />
                               </div>
                             </div>
-                            ) : (
-                              <div
-                                className={
-                                  styles.mynft__box__description__wrapper
-                                }
-                              >
-                                <h2>{data?.title}</h2>
-                                <p>{data?.nft_id}</p>
-                              </div>
-                            )}
+                          ) : (
+                            <div
+                              className={
+                                styles.mynft__box__description__wrapper
+                              }
+                            >
+                              <h2>{data?.title}</h2>
+                              <p>{data?.nft_id}</p>
+                            </div>
+                          )}
                         </div>
                       </Fragment>
                     );
