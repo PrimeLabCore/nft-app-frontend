@@ -16,7 +16,7 @@ function Details() {
   const [isLoading, setIsLoading] = useState(true);
 
   const nftData = useSelector((state) => state.nft__detail);
-
+  console.log(nftData,"nftData")
   const sendNft = () => {
     dispatch({ type: "sendnft__open" });
     localStorage.setItem("sendNftId", JSON.stringify(nftData))
@@ -146,8 +146,8 @@ function Details() {
             <Accordion.Item eventKey="1">
               <Accordion.Header>Properties</Accordion.Header>
               <Accordion.Body className={styles.accord__body}>
-                {nftData.attributes.map(attr => (
-                  <div key={attr.attr_name} className={styles.nft__info}>
+                {nftData.attributes.map((attr,key) => (
+                  <div key={attr.id} className={styles.nft__info}>
                     <p>{attr.attr_name}</p>
                     <a
                       href={nftData?.explorer_url}
