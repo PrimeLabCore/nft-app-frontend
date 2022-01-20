@@ -373,7 +373,7 @@ function SendNft() {
                                 <h2>{data?.title}</h2>
                                 <p>{data?.nft_id}</p>
                               </div>
-                          )}
+                            )}
                         </div>
                       </Fragment>
                     );
