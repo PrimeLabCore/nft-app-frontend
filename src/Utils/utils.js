@@ -88,3 +88,7 @@ export const isValidFullName = (text) => {
   const regularExp = /^[a-z ,.'-]+$/i
   return regularExp.test(text);
 }
+
+export const getFileExtension = (url) => {
+  return url.split('.').pop().split(/\#|\?/)[0];
+}
