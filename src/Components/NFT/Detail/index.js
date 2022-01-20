@@ -59,7 +59,7 @@ function Details() {
     // if the user is taken straight to this page via a direct URL, then the redux
     // store won't have the nft details. this will cause a bug.
     getNftDetails();
-  }, [nftData]);
+  }, []);
 
   return (
     <div className={styles.details__wrapper}>

@@ -20,13 +20,12 @@ function CustomPhoneInput({
     <PhoneInput
       onFocus={onFocus}
       onChange={(fieldValue, country) => {
-        onChange && onChange({ target: { value: fieldValue } });
-
         signUp && setCountry(country);
 
         if (countryValue && country?.name !== countryValue?.name) {
           setinputFields({ phone: `+${country?.dialCode}` });
         }
+        onChange && onChange({ target: { value: fieldValue } });
       }}
       value={value}
       placeholder={placeholder}
@@ -36,6 +35,7 @@ function CustomPhoneInput({
         backgroundColor: "#f7f7f7",
         ...containerStyle
       }}
+      enableSearch
       onKeyDown={HandelKeyPress}
       buttonStyle={{ borderRadius: " 10px 0 0 10px " }}
       inputStyle={{

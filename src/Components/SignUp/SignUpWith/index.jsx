@@ -415,8 +415,8 @@ const SignUpWith = () => {
           }`}
           disabled={
             loginForm === "email"
-              ? inputFields.email.length === 0
-              : inputFields.phone.length < 2
+              ? inputFields.email?.length === 0
+              : inputFields.phone?.length < 2
           }
         >
           Continue

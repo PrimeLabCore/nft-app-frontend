@@ -23,6 +23,7 @@
             justify-content: center;
             button{
                 @include defaultButton($primary__color);
+                z-index: 2;
             }
         }
         

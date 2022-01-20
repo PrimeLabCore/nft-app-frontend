@@ -106,7 +106,6 @@
         color: #2f80ed;
         font-size: 20.4px;
         font-weight: normal;
-        margin-left: 20px;
         border: none;
         background-color: transparent;
         letter-spacing: -0.4896px;
@@ -610,6 +609,7 @@
           border-top-right-radius: 12px;
           border-top-left-radius: 12px;
           pointer-events: none;
+          vertical-align: unset;
         }
       }
       .mynft__box__cat {
@@ -637,6 +637,7 @@
         font-size: 16.8px;
         color: #808080;
         margin-bottom: 0px;
+        overflow-wrap: break-word;
       }
     }
     .selected__mynft__box__description__wrapper {

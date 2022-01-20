@@ -27,8 +27,8 @@ const SignIn = () => {
   const onAccountChange = (e) => {
     const { value } = e.target;
 
-    if (!value || doesAccountStringHaveValidCharacters(value)) {
-      setAccountId(value);
+    if (!value || doesAccountStringHaveValidCharacters(value.toLowerCase())) {
+      setAccountId(value.toLowerCase());
     }
   };
 
@@ -61,6 +61,12 @@ const SignIn = () => {
       .finally(() => {
         setIsloading(false);
       });
+  };
+
+  const CheckAndSubmitForm = (e) => {
+    if (e.which === 13) {
+      handleLogin();
+    }
   };
 
   return (
@@ -101,6 +107,9 @@ const SignIn = () => {
                   <span>.near</span>
                 </InputAdornment>
               ),
+            }}
+            HandelKeyPress={(e) => {
+              CheckAndSubmitForm(e);
             }}
           />
         </div>

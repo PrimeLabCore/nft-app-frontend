@@ -72,7 +72,7 @@ const MyNft = ({ isLink }) => {
 
     // Ajax Request to create user
     axios
-      .get(`${API_BASE_URL}/nfts?user_id=${user?.user_id}`)
+      .get(`${API_BASE_URL}/nfts/list?owner_id=${user?.user_id}`)
       .then((response) => {
         // save user details
         const tempNfts = response.data.data;
