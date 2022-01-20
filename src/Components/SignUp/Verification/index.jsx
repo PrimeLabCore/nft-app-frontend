@@ -40,15 +40,14 @@ const Verification = () => {
   const HandleClick = () => {
     navigate("/signin");
   };
+  console.log(details)
 
   const inputEvent = (e) => {
     const { name, value } = e.target;
-    if (isOnlyNumber(value)) {
       setDetails((preValue) => ({
         ...preValue,
-        [name]: value,
+        [name]: value.slice(0,6),
       }));
-    }
   };
 
   useEffect(() => {
@@ -152,6 +151,7 @@ const Verification = () => {
             length={6}
             value={details.verification}
             // value={""}
+            validChars={[0-9]}
             inputProps={{
               value: details.verification,
               name: "verification",
