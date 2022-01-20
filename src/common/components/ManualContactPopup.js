@@ -132,7 +132,7 @@ function ManualContactPopup({
       <Modal.Body>
         <>
           <TextFieldComponent
-            InputProps={{ maxLength: 20 }}
+            InputProps={{ maxLength: 10 }}
             autoFocus
             variant="outlined"
             placeholder="First Name"
@@ -146,7 +146,7 @@ function ManualContactPopup({
             }}
           />
           <TextFieldComponent
-            InputProps={{ maxLength: 20 }}
+            InputProps={{ maxLength: 10 }}
             variant="outlined"
             placeholder="Last Name"
             type="name"
