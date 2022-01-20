@@ -305,6 +305,7 @@ function SendNft() {
                               ? styles.selected__nft
                               : ""
                           }`}
+                          data-testid={`nft-item-${data.nft_id}`}
                           onClick={() => nftClicked(data, i)}
                         >
                           <div className={styles.mynft__box__image__wrapper}>
@@ -382,6 +383,7 @@ function SendNft() {
               onClick={handleNftGift}
               disabled={!selected}
               className={styles.next__btn}
+              data-testid="next-button"
             >
               {" "}
               {/* handleNftGift */}
