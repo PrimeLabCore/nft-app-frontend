@@ -495,7 +495,7 @@ function CreateNft(props) {
               <div className={styles.form__group}>
                 <label>PROPERTIES</label>
                 {formValues.map((val, index) => (
-                  <div className={styles.form__group__inner} key={val.attr_name}>
+                  <div className={styles.form__group__inner}>
                     <input
                       type="text"
                       value={val.attr_name}
