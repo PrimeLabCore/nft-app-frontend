@@ -309,6 +309,22 @@ function CreateNft(props) {
     }
   }
 
+  const handleDragableItem = (actionType) => (e) => {
+    switch (actionType) {
+      case "placed":
+        e.preventDefault();
+        e.stopPropagation();
+        handleNewFileUpload(e.dataTransfer.files);
+        break;
+      case "over":
+        e.preventDefault();
+        e.stopPropagation();
+        break
+      default:
+        break;
+    }
+  }
+
   return (
     <>
       {/* Initial Modal  */}
@@ -344,7 +360,7 @@ function CreateNft(props) {
           <div className={styles.modal__body__wrapper}>
             <h3>Upload Files</h3>
 
-            <div className="file__wrapper">
+            <div className="file__wrapper" onDrop={handleDragableItem("placed")} onDragOver={handleDragableItem("over")}>
               <input
                 type="file"
                 id="files"
