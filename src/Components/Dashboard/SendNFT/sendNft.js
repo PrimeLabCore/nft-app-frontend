@@ -310,7 +310,7 @@ function SendNft() {
                             || selected?.nftid === data?.nft_id
                             ? styles.selected__nft
                             : ""
-                            }`}
+                        }`}
                           onClick={() => nftClicked(data, i)}
                         >
                           <div className={styles.mynft__box__image__wrapper}>
@@ -345,7 +345,7 @@ function SendNft() {
 
                           {selected?.nft_id === data?.nft_id
                             || selected?.nftid === data?.nft_id ? (
-                            <div
+                              <div
                               className={
                                 styles.selected__mynft__box__description__wrapper
                               }
@@ -364,7 +364,7 @@ function SendNft() {
                                 <AiOutlineCheck />
                               </div>
                             </div>
-                          ) : (
+                            ) : (
                             <div
                               className={
                                 styles.mynft__box__description__wrapper
@@ -373,7 +373,7 @@ function SendNft() {
                               <h2>{data?.title}</h2>
                               <p>{data?.nft_id}</p>
                             </div>
-                          )}
+                            )}
                         </div>
                       </Fragment>
                     );
