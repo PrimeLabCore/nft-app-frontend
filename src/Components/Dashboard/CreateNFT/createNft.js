@@ -1,4 +1,5 @@
 import axios from "axios";
+import { nanoid } from "nanoid";
 import React, { useState, useEffect } from "react";
 import { Modal, ProgressBar } from "react-bootstrap";
 import { AiOutlinePlus } from "react-icons/ai";
@@ -513,10 +514,7 @@ function CreateNft(props) {
               <div className={styles.form__group}>
                 <label>PROPERTIES</label>
                 {formValues.map((val, index) => (
-                  <div
-                    className={styles.form__group__inner}
-                    key={val.attr_name}
-                  >
+                  <div className={styles.form__group__inner} key={nanoid()}>
                     <input
                       type="text"
                       value={val.attr_name}
