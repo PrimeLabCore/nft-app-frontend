@@ -16,7 +16,6 @@ function Details() {
   const [isLoading, setIsLoading] = useState(true);
 
   const nftData = useSelector((state) => state.nft__detail);
-
   const sendNft = () => {
     dispatch({ type: "sendnft__open" });
     localStorage.setItem("sendNftId", JSON.stringify(nftData))
@@ -83,21 +82,21 @@ function Details() {
           <div className={styles.details__user__info}>
             <p>Creator</p>
             {
-                isLoading
-                  ? <TextPlaceholder xs={150} bg="light" />
-                  : <h6>{nftData?.owner?.full_name}</h6>
-              }
+              isLoading
+                ? <TextPlaceholder xs={150} bg="light" />
+                : <h6>{nftData?.owner?.full_name}</h6>
+            }
           </div>
         </div>
 
         {!nftData?.is_nft_claimed && (
-        <button onClick={() => sendNft()}>
-          Send
-          {" "}
-          <span>
-            <BsArrowUpRight />
-          </span>
-        </button>
+          <button onClick={() => sendNft()}>
+            Send
+            {" "}
+            <span>
+              <BsArrowUpRight />
+            </span>
+          </button>
         )}
       </div>
       <div className={styles.details__accords}>
@@ -141,27 +140,27 @@ function Details() {
           </div>
         </Accordion>
         {nftData?.attributes?.length > 0 && (
-        <Accordion>
-          <div className={styles.accord}>
-            <Accordion.Item eventKey="1">
-              <Accordion.Header>Properties</Accordion.Header>
-              <Accordion.Body className={styles.accord__body}>
-                {nftData.attributes.map(attr => (
-                  <div key={attr.attr_name} className={styles.nft__info}>
-                    <p>{attr.attr_name}</p>
-                    <a
-                      href={nftData?.explorer_url}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      {attr.attr_value}
-                    </a>
-                  </div>
-                ))}
-              </Accordion.Body>
-            </Accordion.Item>
-          </div>
-        </Accordion>
+          <Accordion>
+            <div className={styles.accord}>
+              <Accordion.Item eventKey="1">
+                <Accordion.Header>Properties</Accordion.Header>
+                <Accordion.Body className={styles.accord__body}>
+                  {nftData.attributes.map((attr) => (
+                    <div key={attr.id} className={styles.nft__info}>
+                      <p>{attr.attr_name}</p>
+                      <a
+                        href={nftData?.explorer_url}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        {attr.attr_value}
+                      </a>
+                    </div>
+                  ))}
+                </Accordion.Body>
+              </Accordion.Item>
+            </div>
+          </Accordion>
         )}
       </div>
     </div>

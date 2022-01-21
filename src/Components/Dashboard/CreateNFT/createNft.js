@@ -248,7 +248,7 @@ function CreateNft(props) {
         }
       })
       .catch((error) => {
-        if (error.response.data) {
+        if (error?.response?.data) {
           toast.error(error.response.data.message);
         }
       })
