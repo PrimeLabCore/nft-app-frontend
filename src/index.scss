@@ -1,42 +1,48 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
 body {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Inter', sans-serif;
-    background-color: #F9F9F9 !important;
-    overflow: visible !important;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+  background-color: #F9F9F9 !important;
+  overflow: visible !important;
+
+  &.modal-open {
+    overflow: hidden !important;
+  }
 }
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
-    width: 10px;
+  width: 10px;
 }
-  
+
 ::-webkit-scrollbar-track {
-    background: #f1f1f1;
+  background: #f1f1f1;
 }
-  
+
 ::-webkit-scrollbar-thumb {
-    background: #888;
+  background: #888;
 }
-  
+
 ::-webkit-scrollbar-thumb:hover {
-    background: #555;
+  background: #555;
 }
+
 .app-spinner {
-    position: fixed;
-    background: #00000059;
-    width: 100vw;
-    height: 100vh;
-    top: 0;
-    left: 0;
-    z-index: 99;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  position: fixed;
+  background: #00000059;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  z-index: 99;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-.requiredIndicator{
-    color: red;
+
+.requiredIndicator {
+  color: red;
 }
