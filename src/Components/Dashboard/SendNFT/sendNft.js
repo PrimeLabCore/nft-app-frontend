@@ -69,9 +69,8 @@ function SendNft() {
   const sendnft__popup = useSelector((state) => state.sendnft__popup);
   const { nfts } = useSelector((state) => state.home__allnft);
   const [importContactDialog, setimportContactDialog] = useState(false);
-  const [displayNfts, setDisplayNfts] = useState(nfts || []);
+  const [displayNfts, setDisplayNfts] = useState(nfts);
   const firstImport = localStorage.getItem("firstImport");
-
   const closeSendNft = () => {
     dispatch({ type: "sendnft__close" });
     setOpenPreview(false);
@@ -100,7 +99,9 @@ function SendNft() {
       setOpenGift(false);
     }
   };
-
+  useEffect(() => {
+    setDisplayNfts(nfts);
+  }, [nfts]);
   useEffect(() => {
     if (giftNFT__contactData) {
       setFilteredData(giftNFT__contactData);
@@ -130,18 +131,19 @@ function SendNft() {
   }, []);
 
   useEffect(() => {
-    const displayNFTsArray = [...nfts];
     if (nft) {
+      const displayNFTsArray = [...nfts];
       const index = nfts.findIndex(x => x.nft_id === nft.nftid);
-      // console.log(index)
-      if (index > -1) {
+
+      if (index > 0) {
+        if (nft?.id !== selected?.id) setSelected(displayNFTsArray[index]);
         displayNFTsArray.splice(index, 1);
+        displayNFTsArray.unshift(nfts[index]);
       }
-      displayNFTsArray.unshift(nfts[index])
-      setSelected(nft);
+      // console.log(nft, selected);
+      setDisplayNfts(displayNFTsArray)
     }
-    setDisplayNfts(displayNFTsArray)
-  }, [nft]);
+  }, [nft, nfts]);
 
   const handleNftGift = () => {
     dispatch({ type: "sendnft__close" });
@@ -153,17 +155,15 @@ function SendNft() {
       setOpenGift(true);
     }
   };
-
   const handleNftPreview = async (selectedContacts) => {
     if (selectedContacts && selectedContacts.length > 0) {
       setFilteredData(selectedContacts.map((contact) => contact.contact_id));
-
       const nftDetail = {
         sender_id: user?.user_id,
         recipient_id: selectedContacts.map(
           (contact) => contact.contact_user_id || contact.contact_id
         ),
-        transaction_item_id: selected.nft_id,
+        transaction_item_id: selected.nft_id || selected.nftid,
         transaction_value: "NA",
         type: "gift"
       };
@@ -202,6 +202,7 @@ function SendNft() {
   };
 
   const nftClicked = (data) => {
+    console.log(data)
     /* if (selected === i) {
       setSelected("");
     } else {
@@ -245,9 +246,9 @@ function SendNft() {
   //   setimportContactDialog(true);
   // };
 
-  const urlArray = selected?.image?.split(".");
+  const urlArray = (selected?.file_url || selected?.image)?.split(".");
   const fileType = urlArray?.length ? urlArray[urlArray.length - 1] : "";
-
+  console.log(fileType, urlArray);
   useEffect(() => {
     if (localStorage.getItem("sendNftId")) {
       setSelected(JSON.parse(localStorage.getItem("sendNftId")));
@@ -452,7 +453,7 @@ function SendNft() {
                     </audio>
                   </div>
                 ) : (
-                  <img src={selected?.file_url} alt={selected.title} />
+                  <img src={selected?.file_url || selected?.image} alt={selected.title} />
                 )}
               </div>
               <h1>
