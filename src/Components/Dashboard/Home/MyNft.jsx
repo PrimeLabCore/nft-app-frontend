@@ -99,6 +99,11 @@ const MyNft = ({ isLink }) => {
     navigate(`/nft/${data.nft_id}`);
   };
 
+  const filterEmpty = data => {
+    if (!data?.file_url || data?.file_url === "") return false;
+    return !(data.status === "unclaimed_gift" && data.parent_id);
+  };
+
   return (
     <div
       className={`${styles.mynft__wrapper} ${!isLink ? styles.mynft__page__wrapper : ""
@@ -133,7 +138,9 @@ const MyNft = ({ isLink }) => {
               swipeable
               draggable
             >
-              {alldata.map(data => {
+              {alldata
+                .filter(filterEmpty)
+                .map(data => {
                 const urlArray = data?.file_url?.split(".");
                 const fileType = urlArray.length
                   ? urlArray[urlArray.length - 1]
@@ -188,7 +195,9 @@ const MyNft = ({ isLink }) => {
             </Carousel>
           ) : (
             <Row>
-              {alldata.map((data) => {
+              {alldata
+                .filter(filterEmpty)
+                .map((data) => {
                 const urlArray = data?.file_url?.split(".");
                 const fileType = urlArray.length
                   ? urlArray[urlArray.length - 1]
