@@ -16,8 +16,8 @@ function NotFound() {
           <div>
             <h1>Looks like you are lost</h1>
             <div className={styles.btn__wrapper}>
-              <button onClick={() => navigate(-1)}>
-                Go Back?
+              <button onClick={() => navigate('/')}>
+                Go Home?
                 <span><IoIosArrowBack /></span>
               </button>
             </div>

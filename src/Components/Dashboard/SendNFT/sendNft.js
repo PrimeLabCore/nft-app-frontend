@@ -134,6 +134,7 @@ function SendNft() {
     if (nft) {
       const displayNFTsArray = [...nfts];
       const index = nfts.findIndex(x => x.nft_id === nft.nftid);
+
       if (index > 0) {
         if (nft?.id !== selected?.id) setSelected(displayNFTsArray[index]);
         displayNFTsArray.splice(index, 1);
