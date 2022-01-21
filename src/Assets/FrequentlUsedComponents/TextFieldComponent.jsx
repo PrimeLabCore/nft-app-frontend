@@ -78,7 +78,7 @@ const TextFieldComponent = ({
       onFocus={HandleFocus}
       onKeyUp={HandelKeyUp}
       onKeyPress={HandelKeyPress}
-      inputProps={{ ...InputProps, className: classes.input }}
+      InputProps={{ ...InputProps, className: classes.input }}
     />
   );
 };
