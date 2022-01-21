@@ -1,12 +1,17 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
+
 body {
   margin: 0;
   padding: 0;
   -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  box-sizing: border-box;
   font-family: 'Inter', sans-serif;
   background-color: #F9F9F9 !important;
   overflow: visible !important;
+}
+
+body.modal-open {
+  overflow: hidden !important;
 }
 
 /* Custom Scrollbar */
@@ -38,13 +43,15 @@ body {
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
   -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
 }
-.requiredIndicator{
+
+.requiredIndicator {
   color: red;
 }
+
 /*# sourceMappingURL=index.css.map */
