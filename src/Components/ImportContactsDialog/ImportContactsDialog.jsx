@@ -185,7 +185,6 @@ const ImportContactsDialog = ({
         PaperProps={{
           style: { borderRadius: 20, cursor: "pointer", padding: 20 },
         }}
-        onClose={callback}
         className="contactDialogBack"
       >
         <button
