@@ -56,7 +56,7 @@ const ImportContactsDialog = ({
   status, callback, onImport, setStatus
 }) => {
   const classes = useStyles();
-  const { user } = useSelector((state) => state.authReducer);
+  const { user, contacts } = useSelector((state) => state.authReducer);
 
   const PostContactToBackend = async (contacts, source) => {
     // add owner infor to contacts
@@ -186,6 +186,7 @@ const ImportContactsDialog = ({
           style: { borderRadius: 20, cursor: "pointer", padding: 20 },
         }}
         className="contactDialogBack"
+        onClose={contacts.length > 0 ? callback : null}
       >
         <button
           className={`${classes.mainContainer} cloudsponge-launch`}
