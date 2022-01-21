@@ -169,7 +169,6 @@ function ManualContactPopup({
             }}
           />
           <CustomPhoneInput
-            setinputFields={setinputFields}
             value={inputFields.phone}
             placeholder="Phone Number"
             onChange={HandleInputChange("phone")}
