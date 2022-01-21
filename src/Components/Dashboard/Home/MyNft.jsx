@@ -107,7 +107,7 @@ const MyNft = ({ isLink }) => {
   return (
     <div
       className={`${styles.mynft__wrapper} ${!isLink ? styles.mynft__page__wrapper : ""
-      }`}
+        }`}
     >
       <div className={styles.mynft__header}>
         <h5>My NFTs</h5>
@@ -141,127 +141,127 @@ const MyNft = ({ isLink }) => {
               {alldata
                 .filter(filterEmpty)
                 .map(data => {
-                const urlArray = data?.file_url?.split(".");
-                const fileType = urlArray.length
-                  ? urlArray[urlArray.length - 1]
-                  : "";
-                if (data.status === "unclaimed_gift" && data.parent_id) {
-                  return;
-                }
-                return (
-                  <Fragment key={nanoid()}>
-                    <div
-                      className={`${styles.mynft__box} ${styles.mynft__small__screen}`}
-                        // onClick={() => detailPage(data.nftid, i)}
-                      onClick={() => detailPage(data)}
-                    >
-                      <div className={styles.mynft__box__image__wrapper}>
-                        <div className={styles.mynft__box__image}>
-                          {fileType.toLowerCase() === "mp4" ? (
-                            <video
-                              style={{ width: "100%", borderRadius: "8px" }}
-                              src={data?.file_url}
-                            />
-                          ) : fileType.toLowerCase() === "mp3" ? (
-                            <div style={{ width: "100%", padding: "0 2px" }}>
-                              <audio
-                                style={{
-                                  width: "inherit",
-                                  marginTop: "60px",
-                                }}
-                                controls
-                              >
-                                <source src={data?.file_url} />
-                              </audio>
-                            </div>
-                          ) : (
-                            <img src={data?.file_url} alt={data.title} />
-                          )}
-                        </div>
-                        <div className={styles.mynft__box__cat}>
-                          <h6>{data?.category}</h6>
-                        </div>
-                      </div>
+                  const urlArray = data?.file_url?.split(".");
+                  const fileType = urlArray.length
+                    ? urlArray[urlArray.length - 1]
+                    : "";
+                  if (data.status === "unclaimed_gift" && data.parent_id) {
+                    return;
+                  }
+                  return (
+                    <Fragment key={nanoid()}>
                       <div
-                        className={styles.mynft__box__description__wrapper}
+                        className={`${styles.mynft__box} ${styles.mynft__small__screen}`}
+                        // onClick={() => detailPage(data.nftid, i)}
+                        onClick={() => detailPage(data)}
                       >
-                        <h2>{data?.title}</h2>
-                        <p>{data?.nft_id}</p>
+                        <div className={styles.mynft__box__image__wrapper}>
+                          <div className={styles.mynft__box__image}>
+                            {fileType.toLowerCase() === "mp4" ? (
+                              <video
+                                style={{ width: "100%", borderRadius: "8px" }}
+                                src={data?.file_url}
+                              />
+                            ) : fileType.toLowerCase() === "mp3" ? (
+                              <div style={{ width: "100%", padding: "0 2px" }}>
+                                <audio
+                                  style={{
+                                    width: "inherit",
+                                    marginTop: "60px",
+                                  }}
+                                  controls
+                                >
+                                  <source src={data?.file_url} />
+                                </audio>
+                              </div>
+                            ) : (
+                              <img src={data?.file_url} alt={data.title} />
+                            )}
+                          </div>
+                          <div className={styles.mynft__box__cat}>
+                            <h6>{data?.category}</h6>
+                          </div>
+                        </div>
+                        <div
+                          className={styles.mynft__box__description__wrapper}
+                        >
+                          <h2>{data?.title}</h2>
+                          <p>{data?.nft_id}</p>
+                        </div>
                       </div>
-                    </div>
-                  </Fragment>
-                );
-              })}
+                    </Fragment>
+                  );
+                })}
             </Carousel>
           ) : (
             <Row>
               {alldata
                 .filter(filterEmpty)
                 .map((data) => {
-                const urlArray = data?.file_url?.split(".");
-                const fileType = urlArray.length
-                  ? urlArray[urlArray.length - 1]
-                  : "";
-                if (data.status === "unclaimed_gift" && data.parent_id) {
-                  return;
-                }
-                return (
-                  <Col
-                    lg={3}
-                    md={4}
-                    sm={6}
-                    xs={12}
-                    style={{ marginBottom: "15px" }}
-                    key={nanoid()}
-                  >
-                    <div
-                      className={styles.mynft__box}
-                        // onClick={() => detailPage(data.nftid, i)}
-                      onClick={() => detailPage(data)}
+                  const urlArray = data?.file_url?.split(".");
+                  const fileType = urlArray.length
+                    ? urlArray[urlArray.length - 1]
+                    : "";
+                  if (data.status === "unclaimed_gift" && data.parent_id) {
+                    return;
+                  }
+                  return (
+                    <Col
+                      lg={3}
+                      md={4}
+                      sm={6}
+                      xs={12}
+                      style={{ marginBottom: "15px" }}
+                      key={nanoid()}
                     >
-                      <div className={styles.mynft__box__image__wrapper}>
-                        <div className={styles.mynft__box__image}>
-                          {fileType.toLowerCase() === "mp4" ? (
-                            <video
-                              style={{ width: "100%", borderRadius: "8px" }}
-                              src={data?.file_url}
-                            />
-                          ) : fileType.toLowerCase() === "mp3" ? (
-                            <div
-                              style={{
-                                width: "100%",
-                                paddingRight: "10px",
-                              }}
-                            >
-                              <audio
-                                style={{
-                                  width: "inherit",
-                                  marginTop: "60px",
-                                  marginLeft: "5px",
-                                }}
-                                controls
-                              >
-                                <source src={data?.file_url} />
-                              </audio>
-                            </div>
-                          ) : (
-                            <img src={data?.file_url} alt={data.title} />
-                          )}
-                        </div>
-                        <div className={styles.mynft__box__cat}>
-                          <h6>{data?.category}</h6>
-                        </div>
-                      </div>
                       <div
-                        className={styles.mynft__box__description__wrapper}
+                        className={styles.mynft__box}
+                        // onClick={() => detailPage(data.nftid, i)}
+                        onClick={() => detailPage(data)}
                       >
-                        <h2>{data?.title}</h2>
-                        <p>{data?.nft_id}</p>
+                        <div className={styles.mynft__box__image__wrapper}>
+                          <div className={styles.mynft__box__image}>
+                            {fileType.toLowerCase() === "mp4" ? (
+                              <video
+                                style={{ width: "100%", borderRadius: "8px" }}
+                                src={data?.file_url}
+                              />
+                            ) : fileType.toLowerCase() === "mp3" ? (
+                              <div
+                                style={{
+                                  width: "100%",
+                                  paddingRight: "10px",
+                                }}
+                              >
+                                <audio
+                                  style={{
+                                    width: "inherit",
+                                    marginTop: "60px",
+                                    marginLeft: "5px",
+                                  }}
+                                  controls
+                                >
+                                  <source src={data?.file_url} />
+                                </audio>
+                              </div>
+                            ) : (
+                              <img src={data?.file_url} alt={data.title} />
+                            )}
+                          </div>
+                          <div className={styles.mynft__box__cat}>
+                            <h6>{data?.category}</h6>
+                          </div>
+                        </div>
+                        <div
+                          className={styles.mynft__box__description__wrapper}
+                        >
+                          <h2>{data?.title}</h2>
+                          <p>{data?.nft_id}</p>
+                        </div>
                       </div>
-                    </div>
-                  </Col>
-                );
-              })}
+                    </Col>
+                  );
+                })}
             </Row>
           )}
         </div>
