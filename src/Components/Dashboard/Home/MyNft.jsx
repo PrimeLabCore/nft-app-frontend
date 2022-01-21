@@ -107,7 +107,7 @@ const MyNft = ({ isLink }) => {
   return (
     <div
       className={`${styles.mynft__wrapper} ${!isLink ? styles.mynft__page__wrapper : ""
-        }`}
+      }`}
     >
       <div className={styles.mynft__header}>
         <h5>My NFTs</h5>
