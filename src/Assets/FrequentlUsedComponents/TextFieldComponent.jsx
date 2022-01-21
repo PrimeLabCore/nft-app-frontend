@@ -53,7 +53,7 @@ const TextFieldComponent = ({
   HandleInputChange,
   name,
   disabled,
-  InputProps,
+  inputProps,
   HandelKeyUp,
   HandelKeyPress,
   autoFocus
@@ -78,7 +78,7 @@ const TextFieldComponent = ({
       onFocus={HandleFocus}
       onKeyUp={HandelKeyUp}
       onKeyPress={HandelKeyPress}
-      inputProps={{ ...InputProps, className: classes.input }}
+      inputProps={{ ...inputProps, className: classes.input }}
     />
   );
 };
