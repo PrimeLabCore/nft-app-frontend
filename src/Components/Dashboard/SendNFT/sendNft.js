@@ -89,6 +89,10 @@ function SendNft() {
   //   setCheckedState(updatedCheckedState);
   // };
 
+  useEffect(() => {
+    setSelected(nft);
+  }, [nft]);
+
   useEffect(() => 0, [checkedState]);
 
   const closegiftNft = () => {
@@ -100,7 +104,7 @@ function SendNft() {
     }
   };
   useEffect(() => {
-    setDisplayNfts(nfts);
+    setDisplayNfts(nfts.reverse());
   }, [nfts]);
   useEffect(() => {
     if (giftNFT__contactData) {
@@ -306,8 +310,8 @@ function SendNft() {
                     return (
                       <Fragment key={nanoid()}>
                         <div
-                          className={`${styles.mynft__box} ${selected?.nft_id === data?.nft_id
-                            || selected?.nftid === data?.nft_id
+                          className={`${styles.mynft__box} ${(selected?.nft_id === data?.nft_id
+                            || selected?.nftid === data?.nft_id)
                             ? styles.selected__nft
                             : ""
                           }`}
