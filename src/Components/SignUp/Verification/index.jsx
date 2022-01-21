@@ -40,7 +40,6 @@ const Verification = () => {
   const HandleClick = () => {
     navigate("/signin");
   };
-  console.log(details)
 
   const inputEvent = (e) => {
     const { name, value } = e.target;
