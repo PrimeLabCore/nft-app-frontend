@@ -31,6 +31,18 @@ const requiredFileExtensionsDescription = `${requiredFileExtensions
   .substring(1)
   .toUpperCase()}`;
 
+const nftDefaultProperties = {
+  attr_name: "",
+  attr_value: "",
+  id: nanoid()
+}
+
+const nftDetailDefaultValue = {
+  title: "",
+  description: "",
+  category: "Digital Arts",
+}
+
 function CreateNft(props) {
   const navigate = useNavigate();
   const { transactionId } = props;
@@ -49,13 +61,9 @@ function CreateNft(props) {
   // getting all NFT detail
   const home__allnft = useSelector((state) => state.home__allnft);
 
-  const [details, setDetails] = useState({
-    title: "",
-    description: "",
-    category: "Digital Arts",
-  });
+  const [details, setDetails] = useState(nftDetailDefaultValue);
 
-  const [formValues, setFormValues] = useState([{}]);
+  const [formValues, setFormValues] = useState([nftDefaultProperties]);
 
   useEffect(() => 0, [selectedFileType]);
 
@@ -79,6 +87,7 @@ function CreateNft(props) {
       {
         attr_name: "",
         attr_value: "",
+        id: nanoid()
       },
     ]);
   };
@@ -184,7 +193,13 @@ function CreateNft(props) {
   const mineNft = async (type) => {
     setLoading(true);
     const nftDetail = { ...details };
-    nftDetail.attributes = formValues;
+    const properties = [...formValues]
+      .filter(item => item.attr_name !== "")
+      .map((item) => {
+        delete item.id
+        return item;
+      });
+    nftDetail.attributes = properties;
     nftDetail.owner_id = user.user_id;
     nftDetail.tracker = adTracker;
 
@@ -233,7 +248,7 @@ function CreateNft(props) {
           description: "",
         });
         setSelectedFile("");
-        setFormValues([]);
+        setFormValues([nftDefaultProperties]);
 
         if (type === "gift") {
           sendNftModal();
@@ -441,8 +456,8 @@ function CreateNft(props) {
         show={nftForm}
         onHide={() => {
           setNftForm(false);
-          setDetails({});
-          setFormValues([{}]);
+          setDetails(nftDetailDefaultValue);
+          setFormValues([nftDefaultProperties]);
           setSelectedFile("");
         }}
         backdrop="static"
@@ -514,7 +529,7 @@ function CreateNft(props) {
               <div className={styles.form__group}>
                 <label>PROPERTIES</label>
                 {formValues.map((val, index) => (
-                  <div className={styles.form__group__inner} key={nanoid()}>
+                  <div className={styles.form__group__inner} key={val.id}>
                     <input
                       type="text"
                       value={val.attr_name}
