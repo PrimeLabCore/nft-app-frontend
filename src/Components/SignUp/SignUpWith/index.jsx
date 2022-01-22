@@ -4,6 +4,7 @@ import { IoIosArrowForward } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { isPossiblePhoneNumber } from 'react-phone-number-input'
 import TextFieldComponent from "../../../Assets/FrequentlUsedComponents/TextFieldComponent";
 import CustomPhoneInput from "../../../common/components/CustomPhoneInput/CustomPhoneInput";
 import { API_BASE_URL } from "../../../Utils/config";
@@ -43,7 +44,6 @@ const SignUpWith = () => {
   const loginFields = { username: "" };
   // const [validateUserLoading, setValidateUserLoading] = useState(true);
   // const [isUserIDAvailable, setIsUserIDAvailable] = useState(false);
-  const [countryValue, setCountry] = useState({});
   const { redirectUrl } = useSelector((state) => state.authReducer);
 
   const [errors, setErrors] = useState({});
@@ -364,19 +364,12 @@ const SignUpWith = () => {
         {/* LOGIN WITH PHONE */}
         {loginForm === "phone" && (
           <CustomPhoneInput
-            variant="outlined"
-            setCountry={setCountry}
-            countryValue={countryValue}
             placeholder="Ex. (373) 378 8383"
-            containerStyle={{ margin: "10px 0px" }}
-            type={"tel"}
             value={inputFields.phone}
             onChange={HandleInputChange("phone")}
             HandelKeyPress={(e) => {
               CheckAndSubmitForm(e);
             }}
-            setinputFields={setinputFields}
-            signUp
           />
         )}
 
@@ -409,14 +402,14 @@ const SignUpWith = () => {
           onClick={() =>
             loginForm === "email" ? oldHandleSignup() : phoneNumberSignUp()}
           className={`${styles.button} ${
-            inputFields.email || inputFields.phone
+            inputFields.email || isPossiblePhoneNumber(inputFields.phone)
               ? styles.primaryColor
               : styles.secondaryColor
           }`}
           disabled={
             loginForm === "email"
               ? inputFields.email?.length === 0
-              : inputFields.phone?.length < 2
+              : !isPossiblePhoneNumber(inputFields.phone)
           }
         >
           Continue

@@ -78,7 +78,7 @@ const CreateAnAccount = () => {
       );
     } else {
       setAccountId(
-        signupPhone
+        signupPhone.replaceAll("+", "")
         //  + ".near"
       );
     }
