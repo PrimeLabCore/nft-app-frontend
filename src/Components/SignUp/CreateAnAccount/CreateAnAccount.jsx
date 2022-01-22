@@ -337,7 +337,7 @@ const CreateAnAccount = () => {
             <h6 className={styles.link}>Already have Near Account?</h6>
 
             <button className={styles.primary_button} onClick={HandleLogin}>
-              Login
+              Launch
               {
                 <span>
                   <IoIosArrowForward />

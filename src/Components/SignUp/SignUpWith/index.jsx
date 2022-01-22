@@ -457,7 +457,7 @@ const SignUpWith = () => {
         <h6 className={styles.link}>Already have Near Account?</h6>
 
         <button className={styles.button} onClick={SignIn}>
-          Login
+          Launch
           {
             <span>
               <IoIosArrowForward />
