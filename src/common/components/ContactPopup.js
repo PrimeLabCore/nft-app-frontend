@@ -36,15 +36,14 @@ function ContactPopup({
   title,
   btnText,
   handleBtnClick,
-  displayImportContact
+  displayImportContact,
   // firstImport
 }) {
   const dispatch = useDispatch();
 
   const [selectedContacts, setSelectedContacts] = useState([]);
-
   const { user, contacts } = useSelector((state) => state.authReducer);
-
+  const { onlyOneContactShare } = useSelector((state) => state.home__allnft);
   const [isLoading, setIsloading] = useState(false);
   const [manualContactOpen, setManualContactOpen] = useState(false);
 
@@ -59,12 +58,14 @@ function ContactPopup({
     // selecting all the contacts
     setSelectedContacts(data);
   };
-
+  useEffect(() => {
+    if (onlyOneContactShare && selectedContacts.length !== 1) setSelectedContacts([]);
+  }, [onlyOneContactShare]);
   useEffect(() => {
     setFilteredData(contacts);
-    checkAllContacts(contacts);
+    if (!onlyOneContactShare) checkAllContacts(contacts);
+    // else setSelectedContacts([]);
   }, [contacts, isLoading]);
-
   // get contacts
   useEffect(() => {
     if (!show) return;
@@ -137,29 +138,32 @@ function ContactPopup({
   const [importContactDialog, setimportContactDialog] = useState(displayImportContact);
 
   const handleToggleContactSelection = (targetContact) => {
-    const wasSelected = !!selectedContacts.find(
-      (contact) => contact.contact_id === targetContact.contact_id
-    );
-
-    if (wasSelected) {
-      setSelectedContacts(
-        selectedContacts.filter(
-          (contact) => contact.contact_id !== targetContact.contact_id
-        )
+    if (!onlyOneContactShare) {
+      const wasSelected = !!selectedContacts.find(
+        (contact) => contact.contact_id === targetContact.contact_id
       );
+
+      if (wasSelected) {
+        setSelectedContacts(
+          selectedContacts.filter(
+            (contact) => contact.contact_id !== targetContact.contact_id
+          )
+        );
+      } else {
+        setSelectedContacts([...selectedContacts, targetContact]);
+      }
     } else {
-      setSelectedContacts([...selectedContacts, targetContact]);
+      setSelectedContacts([targetContact]);
     }
   };
 
   const importContact = (data) => {
     if (data) {
-      checkAllContacts(data);
+      if (!onlyOneContactShare) checkAllContacts(data);
       setimportContactDialog(false);
       setFilteredData(data);
     }
   };
-
   const contactImportCallback = (error, source) => {
     setimportContactDialog(false);
     if (error) {
@@ -298,6 +302,7 @@ function ContactPopup({
               </button>
             </div>
             <div className={styles.search__wrapper}>
+              {!onlyOneContactShare && (
               <button
                 className={styles.import__button}
                 onClick={() => {
@@ -310,6 +315,7 @@ function ContactPopup({
               >
                 {selectedContacts.length === contacts.length ? 'Unselect All' : 'Select All'}
               </button>
+              )}
             </div>
             <div className={styles.data__wrapper}>
               <div>{isLoading && <LoaderIconBlue />}</div>
