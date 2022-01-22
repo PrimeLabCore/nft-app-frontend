@@ -246,7 +246,6 @@ function SendNft() {
 
   const urlArray = (selected?.file_url || selected?.image)?.split(".");
   const fileType = urlArray?.length ? urlArray[urlArray.length - 1] : "";
-
   useEffect(() => {
     if (localStorage.getItem("sendNftId")) {
       setSelected(JSON.parse(localStorage.getItem("sendNftId")));

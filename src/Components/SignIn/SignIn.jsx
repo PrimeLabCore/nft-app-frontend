@@ -51,7 +51,7 @@ const SignIn = () => {
       })
       .then((response) => {
         dispatch({ type: "set_otp_medium", payload: response.data.type });
-        navigate(`/signin/verification/${accountId}`);
+        navigate(`/signin/authentication/${accountId}`);
       })
       .catch(() => {
         toast.warn("This Wallet is not supported on the NFT App, please create a new one HERE", {
