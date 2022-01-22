@@ -12,6 +12,7 @@ import { toast } from "react-toastify";
 import ContactPopup from "../../../common/components/ContactPopup";
 import { API_BASE_URL } from "../../../Utils/config";
 import { getFileExtension } from "../../../Utils/utils";
+import AppLoader from "../../Generic/AppLoader";
 import { LoaderIconBlue } from "../../Generic/icons";
 import ImportContactsDialog from "../../ImportContactsDialog/ImportContactsDialog";
 import styles from "./sendNft.module.css";
@@ -171,6 +172,7 @@ function SendNft() {
         transaction_value: "NA",
         type: "gift"
       };
+      setIsloading(true)
 
       axios
         .post(`${API_BASE_URL}/transactions`, nftDetail)
@@ -188,7 +190,9 @@ function SendNft() {
             toast.error(error.response.data.message);
           }
         })
-        .finally(() => { });
+        .finally(() => {
+          setIsloading(false)
+        });
     } else {
       toast.error("Please select some contact!");
     }
@@ -408,18 +412,22 @@ function SendNft() {
         callback={contactImportCallback}
       />
 
-      <ContactPopup
-        displayImportContact={false}
-        show={openGift}
-        onClose={closegiftNft}
-        onBack={openInitialSendNft}
-        title="Send NFT"
-        btnText={firstImport ? "Gift NFT" : "Send Gift"}
-        handleBtnClick={(selectedContacts) =>
-          firstImport
-            ? (dispatch({ type: "createnft__open" }), setOpenGift(false))
-            : handleNftPreview(selectedContacts)}
-      />
+      {isLoading ? (
+        <AppLoader />
+      ) : (
+        <ContactPopup
+          displayImportContact={false}
+          show={openGift}
+          onClose={closegiftNft}
+          onBack={openInitialSendNft}
+          title="Send NFT"
+          btnText={firstImport ? "Gift NFT" : "Send Gift"}
+          handleBtnClick={(selectedContacts) =>
+            firstImport
+              ? (dispatch({ type: "createnft__open" }), setOpenGift(false))
+              : handleNftPreview(selectedContacts)}
+        />
+      )}
 
       {/* NFT Preview Modal */}
       <Modal
