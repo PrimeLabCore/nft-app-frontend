@@ -59,7 +59,6 @@ function CreateNft(props) {
   const { adTracker } = useSelector((state) => state.nftReducer);
 
   // getting all NFT detail
-  const home__allnft = useSelector((state) => state.home__allnft);
 
   const [details, setDetails] = useState(nftDetailDefaultValue);
 
@@ -359,7 +358,7 @@ function CreateNft(props) {
       >
         <Modal.Header
           className={styles.modal__header__wrapper}
-          closeButton={home__allnft?.nfts.length > 0}
+          closeButton
         >
           <div className="modal__title__wrapper">
             <Modal.Title>
@@ -465,7 +464,7 @@ function CreateNft(props) {
       >
         <Modal.Header
           className={styles.modal__header__wrapper}
-          closeButton={home__allnft?.nfts.length > 0}
+          closeButton
         >
           <div className="modal__multiple__wrapper">
             <button onClick={() => goBack("initalForm")} className="back__btn">
@@ -614,7 +613,7 @@ function CreateNft(props) {
       >
         <Modal.Header
           className={styles.modal__header__wrapper}
-          closeButton={home__allnft?.nfts.length > 0}
+          closeButton
         >
           <div className="modal__multiple__wrapper">
             <button onClick={() => goBack("nftForm")} className="back__btn">
@@ -721,7 +720,7 @@ function CreateNft(props) {
       >
         <Modal.Header
           className={`${styles.modal__header__wrapper}  ${styles.modal__header__bottom} last__modal__header`}
-          closeButton={home__allnft?.nfts.length > 0}
+          closeButton
         />
         {/* <button onClick={allNft} className="btnclose">X</button> */}
         <Modal.Body className={styles.modal__body__top}>
