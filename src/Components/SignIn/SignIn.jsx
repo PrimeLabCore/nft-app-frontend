@@ -80,12 +80,6 @@ const SignIn = () => {
         <div className={styles.requestText}>
           Enter your ID to Launch the App
         </div>
-        <p className={styles.para}>
-          This does not allow the app to transfer
-          <br />
-          {' '}
-          any tokens.
-        </p>
 
         <div className={styles.textField}>
           <TextFieldComponent
