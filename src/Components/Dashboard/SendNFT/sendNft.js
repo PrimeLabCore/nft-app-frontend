@@ -206,11 +206,6 @@ function SendNft() {
   };
 
   const nftClicked = (data) => {
-    /* if (selected === i) {
-      setSelected("");
-    } else {
-      setSelected(e);
-    } */
     setSelected(data);
   };
 

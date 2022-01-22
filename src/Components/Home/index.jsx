@@ -33,7 +33,7 @@ const HomePage = (props) => {
         </h3>
         <li className={styles.loginButton}>
           <button onClick={HandleLoginWithNear}>
-            Login
+            Launch
             <span>
               <IoIosArrowForward />
             </span>
@@ -69,7 +69,7 @@ const HomePage = (props) => {
               </li> */}
             <li className={styles.menuLoginButton}>
               <button onClick={HandleLoginWithNear}>
-                Login
+                Launch
                 <span>
                   <IoIosArrowForward />
                 </span>

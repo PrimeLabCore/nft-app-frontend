@@ -297,6 +297,20 @@ function ContactPopup({
                 Import
               </button>
             </div>
+            <div className={styles.search__wrapper}>
+              <button
+                className={styles.import__button}
+                onClick={() => {
+                  if (selectedContacts.length === contacts.length) {
+                    setSelectedContacts([])
+                  } else {
+                    setSelectedContacts(contacts)
+                  }
+                }}
+              >
+                {selectedContacts.length === contacts.length ? 'Unselect All' : 'Select All'}
+              </button>
+            </div>
             <div className={styles.data__wrapper}>
               <div>{isLoading && <LoaderIconBlue />}</div>
 

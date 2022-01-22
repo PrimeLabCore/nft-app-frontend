@@ -3,6 +3,7 @@ import { Container } from "react-bootstrap";
 import { IoIosArrowForward } from "react-icons/io";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
+import muiDialogCallbackStatuses from "../../../constants/muiDialogCallbackStatuses";
 import styles from "./Home.module.css";
 
 import create_nft_left from "../../../Assets/Images/create-nft-left.png";
@@ -51,7 +52,7 @@ const Home = () => {
     setImportContactDialog(false);
 
     // Handling clicks outside the import dialog box
-    if (source === "backdropClick") {
+    if (muiDialogCallbackStatuses.includes(source)) {
       localStorage.removeItem("welcome")
       localStorage.setItem("contactImport", true)
       dispatch({ type: "createnft__open" });
@@ -63,7 +64,7 @@ const Home = () => {
     }
 
     if (error) {
-      if (source !== "backdropClick") {
+      if (!muiDialogCallbackStatuses.includes(source)) {
         toast.error(`Something Went Wrong Fetching Contacts From ${source}`);
       }
       dispatch({ type: "createnft__open" });

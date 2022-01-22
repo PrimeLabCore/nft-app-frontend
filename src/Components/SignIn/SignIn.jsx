@@ -53,10 +53,13 @@ const SignIn = () => {
         dispatch({ type: "set_otp_medium", payload: response.data.type });
         navigate(`/signin/authentication/${accountId}`);
       })
-      .catch((error) => {
-        if (error.response.data) {
-          toast.error(error.response.data.message);
-        }
+      .catch(() => {
+        toast.warn("This Wallet is not supported on the NFT App, please create a new one HERE", {
+          onClick: () => {
+            navigate('/signup')
+            toast.dismiss()
+          }
+        });
       })
       .finally(() => {
         setIsloading(false);
@@ -75,18 +78,8 @@ const SignIn = () => {
       <div className={styles.childContainer}>
         <BsArrowLeftRight className={styles.icon} />
         <div className={styles.requestText}>
-          NEAR Labs
-          <br />
-          is requesting to
-          <br />
-          access your account.
+          Enter your ID to Launch the App
         </div>
-        <p className={styles.para}>
-          This does not allow the app to transfer
-          <br />
-          {' '}
-          any tokens.
-        </p>
 
         <div className={styles.textField}>
           <TextFieldComponent
