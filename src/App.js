@@ -203,7 +203,7 @@ function App() {
         <Route path="/signin" element={<PublicRoute />}>
           {/* <Route path="/signin" element={<SignIn />} /> */}
           <Route index element={<SignIn />} />
-          <Route path="verification/:accountId" element={<Verification />} />
+          <Route path="authentication/:accountId" element={<Verification />} />
           {/* <Route path="/signin" element={<SignUp />} /> */}
         </Route>
 
