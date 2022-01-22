@@ -206,12 +206,6 @@ function SendNft() {
   };
 
   const nftClicked = (data) => {
-    console.log(data)
-    /* if (selected === i) {
-      setSelected("");
-    } else {
-      setSelected(e);
-    } */
     setSelected(data);
   };
 
@@ -252,7 +246,7 @@ function SendNft() {
 
   const urlArray = (selected?.file_url || selected?.image)?.split(".");
   const fileType = urlArray?.length ? urlArray[urlArray.length - 1] : "";
-  console.log(fileType, urlArray);
+
   useEffect(() => {
     if (localStorage.getItem("sendNftId")) {
       setSelected(JSON.parse(localStorage.getItem("sendNftId")));
