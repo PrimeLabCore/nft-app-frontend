@@ -27,9 +27,9 @@ const requiredFileExtensions = [
 ];
 const requiredFileExtensionsDescription = `${requiredFileExtensions
   .map((extension) => extension.substring(1).toUpperCase())
-  .join(", ")} or ${requiredFileExtensions[requiredFileExtensions.length - 1]
-  .substring(1)
-  .toUpperCase()}`;
+  .join(", ")
+  .replace(/, ([^,]*)$/, ' or $1')
+}`;
 
 const nftDefaultProperties = {
   attr_name: "",
