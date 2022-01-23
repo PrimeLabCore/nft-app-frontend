@@ -366,6 +366,7 @@ function Settings() {
                 <div className={styles.modal__header}>
                   <h2>
                     Change
+                    {" "}
                     {labels[details]}
                   </h2>
                 </div>
