@@ -51,7 +51,7 @@ function ContactPopup({
   const [inputField, setInputField] = useState({ ...contactFormFields });
   const [filteredData, setFilteredData] = useState(contacts);
 
-  const firstImport = localStorage.getItem("firstImport");
+  // const firstImport = localStorage.getItem("firstImport");
 
   const [searchText, setSearchText] = useState("");
 
@@ -342,7 +342,7 @@ function ContactPopup({
           </div>
           <div className={styles.multiple__btn__wrapper}>
             <button
-              disabled={firstImport ? false : selectedContacts.length === 0}
+              // disabled={firstImport ? false : true}
               onClick={() => {
                 handleBtnClick(selectedContacts);
               }}
