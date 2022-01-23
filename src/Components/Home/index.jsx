@@ -8,7 +8,7 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import HomeCard1 from "../../Assets/Images/home-card-1.svg";
 import HomeCard2 from "../../Assets/Images/home-card-2.svg";
-import Logo from "../../Assets/Images/logo.png";
+import Logo from "../../Assets/Images/prime-lab-logo.png";
 import styles from "./index.module.css";
 
 const HomePage = (props) => {
@@ -25,7 +25,7 @@ const HomePage = (props) => {
     <div className={styles.mainContainer}>
       <div className={styles.leftSide}>
         <Link to="/">
-          <img src={Logo} className={styles.logo} alt="Brand Logo" />
+          <img src={Logo} width="200" className={styles.logo} alt="Brand Logo" />
         </Link>
         <h3 className={styles.leftSideMainText}>
           The easiest way to Create NFTs and share them others. Start minting
@@ -240,7 +240,7 @@ const HomePage = (props) => {
             {' '}
             {new Date().getFullYear()}
             {' '}
-            Near Labs.
+            Prime Lab.
           </div>
         </div>
       </div>
