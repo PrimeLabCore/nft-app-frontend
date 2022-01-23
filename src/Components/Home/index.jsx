@@ -240,7 +240,7 @@ const HomePage = (props) => {
             {' '}
             {new Date().getFullYear()}
             {' '}
-            Near Labs.
+            Prime Lab.
           </div>
         </div>
       </div>

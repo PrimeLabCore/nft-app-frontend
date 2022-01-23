@@ -75,7 +75,7 @@ const SignIn = () => {
       <div className={styles.childContainer}>
         <BsArrowLeftRight className={styles.icon} />
         <div className={styles.requestText}>
-          NEAR Labs
+          Prime Lab
           <br />
           is requesting to
           <br />
