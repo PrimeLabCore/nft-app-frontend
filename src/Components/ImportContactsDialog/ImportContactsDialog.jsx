@@ -135,7 +135,7 @@ const ImportContactsDialog = ({
 
             // call callback functions
             onImport(contacts);
-            setStatus(false)
+            setStatus(false);
 
             return false;
           },
