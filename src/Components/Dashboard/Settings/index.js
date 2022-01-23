@@ -1,27 +1,36 @@
-import React, { useState } from "react";
-import styles from "./settings.module.css";
-import SettingsHeader from "./SettingsHeader";
+import React, { useEffect, useState } from "react";
 import { IoIosArrowForward, IoIosLogOut } from "react-icons/io";
 import { AiOutlineCheck } from "react-icons/ai";
-import user_icon from "../../../Assets/Images/user-icon.png";
-import { Container, Row, Col, Modal } from "react-bootstrap";
+import {
+  Container, Row, Col, Modal
+} from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import TextFieldComponent from "../../../Assets/FrequentlUsedComponents/TextFieldComponent";
 import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
+import axios from "axios";
+import styles from "./settings.module.css";
+import SettingsHeader from "./SettingsHeader";
+import user_icon from "../../../Assets/Images/user-icon.png";
+import TextFieldComponent from "../../../Assets/FrequentlUsedComponents/TextFieldComponent";
 import CustomPhoneInput from "../../../common/components/CustomPhoneInput/CustomPhoneInput";
 import { API_BASE_URL } from "../../../Utils/config";
 import AppLoader from "../../Generic/AppLoader";
-import axios from "axios";
+import { isValidFullName } from "../../../Utils/utils";
 
-const Settings = () => {
+const labels = {
+  email: "Email Address",
+  phone: "Phone Number",
+  full_name: "Full Name",
+}
+
+function Settings() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [connectedModal, setConnectedModal] = useState(false);
   const [changeInfo, setChangeInfo] = useState(false);
   const [details, setDetails] = useState("");
   const [checked, setChecked] = useState(0);
-  const [enable2fa, setEnable2fa] = useState(false);
+  // const [enable2fa, setEnable2fa] = useState(false);
   const [info, setinfo] = useState("");
   const { user } = useSelector((state) => state.authReducer);
   const [isLoading, setIsloading] = useState(false);
@@ -32,6 +41,8 @@ const Settings = () => {
     full_name: user.full_name,
   });
 
+  useEffect(() => 0, [info]);
+
   const closeChangeInfo = () => {
     setChangeInfo(false);
   };
@@ -40,27 +51,23 @@ const Settings = () => {
     setDetails(infovalue);
   };
 
-  const validateEmail = (email) => {
-    return String(email)
-      .toLowerCase()
-      .match(
-        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-      );
-  };
-
-  const validatePhone = (phone) => {
-    return /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im.test(
-      phone
+  const validateEmail = (email) => String(email)
+    .toLowerCase()
+    .match(
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     );
-  };
+
+  const validatePhone = (phone) => /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im.test(
+    phone
+  );
 
   const getPersonalInfo = () => {
-    //Ajax Request to update user
+    // Ajax Request to update user
     axios
       .get(`${API_BASE_URL}/users/${user?.user_id}`)
       .then((response) => {
-        //update user details in localstorage and redux state
-        let temp = JSON.parse(localStorage.getItem("user"));
+        // update user details in localstorage and redux state
+        const temp = JSON.parse(localStorage.getItem("user"));
         localStorage.setItem(
           "user",
           JSON.stringify({
@@ -85,51 +92,63 @@ const Settings = () => {
       });
   };
 
-  const savePersonalInfo = () => {
-    setChangeInfo(false);
-
+  const validatePersonalInfo = () => {
+    let isValidForm = true;
     switch (details) {
       case "full_name":
         if (!inputFields.full_name) {
           toast.error("Name can't be empty");
-          return;
+          isValidForm = false;
+        } else if (inputFields.full_name && !isValidFullName(inputFields.full_name)) {
+          toast.error("Invalid Name");
+          isValidForm = false;
+        } else if (inputFields.full_name && inputFields.full_name.length > 70) {
+          toast.error("Name must less than 70 characters");
+          isValidForm = false;
         }
         break;
-
       case "email":
         if (!validateEmail(inputFields.email)) {
           toast.error("Email is not valid");
-          return;
+          isValidForm = false;
+        }
+        if (inputFields.email && inputFields.email.length > 64) {
+          toast.error("Name must less than 64 characters");
+          isValidForm = false;
         }
         break;
 
       case "phone":
         if (!validatePhone(inputFields.phone)) {
           toast.error("Phone number is not valid");
-          return;
+          isValidForm = false;
         }
         break;
 
       default:
         break;
     }
+    return isValidForm;
+  };
 
+  const savePersonalInfo = () => {
+    if (!validatePersonalInfo()) {
+      return;
+    }
+    setChangeInfo(false);
     setIsloading(true);
-
-    let payload = {};
-
+    const payload = {};
     payload[`${details}`] = inputFields[`${details}`];
+    // Ajax Request to update user
 
-    //Ajax Request to update user
     axios
       .put(`${API_BASE_URL}/users/${user?.user_id}`, payload)
       .then((response) => {
         toast.success("Settings Saved");
         getPersonalInfo();
-        //update user details in localstorage and redux state
-        let temp = JSON.parse(localStorage.getItem("user"));
+        // update user details in localstorage and redux state
+        const temp = JSON.parse(localStorage.getItem("user"));
         temp.user_info = response.data;
-
         // localStorage.getItem("user");
         // localStorage.setItem("user", JSON.stringify(temp));
         // dispatch({ type: "login_Successfully", payload: response.data });
@@ -142,7 +161,7 @@ const Settings = () => {
       .finally(() => {
         setIsloading(false);
       });
-  };
+  }
 
   const closeConnectedModal = () => {
     setConnectedModal(false);
@@ -152,7 +171,9 @@ const Settings = () => {
     setConnectedModal(true);
   };
   const addNewWallet = () => {
-    navigate("/signup/create-account");
+    navigate("/signup/create-account", {
+      state: { user }
+    });
   };
   const check = (i) => {
     if (checked !== i) {
@@ -169,8 +190,18 @@ const Settings = () => {
     navigate("/");
   };
 
-  const HandleInputChange = (field) => (e) => {
+  const HandleInputChange = (field) => e => {
+    if (details === "email" && e.target.value.length > 64) {
+      return false;
+    }
+    if (details === "full_name" && e.target.value.length > 70) {
+      return false;
+    }
+    if (details === "phone" && e.target.value.length > 20) {
+      return false;
+    }
     setinputFields({ ...inputFields, [field]: e.target.value });
+    return 0;
   };
 
   // HandleFocus for input
@@ -218,7 +249,7 @@ const Settings = () => {
                         <div className={styles.personal__settings}>
                           <p>Name</p>
                           {/* <h6>{user.email.split("@")[0]}</h6> */}
-                          <h6>{user?.full_name}</h6>
+                          <h6 title={user?.full_name}>{user?.full_name}</h6>
                         </div>
                         <button>
                           <IoIosArrowForward />
@@ -230,7 +261,7 @@ const Settings = () => {
                       >
                         <div className={styles.personal__settings}>
                           <p>Email Address</p>
-                          <h6>{user?.email}</h6>
+                          <h6 title={user?.email}>{user?.email}</h6>
                         </div>
                         <button>
                           <IoIosArrowForward />
@@ -243,7 +274,7 @@ const Settings = () => {
                       >
                         <div className={styles.personal__settings}>
                           <p>Phone number</p>
-                          <h6>{user?.phone}</h6>
+                          <h6 title={user?.phone}>{user?.phone}</h6>
                         </div>
                         <button>
                           <IoIosArrowForward />
@@ -333,7 +364,11 @@ const Settings = () => {
             <div className="modal__title__wrapper">
               <Modal.Title>
                 <div className={styles.modal__header}>
-                  <h2>Change {details.replace(/_/g, " ")}</h2>
+                  <h2>
+                    Change
+                    {" "}
+                    {labels[details]}
+                  </h2>
                 </div>
               </Modal.Title>
             </div>
@@ -343,27 +378,19 @@ const Settings = () => {
               {details !== "phone" ? (
                 <TextFieldComponent
                   variant="outlined"
-                  placeholder={`${
-                    details === "full_name"
-                      ? "Name"
-                      : details === "email"
-                      ? "Email"
-                      : ""
-                  }`}
-                  type={"email"}
+                  placeholder={labels[details]}
+                  type={details === "email" ? "email" : "text"}
                   InputValue={inputFields[`${details}`]}
                   HandleInputChange={HandleInputChange(details)}
                   onFocus={() => HandleFocus("name")}
                 />
               ) : (
-                <>
-                  <CustomPhoneInput
-                    value={inputFields.phone}
-                    onFocus={() => HandleFocus("name")}
-                    placeholder={"Phone Number"}
-                    onChange={HandleInputChange("phone")}
-                  />
-                </>
+                <CustomPhoneInput
+                  value={inputFields.phone}
+                  onFocus={() => HandleFocus("name")}
+                  placeholder="Phone Number"
+                  onChange={HandleInputChange("phone")}
+                />
               )}
             </div>
             <div className={styles.btn__wrapper}>
@@ -376,5 +403,5 @@ const Settings = () => {
       </div>
     </>
   );
-};
+}
 export default Settings;

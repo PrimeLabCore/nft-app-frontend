@@ -1,17 +1,12 @@
 import React, { useState, useEffect } from "react";
-import Dialog from "@material-ui/core/Dialog";
-import Slide from "@material-ui/core/Slide";
 import SearchIcon from "@material-ui/icons/Search";
 import InputBase from "@material-ui/core/InputBase";
 import { makeStyles } from "@material-ui/core/styles";
-import styles from "./GiftAnNft.module.css";
 import { GoPrimitiveDot } from "react-icons/go";
 import { BsCheckCircleFill } from "react-icons/bs";
 import { IoIosArrowForward } from "react-icons/io";
 import { FaRegShareSquare } from "react-icons/fa";
 import { AiFillCloseCircle } from "react-icons/ai";
-import ImportContactsDialog from "../ImportContactsDialog/ImportContactsDialog";
-import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 import PropTypes from "prop-types";
@@ -19,6 +14,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { toast } from "react-toastify";
 
+import { nanoid } from "nanoid";
 import {
   googleClientId,
   googleClientSecret,
@@ -26,7 +22,8 @@ import {
   googleAccess,
   googleRefresh,
 } from "../../Utils/config";
-import { nanoid } from "nanoid";
+import ImportContactsDialog from "../ImportContactsDialog/ImportContactsDialog";
+import styles from "./GiftAnNft.module.css";
 
 // const Transition = React.forwardRef(function Transition(props, ref) {
 //     return <Slide direction="up" ref={ref} {...props} />;
@@ -42,9 +39,14 @@ export default function GiftAnNft({ closebutton, sendGiftButton, dashboard }) {
   // const [selected,setSelected] = useState()
   const [contactsData, setContactsData] = useState([]);
   const [filteredContactData, setFilteredContactsData] = useState([]);
+  const navigate = useNavigate();
+
   useEffect(() => {
     localStorage.setItem("oauth", oauth__code);
   }, []);
+
+  useEffect(() => 0, [token]);
+
   const getGoogleToken = () => {
     axios
       .post(
@@ -130,21 +132,19 @@ export default function GiftAnNft({ closebutton, sendGiftButton, dashboard }) {
       zIndex: 1,
     },
   }));
-  let navigate = useNavigate();
   const classes = useStyles();
   // const [filteredData,setFilteredData] = useState(dummyContacts)
 
   const handleSearch = (event) => {
-    let value = event.target.value.toLowerCase();
+    const value = event.target.value.toLowerCase();
     let result = [];
 
-    result = contactsData.filter((data) => {
-      return data.names[0].displayName.toLowerCase().search(value) !== -1;
-    });
+    result = contactsData.filter((data) =>
+      data.names[0].displayName.toLowerCase().search(value) !== -1)
     setFilteredContactsData(result);
   };
   const [importContactDialog, setimportContactDialog] = useState(true);
-  const dialogStatus = useSelector((state) => state.GiftNFT_Dialog_Box);
+  // const dialogStatus = useSelector((state) => state.GiftNFT_Dialog_Box);
   const dispatch = useDispatch();
 
   // for checked and unchecked items
@@ -153,8 +153,7 @@ export default function GiftAnNft({ closebutton, sendGiftButton, dashboard }) {
   );
   const handleOnChange = (position) => {
     const updatedCheckedState = checkedState.map((item, index) =>
-      index === position ? !item : item
-    );
+      index === position ? !item : item);
     setCheckedState(updatedCheckedState);
   };
 
@@ -178,10 +177,8 @@ export default function GiftAnNft({ closebutton, sendGiftButton, dashboard }) {
         return;
       }
       toast.error(`Something Went Wrong Fetching Contacts From ${source}`);
-      return;
     } else {
-      toast.success(`Your Contacts Were Successfully Imported From ${source}`);
-      return;
+      toast.success(`Your contacts were successfully imported from ${source}`);
     }
   };
 
@@ -196,7 +193,7 @@ export default function GiftAnNft({ closebutton, sendGiftButton, dashboard }) {
       setFilteredContactsData(data);
       setCheckedState(new Array(data.length).fill(true));
     }
-    //old code
+    // old code
     /*  axios
       .get(
         `https://content-people.googleapis.com/v1/people/me/connections?personFields=names,photos`,
@@ -272,9 +269,8 @@ export default function GiftAnNft({ closebutton, sendGiftButton, dashboard }) {
 
           {/* DATA */}
           <div
-          style={{backgroundColor: "red"}}
-            className={`${
-              dashboard ? styles.dashboardContainer : styles.dataContainer
+            style={{ backgroundColor: "red" }}
+            className={`${dashboard ? styles.dashboardContainer : styles.dataContainer
             }`}
           >
             {filteredContactData.map((value, index) => (
@@ -290,7 +286,10 @@ export default function GiftAnNft({ closebutton, sendGiftButton, dashboard }) {
                 {/* TEXT */}
                 <div className={styles.textContainer}>
                   <h6>{value.names[0].displayName}</h6>
-                  <p>@{value.names[0].givenName}</p>
+                  <p>
+                    @
+                    {value.names[0].givenName}
+                  </p>
                 </div>
                 {/* ICONS */}
                 <div
@@ -323,7 +322,8 @@ export default function GiftAnNft({ closebutton, sendGiftButton, dashboard }) {
             </button>
             {!dashboard && (
               <p>
-                Share App{" "}
+                Share App
+                {" "}
                 <span>
                   <FaRegShareSquare />
                 </span>
@@ -339,6 +339,7 @@ export default function GiftAnNft({ closebutton, sendGiftButton, dashboard }) {
           onImport={importContact}
           status={importContactDialog}
           callback={contactImportCallback}
+          setStatus={setimportContactDialog}
         />
       )}
     </>

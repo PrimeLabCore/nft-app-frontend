@@ -1,4 +1,3 @@
-import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { ProgressBar } from "react-bootstrap";
@@ -6,18 +5,16 @@ import { AiFillCloseCircle } from "react-icons/ai";
 import { IoIosArrowForward } from "react-icons/io";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import VerificationInput from "react-verification-input";
-import styles from "./index.module.css";
-import AppLoader from "../../Generic/AppLoader";
 import { toast } from "react-toastify";
 import axios from "axios";
+import styles from "./index.module.css";
+import AppLoader from "../../Generic/AppLoader";
 import { API_BASE_URL } from "../../../Utils/config";
 import { mapUserSession } from "../../../Utils/utils";
 
 const Verification = () => {
   const dispatch = useDispatch();
 
-  const loginMethodUsedByUser = useSelector((state) => state.LoginFormMethod);
-  const email = useSelector((state) => state.authReducer.signupEmail);
   const [windowstate, setWindow] = useState(window.innerWidth < 767);
   const [allowLogin, setAllowLogin] = useState(false);
   const [isLoading, setIsloading] = useState(false);
@@ -27,7 +24,7 @@ const Verification = () => {
   const { redirectUrl, otp_medium } = useSelector((state) => state.authReducer);
   const { accountId } = useParams();
 
-  let navigate = useNavigate();
+  const navigate = useNavigate();
   useEffect(() => {
     window.addEventListener(
       "resize",
@@ -46,12 +43,10 @@ const Verification = () => {
 
   const inputEvent = (e) => {
     const { name, value } = e.target;
-    setDetails((preValue) => {
-      return {
-        ...preValue,
-        [name]: value,
-      };
-    });
+    setDetails((preValue) => ({
+      ...preValue,
+      [name]: value.slice(0, 6),
+    }));
   };
 
   useEffect(() => {
@@ -65,12 +60,12 @@ const Verification = () => {
   const LogIn = async () => {
     setIsloading(true);
 
-    //Ajax Request to send otp
+    // Ajax Request to send otp
     axios
       .post(`${API_BASE_URL}/login/verify`, {
         walletName: accountId.includes(".near")
           ? accountId
-          : accountId + ".near",
+          : `${accountId}.near`,
         nonce: details.verification,
       })
       .then((response) => {
@@ -84,7 +79,7 @@ const Verification = () => {
         }
 
         // @ToDo
-        //save user details
+        // save user details
         localStorage.setItem("user", JSON.stringify(response.data));
 
         navigate(redirectUrl ? redirectUrl : "/");
@@ -102,12 +97,12 @@ const Verification = () => {
   const ResendOTP = async () => {
     setIsloading(true);
 
-    //Ajax Request to send otp
+    // Ajax Request to send otp
     axios
       .post(`${API_BASE_URL}/login`, {
         walletName: accountId.includes(".near")
           ? accountId
-          : accountId + ".near",
+          : `${accountId}.near`,
       })
       .then((response) => {
         toast.success(response.data.message);
@@ -127,7 +122,7 @@ const Verification = () => {
       {isLoading && <AppLoader />}
       <AiFillCloseCircle className={styles.cross} onClick={HandleClick} />
       <div className={styles.container__header}>
-        <span className={styles.verification}>Verification</span>
+        <span className={styles.verification}>Authentication</span>
         {windowstate && (
           <div className={styles.progress}>
             <ProgressBar now={(1 / 3) * 100} />
@@ -136,12 +131,16 @@ const Verification = () => {
       </div>
 
       <div className={styles.childContainer}>
-        <p>We've sent a 6-digit verification code on your {otp_medium}.</p>
+        <p>
+          We&apos;ve sent a 6-digit verification code on your
+          {otp_medium}
+          .
+        </p>
 
         <div className={styles.verficationContainer}>
           <p className={styles.enterCode}>Enter Verification Code</p>
           <VerificationInput
-            autoFocus={true}
+            autoFocus
             placeholder=" "
             classNames={{
               container: "verification__container",
@@ -150,7 +149,8 @@ const Verification = () => {
             }}
             length={6}
             value={details.verification}
-            //value={""}
+            // value={""}
+            validChars={[0 - 9]}
             inputProps={{
               value: details.verification,
               name: "verification",
@@ -174,11 +174,11 @@ const Verification = () => {
 
         <hr />
 
-        <h4>Didn't receive your code?</h4>
+        <h4>Didn&apos;t receive your code?</h4>
 
-        <Link to="/signup" className={styles.link}>
+        {/* <Link to="/signup" className={styles.link}>
           Send to a different phone number
-        </Link>
+        </Link> */}
 
         <Link to="." onClick={() => ResendOTP()} className={styles.link}>
           Resend your code

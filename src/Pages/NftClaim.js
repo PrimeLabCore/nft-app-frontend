@@ -1,11 +1,9 @@
 import React from "react";
 import Claim from "../Components/NFT/Claim";
 
-const NFTClaim = () => {
+function NFTClaim() {
   return (
-    <>
-      <Claim />
-    </>
+    <Claim />
   );
-};
+}
 export default NFTClaim;

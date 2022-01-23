@@ -1,4 +1,4 @@
-let initialvalue = {
+const initialvalue = {
   allTransactions: [],
 };
 

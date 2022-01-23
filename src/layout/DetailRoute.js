@@ -3,7 +3,7 @@ import { Outlet, Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import detail__1 from "../Assets/Images/nft__detail__1.png";
 import detail__2 from "../Assets/Images/nft__detail__2.png";
-import styles from "./detailRoute.module.css";
+import styles from "./detailRoute.module.scss";
 
 const Layout = ({ children }) => {
   const nft__detail = useSelector((state) => state.nft__detail);
@@ -27,10 +27,10 @@ const Layout = ({ children }) => {
   }, []);
 
   const urlArray = nft__detail?.image?.split(".");
-  const fileType = urlArray?.length ? urlArray[urlArray?.length - 1] : "";
+  const fileType = urlArray?.length ? urlArray[urlArray.length - 1] : "";
   return (
-    <>
-      <div className={`${styles.background} ${claim ? styles.lightbg : ""}`}>
+    <div className={`${styles.background} ${claim ? styles.lightbg : ""}`}>
+      <div className={styles.left__side}>
         {!windowstate && (
           <>
             <img src={detail__1} alt="Detail 1" className={styles.detail__1} />
@@ -57,23 +57,23 @@ const Layout = ({ children }) => {
             )}
           </div>
         </div>
-
-        <main>{children}</main>
       </div>
-    </>
+
+      <main>{children}</main>
+    </div>
   );
-};
-const LayoutRoute = () => {
+}
+
+function LayoutRoute() {
   // let navigate = useNavigate()
   // let isAuth = Cookies.get(cookieAuth) || false // => 'value'
-  let isAuth = true; // => 'value'
+  const isAuth = true; // => 'value'
 
-  const nft__detail = useSelector((state) => state.nft__detail);
+  // const nft__detail = useSelector((state) => state.nft__detail);
 
   return (
-    <>
-      <Layout>{isAuth ? <Outlet /> : <Navigate replace to="/signup" />}</Layout>
-    </>
+    <Layout>{isAuth ? <Outlet /> : <Navigate replace to="/signup" />}</Layout>
   );
-};
+}
+
 export default LayoutRoute;

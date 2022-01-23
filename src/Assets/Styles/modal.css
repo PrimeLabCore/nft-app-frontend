@@ -18,6 +18,8 @@
   .send__nft__mobile__modal .modal-dialog .modal-content {
     border-radius: 0px !important;
     min-height: 100vh !important;
+    width: 90%;
+    margin: auto;
   }
   .nft__final__mobile__modal .modal-dialog {
     position: fixed;
@@ -99,6 +101,7 @@
 }
 
 .initial__modal .modal-content .modal-header .btn-close {
+  margin-right: 5px;
   background-color: #F0F1F3;
   padding: 7px;
   color: #818C99;

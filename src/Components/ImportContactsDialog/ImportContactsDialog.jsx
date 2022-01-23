@@ -2,17 +2,15 @@ import Dialog from "@material-ui/core/Dialog";
 import Slide from "@material-ui/core/Slide";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { IoLogoApple, IoLogoMicrosoft } from "react-icons/io5";
-import { useSelector, useDispatch } from "react-redux";
-import { API_BASE_URL } from "../../Utils/config";
+import { useSelector } from "react-redux";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { API_BASE_URL } from "../../Utils/config";
 
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
+const Transition = React.forwardRef((props, ref) => <Slide direction="up" ref={ref} {...props} />);
 
 const useStyles = makeStyles((theme) => ({
   mainContainer: {
@@ -21,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: "10px",
     border: "none",
     display: "flex",
-    //justifyContent: "space-evenly",
+    // justifyContent: "space-evenly",
     alignItems: "center",
     padding: "20px",
     marginBottom: "10px",
@@ -58,29 +56,28 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const ImportContactsDialog = ({ status, callback, onImport }) => {
+const ImportContactsDialog = ({
+  status, callback, onImport, setStatus
+}) => {
   const classes = useStyles();
-  const dispatch = useDispatch();
-  const [firstImport, setFirstImport] = useState(false);
   const { user } = useSelector((state) => state.authReducer);
 
   const PostContactToBackend = async (contacts, source) => {
-    //add owner infor to contacts
+    // add owner infor to contacts
 
-    let newcontacts = contacts.map((c) => ({
+    const newcontacts = contacts.map((c) => ({
       ...c,
-      owner_id: user.user_id,
+      owner_id: user?.user_id,
       app_id: "NFT Maker App",
+      dob: "",
       source,
     }));
 
-    //Ajax Request to create user
+    // Ajax Request to create user
     axios
       .post(`${API_BASE_URL}/contacts/import`, newcontacts)
-      .then((response) => {
-        toast.success(response.data.message);
-
-        //disable contact import dialog on login/signup
+      .then(() => {
+        // disable contact import dialog on login/signup
         localStorage.removeItem("welcome");
       })
       .catch((error) => {
@@ -88,70 +85,8 @@ const ImportContactsDialog = ({ status, callback, onImport }) => {
           toast.error(error.response.data.message);
         }
       })
-      .finally(() => {});
+      .finally(() => { });
   };
-
-  useEffect(() => {
-    LoadCloudSponge(() => {
-      if (window.cloudsponge) {
-        window.cloudsponge.init({
-          skipContactsDisplay: true,
-          skipSourceMenu: true,
-          rootNodeSelector: "#cloudsponge-widget-container",
-          beforeDisplayContacts: function (contacts, source, owner) {
-            let source_title =
-              source === "office365"
-                ? "Microsoft"
-                : source === "icloud"
-                ? "Apple"
-                : "Google";
-
-            var all = document.getElementsByClassName("initial__modal");
-            for (var i = 0; i < all.length; i++) {
-              all[i].style.display = "block";
-            }
-
-            //post contact to backend to persist in database
-            PostContactToBackend(contacts, source_title);
-
-            //call callback functions
-            onImport();
-
-            return false;
-          },
-          beforeLaunch: function () {
-            var all = document.getElementsByClassName("contactDialogBack");
-            for (var i = 0; i < all.length; i++) {
-              all[i].style.visibility = "hidden";
-            }
-            var all = document.getElementsByClassName("initial__modal");
-            for (var i = 0; i < all.length; i++) {
-              all[i].style.display = "none";
-            }
-          },
-          beforeClosing: function () {
-            var all = document.getElementsByClassName("contactDialogBack");
-            for (var i = 0; i < all.length; i++) {
-              all[i].style.visibility = "inherit";
-            }
-            var all = document.getElementsByClassName("initial__modal");
-            for (var i = 0; i < all.length; i++) {
-              all[i].style.display = "block";
-            }
-          },
-          afterImport: function (source, success) {
-            let source_title =
-              source === "office365"
-                ? "Microsoft 365"
-                : source === "icloud"
-                ? "Apple Contacts (iCloud)"
-                : "Google";
-            callback(!success, source_title);
-          },
-        });
-      }
-    });
-  }, [status]);
 
   const LoadCloudSponge = (callback) => {
     const existingScript = document.getElementById("cloudSponge");
@@ -160,15 +95,14 @@ const ImportContactsDialog = ({ status, callback, onImport }) => {
     const script = document.createElement("script");
 
     if (
-      window.location.hostname === "localhost" ||
-      window.location.hostname === "127.0.0.1"
+      window.location.hostname === "localhost"
+      || window.location.hostname === "127.0.0.1"
     ) {
-      //for localhost testing
+      // for localhost testing
       script.src = "https://api.cloudsponge.com/widget/localhost-only.js";
     } else {
-      //for production
-      script.src =
-        "https://api.cloudsponge.com/widget/l8UL7ckxBgjk0bLDQv5gzA.js";
+      // for production
+      script.src = "https://api.cloudsponge.com/widget/l8UL7ckxBgjk0bLDQv5gzA.js";
     }
 
     script.id = "cloudSponge";
@@ -181,6 +115,68 @@ const ImportContactsDialog = ({ status, callback, onImport }) => {
     if (existingScript && callback) callback();
   };
 
+  useEffect(() => {
+    LoadCloudSponge(() => {
+      if (window.cloudsponge) {
+        window.cloudsponge.init({
+          skipContactsDisplay: true,
+          skipSourceMenu: true,
+          rootNodeSelector: "#cloudsponge-widget-container",
+          beforeDisplayContacts(contacts, source) {
+            const source_title = source === "office365"
+              ? "Microsoft"
+              : source === "icloud"
+                ? "Apple"
+                : "Google";
+
+            const all = document.getElementsByClassName("initial__modal");
+            for (let i = 0; i < all.length; i++) {
+              all[i].style.display = "block";
+            }
+
+            // post contact to backend to persist in database
+            PostContactToBackend(contacts, source_title);
+
+            // call callback functions
+            onImport(contacts);
+            setStatus(false);
+
+            return false;
+          },
+          beforeLaunch() {
+            const all = document.getElementsByClassName("contactDialogBack");
+            for (let i = 0; i < all.length; i++) {
+              all[i].style.visibility = "hidden";
+            }
+            const all1 = document.getElementsByClassName("initial__modal");
+            for (let i = 0; i < all1.length; i++) {
+              all1[i].style.display = "none";
+            }
+          },
+          beforeClosing() {
+            const all = document.getElementsByClassName("contactDialogBack");
+            for (let i = 0; i < all.length; i++) {
+              all[i].style.visibility = "inherit";
+            }
+            const all1 = document.getElementsByClassName("initial__modal");
+            for (let i = 0; i < all1.length; i++) {
+              all1[i].style.display = "block";
+            }
+          },
+          afterImport(source, success) {
+            localStorage.removeItem("contactImport")
+            const source_title = source === "office365"
+              ? "Microsoft 365"
+              : source === "icloud"
+                ? "Apple Contacts (iCloud)"
+                : "Google";
+            callback(!success, source_title);
+          },
+        });
+      }
+    });
+  }, [status]);
+
   return (
     <div>
       <div id="cloudsponge-widget-container" />
@@ -188,7 +184,7 @@ const ImportContactsDialog = ({ status, callback, onImport }) => {
         open={status}
         TransitionComponent={Transition}
         keepMounted
-        fullWidth={true}
+        fullWidth
         maxWidth={"xs"}
         PaperProps={{
           style: { borderRadius: 20, cursor: "pointer", padding: 20 },
@@ -201,7 +197,7 @@ const ImportContactsDialog = ({ status, callback, onImport }) => {
         </Typography>
 
         <button
-          className={classes.mainContainer + " " + "cloudsponge-launch"}
+          className={`${classes.mainContainer} cloudsponge-launch`}
           data-cloudsponge-source="gmail"
         >
           <FcGoogle className={classes.googleicon} />
@@ -209,7 +205,7 @@ const ImportContactsDialog = ({ status, callback, onImport }) => {
         </button>
 
         <button
-          className={classes.mainContainer + " " + "cloudsponge-launch"}
+          className={`${classes.mainContainer} cloudsponge-launch`}
           data-cloudsponge-source="icloud"
         >
           <IoLogoApple className={classes.appleicon} />
@@ -217,7 +213,7 @@ const ImportContactsDialog = ({ status, callback, onImport }) => {
         </button>
 
         <button
-          className={classes.mainContainer + " " + "cloudsponge-launch"}
+          className={`${classes.mainContainer} cloudsponge-launch`}
           data-cloudsponge-source="office365"
         >
           <IoLogoMicrosoft className={classes.microsofticon} />
