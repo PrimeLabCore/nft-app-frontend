@@ -16,7 +16,7 @@ import CustomPhoneInput from "../../../common/components/CustomPhoneInput/Custom
 import { API_BASE_URL } from "../../../Utils/config";
 import AppLoader from "../../Generic/AppLoader";
 import { isValidFullName } from "../../../Utils/utils";
-import { LOGOUT } from "../../../Reducers/ActionTypes";
+import {LOGOUT, SET_SESSION} from "../../../Reducers/ActionTypes";
 
 const labels = {
   email: "Email Address",
@@ -183,7 +183,7 @@ function Settings() {
     localStorage.setItem("user", JSON.stringify(data));
     setConnectedModal(false);
     dispatch({
-      type: "auth/set_session",
+      type: SET_SESSION,
       payload: { user: data },
     });
     navigate("/");
