@@ -6,7 +6,6 @@ import styles from "./Home.module.css";
 
 function HomeHeader() {
   const { user } = useSelector((state) => state.authReducer);
-
   return (
     <div className={styles.home__header}>
       <Link to="/settings">
