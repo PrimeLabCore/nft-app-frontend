@@ -13,6 +13,7 @@ import giftNFT__contactData from "./giftNFT__contactData";
 import authReducer from "./authReducer";
 import transactionsReducer from "./transactionsReducer";
 import nftReducer from './nftReducer';
+import { LOGOUT } from "./ActionTypes";
 
 // Here all reducers will get combined
 const appReducer = combineReducers({
@@ -30,7 +31,7 @@ const appReducer = combineReducers({
 });
 
 export default (state, action) => {
-  if (action.type === 'auth/logout') {
+  if (action.type === LOGOUT) {
     return appReducer(undefined, action)
   }
   return appReducer(state, action)

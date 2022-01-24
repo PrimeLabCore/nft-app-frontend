@@ -14,19 +14,49 @@
     position: absolute;
     top: 5%;
     left: 2%;
+    width: 200px;
   }
 }
 
-@media screen and (max-width: 800px) {
+@media screen and (min-width: 500px) and (max-width: 800px) {
   .vector {
     top: -120px;
     left: -25px !important;
+    -webkit-transform: rotate(60deg);
     transform: rotate(60deg);
     max-height: 60vh !important;
-    
   }
   .logo {
     top: 40% !important;
-    left: 30% !important;
+    left: 35% !important;
+  }
+}
+
+@media screen and (min-width: 300px) and (max-width: 500px) {
+  .vector {
+    top: -120px;
+    left: -25px !important;
+    -webkit-transform: rotate(60deg);
+    transform: rotate(60deg);
+    max-height: 60vh !important;
+  }
+  .logo {
+    top: 40% !important;
+    left: 25% !important;
+  }
+}
+
+@media screen and (max-width: 300px) {
+  .vector {
+    top: -120px;
+    left: -25px !important;
+    -webkit-transform: rotate(60deg);
+    transform: rotate(60deg);
+    max-height: 60vh !important;
+  }
+  .logo {
+    width: 150px !important;
+    top: 40% !important;
+    left: 25% !important;
   }
 }

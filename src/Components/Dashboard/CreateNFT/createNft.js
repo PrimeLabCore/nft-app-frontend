@@ -11,6 +11,7 @@ import fileHelper from "../../../Services/fileHelper";
 import { API_BASE_URL } from "../../../Utils/config";
 import { isEmpty, mapNftDetails } from "../../../Utils/utils";
 import styles from "./createNft.module.css";
+import LoaderIcon from '../../Generic/AppLoader';
 
 const audioRegex = /(audio)(\/\w+)+/g;
 const videoRegex = /(video)(\/\w+)+/g;
@@ -339,6 +340,8 @@ function CreateNft(props) {
         break;
     }
   }
+
+  if (loading) return <LoaderIcon />
 
   return (
     <>

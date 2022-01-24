@@ -8,8 +8,10 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import HomeCard1 from "../../Assets/Images/home-card-1.svg";
 import HomeCard2 from "../../Assets/Images/home-card-2.svg";
-import Logo from "../../Assets/Images/logo.png";
-import styles from "./index.module.css";
+import Logo from "../../Assets/Images/prime-lab-logo.png";
+import styles from "./index.module.scss";
+
+import GetStartedButton from "./components/GetStartedButton";
 
 const HomePage = (props) => {
   const navigate = useNavigate();
@@ -57,16 +59,6 @@ const HomePage = (props) => {
             <li className={pageName === "contact-us" ? styles.is_selected : ""}>
               <Link to="/contact-us">Contact Us</Link>
             </li>
-            {/* <li className={`${styles.onlyOnDesktop}`}>
-                <Link to="/signup">
-                  <button>
-                    Get Started
-                    <span>
-                      <IoIosArrowForward />
-                    </span>
-                  </button>
-                </Link>
-              </li> */}
             <li className={styles.menuLoginButton}>
               <button onClick={HandleLoginWithNear}>
                 Launch
@@ -82,17 +74,8 @@ const HomePage = (props) => {
           <>
             <h2>NFT Maker App</h2>
 
-            <div
-              className={`${styles.getStartedBtn} ${styles.onlyOnMobile}`}
-            >
-              <Link to="/signup">
-                <button>
-                  Get Started
-                  <span>
-                    <IoIosArrowForward />
-                  </span>
-                </button>
-              </Link>
+            <div className={`${styles.getStartedBtn} ${styles.onlyOnMobile}`}>
+              <GetStartedButton />
             </div>
 
             <p className={styles.nftMakerAppDesc}>
@@ -124,15 +107,8 @@ const HomePage = (props) => {
                   </li>
                 </ul>
                 </div> */}
-            <div className={styles.getStartedBtn}>
-              <Link to="/signup">
-                <button>
-                  Get Started
-                  <span>
-                    <IoIosArrowForward />
-                  </span>
-                </button>
-              </Link>
+            <div className={`${styles.getStartedBtn} ${styles.onlyOnDesktop}`}>
+              <GetStartedButton />
             </div>
           </>
           )}
@@ -155,14 +131,7 @@ const HomePage = (props) => {
               </ul>
             </div>
             <div className={styles.getStartedBtn}>
-              <Link to="/signup">
-                <button>
-                  Get Started
-                  <span>
-                    <IoIosArrowForward />
-                  </span>
-                </button>
-              </Link>
+              <GetStartedButton />
             </div>
           </>
           )}
@@ -205,14 +174,7 @@ const HomePage = (props) => {
               </ul>
             </div>
             <div className={styles.getStartedBtn}>
-              <Link to="/signup">
-                <button>
-                  Get Started
-                  <span>
-                    <IoIosArrowForward />
-                  </span>
-                </button>
-              </Link>
+              <GetStartedButton />
               {/* <Link to="/signup">
                     <button>
                       Get Started
@@ -240,7 +202,7 @@ const HomePage = (props) => {
             {' '}
             {new Date().getFullYear()}
             {' '}
-            Near Labs.
+            Prime Lab.
           </div>
         </div>
       </div>
