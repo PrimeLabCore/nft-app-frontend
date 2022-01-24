@@ -112,8 +112,8 @@ const CreateAnAccount = () => {
   const onAccountChange = (e) => {
     const { value } = e.target;
 
-    if (!value || doesAccountStringHaveValidCharacters(value)) {
-      if (value.length <= 56) setAccountId(value);
+    if (!value || doesAccountStringHaveValidCharacters(value.toLowerCase())) {
+      if (value.length <= 56) setAccountId(value.toLowerCase());
     }
 
     // setDetails((preValue) => {
