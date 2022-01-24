@@ -117,6 +117,7 @@ const ImportContactsDialog = ({
         window.cloudsponge.init({
           skipContactsDisplay: true,
           skipSourceMenu: true,
+          browserContactCacheMin: false,
           rootNodeSelector: "#cloudsponge-widget-container",
           beforeDisplayContacts(contacts, source) {
             const source_title = source === "office365"
