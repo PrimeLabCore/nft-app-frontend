@@ -12,6 +12,7 @@ import { API_BASE_URL } from "../../../Utils/config";
 import { mapUserSession } from "../../../Utils/utils";
 import AppLoader from "../../Generic/AppLoader";
 import styles from "./CreateAnAccount.module.css";
+import { SET_SESSION } from "../../../Reducers/ActionTypes";
 
 const CreateAnAccount = () => {
   const dispatch = useDispatch();
@@ -158,7 +159,7 @@ const CreateAnAccount = () => {
         const actionPayload = mapUserSession(response.data);
         if (actionPayload) {
           dispatch({
-            type: "auth/set_session",
+            type: SET_SESSION,
             payload: actionPayload
           });
         }
