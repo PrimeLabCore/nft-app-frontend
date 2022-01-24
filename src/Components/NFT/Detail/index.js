@@ -1,3 +1,4 @@
+import { isEmpty } from 'lodash';
 import React, { useEffect, useState } from "react";
 import { BsArrowUpRight } from "react-icons/bs";
 import { Accordion } from "react-bootstrap";
@@ -100,46 +101,50 @@ function Details() {
         )}
       </div>
       <div className={styles.details__accords}>
-        <Accordion>
-          <div className={styles.accord}>
-            <Accordion.Item eventKey="0">
-              <Accordion.Header>Descriptions</Accordion.Header>
-              <Accordion.Body className={styles.accord__body}>
-                <p>{nftData.description}</p>
-              </Accordion.Body>
-            </Accordion.Item>
-          </div>
-        </Accordion>
-        <Accordion>
-          <div className={styles.accord}>
-            <Accordion.Item eventKey="1">
-              <Accordion.Header>NFT Info</Accordion.Header>
-              <Accordion.Body className={styles.accord__body}>
-                <div className={styles.nft__info}>
-                  <p>Token ID</p>
-                  <a
-                    href="https://explorer.near.org/"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    {nftData?.token_id ? nftData?.token_id : ""}
-                  </a>
-                </div>
-                <div className={styles.nft__info}>
-                  <p>Contract Address</p>
-                  <a
-                    href={nftData?.explorer_url}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    Explorer
-                  </a>
-                </div>
-              </Accordion.Body>
-            </Accordion.Item>
-          </div>
-        </Accordion>
-        {nftData?.attributes?.length > 0 && (
+        {nftData?.description && (
+          <Accordion>
+            <div className={styles.accord}>
+              <Accordion.Item eventKey="0">
+                <Accordion.Header>Descriptions</Accordion.Header>
+                <Accordion.Body className={styles.accord__body}>
+                  <p>{nftData.description}</p>
+                </Accordion.Body>
+              </Accordion.Item>
+            </div>
+          </Accordion>
+        )}
+        {(nftData?.token_id || nftData?.explorer_url) && (
+          <Accordion>
+            <div className={styles.accord}>
+              <Accordion.Item eventKey="1">
+                <Accordion.Header>NFT Info</Accordion.Header>
+                <Accordion.Body className={styles.accord__body}>
+                  <div className={styles.nft__info}>
+                    <p>Token ID</p>
+                    <a
+                      href="https://explorer.near.org/"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      {nftData?.token_id ? nftData?.token_id : ""}
+                    </a>
+                  </div>
+                  <div className={styles.nft__info}>
+                    <p>Contract Address</p>
+                    <a
+                      href={nftData?.explorer_url}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      Explorer
+                    </a>
+                  </div>
+                </Accordion.Body>
+              </Accordion.Item>
+            </div>
+          </Accordion>
+        )}
+        {(nftData?.attributes?.length > 0 && !isEmpty(nftData?.attributes[0])) && (
           <Accordion>
             <div className={styles.accord}>
               <Accordion.Item eventKey="1">
