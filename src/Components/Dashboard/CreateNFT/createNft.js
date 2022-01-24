@@ -356,8 +356,8 @@ function CreateNft(props) {
           setFormValues([{}]);
         }}
         centered
-        backdrop
-        keyboard
+        backdrop="static"
+        keyboard={false}
       >
         <Modal.Header
           className={styles.modal__header__wrapper}
@@ -462,8 +462,8 @@ function CreateNft(props) {
           setFormValues([nftDefaultProperties]);
           setSelectedFile("");
         }}
-        backdrop
-        keyboard
+        backdrop="static"
+        keyboard={false}
       >
         <Modal.Header
           className={styles.modal__header__wrapper}
@@ -611,8 +611,8 @@ function CreateNft(props) {
           setSelectedFile("");
           setFormValues([{}]);
         }}
-        backdrop
-        keyboard
+        backdrop="static"
+        keyboard={false}
       >
         <Modal.Header
           className={styles.modal__header__wrapper}
@@ -717,8 +717,8 @@ function CreateNft(props) {
         className={`${styles.initial__nft__modal} ${styles.nft__form__modal} nft__final__mobile__modal initial__modal`}
         show={nftMint}
         onHide={() => setNftMint(false)}
-        backdrop
-        keyboard
+        backdrop="static"
+        keyboard={false}
         centered
       >
         <Modal.Header
