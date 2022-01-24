@@ -303,29 +303,31 @@ function ContactPopup({
             <div className={styles.data__wrapper}>
               <div>{isLoading && <LoaderIconBlue />}</div>
 
-              <div className={styles.data_row_container}>
-                {/* TEXT */}
-                <div className={styles.selectAllTextContainer}>
-                  <h6>{selectedContacts.length === contacts.length ? 'Unselect All' : 'Select All'}</h6>
+              {filteredData.length > 0 && (
+                <div className={styles.data_row_container}>
+                  {/* TEXT */}
+                  <div className={styles.selectAllTextContainer}>
+                    <h6>{selectedContacts.length === contacts.length ? 'Unselect All' : 'Select All'}</h6>
+                  </div>
+                  {/* ICONS */}
+                  <div
+                    className={styles.icon}
+                    onClick={() => {
+                      if (selectedContacts.length === contacts.length) {
+                        setSelectedContacts([])
+                      } else {
+                        setSelectedContacts(contacts)
+                      }
+                    }}
+                  >
+                    {selectedContacts.length === contacts.length ? (
+                      <BsCheckCircleFill className={styles.checked} />
+                    ) : (
+                      <GoPrimitiveDot className={styles.unchecked} />
+                    )}
+                  </div>
                 </div>
-                {/* ICONS */}
-                <div
-                  className={styles.icon}
-                  onClick={() => {
-                    if (selectedContacts.length === contacts.length) {
-                      setSelectedContacts([])
-                    } else {
-                      setSelectedContacts(contacts)
-                    }
-                  }}
-                >
-                  {selectedContacts.length === contacts.length ? (
-                    <BsCheckCircleFill className={styles.checked} />
-                  ) : (
-                    <GoPrimitiveDot className={styles.unchecked} />
-                  )}
-                </div>
-              </div>
+              )}
 
               {filteredData.map((contact) => (
                 <div className={styles.data_row_container} key={nanoid()}>
