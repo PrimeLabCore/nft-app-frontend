@@ -1,44 +1,37 @@
-import React, { useEffect, useState } from "react";
+import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "react-toastify/dist/ReactToastify.css";
+import React, { useEffect, useState } from "react";
+import CookieConsent from "react-cookie-consent";
+// Routes
+import TagManager from "react-gtm-module";
 import "react-multi-carousel/lib/styles.css";
-import "./Assets/Styles/modal.css";
-import "./Assets/Styles/filepond.css";
-import "./Components/SignUp/Verification/verificationCode.css";
+import { useDispatch } from "react-redux";
 import {
-  Routes,
-  Route,
-  Navigate,
-  useNavigate,
-  useLocation,
+  Route, Routes, useLocation, useNavigate
 } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-import CookieConsent from "react-cookie-consent";
-import { useSelector, useDispatch } from "react-redux";
-
-//Routes
-import DetailRoute from "./layout/DetailRoute";
-import PublicRoute from "./layout/PublicRoute";
-import PrivateRoute from "./layout/PrivateRoute";
-import SettingsRoute from "./layout/SettingsRoute";
-//Pages
-import SignUp from "./Pages/SignUp";
-import Verification from "./Components/SignUp/Verification";
-import Dashboard from "./Pages/Dashboard";
-import Notfound from "./Pages/NotFound";
-import Transactions from "./Pages/Transactions";
-import AllNft from "./Pages/AllNft";
+import "react-toastify/dist/ReactToastify.css";
+import "./Assets/Styles/filepond.css";
+import "./Assets/Styles/modal.css";
+import Settings from "./Components/Dashboard/Settings";
+import GiftAnNftDialog from "./Components/GiftAnNftDialog/GiftAnNft";
+import HomePage from "./Components/Home/index";
+import SignIn from "./Components/SignIn/SignIn";
 import CreateAnAccount from "./Components/SignUp/CreateAnAccount/CreateAnAccount";
+import Verification from "./Components/SignUp/Verification";
+import "./Components/SignUp/Verification/verificationCode.css";
+import DetailRoute from "./layout/DetailRoute";
+import PrivateRoute from "./layout/PrivateRoute";
+import PublicRoute from "./layout/PublicRoute";
+import AllNft from "./Pages/AllNft";
+import Dashboard from "./Pages/Dashboard";
+import NFTClaim from "./Pages/NftClaim";
 // import GiftAnNft from "./Components/GiftAnNft/GiftAnNft";
 import NFTDetail from "./Pages/NftDetail";
-import NFTClaim from "./Pages/NftClaim";
-import GiftAnNftDialog from "./Components/GiftAnNftDialog/GiftAnNft";
-import SignIn from "./Components/SignIn/SignIn";
-import Settings from "./Components/Dashboard/Settings";
-import HomePage from "./Components/Home/index";
-import Banners from "./Components/Banners";
-import TagManager from "react-gtm-module";
-import axios from "axios";
+import Notfound from "./Pages/NotFound";
+// Pages
+import SignUp from "./Pages/SignUp";
+import Transactions from "./Pages/Transactions";
 import { API_BASE_URL } from "./Utils/config";
 
 const tagManagerArgs = {
@@ -47,10 +40,10 @@ const tagManagerArgs = {
 TagManager.initialize(tagManagerArgs);
 
 function App() {
-  let dispatch = useDispatch();
-  let navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { search } = useLocation();
+  const loading = false;
 
   const parseParams = (querystring) => {
     // parse query string
@@ -74,12 +67,14 @@ function App() {
 
   // TODO: This seems suspicious to define the local state property so low...
   // However, it ensures the local state property picks up the URL param
-  // For some reason, the <PrivateRoute> was not re-rendering with the updated value from the local state for transactionId so this is a workaround
+  // For some reason, the <PrivateRoute> was not re-rendering with the
+  // updated value from the local state for transactionId so this is a workaround
   const [transactionId, setTransactionId] = useState(urlParams.transaction_id);
 
   useEffect(() => {
     // The splash/home page will redirect, clearing the transaction_id
-    // Make sure to grab the value and hold onto it in local state, so it can be used in the NFT Creation flow
+    // Make sure to grab the value and hold onto it in local state,
+    // so it can be used in the NFT Creation flow
     const { transaction_id } = urlParams;
 
     if (transaction_id) {
@@ -91,7 +86,7 @@ function App() {
 
   useEffect(() => {
     const fetchDetail = async () => {
-      axios.interceptors.request.use(function (config) {
+      axios.interceptors.request.use((config) => {
         // const token = store.getState().session.token;
         config.headers.Authorization = urlParams?.token;
 
@@ -142,7 +137,7 @@ function App() {
     dispatch({ type: "createnft__open" });
     navigate("/");
   };
-  const nft__detail = useSelector((state) => state.nft__detail); //Single Nft Data
+  // const nft__detail = useSelector((state) => state.nft__detail); // Single Nft Data
 
   if (loading) {
     return "Loading...";
@@ -159,7 +154,8 @@ function App() {
         buttonStyle={{ color: "#4e503b", fontSize: "13px" }}
         expires={150}
       >
-        This website uses cookies to enhance the user experience.{" "}
+        This website uses cookies to enhance the user experience.
+        {" "}
       </CookieConsent>
 
       <ToastContainer hideProgressBar theme="dark" closeButton={false} />
@@ -199,7 +195,7 @@ function App() {
           <Route
             path="gift-nft"
             element={
-              <GiftAnNftDialog closebutton={true} sendGiftButton={giftSent} />
+              <GiftAnNftDialog closebutton sendGiftButton={giftSent} />
             }
           />
         </Route>
@@ -207,7 +203,7 @@ function App() {
         <Route path="/signin" element={<PublicRoute />}>
           {/* <Route path="/signin" element={<SignIn />} /> */}
           <Route index element={<SignIn />} />
-          <Route path="verification/:accountId" element={<Verification />} />
+          <Route path="authentication/:accountId" element={<Verification />} />
           {/* <Route path="/signin" element={<SignUp />} /> */}
         </Route>
 

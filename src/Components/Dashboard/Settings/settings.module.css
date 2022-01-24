@@ -91,6 +91,9 @@
   margin-bottom: 0px;
   font-weight: 600;
   font-size: 16px;
+  max-width: 400px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .settings__wrapper .settings__acc__wrapper .settings__acc__inner .settings__acc button {
@@ -126,6 +129,7 @@
 
 .connection__modal .modal__header h2 {
   font-size: 24px;
+  text-transform: capitalize;
 }
 
 .connection__modal .modal__body__wrapper {
@@ -243,6 +247,9 @@
     text-overflow: ellipsis;
     overflow: hidden;
     word-break: break-all;
+  }
+  .settings__wrapper .settings__acc__wrapper .settings__acc__inner .settings__acc .personal__settings h6 {
+    max-width: 250px;
   }
 }
 /*# sourceMappingURL=settings.module.css.map */

@@ -13,18 +13,26 @@ import giftNFT__contactData from "./giftNFT__contactData";
 import authReducer from "./authReducer";
 import transactionsReducer from "./transactionsReducer";
 import nftReducer from './nftReducer';
+import { LOGOUT } from "./ActionTypes";
 
 // Here all reducers will get combined
-export default combineReducers({
-  giftNFT__contactData: giftNFT__contactData,
+const appReducer = combineReducers({
+  giftNFT__contactData,
   menu__tooltip: Menu__ToolTip,
   home__allnft: Home__AllNft,
-  LoginFormMethod: LoginFormMethod,
+  LoginFormMethod,
   createnft__popup: CreateNft__Popup,
   sendnft__popup: SendNft__Popup,
   nft__detail: NFT__Detail,
-  GiftNFT_Dialog_Box: GiftNFT_Dialog_Box,
+  GiftNFT_Dialog_Box,
   authReducer,
   transactionsReducer,
   nftReducer
 });
+
+export default (state, action) => {
+  if (action.type === LOGOUT) {
+    return appReducer(undefined, action)
+  }
+  return appReducer(state, action)
+}

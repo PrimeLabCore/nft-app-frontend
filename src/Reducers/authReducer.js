@@ -1,4 +1,6 @@
-let initialvalue = {
+import { LOGOUT, SET_SESSION } from "./ActionTypes";
+
+const initialvalue = {
   user: null,
   jwt: null,
   signupEmail: "",
@@ -11,13 +13,13 @@ let initialvalue = {
 
 const authReducer = (state = initialvalue, action) => {
   switch (action.type) {
-    case "auth/logout":
+    case LOGOUT:
       return {
         ...state,
         user: null,
         jwt: null,
       };
-    case "auth/set_session":
+    case SET_SESSION:
       return {
         ...state,
         user: action.payload.user,

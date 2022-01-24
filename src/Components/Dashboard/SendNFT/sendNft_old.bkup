@@ -115,7 +115,7 @@ const SendNft = () => {
     fd.append("recipient_id", [final].toString());
     fd.append("transaction_item_id", selected.uuid);
     fd.append("type", "gift");
-    fd.append("sender_id", user.user_id);
+    fd.append("sender_id", user?.user_id);
     const resp = await axios.post(`/transactions`, fd);
 
     dispatch({ type: "sendnft__close" });
@@ -185,7 +185,7 @@ const SendNft = () => {
       toast.error(`Something Went Wrong Fetching Contacts From ${source}`);
       return;
     } else {
-      toast.success(`Your Contacts Were Successfully Imported From ${source}`);
+      toast.success(`Your contacts were successfully imported from ${source}`);
       setOpenGift(true);
       return;
     }

@@ -1,4 +1,4 @@
-let initialvalue = false;
+const initialvalue = false;
 
 const handleSendNftPopup = (state = initialvalue, action) => {
   switch (action.type) {

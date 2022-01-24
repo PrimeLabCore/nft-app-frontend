@@ -10,11 +10,15 @@
   }
 }
 
+.transaction__list__wrapper {
+  margin-bottom: 100px;
+}
 .transaction__wrapper {
   margin-bottom: 25px;
 }
 
 .transaction__wrapper .transaction__header {
+  height: 32px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;

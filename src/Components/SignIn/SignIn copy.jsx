@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import styles from "./SignIn.module.css";
 import { useNavigate } from "react-router-dom";
 import { BsArrowLeftRight } from "react-icons/bs";
 import TextField from "@material-ui/core/TextField";
@@ -7,9 +6,10 @@ import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/core/styles";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
+import styles from "./SignIn.module.css";
 import { API_BASE_URL } from "../../Utils/config";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   inputfield: {
     margin: "10px 0px",
     width: "100%",
@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const SignIn = () => {
-  let navigate = useNavigate();
+  const navigate = useNavigate();
   const classes = useStyles();
   const [email, setemail] = useState("");
   const dispatch = useDispatch();
@@ -47,7 +47,7 @@ const SignIn = () => {
         data: { data },
       } = response;
 
-      axios.interceptors.request.use(function (config) {
+      axios.interceptors.request.use((config) => {
         // const token = store.getState().session.token;
         config.headers.Authorization = authorization;
 
@@ -68,69 +68,69 @@ const SignIn = () => {
   };
 
   return (
-    <>
-      <div className={styles.half_container}>
-        <div className={styles.childContainer}>
-          <BsArrowLeftRight className={styles.icon} />
-          <div className={styles.requestText}>
-            NEAR Labs
-            <br />
-            is requesting to
-            <br />
-            access your account.
-          </div>
-          <p className={styles.para}>
-            This does not allow the app to transfer
-            <br /> any tokens.
-          </p>
-          <div className={styles.MoreInfo}>More Info</div>
+    <div className={styles.half_container}>
+      <div className={styles.childContainer}>
+        <BsArrowLeftRight className={styles.icon} />
+        <div className={styles.requestText}>
+          Prime Labs
+          <br />
+          is requesting to
+          <br />
+          access your account.
+        </div>
+        <p className={styles.para}>
+          This does not allow the app to transfer
+          <br />
+          {' '}
+          any tokens.
+        </p>
+        <div className={styles.MoreInfo}>More Info</div>
 
-          {/* TEXT FIELD */}
+        {/* TEXT FIELD */}
 
-          <div className={styles.textField}>
-            <TextField
-              id="outlined-select-currency"
+        <div className={styles.textField}>
+          <TextField
+            id="outlined-select-currency"
               //   select
-              variant="outlined"
+            variant="outlined"
               //   placeholder="Johndoe.near"
-              placeholder="johndoe@gmail.com"
-              value={email}
-              className={classes.inputfield}
-              fullWidth={true}
-              inputProps={{
-                className: classes.inputStyles,
-              }}
-              onChange={(e) => setemail(e.target.value)}
-            >
-              {/* this will be mapped by using map function */}
-              {/* <MenuItem value={"Johndoe.near"}>Johndoe.near</MenuItem>
+            placeholder="johndoe@gmail.com"
+            value={email}
+            className={classes.inputfield}
+            fullWidth
+            inputProps={{
+              className: classes.inputStyles,
+            }}
+            onChange={(e) => setemail(e.target.value)}
+          >
+            {/* this will be mapped by using map function */}
+            {/* <MenuItem value={"Johndoe.near"}>Johndoe.near</MenuItem>
               <MenuItem value={"Johndoe.near"}>Johndoe.near</MenuItem>
               <MenuItem value={"Johndoe.near"}>Johndoe.near</MenuItem> */}
-            </TextField>
-          </div>
+          </TextField>
+        </div>
 
-          {/* BUTTON CONTAINER */}
-          <div className={styles.buttonContainer}>
-            <button
-              onClick={() => navigate("/signup")}
-              className={styles.secondary_button}
-            >
-              Deny
-            </button>
+        {/* BUTTON CONTAINER */}
+        <div className={styles.buttonContainer}>
+          <button
+            onClick={() => navigate("/signup")}
+            className={styles.secondary_button}
+          >
+            Deny
+          </button>
 
-            <button className={styles.primary_button} onClick={handleLogin}>
-              Allow
-            </button>
-            {/* <Link
+          <button className={styles.primary_button} onClick={handleLogin}>
+            Allow
+          </button>
+          {/* <Link
               to={`/signup/create-account/${"Johndoe.near"}`}
               className={styles.primary_button}
             >
               Allow
             </Link> */}
-          </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 export default SignIn;
