@@ -25,7 +25,7 @@ const HomePage = (props) => {
     <div className={styles.mainContainer}>
       <div className={styles.leftSide}>
         <Link to="/">
-          <img src={Logo} width="200" className={styles.logo} alt="Brand Logo" />
+          <img src={Logo} className={styles.logo} alt="Brand Logo" />
         </Link>
         <h3 className={styles.leftSideMainText}>
           The easiest way to Create NFTs and share them others. Start minting
