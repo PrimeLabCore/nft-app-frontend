@@ -2,7 +2,7 @@ import React from "react";
 import { Link, Outlet } from "react-router-dom";
 import styles from "./PublicRoute.module.css";
 import Img from "../Assets/Images/bg-img.png";
-import Logo from "../Assets/Images/logo.png";
+import Logo from "../Assets/Images/prime-lab-logo.png";
 
 const Layout = ({ children }) => (
   <div className={styles.background}>

@@ -8,7 +8,7 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import HomeCard1 from "../../Assets/Images/home-card-1.svg";
 import HomeCard2 from "../../Assets/Images/home-card-2.svg";
-import Logo from "../../Assets/Images/logo.png";
+import Logo from "../../Assets/Images/prime-lab-logo.png";
 import styles from "./index.module.css";
 
 const HomePage = (props) => {
@@ -240,7 +240,7 @@ const HomePage = (props) => {
             {' '}
             {new Date().getFullYear()}
             {' '}
-            Near Labs.
+            Prime Lab.
           </div>
         </div>
       </div>

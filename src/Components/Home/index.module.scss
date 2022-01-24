@@ -26,6 +26,7 @@
 .logo {
     padding-top: 5%;
     padding-left: 2%;
+    width: 200px;
 }
 .leftSideMainText {
     padding: 30px;
@@ -321,4 +322,12 @@
     .contactText {
         font-size: 16px;
     }
+}
+
+@media screen and (max-width: 300px) {
+  .logo {
+      width: 150px;
+      padding-top: 0;
+      padding-bottom: 0;
+  }
 }
