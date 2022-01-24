@@ -9,12 +9,15 @@ import { Link, useNavigate } from "react-router-dom";
 import HomeCard1 from "../../Assets/Images/home-card-1.svg";
 import HomeCard2 from "../../Assets/Images/home-card-2.svg";
 import Logo from "../../Assets/Images/prime-lab-logo.png";
+import useRedirectIfUserLoggedIn from '../../common/hooks/useUser';
 import styles from "./index.module.scss";
 
 import GetStartedButton from "./components/GetStartedButton";
 
 const HomePage = (props) => {
   const navigate = useNavigate();
+
+  useRedirectIfUserLoggedIn();
 
   const HandleLoginWithNear = () => {
     // window.open(`${API_BASE_URL}/near_login/login.html`, "_self");
