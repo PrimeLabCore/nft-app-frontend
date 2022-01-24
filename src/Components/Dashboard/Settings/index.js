@@ -16,7 +16,7 @@ import CustomPhoneInput from "../../../common/components/CustomPhoneInput/Custom
 import { API_BASE_URL } from "../../../Utils/config";
 import AppLoader from "../../Generic/AppLoader";
 import { isValidFullName } from "../../../Utils/utils";
-import {LOGOUT, SET_SESSION} from "../../../Reducers/ActionTypes";
+import { LOGOUT, SET_SESSION } from "../../../Reducers/ActionTypes";
 
 const labels = {
   email: "Email Address",
@@ -175,7 +175,7 @@ function Settings() {
     setConnectedModal(true);
   };
   const addNewWallet = () => {
-    navigate("/signup", {
+    navigate("/signup/create-account", {
       state: { user }
     });
   };
