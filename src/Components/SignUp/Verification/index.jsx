@@ -11,6 +11,7 @@ import styles from "./index.module.css";
 import AppLoader from "../../Generic/AppLoader";
 import { API_BASE_URL } from "../../../Utils/config";
 import { mapUserSession } from "../../../Utils/utils";
+import { SET_SESSION } from "../../../Reducers/ActionTypes";
 
 const Verification = () => {
   const dispatch = useDispatch();
@@ -73,7 +74,7 @@ const Verification = () => {
 
         if (actionPayload) {
           dispatch({
-            type: "auth/set_session",
+            type: SET_SESSION,
             payload: actionPayload,
           });
         }
