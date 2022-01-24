@@ -26,6 +26,7 @@
 .logo {
     padding-top: 5%;
     padding-left: 2%;
+    width: 200px;
 }
 .leftSideMainText {
     padding: 30px;
@@ -124,6 +125,20 @@
     display: flex;
     justify-content: center;
     margin-top: 20px;
+
+    &.onlyOnDesktop {
+        display: flex;
+        @media (max-width: 767px) {
+            display: none;
+        }
+    }
+
+    &.onlyOnMobile {
+        display: none;
+        @media (max-width: 767px) {
+            display: flex;
+        }
+    }
 }
 .getStartedBtn a {
     text-decoration: none;
@@ -321,4 +336,12 @@
     .contactText {
         font-size: 16px;
     }
+}
+
+@media screen and (max-width: 300px) {
+  .logo {
+      width: 150px;
+      padding-top: 0;
+      padding-bottom: 0;
+  }
 }

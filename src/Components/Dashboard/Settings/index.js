@@ -15,6 +15,7 @@ import TextFieldComponent from "../../../Assets/FrequentlUsedComponents/TextFiel
 import CustomPhoneInput from "../../../common/components/CustomPhoneInput/CustomPhoneInput";
 import { API_BASE_URL } from "../../../Utils/config";
 import AppLoader from "../../Generic/AppLoader";
+import { LOGOUT } from "../../../Reducers/ActionTypes";
 
 const labels = {
   email: "Email Address",
@@ -190,7 +191,7 @@ function Settings() {
   };
 
   const SignOut = () => {
-    dispatch({ type: "auth/logout" });
+    dispatch({ type: LOGOUT });
     localStorage.removeItem("user");
     localStorage.removeItem("welcome")
     localStorage.removeItem("firstImport")
@@ -373,6 +374,7 @@ function Settings() {
                 <div className={styles.modal__header}>
                   <h2>
                     Change
+                    {" "}
                     {labels[details]}
                   </h2>
                 </div>

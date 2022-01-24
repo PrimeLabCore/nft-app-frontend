@@ -107,6 +107,8 @@ function ContactPopup({
         .catch((error) => {
           if (error?.response?.data) {
             toast.error(error.response.data.message);
+          } else {
+            toast.error('Failed to Load Contacts');
           }
         })
         .finally(() => {
