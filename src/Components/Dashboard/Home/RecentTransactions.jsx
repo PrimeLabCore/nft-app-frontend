@@ -6,7 +6,7 @@ import useTransactionRequest from "../../../hooks/useTransactionRequest";
 import TransactionItem from "./components/TransactionItem";
 import styles from "./Home.module.scss";
 
-const Transactions = () => {
+const RecentTransactions = memo(() => {
   const user = useSelector(state => state.authReducer.user);
   const transactions = useTransactionRequest(user?.user_id);
 
@@ -16,9 +16,10 @@ const Transactions = () => {
         <h5>Recent Transactions</h5>
         <Link to="/transactions">See All</Link>
       </div>
+
       {!!transactions?.length && (
         <div>
-          {transactions.sort().map(data => (
+          {transactions.map(data => (
             <TransactionItem
               key={data.transaction_id}
               data={data}
@@ -29,6 +30,6 @@ const Transactions = () => {
       )}
     </div>
   );
-};
+});
 
-export default memo(Transactions);
+export default RecentTransactions;

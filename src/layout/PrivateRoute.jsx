@@ -77,4 +77,5 @@ const PrivateRoute = (props) => {
     </PrivateLayout>
   );
 };
+
 export default PrivateRoute;

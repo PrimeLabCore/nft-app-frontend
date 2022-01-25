@@ -72,7 +72,7 @@ function SendNft() {
 
   // get all the unique NFT id that is being send to someone.
   const allClaimedNftIds = useSelector(
-    (state) => [...new Set(state.transactionsReducer.allTransactions
+    (state) => [...new Set(state.transactions.allTransactions
       .filter(item => item.type !== 'unclaimed')
       .map(item => item.transaction_item_id))]
   );

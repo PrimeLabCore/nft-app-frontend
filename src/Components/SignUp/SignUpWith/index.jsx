@@ -116,10 +116,6 @@ const SignUpWith = () => {
     }
   }, []);
 
-  const SignIn = () => {
-    navigate("/signin");
-  };
-
   const handleValidation = () => {
     const errors = {};
     let formIsValid = true;

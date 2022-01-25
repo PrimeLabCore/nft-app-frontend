@@ -17,7 +17,7 @@ import "./Assets/Styles/filepond.scss";
 import "./Assets/Styles/modal.scss";
 import Settings from "./Components/Dashboard/Settings";
 import GiftAnNftDialog from "./Components/GiftAnNftDialog/GiftAnNft";
-import HomePage from "./Components/Home/index";
+import HomePage from "./Components/Home";
 import SignIn from "./Components/SignIn/SignIn";
 import CreateAnAccount from "./Components/SignUp/CreateAnAccount/CreateAnAccount";
 import Verification from "./Components/SignUp/Verification";

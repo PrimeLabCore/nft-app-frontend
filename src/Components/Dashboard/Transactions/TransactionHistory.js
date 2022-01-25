@@ -22,7 +22,7 @@ const Tab = ({ isActive, value, label }) => (
   </button>
 )
 
-function TransactionHistory() {
+const TransactionHistory = memo(() => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [tabs, setTabs] = useState("all");
@@ -116,6 +116,6 @@ function TransactionHistory() {
         )}
     </div>
   );
-}
+});
 
-export default memo(TransactionHistory);
+export default TransactionHistory;

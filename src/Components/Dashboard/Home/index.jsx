@@ -9,7 +9,7 @@ import create_nft_left from "../../../Assets/Images/create-nft-left.png";
 import create_nft_right from "../../../Assets/Images/create-nft-right.png";
 
 import MyNFT from "./MyNft";
-import Transactions from "./RecentTransactions";
+import RecentTransactions from "./RecentTransactions";
 import HomeHeader from "./HomeHeader";
 import ImportContactsDialog from "../../ImportContactsDialog/ImportContactsDialog";
 import ContactPopup from "../../../common/components/ContactPopup";
@@ -148,7 +148,7 @@ const Home = () => {
         </div>
 
         <MyNFT isLink />
-        <Transactions />
+        <RecentTransactions />
       </Container>
     </div>
   );
