@@ -112,3 +112,17 @@
     max-width: 100%;
   }
 }
+
+.comingSoonBtn {
+  background-color: #bdbdbd;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-size: 17px;
+  cursor: pointer;
+  border: none;
+  margin: 0 5px;
+}
