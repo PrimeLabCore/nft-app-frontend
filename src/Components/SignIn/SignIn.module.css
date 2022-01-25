@@ -102,6 +102,10 @@
   height: 100%;
 }
 
+.primary_button:disabled {
+  background-color: #bdbdbd;
+}
+
 .primary_button {
   display: -webkit-box;
   display: -ms-flexbox;

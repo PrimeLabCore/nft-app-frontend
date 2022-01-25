@@ -78,14 +78,14 @@ const SignIn = () => {
       <div className={styles.childContainer}>
         <BsArrowLeftRight className={styles.icon} />
         <div className={styles.requestText}>
-          Enter your ID to Launch the App
+          Login with your NearApps ID
         </div>
 
         <div className={styles.textField}>
           <TextFieldComponent
             label="ACCOUNT ID"
             variant="outlined"
-              // InputValue={details.id}
+            // InputValue={details.id}
             InputValue={accountId}
             name="id"
             HandleInputChange={onAccountChange}
@@ -126,6 +126,12 @@ const SignIn = () => {
               Allow
             </Link> */}
         </div>
+
+        {/* BUTTON CONTAINER */}
+        <button disabled className={styles.primary_button} onClick={handleLogin}>
+          Login with NEAR
+        </button>
+        <div style={{ color: "#bdbdbd" }}>Coming soon...</div>
       </div>
     </div>
   );
