@@ -13,6 +13,7 @@ import { mapUserSession } from "../../../Utils/utils";
 import AppLoader from "../../Generic/AppLoader";
 import styles from "./CreateAnAccount.module.css";
 import { SET_SESSION } from "../../../Reducers/ActionTypes";
+import TooltipButton from "../../../common/components/TooltipButton";
 
 const CreateAnAccount = () => {
   const dispatch = useDispatch();
@@ -86,12 +87,6 @@ const CreateAnAccount = () => {
   }, [signupEmail, signupPhone]);
 
   // HandleClick for cancel button
-
-  // HandleLogin
-  const HandleLogin = () => {
-    // window.open(`${API_BASE_URL}/near_login/login.html`, "_self");
-    navigate("/signin");
-  };
 
   // HandleFocus for input
   const HandleFocus = (ClickedInput) => {
@@ -335,16 +330,9 @@ const CreateAnAccount = () => {
 
         {!accId && (
           <>
-            <h6 className={styles.link}>Already have Near Account?</h6>
+            <h6 className={styles.link}>Already have a NearApps ID?</h6>
 
-            <button className={styles.primary_button} onClick={HandleLogin}>
-              Launch
-              {
-                <span>
-                  <IoIosArrowForward />
-                </span>
-              }
-            </button>
+            <TooltipButton tooltipText="Coming soon..." buttonText="Login with NEAR" buttonStyle={`${styles.comingSoonBtn}`} />
           </>
         )}
       </div>
