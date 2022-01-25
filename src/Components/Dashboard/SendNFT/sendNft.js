@@ -446,7 +446,7 @@ function SendNft() {
                 {fileType.toLowerCase() === "mp4" ? (
                   <video
                     style={{ width: "100%", borderRadius: "8px" }}
-                    src={selected?.file_url}
+                    src={selected?.file_url || selected?.image}
                   />
                 ) : fileType.toLowerCase() === "mp3" ? (
                   <div style={{ width: "100%", padding: "0 2px" }}>
