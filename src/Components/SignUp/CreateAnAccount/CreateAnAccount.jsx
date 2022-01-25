@@ -8,7 +8,6 @@ import { IoIosArrowForward } from "react-icons/io";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import TextFieldComponent from "../../../Assets/FrequentlUsedComponents/TextFieldComponent";
-import useRedirectIfUserLoggedIn from '../../../common/hooks/useUser';
 import { API_BASE_URL } from "../../../Utils/config";
 import { mapUserSession } from "../../../Utils/utils";
 import AppLoader from "../../Generic/AppLoader";
@@ -39,8 +38,6 @@ const CreateAnAccount = () => {
   const [windowstate, setWindow] = useState(window.innerWidth < 767);
   const { redirectUrl } = useSelector((state) => state.authReducer);
 
-  useRedirectIfUserLoggedIn();
-
   useEffect(() => {
     window.addEventListener(
       "resize",
@@ -70,7 +67,7 @@ const CreateAnAccount = () => {
 
   useEffect(() => {
     if (signupEmail === "" && signupPhone === "") {
-      HandleClick();
+      // HandleClick();
     }
   }, [info]);
 
