@@ -6,7 +6,7 @@ import detail__2 from "../Assets/Images/nft__detail__2.png";
 import styles from "./detailRoute.module.scss";
 
 const Layout = ({ children }) => {
-  const nft__detail = useSelector((state) => state.nft__detail);
+  const currentNft = useSelector(state => state.nft.currentNft);
   const [claim, setClaim] = useState(true);
   const [windowstate, setWindow] = useState(window.innerWidth < 767);
   useEffect(() => {
@@ -26,7 +26,7 @@ const Layout = ({ children }) => {
     }
   }, []);
 
-  const urlArray = nft__detail?.image?.split(".");
+  const urlArray = currentNft?.image?.split(".");
   const fileType = urlArray?.length ? urlArray[urlArray.length - 1] : "";
   return (
     <div className={`${styles.background} ${claim ? styles.lightbg : ""}`}>
@@ -44,16 +44,16 @@ const Layout = ({ children }) => {
             {fileType.toLowerCase() === "mp4" ? (
               <video
                 style={{ width: "100%", borderRadius: "8px" }}
-                src={nft__detail?.image}
+                src={currentNft?.image}
               />
             ) : fileType.toLowerCase() === "mp3" ? (
               <div style={{ width: "100%", padding: "0 2px" }}>
                 <audio style={{ width: "inherit", marginTop: "60px" }} controls>
-                  <source src={nft__detail?.image} />
+                  <source src={currentNft?.image} />
                 </audio>
               </div>
             ) : (
-              <img src={nft__detail?.image} alt={nft__detail?.name} />
+              <img src={currentNft?.image} alt={currentNft?.name} />
             )}
           </div>
         </div>
@@ -65,11 +65,7 @@ const Layout = ({ children }) => {
 }
 
 function LayoutRoute() {
-  // let navigate = useNavigate()
-  // let isAuth = Cookies.get(cookieAuth) || false // => 'value'
   const isAuth = true; // => 'value'
-
-  // const nft__detail = useSelector((state) => state.nft__detail);
 
   return (
     <Layout>{isAuth ? <Outlet /> : <Navigate replace to="/signup" />}</Layout>

@@ -1,52 +1,14 @@
-import {
-  BsArrowDownLeft,
-  BsArrowUpRight
-} from "react-icons/bs";
-import React, {
-  memo,
-  useEffect,
-  useState
-} from "react";
-import {
-  useDispatch,
-  useSelector
-} from "react-redux";
+import React, { memo } from "react";
+import { useSelector } from "react-redux";
 
 import { Link } from "react-router-dom";
-import axios from "axios";
-import { nanoid } from "nanoid";
-import { API_BASE_URL } from "../../../Utils/config";
-import styles from "./Home.module.css";
+import useTransactionRequest from "../../../hooks/useTransactionRequest";
+import TransactionItem from "./components/TransactionItem";
+import styles from "./Home.module.scss";
 
 const Transactions = () => {
-  const [transactions, setTransactions] = useState([]);
-  const dispatch = useDispatch();
-  const { allTransactions } = useSelector((state) => state.transactionsReducer);
-  const { user } = useSelector((state) => state.authReducer);
-
-  useEffect(() => {
-    async function fetchTransactions() {
-      const response = await axios.get(
-        `${API_BASE_URL}/transactions/list/${user?.user_id}`
-      );
-
-      const fetchedTransactions = response.data?.data;
-
-      if (fetchedTransactions) {
-        setTransactions(fetchedTransactions);
-        dispatch({
-          type: "fetch_transactions",
-          payload: fetchedTransactions,
-        });
-      }
-    }
-
-    fetchTransactions();
-  }, [user]);
-
-  useEffect(() => {
-    setTransactions(allTransactions);
-  }, [allTransactions]);
+  const user = useSelector(state => state.authReducer.user);
+  const transactions = useTransactionRequest(user?.user_id);
 
   return (
     <div className={styles.transaction__wrapper}>
@@ -54,39 +16,19 @@ const Transactions = () => {
         <h5>Recent Transactions</h5>
         <Link to="/transactions">See All</Link>
       </div>
-      {(transactions?.length > 0) && (
-      <div className={styles.transaction__list__wrapper}>
-        {transactions.map((data) => (
-          <div className={styles.transaction__list} key={nanoid()}>
-            <div className={styles.transaction__action}>
-              <div>
-                {data.sender ? <BsArrowUpRight /> : <BsArrowDownLeft />}
-              </div>
-              <h6>
-                {/* <span>{data.id}</span>{" "} */}
-                <span>{user.wallet_id}</span>
-                <br />
-                {data.sender ? "Sent to" : "Received from"}
-                {" "}
-                <a
-                  href="https://explorer.near.org/"
-                  rel="noreferrer"
-                  target="_blank"
-                  className={styles.transaction__name}
-                >
-                  {/* {data.name} */}
-                  {data.counterparty?.[0]?.email}
-                </a>
-              </h6>
-            </div>
-            <div className={styles.transaction__time}>
-              <p>{data.formattedtime}</p>
-            </div>
-          </div>
-        ))}
-      </div>
+      {!!transactions?.length && (
+        <div>
+          {transactions.sort().map(data => (
+            <TransactionItem
+              key={data.transaction_id}
+              data={data}
+              walletId={user?.wallet_id}
+            />
+          ))}
+        </div>
       )}
     </div>
   );
 };
+
 export default memo(Transactions);

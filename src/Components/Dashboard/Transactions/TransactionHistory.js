@@ -1,24 +1,34 @@
 import React, {
-  memo, Fragment, useState, useEffect
+  memo,
+  useState,
+  useEffect
 } from "react";
-// import {Link} from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux";
-import { nanoid } from "nanoid";
-import { BsArrowUpRight, BsArrowDownLeft } from "react-icons/bs";
-import axios from "axios";
-import moment from "moment";
+import { BsArrowUpRight } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
-import styles from "./transactions.module.css";
-import { API_BASE_URL } from "../../../Utils/config";
+import { actionAppStateSetDynamic } from "../../../Store/AppState/actions";
+import { actionNFTSetCurrent } from "../../../Store/NFT/actions";
+import { mapNftDetails } from "../../../Utils/utils";
+import useTransactionRequest from "../../../hooks/useTransactionRequest";
+import styles from "./transactions.module.scss";
+import TransactionItem from "../Home/components/TransactionItem";
+
+const Tab = ({ isActive, value, label }) => (
+  <button
+    className={isActive ? styles.active : ""}
+    value={value}
+  >
+    {label}
+  </button>
+)
 
 function TransactionHistory() {
-  const [tabs, setTabs] = useState("all");
   const dispatch = useDispatch();
-  const [windowstate, setWindow] = useState(window.innerWidth < 767);
-  const [transactions, setTransactions] = useState([]);
-  const { allTransactions } = useSelector((state) => state.transactionsReducer);
   const navigate = useNavigate();
-  const { user } = useSelector((state) => state.authReducer);
+  const [tabs, setTabs] = useState("all");
+  const [windowstate, setWindow] = useState(window.innerWidth < 767);
+  const user = useSelector((state) => state.authReducer.user);
+  const transactions = useTransactionRequest(user?.user_id)
 
   useEffect(() => {
     window.addEventListener(
@@ -31,40 +41,15 @@ function TransactionHistory() {
     );
   }, [windowstate]);
 
-  useEffect(() => {
-    async function fetchTransactions() {
-      const response = await axios.get(
-        `${API_BASE_URL}/transactions/list/${user?.user_id}`
-      );
-
-      const fetchedTransactions = response.data?.data;
-
-      if (fetchedTransactions) {
-        setTransactions(fetchedTransactions);
-        dispatch({
-          type: "fetch_transactions",
-          payload: fetchedTransactions,
-        });
-      }
-    }
-
-    fetchTransactions();
-  }, [user]);
-
-  useEffect(() => {
-    setTransactions(allTransactions);
-  }, [allTransactions]);
-
   const handleTabClick = (e) => {
     setTabs(e.target.value);
   };
   const SendNft = () => {
-    dispatch({ type: "sendnft__open" });
+    dispatch(actionAppStateSetDynamic("sendNFTPopupIsOpen", true));
   };
 
   const openClaim = (data) => {
-    // navigate("/nft/claim");
-    dispatch({ type: "nft__detail", payload: data });
+    dispatch(actionNFTSetCurrent(mapNftDetails(data)));
     navigate("/nft/detail/claim");
   };
 
@@ -79,26 +64,11 @@ function TransactionHistory() {
       <div className={styles.transaction__header}>
         <h5>History</h5>
         {!windowstate && (
-        <div className={styles.transaction__tab} onClick={handleTabClick}>
-          <button
-            className={tabs === "all" ? styles.active : ""}
-            value="all"
-          >
-            All
-          </button>
-          <button
-            className={tabs === "sent" ? styles.active : ""}
-            value="sent"
-          >
-            Sent
-          </button>
-          <button
-            className={tabs === "received" ? styles.active : ""}
-            value="received"
-          >
-            Received
-          </button>
-        </div>
+          <div className={styles.transaction__tab} onClick={handleTabClick}>
+            <Tab value="all" label="All" isActive={tabs === "all"} />
+            <Tab value="sent" label="Sent" isActive={tabs === "sent"} />
+            <Tab value="received" label="Received" isActive={tabs === "received"} />
+          </div>
         )}
         <div>
           {tabs !== "received" ? (
@@ -112,97 +82,40 @@ function TransactionHistory() {
               Send NFT
             </button>
           ) : (
-            <div style={{ width: '128px' }}> </div>
+            <div style={{ width: 128 }} />
           )}
         </div>
       </div>
       {windowstate && (
-      <div className={styles.small__screen__transaction__wrapper}>
-        <div
-          className={styles.small__screen__transaction}
-          onClick={handleTabClick}
-        >
-          <button
-            className={tabs === "all" ? styles.active : ""}
-            value="all"
+        <div className={styles.small__screen__transaction__wrapper}>
+          <div
+            className={styles.small__screen__transaction}
+            onClick={handleTabClick}
           >
-            All
-          </button>
-          <button
-            className={tabs === "sent" ? styles.active : ""}
-            value="sent"
-          >
-            Sent
-          </button>
-          <button
-            className={tabs === "received" ? styles.active : ""}
-            value="received"
-          >
-            Received
-          </button>
+            <Tab value="all" label="All" isActive={tabs === "all"} />
+            <Tab value="sent" label="Sent" isActive={tabs === "sent"} />
+            <Tab value="received" label="Received" isActive={tabs === "received"} />
+          </div>
         </div>
-      </div>
       )}
-      {displayTransaction?.length ? (
-        <div className={styles.transaction__list__wrapper}>
-          {displayTransaction.map((data) => (
-            <Fragment key={nanoid()}>
-              <div
-                className={styles.transaction__list}
-                style={{
-                  cursor: data.sender ? "pointer" : null,
-                }}
+      {displayTransaction?.length
+        ? (
+          <div className={styles.transaction__list__wrapper}>
+            {displayTransaction.map(data => (
+              <TransactionItem
+                key={data.transaction_id}
+                data={data}
+                walletId={user?.wallet_id}
+                className={data.sender ? styles.clickable : ""}
                 onClick={() => !data.sender && openClaim(data)}
-              >
-                <div className={styles.transaction__action}>
-                  <div className={styles.icon__wrapper}>
-                    {data.sender ? (
-                      <BsArrowUpRight />
-                    ) : (
-                      <BsArrowDownLeft />
-                    )}
-                  </div>
-                  <h6>
-                    <span>{user.wallet_id}</span>
-                    {' '}
-                    <br />
-                    {data.sender ? "Sent to" : "Received from"}
-                    {" "}
-                    {/* <a
-                          href="https://explorer.near.org/"
-                          target="_blank"
-                          rel="noreferrer"
-                          className={styles.transaction__name}
-                        >
-                          {data.receiver.email}
-                        </a> */}
-                    <span
-                            //   href="https://explorer.near.org/"
-                            //   target="_blank"
-                            //   rel="noreferrer"
-                      className={styles.transaction__name}
-                    >
-                      {data.counterparty?.[0]?.email}
-                    </span>
-                  </h6>
-                </div>
-                <div className={styles.transaction__time}>
-                  {/* <p>{data.time}</p> */}
-                  <p>
-                    {moment
-                      .utc(data.created)
-                      .local()
-                      .startOf("seconds")
-                      .fromNow()}
-                  </p>
-                </div>
-              </div>
-            </Fragment>
-          ))}
-        </div>
-      )
-        : <div align="center">Transactions not available</div>}
+              />
+            ))}
+          </div>
+        ) : (
+          <div align="center">Transactions not available</div>
+        )}
     </div>
   );
 }
+
 export default memo(TransactionHistory);

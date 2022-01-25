@@ -23,16 +23,17 @@ import {
   googleRefresh,
 } from "../../Utils/config";
 import ImportContactsDialog from "../ImportContactsDialog/ImportContactsDialog";
-import styles from "./GiftAnNft.module.css";
+import styles from "./GiftAnNft.module.scss";
+import { actionAppStateGoogleContacts, actionAppStateSetDynamic } from "../../Store/AppState/actions";
 
 // const Transition = React.forwardRef(function Transition(props, ref) {
 //     return <Slide direction="up" ref={ref} {...props} />;
 // });
 
-export default function GiftAnNft({ closebutton, sendGiftButton, dashboard }) {
+export default function GiftAnNft({ closeButton, sendGiftButton, dashboard }) {
   const search = useLocation().search;
   const oauth__code = new URLSearchParams(search).get("code");
-  const [token, setToken] = useState({
+  const [, setToken] = useState({
     access: "",
     refresh: "",
   });
@@ -44,8 +45,6 @@ export default function GiftAnNft({ closebutton, sendGiftButton, dashboard }) {
   useEffect(() => {
     localStorage.setItem("oauth", oauth__code);
   }, []);
-
-  useEffect(() => 0, [token]);
 
   const getGoogleToken = () => {
     axios
@@ -137,14 +136,12 @@ export default function GiftAnNft({ closebutton, sendGiftButton, dashboard }) {
 
   const handleSearch = (event) => {
     const value = event.target.value.toLowerCase();
-    let result = [];
-
-    result = contactsData.filter((data) =>
-      data.names[0].displayName.toLowerCase().search(value) !== -1)
-    setFilteredContactsData(result);
+    setFilteredContactsData(contactsData
+      .filter(data =>
+        data.names[0].displayName.toLowerCase().search(value) !== -1));
   };
-  const [importContactDialog, setimportContactDialog] = useState(true);
-  // const dialogStatus = useSelector((state) => state.GiftNFT_Dialog_Box);
+  const [importContactDialog, setImportContactDialog] = useState(true);
+  // const dialogStatus = useSelector((state) => state.appState.giftNFTPopupIsOpen);
   const dispatch = useDispatch();
 
   // for checked and unchecked items
@@ -159,13 +156,13 @@ export default function GiftAnNft({ closebutton, sendGiftButton, dashboard }) {
 
   // this is for main dialog box
   const handleClose = () => {
-    dispatch({ type: "close_dialog_gift_nft" });
+    dispatch(actionAppStateSetDynamic("giftNFTPopupIsOpen", false));
     navigate(`/`);
   };
 
   // this dialog is for import google contacts
   const HandleDialogClose = () => {
-    setimportContactDialog(false);
+    setImportContactDialog(false);
   };
 
   const contactImportCallback = (error, source) => {
@@ -184,55 +181,20 @@ export default function GiftAnNft({ closebutton, sendGiftButton, dashboard }) {
 
   const importContact = (data) => {
     if (data) {
-      dispatch({
-        type: "getGoogleContactData",
-        payload: data,
-      });
-      setimportContactDialog(false);
+      dispatch(actionAppStateGoogleContacts(data));
+      setImportContactDialog(false);
       setContactsData(data);
       setFilteredContactsData(data);
       setCheckedState(new Array(data.length).fill(true));
     }
-    // old code
-    /*  axios
-      .get(
-        `https://content-people.googleapis.com/v1/people/me/connections?personFields=names,photos`,
-        {
-          headers: {
-            Authorization: "Bearer " + token.access, //the token is a variable which holds the token
-          },
-        }
-      )
-      .then((response) => {
-        if (response.status === 200) {
-          setContactsData(response.data.connections);
-          setFilteredContactsData(response.data.connections);
-          dispatch({
-            type: "getGoogleContactData",
-            payload: response.data.connections,
-          });
-          setCheckedState(
-            new Array(response.data.connections.length).fill(true)
-          );
-          setimportContactDialog(false);
-          window.dataLayer.push({
-            event: "event",
-            eventProps: {
-              category: "Google Contacts",
-              action: "Successfully imported google contacts",
-              value: response.data.connections,
-            },
-          });
-        }
-      }); */
   };
   const HandleDialogOpen = () => {
-    setimportContactDialog(true);
+    setImportContactDialog(true);
   };
 
   useEffect(() => {
     getGoogleToken();
-    dispatch({ type: "open_dialog_gift_nft" });
+    dispatch(actionAppStateSetDynamic("giftNFTPopupIsOpen", true));
   }, []);
 
   return (
@@ -240,7 +202,7 @@ export default function GiftAnNft({ closebutton, sendGiftButton, dashboard }) {
       <div className={classes.mainContainer}>
         <div>
           <div>
-            {closebutton ? (
+            {closeButton ? (
               <AiFillCloseCircle
                 className={styles.cross}
                 onClick={handleClose}
@@ -339,7 +301,7 @@ export default function GiftAnNft({ closebutton, sendGiftButton, dashboard }) {
           onImport={importContact}
           status={importContactDialog}
           callback={contactImportCallback}
-          setStatus={setimportContactDialog}
+          setStatus={setImportContactDialog}
         />
       )}
     </>

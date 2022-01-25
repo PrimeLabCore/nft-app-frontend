@@ -2,473 +2,473 @@
 @import "../../../Assets/Styles/partials";
 
 .initial__nft__modal {
-    button {
-        &:focus {
-            outline: none;
-        }
+  button {
+    &:focus {
+      outline: none;
     }
-    .modal__header__wrapper {
-        border-bottom: none !important;
-        .modal__header {
+  }
+
+  .modal__header__wrapper {
+    border-bottom: none !important;
+
+    .modal__header {
+      border: none;
+
+      h2 {
+        font-weight: 600;
+        font-size: 21px;
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  .modal__body__wrapper {
+    margin: 25px 40px;
+
+    h3 {
+      font-weight: bold;
+      font-size: 16.8px;
+      margin-bottom: 0;
+      padding-bottom: 10px;
+      text-align: center;
+    }
+
+    h6 {
+      font-weight: normal;
+      font-size: 19.2px;
+      padding-bottom: 20px;
+      color: #808080;
+      text-align: center;
+    }
+
+    .search__wrapper {
+      display: flex;
+      // justify-content:space-between;
+      align-items: center;
+
+      .search__inner__wrapper {
+        width: 100%;
+
+        .searchIcon {
+          color: #818C99;
+          display: flex;
+          padding: 0 16px;
+          z-index: 20;
+          position: absolute;
+          pointer-events: none;
+          justify-content: center;
+
+          svg {
+            fill: currentColor;
+            width: 1em;
+            height: 1em;
+            display: inline-block;
+            font-size: 1.5rem;
+            transition: fill 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+            flex-shrink: 0;
+            user-select: none;
+          }
+        }
+
+        .search__input {
+          color: rgba(0, 0, 0, 0.87);
+          cursor: text;
+          display: inline-flex;
+          position: relative;
+          font-size: 1rem;
+          align-items: center;
+          width: 100%;
+
+          input {
+            z-index: 1;
+            max-width: 400px;
+            background: #EBEDF0;
+            transition: width 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+            padding: 10px 10px 10px calc(1em + 32px);
+            border-radius: 12px;
             border: none;
-            h2 {
-                font-weight: 600;
-                font-size: 21px;
-                margin-bottom: 0px;
-            }
-        }
-    }
-    .modal__body__wrapper {
-        margin: 25px 40px;
-        h3 {
-            font-weight: bold;
-            font-size: 16.8px;
-            margin-bottom: 0px;
-            padding-bottom: 10px;
-            text-align: center;
-        }
-        h6 {
-            font-weight: normal;
-            font-size: 19.2px;
-            padding-bottom: 20px;
-            color: #808080;
-            text-align: center;
-        }
-        .search__wrapper{
-            display: flex;
-            // justify-content:space-between;
-            align-items: center;
-            .search__inner__wrapper{
-                width: 100%;
-                .searchIcon{
-                    color: #818C99;
-                    display: flex;
-                    padding: 0px 16px;
-                    z-index: 20;
-                    position: absolute;
-                    pointer-events: none;
-                    justify-content: center;
-                    svg{
-                        fill: currentColor;
-                        width: 1em;
-                        height: 1em;
-                        display: inline-block;
-                        font-size: 1.5rem;
-                        transition: fill 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
-                        flex-shrink: 0;
-                        user-select: none;
-                    }
-                }
-                .search__input{
-                    color: rgba(0, 0, 0, 0.87);
-                    cursor: text;
-                    display: inline-flex;
-                    position: relative;
-                    font-size: 1rem;
-                    align-items: center;
-                    width: 100%;
-                    input{
-                        padding: 10px;
-                        z-index: 1;
-                        max-width: 400px;
-                        background: #EBEDF0;
-                        transition: width 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
-                        padding-left: calc(1em + 32px);
-                        border-radius: 12px;
-                        border: none;
-                        min-width:100%;
-                        &:focus{
-                            outline: none;
-                        }
-                    }
-                }
+            min-width: 100%;
 
+            &:focus {
+              outline: none;
             }
+          }
+        }
 
-            button{
-                color: #2F80ED;
-                font-size: 20.4px;
-                font-weight: normal;
-                margin-left: 20px;
-                border:none;
-                background-color: transparent;
-                letter-spacing: -0.4896px;
-                &:focus{
-                    outline: none;
-                }
-            }
-        }
-        .data__wrapper{
-            // margin: 15px auto;
-            // overflow: scroll;
-            // overflow-x: hidden;
+      }
 
-            .data_row_container {
-                display: flex;
-                align-items: center;
-                margin: 25px auto;
-                max-height: 50px;
-                .avatar {
-                    width: 54px;
-                    height: 54px;
-                    border-radius: 50%;
-                    background: #ebedf0;
-                    text-transform: uppercase;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    color: rgba(0, 0, 0, 0.55);
-                    font-size: 16.8px;
-                    img{
-                        width: 100%;
-                        border-radius: 50%;
-                    }
-                }
-                .textContainer {
-                    display: flex;
-                    align-items: flex-start;
-                    flex-direction: column;
-                    justify-content: center;
-                    margin-left: 2vw;
-                    h6,
-                    p {
-                        margin: 0;
-                        padding: 0;
-                    }
-                    h6 {
-                        font-weight: 500;
-                        font-size: 16.68px;
-                    }
-                }
-                .icon {
-                    margin-left: auto;
-                    margin-right: 13px;
-                    margin-bottom: 20px;
-                    margin-top: 10px;
-                    cursor: pointer;
-                }
-                .checked {
-                    color: #2f80ed;
-                    font-size: 25px;
-                    margin-right: 13px;
-                }
-                .unchecked {
-                    font-size: 50px;
-                    color: #ebedf0;
-                }
-            }
+      button {
+        color: #2F80ED;
+        font-size: 20.4px;
+        font-weight: normal;
+        margin-left: 20px;
+        border: none;
+        background-color: transparent;
+        letter-spacing: -0.4896px;
+
+        &:focus {
+          outline: none;
         }
-        .mint__info__wrapper {
-            .mint__image {
-                display: flex;
-                margin-bottom: 10px;
-                justify-content: center;
-                img {
-                    width: 50%;
-                    border-radius: 25px;
-                }
-            }
-            h1 {
-                text-align: center;
-                font-weight: 500;
-                font-size: 24px;
-            }
-            h6 {
-                font-size: 16.8px;
-            }
-        }
+      }
     }
-    .next__btn__wrapper {
+
+    .data__wrapper {
+      // margin: 15px auto;
+      // overflow: scroll;
+      // overflow-x: hidden;
+
+      .data_row_container {
         display: flex;
-        justify-content: center;
-        margin: 15px 0px;
-        .next__btn {
-            @include defaultButton($primary__color);
-        }
-    }
-    .multiple__btn__wrapper {
-        display: flex;
-        justify-content: space-around;
-        margin: 15px 0px;
-        .next__btn {
-            @include defaultButton($primary__color);
-        }
-        .back__btn {
-            @include defaultButton($primary__color);
-            span {
-                padding-right: 10px;
-                padding-left: 0px !important;
-            }
-        }
-    }
-    .last__modal__btn {
-        display: flex;
-        .next__btn {
+        align-items: center;
+        margin: 25px auto;
+        max-height: 50px;
+
+        .avatar {
+          width: 54px;
+          height: 54px;
+          border-radius: 50%;
+          background: #ebedf0;
+          text-transform: uppercase;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: rgba(0, 0, 0, 0.55);
+          font-size: 16.8px;
+
+          img {
             width: 100%;
-            justify-content: center !important;
+            border-radius: 50%;
+          }
         }
+
+        .textContainer {
+          display: flex;
+          align-items: flex-start;
+          flex-direction: column;
+          justify-content: center;
+          margin-left: 2vw;
+
+          h6,
+          p {
+            margin: 0;
+            padding: 0;
+          }
+
+          h6 {
+            font-weight: 500;
+            font-size: 16.68px;
+          }
+        }
+
+        .icon {
+          margin: 10px 13px 20px auto;
+          cursor: pointer;
+        }
+
+        .checked {
+          color: #2f80ed;
+          font-size: 25px;
+          margin-right: 13px;
+        }
+
+        .unchecked {
+          font-size: 50px;
+          color: #ebedf0;
+        }
+      }
     }
+
+    .mint__info__wrapper {
+      .mint__image {
+        display: flex;
+        margin-bottom: 10px;
+        justify-content: center;
+
+        img {
+          width: 50%;
+          border-radius: 25px;
+        }
+      }
+
+      h1 {
+        text-align: center;
+        font-weight: 500;
+        font-size: 24px;
+      }
+
+      h6 {
+        font-size: 16.8px;
+      }
+    }
+  }
+
+  .next__btn__wrapper {
+    display: flex;
+    justify-content: center;
+    margin: 15px 0;
+
+    .next__btn {
+      @include defaultButton($primary__color);
+    }
+  }
+
+  .multiple__btn__wrapper {
+    display: flex;
+    justify-content: space-around;
+    margin: 15px 0;
+
+    .next__btn {
+      @include defaultButton($primary__color);
+    }
+
+    .back__btn {
+      @include defaultButton($primary__color);
+
+      span {
+        padding-right: 10px;
+        padding-left: 0 !important;
+      }
+    }
+  }
+
+  .last__modal__btn {
+    display: flex;
+
+    .next__btn {
+      width: 100%;
+      justify-content: center !important;
+    }
+  }
 }
 
 
 @media only screen and (max-width: 767px) {
-    .create__nft__container{
-        overflow:hidden;
-        .create__nft__content{
-            h1{
-                text-align: left !important;
-            }
-            .btn__wrapper{
-                justify-content:flex-start !important;
-            }
-        }
-        .create_nft_left{
-            right: -50px;
-            top: 15px;
-            left: auto !important;
-        }
-        .create_nft_right{
-            display:none;
-        }
+  .create__nft__container {
+    overflow: hidden;
+
+    .create__nft__content {
+      h1 {
+        text-align: left !important;
+      }
+
+      .btn__wrapper {
+        justify-content: flex-start !important;
+      }
     }
 
-  }
-  @media only screen and (max-width:"400px"){
-    .transaction__list__wrapper{
-        .transaction__list{
-            .transaction__action{
-                div{
-                    width: 40px !important;
-                    height:40px !important;
-                }
-            }
-        }
+    .create_nft_left {
+      right: -50px;
+      top: 15px;
+      left: auto !important;
+    }
+
+    .create_nft_right {
+      display: none;
     }
   }
 
-.home__main__wrapper{
-
-    padding-bottom: 75px;
-    height: 100%;
-
-
-    .create__nft__container{
-        border-radius: 10px;
-        padding: 30px;
-        background-color: #fff;
-        width: 100%;
-        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.04);
-        margin-bottom: 25px;
-        position:relative;
-        .create__nft__content{
-            display:flex;
-            align-items: center;
-            justify-content:center;
-            h1{
-                text-align: center;
-            }
-            .btn__wrapper{
-                margin-top: 25px;
-                display:flex;
-                align-items: center;
-                justify-content: center;
-                button{
-                    @include defaultButton($primary__color);
-                }
-            }
-
-        }
-        .create_nft_left{
-            position:absolute;
-            z-index: 1;
-            top: 0;
-            left:0;
-        }
-        .create_nft_right{
-            position:absolute;
-            z-index: 1;
-            bottom: 0;
-            right:0;
-        }
-    }
-
 }
 
-.mynft__page__wrapper{
-    margin-bottom: 100px !important;
-}
-.mynft__wrapper{
+.home__main__wrapper {
+
+  padding-bottom: 75px;
+  height: 100%;
+
+
+  .create__nft__container {
+    border-radius: 10px;
+    padding: 30px;
+    background-color: #fff;
+    width: 100%;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.04);
     margin-bottom: 25px;
-    .mynft__header{
-        display:flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 10px;
-        h5{
-            font-weight: bold;
-            font-size: 22px;
-        }
-        a{
-            text-decoration: none;
-            font-size: 20px;
-        }
-        button{
-            border: none;
-            background-color: transparent;
-            color: $primary__color;
-            font-weight: 500;
-            font-size: 16.8px;
-            &:focus{
-                outline: none;
-            }
-            span{
-                margin-right: 5px;
-            }
-        }
-    }
-    .mynft__box__wrapper{
-        .mynft__box{
-            box-shadow: 0px 4.8px 4.8px rgba(0, 0, 0, 0.1);
-            border-radius: 12px;
-            background-color: #fff;
-            cursor: pointer;
-            .mynft__box__image__wrapper{
-                position: relative;
-                .mynft__box__image{
-                    img{
-                        width: 100%;
-                        border-top-right-radius: 12px;
-                        border-top-left-radius: 12px;
-                    }
-                }
-                .mynft__box__cat{
-                    position: absolute;
-                    left: 20px;
-                    top: 15px;
-                    background-color: #fff;
-                    border-radius: 10px;
-                    h6{
-                        font-size: 16.8px;
-                        font-weight: 600;
-                        padding: 6px 10px;
-                        margin-bottom: 0px;
-                    }
-                }
-            }
-            .mynft__box__description__wrapper{
-                padding: 25px 20px;
-                h2{
-                    font-size: 19.2px;
-                    margin-bottom: 0px;
-                    padding-bottom: 10px;
-                    word-break: break-word;
-                }
-                p{
-                    font-size: 16.8px;
-                    color: #808080;
-                    margin-bottom: 0px;
-                    word-break: break-word;
-                }
-            }
-        }
-        .mynft__small__screen{
-            margin:0px 10px 10px 10px;
-        }
-    }
-}
+    position: relative;
 
-.home__header{
-    padding-top: 35px;
-    display:flex;
-    justify-content: center;
-    width:100%;
-    margin-bottom: 22px;
-    a{
-        text-decoration:none;
-        color: inherit;
-    }
-    .user__icon{
+    .create__nft__content {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      h1 {
+        text-align: center;
+      }
+
+      .btn__wrapper {
+        margin-top: 25px;
         display: flex;
         align-items: center;
-        background-color: #fff;
-        border: 1px solid #dedede;
-        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.04);
-        border-radius: 50px;
-        padding: 12px;
-        h6{
-            margin-bottom: 0px;
-            padding-left: 13px;
-            font-weight: 600;
-            font-size: 16px;
+        justify-content: center;
+
+        button {
+          @include defaultButton($primary__color);
         }
+      }
+
     }
+
+    .create_nft_left {
+      position: absolute;
+      z-index: 1;
+      top: 0;
+      left: 0;
+    }
+
+    .create_nft_right {
+      position: absolute;
+      z-index: 1;
+      bottom: 0;
+      right: 0;
+    }
+  }
+
 }
 
-.transaction__wrapper{
-    margin-bottom: 25px;
-    .transaction__header{
-        display:flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 23px;
-        h5{
-            font-weight: bold;
-            font-size: 22px;
-        }
-        a{
-            text-decoration: none;
-            font-size: 20px;
-        }
-    }
-    .transaction__list__wrapper{
-        .transaction__list{
-            display:flex;
-            align-items: center;
-            width: 100%;
-            justify-content:space-between;
-            margin-bottom: 15px;
-            .transaction__action{
-                display:flex;
-                align-items: center;
+.mynft__page__wrapper {
+  margin-bottom: 100px !important;
+}
 
-                div{
-                    background: #FFFFFF;
-                    border: 1.2px solid #DEDEDE;
-                    box-shadow: 0px 4.8px 4.8px rgba(0, 0, 0, 0.04);
-                    border-radius: 50%;
-                    width: 45px;
-                    height: 45px;
-                    padding: 5px;
-                    display:flex;
-                    align-items: center;
-                    justify-content:center;
-                    svg{
-                        font-weight: bold;
-                    }
-                }
-                h6{
-                    padding-left: 15px;
-                    margin-bottom: 0px;
-                    font-weight: 600;
-                    font-size: 16.8px;
-                    span{
-                        color: $primary__color;
-                    }
-                    .transaction__name{
-                        font-weight: normal;
-                        color: $primary__color;
-                        text-decoration: none;
-                    }
-                }
-            }
-            .transaction__time{
-                p{
-                    font-weight: normal;
-                    font-size: 15.6px;
-                    color: #808080;
-                    margin-bottom: 0px;
-                }
-            }
-        }
+.mynft__wrapper {
+  margin-bottom: 25px;
+
+  .mynft__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+
+    h5 {
+      font-weight: bold;
+      font-size: 22px;
     }
+
+    a {
+      text-decoration: none;
+      font-size: 20px;
+    }
+
+    button {
+      border: none;
+      background-color: transparent;
+      color: $primary__color;
+      font-weight: 500;
+      font-size: 16.8px;
+
+      &:focus {
+        outline: none;
+      }
+
+      span {
+        margin-right: 5px;
+      }
+    }
+  }
+
+  .mynft__box__wrapper {
+    .mynft__box {
+      box-shadow: 0 4.8px 4.8px rgba(0, 0, 0, 0.1);
+      border-radius: 12px;
+      background-color: #fff;
+      cursor: pointer;
+
+      .mynft__box__image__wrapper {
+        position: relative;
+
+        .mynft__box__image {
+          img {
+            width: 100%;
+            border-top-right-radius: 12px;
+            border-top-left-radius: 12px;
+          }
+        }
+
+        .mynft__box__cat {
+          position: absolute;
+          left: 20px;
+          top: 15px;
+          background-color: #fff;
+          border-radius: 10px;
+
+          h6 {
+            font-size: 16.8px;
+            font-weight: 600;
+            padding: 6px 10px;
+            margin-bottom: 0;
+          }
+        }
+      }
+
+      .mynft__box__description__wrapper {
+        padding: 25px 20px;
+
+        h2 {
+          font-size: 19.2px;
+          margin-bottom: 0;
+          padding-bottom: 10px;
+          word-break: break-word;
+        }
+
+        p {
+          font-size: 16.8px;
+          color: #808080;
+          margin-bottom: 0;
+          word-break: break-word;
+        }
+      }
+    }
+
+    .mynft__small__screen {
+      margin: 0 10px 10px;
+    }
+  }
+}
+
+.home__header {
+  padding-top: 35px;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 22px;
+
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .user__icon {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    border: 1px solid #dedede;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.04);
+    border-radius: 50px;
+    padding: 12px;
+
+    h6 {
+      margin-bottom: 0;
+      padding-left: 13px;
+      font-weight: 600;
+      font-size: 16px;
+    }
+  }
+}
+
+.transaction__wrapper {
+  margin-bottom: 25px;
+
+  .transaction__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 23px;
+
+    h5 {
+      font-weight: bold;
+      font-size: 22px;
+    }
+
+    a {
+      text-decoration: none;
+      font-size: 20px;
+    }
+  }
 }

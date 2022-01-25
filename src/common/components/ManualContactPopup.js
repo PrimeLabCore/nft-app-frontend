@@ -6,12 +6,13 @@ import { IoIosArrowForward } from "react-icons/io";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import TextFieldComponent from "../../Assets/FrequentlUsedComponents/TextFieldComponent";
-import styles from "../../Components/Dashboard/SendNFT/sendNft.module.css";
+import styles from "../../Components/Dashboard/SendNFT/sendNft.module.scss";
 import { API_BASE_URL } from "../../Utils/config";
 import {
   isValidateEmail, isValidName, isValidPhoneNumber, mapContact
 } from "../../Utils/utils";
 import CustomPhoneInput from "./CustomPhoneInput/CustomPhoneInput";
+import { actionSetDynamic } from "../../Store/Auth/actions";
 
 const contactFormFields = {
   email: "",
@@ -64,13 +65,10 @@ function ManualContactPopup({
       .post(`${API_BASE_URL}/contacts`, newContact)
       .then((response) => {
         setIsloading(false)
-        dispatch({
-          type: "update_contacts",
-          payload: [...contacts, {
-            ...newContact,
-            contact_id: response.data.data.contact_id
-          }]
-        });
+        dispatch(actionSetDynamic("contacts", [...contacts, {
+          ...newContact,
+          contact_id: response.data.data.contact_id
+        }]));
         toast.success(response.data.message);
       })
       .catch((error) => {

@@ -16,7 +16,7 @@
 .button {
   @include defaultButton($primary__color);
   color: #828282;
-  margin: 0px 5px;
+  margin: 0 5px;
   &:focus {
     outline: none;
   }
@@ -33,7 +33,7 @@
 .mainContainer {
   @include HorizontalAndVerticalCenter;
   flex-direction: column;
-  padding: 30px 0px;
+  padding: 30px 0;
   min-width: 60%;
   p {
     text-align: center;
@@ -88,7 +88,7 @@
 
 @media screen and (max-width: 800px) {
   .mainContainer {
-    padding: 0px;
+    padding: 0;
   }
   .half_container {
     position: absolute;

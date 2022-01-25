@@ -1,0 +1,63 @@
+@import "../../../../../Assets/Styles/mixins";
+@import "../../../../../Assets/Styles/partials";
+
+.transaction__list {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: space-between;
+  margin-bottom: 15px;
+
+  .transaction__action {
+    display: flex;
+    align-items: center;
+
+    div {
+      background: #FFFFFF;
+      border: 1.2px solid #DEDEDE;
+      box-shadow: 0 4.8px 4.8px rgba(0, 0, 0, 0.04);
+      border-radius: 50%;
+      width: 45px;
+      height: 45px;
+      padding: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      @media only screen and (max-width: 400px) {
+        width: 40px !important;
+        height: 40px !important;
+      }
+
+      svg {
+        font-weight: bold;
+      }
+    }
+
+    h6 {
+      padding-left: 15px;
+      margin-bottom: 0;
+      font-weight: 600;
+      font-size: 16.8px;
+
+      span {
+        color: $primary__color;
+      }
+
+      .transaction__name {
+        font-weight: normal;
+        color: $primary__color;
+        text-decoration: none;
+      }
+    }
+  }
+
+  .transaction__time {
+    p {
+      font-weight: normal;
+      font-size: 15.6px;
+      color: #808080;
+      margin-bottom: 0;
+    }
+  }
+}

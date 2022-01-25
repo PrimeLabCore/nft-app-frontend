@@ -7,11 +7,11 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import VerificationInput from "react-verification-input";
 import { toast } from "react-toastify";
 import axios from "axios";
-import styles from "./index.module.css";
+import styles from "./index.module.scss";
 import AppLoader from "../../Generic/AppLoader";
 import { API_BASE_URL } from "../../../Utils/config";
 import { mapUserSession } from "../../../Utils/utils";
-import { SET_SESSION } from "../../../Reducers/ActionTypes";
+import { actionSetSession } from "../../../Store/Auth/actions";
 
 const Verification = () => {
   const dispatch = useDispatch();
@@ -69,14 +69,11 @@ const Verification = () => {
           : `${accountId}.near`,
         nonce: details.verification,
       })
-      .then((response) => {
+      .then(response => {
         const actionPayload = mapUserSession(response.data);
 
         if (actionPayload) {
-          dispatch({
-            type: SET_SESSION,
-            payload: actionPayload,
-          });
+          dispatch(actionSetSession(actionPayload));
         }
 
         // @ToDo
@@ -86,12 +83,10 @@ const Verification = () => {
         navigate(redirectUrl ? redirectUrl : "/");
       })
       .catch((error) => {
+        setIsloading(false);
         if (error.response.data) {
           toast.error(error.response.data.message);
         }
-      })
-      .finally(() => {
-        setIsloading(false);
       });
   };
 
@@ -162,8 +157,8 @@ const Verification = () => {
 
         <button
           className={`${styles.button} ${styles.secondaryColor}`}
-          disabled={allowLogin ? false : true}
-          onClick={() => LogIn()}
+          disabled={!allowLogin}
+          onClick={LogIn}
         >
           Continue
           {

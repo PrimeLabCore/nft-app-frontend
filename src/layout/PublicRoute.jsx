@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, Outlet } from "react-router-dom";
-import styles from "./PublicRoute.module.css";
+import styles from "./PublicRoute.module.scss";
 import Img from "../Assets/Images/bg-img.png";
 import Logo from "../Assets/Images/prime-lab-logo.png";
 

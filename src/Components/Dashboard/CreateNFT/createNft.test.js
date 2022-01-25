@@ -11,7 +11,7 @@ import MockAdapter from "axios-mock-adapter";
 import { ToastContainer } from "react-toastify";
 import CreateNft from "./createNft";
 import { API_BASE_URL } from "../../../Utils/config";
-import Reducers from "../../../Reducers";
+import rootReducer from "../../../Store/rootReducer";
 
 const mockedUploadedFile = {
   0: {
@@ -40,7 +40,7 @@ body.append("data", JSON.stringify(nftDetail));
 
 const renderWithRedux = (
   component,
-  { initialState, store = createStore(Reducers, initialState) } = {}
+  { initialState, store = createStore(rootReducer, initialState) } = {}
 ) => ({
   ...render(<Provider store={store}>{component}</Provider>),
   store,
@@ -69,7 +69,7 @@ describe("createNft", () => {
       </BrowserRouter>,
       {
         initialState: {
-          createnft__popup: { initialvalue: true },
+          appState: { createNFTPopupIsOpen: true },
           authReducer: { user: { user_id: "1" } },
         },
       }
@@ -133,7 +133,7 @@ describe("createNft", () => {
       </BrowserRouter>,
       {
         initialState: {
-          createnft__popup: { initialvalue: true },
+          appState: { createNFTPopupIsOpen: true },
           authReducer: { user: { user_id: "1" } },
         },
       }

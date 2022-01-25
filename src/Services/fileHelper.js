@@ -32,7 +32,7 @@ const errorTypesMap = {
 /**
  * Dynamically creates a regex to check file type from array of accepted file types
  * @param {array} requiredTypes array of allowed file types for upload
- * @returns regex
+ * @returns RegExp
  */
 function buildFileTypeRegex(requiredTypes) {
   const formattedRequiredTypes = requiredTypes.reduce(

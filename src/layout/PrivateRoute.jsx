@@ -1,30 +1,30 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, Outlet } from "react-router-dom";
-// import Cookies from 'js-cookie'
-// import {cookieAuth} from "../Utils/config"
 import axios from "axios";
 import CreateNftPopup from "../Components/Dashboard/CreateNFT/createNft";
 import SendNft from "../Components/Dashboard/SendNFT/sendNft";
 import Menu from "../Components/Dashboard/Widgets/Menu";
+import { actionSuccessfulLogin } from "../Store/Auth/actions";
+import { actionAppStateSetDynamic } from "../Store/AppState/actions";
 
 const PrivateLayout = (props) => {
   const { children, transactionId } = props;
 
   const dispatch = useDispatch();
-  const tooltip_show = useSelector((state) => state.menu__tooltip); // Defined in reducer function
+  const menuTooltipIsOpen = useSelector(state => state.appState.menuTooltipIsOpen);
   // Defined in reducer function
-  const createnft__popup = useSelector((state) => state.createnft__popup);
+  const createNFTPopupIsOpen = useSelector(state => state.appState.createNFTPopupIsOpen);
 
   // Defined in reducer function
-  const sendnft__popup = useSelector((state) => state.sendnft__popup);
+  const sendNFTPopupIsOpen = useSelector(state => state.appState.sendNFTPopupIsOpen);
 
   // Defined in reducer function
-  const GiftNFT_Dialog_Box = useSelector((state) => state.GiftNFT_Dialog_Box);
+  const giftNFTPopupIsOpen = useSelector(state => state.appState.giftNFTPopupIsOpen);
 
   const closeMenu = () => {
-    if (tooltip_show) {
-      dispatch({ type: "handleTooltipClick__close" });
+    if (menuTooltipIsOpen) {
+      dispatch(actionAppStateSetDynamic("menuTooltipIsOpen", false));
     }
   };
   return (
@@ -35,14 +35,14 @@ const PrivateLayout = (props) => {
         <main
           style={{
             opacity: `${
-              tooltip_show
-              || createnft__popup
-              || sendnft__popup
-              || GiftNFT_Dialog_Box
+              menuTooltipIsOpen
+              || createNFTPopupIsOpen
+              || sendNFTPopupIsOpen
+              || giftNFTPopupIsOpen
                 ? "0.5"
                 : "1"
             }`,
-            pointerEvents: `${tooltip_show ? "none" : "all"}`,
+            pointerEvents: `${menuTooltipIsOpen ? "none" : "all"}`,
           }}
         >
           {children}
@@ -58,11 +58,11 @@ const PrivateRoute = (props) => {
 
   // @ToDo
   const user = JSON.parse(localStorage.getItem("user"));
-  const isAuthenticated = user ? true : false;
+  const isAuthenticated = !!user;
 
   if (isAuthenticated) {
     // save user details in redux state
-    dispatch({ type: "login_Successfully", payload: user.user_info });
+    dispatch(actionSuccessfulLogin(user.user_info));
 
     // adding JWT Authorization token to axios requests
     axios.interceptors.request.use((config) => {

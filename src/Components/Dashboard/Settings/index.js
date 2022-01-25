@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { IoIosArrowForward, IoIosLogOut } from "react-icons/io";
 import { AiOutlineCheck } from "react-icons/ai";
 import {
@@ -7,16 +7,15 @@ import {
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
-import axios from "axios";
-import styles from "./settings.module.css";
 import SettingsHeader from "./SettingsHeader";
 import user_icon from "../../../Assets/Images/user-icon.png";
 import TextFieldComponent from "../../../Assets/FrequentlUsedComponents/TextFieldComponent";
 import CustomPhoneInput from "../../../common/components/CustomPhoneInput/CustomPhoneInput";
-import { API_BASE_URL } from "../../../Utils/config";
 import AppLoader from "../../Generic/AppLoader";
-import { isValidFullName } from "../../../Utils/utils";
-import { LOGOUT } from "../../../Reducers/ActionTypes";
+import { isValidateEmail, isValidFullName, isValidPhoneNumber } from "../../../Utils/utils";
+import styles from "./settings.module.scss";
+import { actionLogout, actionSuccessfulLogin } from "../../../Store/Auth/actions";
+import { getUserById, updateUserById } from "../../../api/user";
 
 const labels = {
   email: "Email Address",
@@ -31,8 +30,7 @@ function Settings() {
   const [changeInfo, setChangeInfo] = useState(false);
   const [details, setDetails] = useState("");
   const [checked, setChecked] = useState(0);
-  // const [enable2fa, setEnable2fa] = useState(false);
-  const [info, setinfo] = useState("");
+  const [, setinfo] = useState("");
   const { user } = useSelector((state) => state.authReducer);
   const [isLoading, setIsloading] = useState(false);
 
@@ -42,31 +40,19 @@ function Settings() {
     full_name: user.full_name,
   });
 
-  useEffect(() => 0, [info]);
-
   const closeChangeInfo = () => {
     setChangeInfo(false);
   };
+
   const openChangeInfo = (infovalue) => {
     setChangeInfo(true);
     setDetails(infovalue);
   };
 
-  const validateEmail = (email) => String(email)
-    .toLowerCase()
-    .match(
-      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-    );
-
-  const validatePhone = (phone) => /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im.test(
-    phone
-  );
-
   const getPersonalInfo = () => {
     // Ajax Request to update user
-    axios
-      .get(`${API_BASE_URL}/users/${user?.user_id}`)
-      .then((response) => {
+    getUserById(user?.user_id)
+      .then(response => {
         // update user details in localstorage and redux state
         const temp = JSON.parse(localStorage.getItem("user"));
         localStorage.setItem(
@@ -78,18 +64,12 @@ function Settings() {
             user_info: response?.data?.data,
           })
         );
-        dispatch({
-          type: "login_Successfully",
-          payload: response?.data?.data,
-        });
+        dispatch(actionSuccessfulLogin(response?.data?.data));
       })
       .catch((error) => {
         if (error.response.data) {
           toast.error(error.response.data.message);
         }
-      })
-      .finally(() => {
-        // setIsloading(false);
       });
   };
 
@@ -109,7 +89,7 @@ function Settings() {
         }
         break;
       case "email":
-        if (!validateEmail(inputFields.email)) {
+        if (!isValidateEmail(inputFields.email)) {
           toast.error("Email is not valid");
           isValidForm = false;
         }
@@ -120,7 +100,7 @@ function Settings() {
         break;
 
       case "phone":
-        if (!validatePhone(inputFields.phone)) {
+        if (!isValidPhoneNumber(inputFields.phone)) {
           toast.error("Phone number is not valid");
           isValidForm = false;
         }
@@ -142,9 +122,8 @@ function Settings() {
     payload[`${details}`] = inputFields[`${details}`];
     // Ajax Request to update user
 
-    axios
-      .put(`${API_BASE_URL}/users/${user?.user_id}`, payload)
-      .then((response) => {
+    updateUserById(user?.user_id, payload)
+      .then(response => {
         toast.success("Settings Saved");
         getPersonalInfo();
         // update user details in localstorage and redux state
@@ -152,7 +131,6 @@ function Settings() {
         temp.user_info = response.data;
         // localStorage.getItem("user");
         // localStorage.setItem("user", JSON.stringify(temp));
-        // dispatch({ type: "login_Successfully", payload: response.data });
       })
       .catch((error) => {
         if (error.response.data) {
@@ -184,10 +162,7 @@ function Settings() {
   };
 
   const SignOut = () => {
-    dispatch({ type: LOGOUT });
-    localStorage.removeItem("user");
-    localStorage.removeItem("welcome")
-    localStorage.removeItem("firstImport")
+    dispatch(actionLogout());
     navigate("/");
   };
 

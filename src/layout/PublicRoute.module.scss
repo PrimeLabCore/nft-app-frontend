@@ -4,12 +4,14 @@
   min-height: 100vh;
   position: relative;
   overflow-x: hidden;
+
   .vector {
     position: absolute;
     bottom: 0;
     left: -7px;
     max-height: 80vh;
   }
+
   .logo {
     position: absolute;
     top: 5%;
@@ -22,7 +24,6 @@
   .vector {
     top: -120px;
     left: -25px !important;
-    -webkit-transform: rotate(60deg);
     transform: rotate(60deg);
     max-height: 60vh !important;
   }
@@ -36,7 +37,6 @@
   .vector {
     top: -120px;
     left: -25px !important;
-    -webkit-transform: rotate(60deg);
     transform: rotate(60deg);
     max-height: 60vh !important;
   }
@@ -50,7 +50,6 @@
   .vector {
     top: -120px;
     left: -25px !important;
-    -webkit-transform: rotate(60deg);
     transform: rotate(60deg);
     max-height: 60vh !important;
   }

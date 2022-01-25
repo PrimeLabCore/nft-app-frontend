@@ -1,7 +1,5 @@
 import React from "react"
-
 import UnclaimedNFTAlert from "./UnclaimedNFTAlert"
-// import styles from './Banners.modules.scss'
 
 function Banners() {
   return (

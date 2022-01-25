@@ -3,7 +3,7 @@ export const isEmpty = (str) => {
   return !str || /^\s*$/.test(str);
 };
 
-// function maps the response from nft details api to nft__details store
+// function maps the response from nft details api to store
 export const mapNftDetails = (data) => ({
   image: data.file_url,
   category: data.category,
@@ -42,12 +42,22 @@ export const mapUserSession = (data) => ({
 export const isValidateEmail = (email) => String(email)
   .toLowerCase()
   .match(
-    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
   );
 
+// Date : Jan 4 2021, 09:27 AM IST, Rohit Yadav
+// Added phone number validation.
+// Valid formats:
+// (123) 456-7890
+// (123)456-7890
+// 123-456-7890
+// 123.456.7890
+// 1234567890
+// +31636363634
+// 075-63546725
 export const isValidPhoneNumber = (phone) => phone
   .match(
-    /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/
+    /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/
   );
 
 export const mapContact = (inputFields) => ({
@@ -90,6 +100,6 @@ export const isValidFullName = (text) => {
 }
 
 export const getFileExtension = (url) => {
-  const regx = /\#|\?/;
+  const regx = /[#?]/;
   return url?.split('.').pop().split(regx)[0] || "";
 }

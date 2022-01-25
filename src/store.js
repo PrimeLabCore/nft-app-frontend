@@ -3,10 +3,10 @@ import { persistStore, persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 import thunk from "redux-thunk";
 import { createLogger } from 'redux-logger';
-import { LOGOUT } from "./Reducers/ActionTypes";
 
-import rootReducer from "./Reducers";
+import rootReducer from "./Store/rootReducer";
 import { setupHttpClient } from './Services/httpClient';
+import { actionLogout } from "./Store/Auth/actions";
 
 const persistConfig = {
   key: 'root',
@@ -38,10 +38,7 @@ export const store = createStore(
 
 const dispatch = store.dispatch;
 const onUnauthorizedCallback = () => {
-  dispatch({ type: LOGOUT });
-  localStorage.removeItem("user");
-  localStorage.removeItem("welcome")
-  localStorage.removeItem("firstImport")
+  dispatch(actionLogout())
   window.location.href = "/";
 };
 

@@ -1,7 +1,7 @@
 import React from "react"
 import { IoIosArrowBack } from "react-icons/io"
 import { useNavigate } from "react-router-dom"
-import styles from "./settings.module.css"
+import styles from "./settings.module.scss"
 
 function SettingsHeader() {
   const navigate = useNavigate()

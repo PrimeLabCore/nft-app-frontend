@@ -6,10 +6,12 @@ import { useNavigate, useParams } from "react-router-dom";
 import { IoIosArrowForward } from "react-icons/io";
 import { toast } from "react-toastify";
 
-import styles from "./claim.module.css";
+import Analytics from "../../../Utils/Analytics";
 import { mapNftDetails } from "../../../Utils/utils";
-
 import request from "../../../Services/httpClient";
+import styles from "./claim.module.scss";
+import { actionSetDynamic } from "../../../Store/Auth/actions";
+import { actionNFTSetCurrent } from "../../../Store/NFT/actions";
 
 function Claim() {
   const dispatch = useDispatch();
@@ -17,9 +19,8 @@ function Claim() {
   const { nftId } = useParams();
 
   const [claimModal, setClaimModal] = useState(false);
-  const { user } = useSelector((state) => state.authReducer);
-  // const [nftDetail, setNftDetail] = useState();
-  const nftDetail = useSelector((state) => state.nft__detail);
+  const user = useSelector(state => state.authReducer.user);
+  const nftDetail = useSelector(state => state.nft.currentNft);
 
   const isUserLoggedIn = !!user;
 
@@ -30,11 +31,8 @@ function Claim() {
           data: { data },
         } = await request({ url: `/nfts/${nftId}` });
         if (data) {
-          // testing only: do not commit
-          // data.status = "unclaimed_gift";
-          dispatch({ type: "nft__detail", payload: mapNftDetails(data) });
+          dispatch(actionNFTSetCurrent(mapNftDetails(data)));
         }
-        // setNftDetail(data);
       } catch (error) {
         // console.error(error);
       }
@@ -59,7 +57,7 @@ function Claim() {
 
       toast.success(message);
 
-      dispatch({ type: "update_redirectUrl", payload: null });
+      dispatch(actionSetDynamic("redirectUrl", null))
 
       navigate("/");
     } catch (error) {
@@ -82,26 +80,19 @@ function Claim() {
   };
 
   function handleLoginWithWallet() {
-    window.dataLayer.push({
-      event: "event",
-      eventProps: {
-        category: "Claim NFT",
-        action: "Redirected To Login",
-        label: "Claim NFT",
-        value: "Claim NFT",
-      },
+    Analytics.pushEvent("event", {
+      category: "Claim NFT",
+      action: "Redirected To Login",
+      label: "Claim NFT",
+      value: "Claim NFT",
     });
 
-    dispatch({
-      type: "update_redirectUrl",
-      payload: `/nft/detail/claim/${nftId}`,
-    });
+    dispatch(actionSetDynamic("redirectUrl", `/nft/detail/claim/${nftId}`));
     navigate("/signin");
   }
 
   function handleCreateNewWallet() {
-    window.dataLayer.push({
-      event: "event",
+    Analytics.pushEvent("event", {
       eventProps: {
         category: "Claim NFT",
         action: "Redirected To Signup",
@@ -110,10 +101,7 @@ function Claim() {
       },
     });
 
-    dispatch({
-      type: "update_redirectUrl",
-      payload: `/nft/detail/claim/${nftId}`,
-    });
+    dispatch(actionSetDynamic("redirectUrl", `/nft/detail/claim/${nftId}`));
     navigate("/signup");
   }
 
