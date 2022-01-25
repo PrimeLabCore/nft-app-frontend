@@ -75,13 +75,15 @@ function SendNft() {
   const { nfts } = useSelector((state) => state.home__allnft);
 
   // get all the unique NFT id that is being send to someone.
-  const allTransactionsItemsIds = useSelector(
-    (state) => [...new Set(state.transactionsReducer.allTransactions.map(
-      item => item.transaction_item_id
-    ))]
+  const allUnclaimedNftIds = useSelector(
+    (state) => [...new Set(state.transactionsReducer.allTransactions
+      .filter(
+        item => item.type === 'unclaimed'
+      )
+      .map(item => item.transaction_item_id))]
   );
   const [importContactDialog, setimportContactDialog] = useState(false);
-  const [displayNfts, setDisplayNfts] = useState(getValidUnsendNFTs(allTransactionsItemsIds, nfts));
+  const [displayNfts, setDisplayNfts] = useState(getValidUnsendNFTs(allUnclaimedNftIds, nfts));
   const firstImport = localStorage.getItem("firstImport");
   const closeSendNft = () => {
     dispatch({ type: "sendnft__close" });
@@ -116,7 +118,7 @@ function SendNft() {
     }
   };
   useEffect(() => {
-    setDisplayNfts(getValidUnsendNFTs(allTransactionsItemsIds, nfts.reverse()));
+    setDisplayNfts(getValidUnsendNFTs(allUnclaimedNftIds, nfts.reverse()));
   }, [nfts]);
   useEffect(() => {
     if (giftNFT__contactData) {
@@ -157,7 +159,7 @@ function SendNft() {
         displayNFTsArray.unshift(nfts[index]);
       }
       // console.log(nft, selected);
-      setDisplayNfts(getValidUnsendNFTs(allTransactionsItemsIds, displayNFTsArray))
+      setDisplayNfts(getValidUnsendNFTs(allUnclaimedNftIds, displayNFTsArray))
     }
   }, [nft, nfts]);
 
