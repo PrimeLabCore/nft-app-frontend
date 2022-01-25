@@ -131,7 +131,7 @@ const SignIn = () => {
         <button disabled className={styles.primary_button} onClick={handleLogin}>
           Login with NEAR
         </button>
-        <div style={{ color: "#bdbdbd" }}>Coming soon...</div>
+        <span className={styles.comingSoon}>Coming soon...</span>
       </div>
     </div>
   );
