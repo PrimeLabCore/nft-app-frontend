@@ -18,6 +18,15 @@
           flex-direction: column;
 }
 
+.requestText {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 26.4px;
+  line-height: 32px;
+  text-align: center;
+  color: #000000;
+}
+
 .buttonContainer {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -68,7 +77,7 @@
   outline: none;
 }
 
-.button :disabled {
+.button:disabled {
   background-color: #bdbdbd;
 }
 
@@ -203,5 +212,9 @@
   .home_page_text {
     max-width: 100%;
   }
+}
+
+.comingSoon {
+  color: #bdbdbd;
 }
 /*# sourceMappingURL=index.module.css.map */
