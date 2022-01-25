@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import TextFieldComponent from "../../Assets/FrequentlUsedComponents/TextFieldComponent";
+import useRedirectIfUserLoggedIn from '../../common/hooks/useRedirectIfUserLoggedIn';
 import { API_BASE_URL } from "../../Utils/config";
 import AppLoader from "../Generic/AppLoader";
 import styles from "./SignIn.module.css";
@@ -16,6 +17,8 @@ const SignIn = () => {
   const [accountId, setAccountId] = useState("");
   const dispatch = useDispatch();
   const [isLoading, setIsloading] = useState(false);
+
+  useRedirectIfUserLoggedIn();
 
   const doesAccountStringHaveValidCharacters = (accountString) => {
     const matchesCharacterRequirements = /^[a-z_0-9-]+$/i.test(accountString);

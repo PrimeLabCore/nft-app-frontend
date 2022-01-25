@@ -67,7 +67,7 @@ const CreateAnAccount = () => {
 
   useEffect(() => {
     if (signupEmail === "" && signupPhone === "") {
-      HandleClick();
+      // HandleClick();
     }
   }, [info]);
 
