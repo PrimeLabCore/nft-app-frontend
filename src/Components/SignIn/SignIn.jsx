@@ -129,10 +129,10 @@ const SignIn = () => {
 
         </div>
 
-        <div>
-          <h6 className={styles.link}>Already have a NearApps ID?</h6>
+        <div className={styles.loginWithNearContainer}>
           <TooltipButton tooltipText="Coming soon..." buttonText="Login with NEAR" buttonStyle={`${styles.comingSoonBtn}`} />
         </div>
+
       </div>
     </div>
   );
