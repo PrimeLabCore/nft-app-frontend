@@ -175,4 +175,28 @@
     left: 0;
   }
 }
+
+.comingSoonBtn {
+  background-color: #bdbdbd;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-size: 17px;
+  cursor: pointer;
+  border: none;
+  margin: 0px 5px;
+}
+
+.comingSoonBtn:hover {
+  background-color: #bdbdbd;
+}
 /*# sourceMappingURL=SignIn.module.css.map */

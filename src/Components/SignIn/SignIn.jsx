@@ -10,6 +10,7 @@ import TextFieldComponent from "../../Assets/FrequentlUsedComponents/TextFieldCo
 import { API_BASE_URL } from "../../Utils/config";
 import AppLoader from "../Generic/AppLoader";
 import styles from "./SignIn.module.css";
+import TooltipButton from '../../common/components/TooltipButton';
 
 const SignIn = () => {
   const navigate = useNavigate();
@@ -78,7 +79,7 @@ const SignIn = () => {
       <div className={styles.childContainer}>
         <BsArrowLeftRight className={styles.icon} />
         <div className={styles.requestText}>
-          Enter your ID to Launch the App
+          Login with your NearApps ID
         </div>
 
         <div className={styles.textField}>
@@ -125,6 +126,12 @@ const SignIn = () => {
             >
               Allow
             </Link> */}
+
+        </div>
+
+        <div>
+          <h6 className={styles.link}>Already have a NearApps ID?</h6>
+          <TooltipButton tooltipText="Coming soon..." buttonText="Login with NEAR" buttonStyle={`${styles.comingSoonBtn}`} />
         </div>
       </div>
     </div>

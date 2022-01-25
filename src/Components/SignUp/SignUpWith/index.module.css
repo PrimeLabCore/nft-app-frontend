@@ -18,13 +18,12 @@
           flex-direction: column;
 }
 
-.requestText {
-  font-style: normal;
+.heading {
+  font-size: 21px;
+  display: inline-block;
+  margin: 15px auto;
+  margin-top: 25px;
   font-weight: 600;
-  font-size: 26.4px;
-  line-height: 32px;
-  text-align: center;
-  color: #000000;
 }
 
 .buttonContainer {
@@ -214,7 +213,11 @@
   }
 }
 
-.comingSoon {
-  color: #bdbdbd;
+.comingSoonBtn {
+  background-color: #bdbdbd;
+}
+
+.comingSoonBtn:hover {
+  background-color: #bdbdbd;
 }
 /*# sourceMappingURL=index.module.css.map */
