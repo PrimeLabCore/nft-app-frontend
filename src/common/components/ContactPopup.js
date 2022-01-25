@@ -61,8 +61,10 @@ function ContactPopup({
   };
 
   useEffect(() => {
-    setFilteredData(contacts);
-    checkAllContacts(contacts);
+    if (contacts && !isLoading) {
+      setFilteredData(contacts);
+      checkAllContacts(contacts);
+    }
   }, [contacts, isLoading]);
 
   // get contacts
@@ -114,7 +116,7 @@ function ContactPopup({
         .finally(() => {
           setIsloading(false);
         });
-    }, 1500)
+    }, 0);
   }, [show]);
 
   const getPrimaryEmail = (contact) => {
