@@ -75,7 +75,7 @@ const Transactions = () => {
                   className={styles.transaction__name}
                 >
                   {/* {data.name} */}
-                  {data.counterparty?.email}
+                  {data.counterparty?.[0]?.email}
                 </a>
               </h6>
             </div>
