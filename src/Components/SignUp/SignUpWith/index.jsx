@@ -335,9 +335,6 @@ const SignUpWith = () => {
   return (
     <div className={styles.half_container}>
       {/* EMAIL AND PHONE SIGNUP CONATINER */}
-      <div className={styles.requestText}>
-        Create NearApps ID
-      </div>
       <div className={styles.buttonContainer} onClick={handleClick}>
         <button
           onClick={() => {
@@ -450,7 +447,7 @@ const SignUpWith = () => {
         </p>
         <hr />
 
-        <h6 className={styles.link}>Already have a NearApps ID?</h6>
+        <h6 className={styles.link}>Already have Near Account?</h6>
 
         <button className={styles.button} onClick={SignIn}>
           Launch
@@ -460,16 +457,6 @@ const SignUpWith = () => {
             </span>
           }
         </button>
-
-        <button disabled className={styles.button}>
-          Login with NEAR
-          {
-            <span>
-              <IoIosArrowForward />
-            </span>
-          }
-        </button>
-        <span className={styles.comingSoon} disabled>Coming soon...</span>
       </div>
 
       <div className={styles.home_page_text}>
