@@ -15,6 +15,7 @@ import TextFieldComponent from "../../../Assets/FrequentlUsedComponents/TextFiel
 import CustomPhoneInput from "../../../common/components/CustomPhoneInput/CustomPhoneInput";
 import { API_BASE_URL } from "../../../Utils/config";
 import AppLoader from "../../Generic/AppLoader";
+import { isValidFullName } from "../../../Utils/utils";
 import { LOGOUT } from "../../../Reducers/ActionTypes";
 
 const labels = {
@@ -92,13 +93,6 @@ function Settings() {
       });
   };
 
-  const doesAccountStringHaveValidCharacters = (accountString) => {
-    const matchesCharacterRequirements = /^[a-z_0-9-]+$/i.test(accountString);
-    const hasUppercaseLetter = /[A-Z]+?/.test(accountString);
-
-    return matchesCharacterRequirements && !hasUppercaseLetter;
-  };
-
   const validatePersonalInfo = () => {
     let isValidForm = true;
     switch (details) {
@@ -106,8 +100,7 @@ function Settings() {
         if (!inputFields.full_name) {
           toast.error("Name can't be empty");
           isValidForm = false;
-        } else if (inputFields.full_name
-          && !doesAccountStringHaveValidCharacters(inputFields.full_name)) {
+        } else if (inputFields.full_name && !isValidFullName(inputFields.full_name)) {
           toast.error("Invalid Name");
           isValidForm = false;
         } else if (inputFields.full_name && inputFields.full_name.length > 70) {

@@ -9,10 +9,9 @@ import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import TextFieldComponent from "../../../Assets/FrequentlUsedComponents/TextFieldComponent";
 import { API_BASE_URL } from "../../../Utils/config";
-import { mapUserSession } from "../../../Utils/utils";
+import { isValidFullName, mapUserSession } from "../../../Utils/utils";
 import AppLoader from "../../Generic/AppLoader";
 import styles from "./CreateAnAccount.module.css";
-import { SET_SESSION } from "../../../Reducers/ActionTypes";
 
 const CreateAnAccount = () => {
   const dispatch = useDispatch();
@@ -112,8 +111,8 @@ const CreateAnAccount = () => {
   const onAccountChange = (e) => {
     const { value } = e.target;
 
-    if (!value || doesAccountStringHaveValidCharacters(value.toLowerCase())) {
-      if (value.length <= 56) setAccountId(value.toLowerCase());
+    if (!value || doesAccountStringHaveValidCharacters(value)) {
+      if (value.length <= 56) setAccountId(value);
     }
 
     // setDetails((preValue) => {
@@ -129,6 +128,9 @@ const CreateAnAccount = () => {
   };
 
   const handleSignup = async () => {
+    if (!isValidFullName) {
+      toast.error("Please enter a valid name.")
+    }
     // validate account id
     if (!doesAccountIdHaveValidLength(accountId)) {
       toast.warn("Please enter an account ID of between 2 and 56 characters.");
@@ -159,7 +161,7 @@ const CreateAnAccount = () => {
         const actionPayload = mapUserSession(response.data);
         if (actionPayload) {
           dispatch({
-            type: SET_SESSION,
+            type: "auth/set_session",
             payload: actionPayload
           });
         }
@@ -185,7 +187,7 @@ const CreateAnAccount = () => {
   };
 
   const isFullNameValid = (fullname) => {
-    const format = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+    const format = /^[a-z ,.'-]+$/i;
     return format.test(fullname);
   };
 
@@ -193,7 +195,7 @@ const CreateAnAccount = () => {
     let returnVal = true;
     if (fullname === "") {
       returnVal = false;
-    } else if (isFullNameValid(fullname)) {
+    } else if (!isFullNameValid(fullname)) {
       returnVal = false;
     } else if (
       accountId === ""
