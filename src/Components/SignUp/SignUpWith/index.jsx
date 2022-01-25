@@ -9,6 +9,7 @@ import TextFieldComponent from "../../../Assets/FrequentlUsedComponents/TextFiel
 import CustomPhoneInput from "../../../common/components/CustomPhoneInput/CustomPhoneInput";
 import { API_BASE_URL } from "../../../Utils/config";
 import styles from "./index.module.css";
+import TooltipButton from "../../../common/components/TooltipButton";
 
 const validateEmail = (email) => {
   const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -219,9 +220,9 @@ const SignUpWith = () => {
   //   window.open(`${API_BASE_URL}/near_login/login.html`, "_self");
   // };
 
-  const SignIn = () => {
-    navigate("/signin");
-  };
+  // const SignIn = () => {
+  //   navigate("/signin");
+  // };
 
   const handleValidation = () => {
     const errors = {};
@@ -335,6 +336,9 @@ const SignUpWith = () => {
   return (
     <div className={styles.half_container}>
       {/* EMAIL AND PHONE SIGNUP CONATINER */}
+      <div className={styles.heading}>
+        Create NearApps ID
+      </div>
       <div className={styles.buttonContainer} onClick={handleClick}>
         <button
           onClick={() => {
@@ -449,14 +453,7 @@ const SignUpWith = () => {
 
         <h6 className={styles.link}>Already have Near Account?</h6>
 
-        <button className={styles.button} onClick={SignIn}>
-          Launch
-          {
-            <span>
-              <IoIosArrowForward />
-            </span>
-          }
-        </button>
+        <TooltipButton tooltipText="Coming soon..." buttonText="Login with NEAR" buttonStyle={`${styles.button} ${styles.comingSoonBtn}`} />
       </div>
 
       <div className={styles.home_page_text}>

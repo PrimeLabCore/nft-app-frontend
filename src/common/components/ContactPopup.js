@@ -61,8 +61,10 @@ function ContactPopup({
   };
 
   useEffect(() => {
-    setFilteredData(contacts);
-    checkAllContacts(contacts);
+    if (contacts && !isLoading) {
+      setFilteredData(contacts);
+      checkAllContacts(contacts);
+    }
   }, [contacts, isLoading]);
 
   // get contacts
@@ -114,7 +116,7 @@ function ContactPopup({
         .finally(() => {
           setIsloading(false);
         });
-    }, 1500)
+    }, 0);
   }, [show]);
 
   const getPrimaryEmail = (contact) => {
@@ -156,9 +158,52 @@ function ContactPopup({
 
   const importContact = (data) => {
     if (data) {
-      checkAllContacts(data);
-      setimportContactDialog(false);
-      setFilteredData(data);
+      axios
+        .get(`${API_BASE_URL}/contacts/list/${user?.user_id}`)
+        .then((response) => {
+          // save user details
+          // before saving contacts to the reducer make all the emails unique
+          const {
+            data: { data: contacts = [] }
+          } = response;
+          const uniqueEmails = [];
+          // console.log(`Got ${contacts.length} contacts from server`);
+          const uniqueContacts = contacts.filter((contactObj) => {
+            if (contactObj.email && contactObj.email.length) {
+              let emailExists = false;
+              for (let i = 0; i < contactObj.email.length; i++) {
+                const emailObj = { ...contactObj.email[i] };
+                if (
+                  emailObj && emailObj.address && uniqueEmails.indexOf(emailObj.address) !== -1
+                ) {
+                  emailExists = true;
+                  break;
+                } else {
+                  uniqueEmails.push(emailObj.address);
+                }
+              }
+              if (emailExists) {
+                return false;
+              }
+              return true;
+            }
+            return true;
+          });
+          checkAllContacts(uniqueContacts);
+          setimportContactDialog(false);
+          setFilteredData(uniqueContacts);
+          dispatch({ type: "update_contacts", payload: uniqueContacts });
+        })
+        .catch((error) => {
+          if (error?.response?.data) {
+            toast.error(error.response.data.message);
+          } else {
+            toast.error('Failed to Load Contacts');
+          }
+        })
+        .finally(() => {
+          setIsloading(false);
+        });
     }
   };
 
@@ -299,22 +344,35 @@ function ContactPopup({
                 Import
               </button>
             </div>
-            <div className={styles.search__wrapper}>
-              <button
-                className={styles.import__button}
-                onClick={() => {
-                  if (selectedContacts.length === contacts.length) {
-                    setSelectedContacts([])
-                  } else {
-                    setSelectedContacts(contacts)
-                  }
-                }}
-              >
-                {selectedContacts.length === contacts.length ? 'Unselect All' : 'Select All'}
-              </button>
-            </div>
+
             <div className={styles.data__wrapper}>
               <div>{isLoading && <LoaderIconBlue />}</div>
+
+              {filteredData.length > 0 && (
+                <div className={styles.data_row_container}>
+                  {/* TEXT */}
+                  <div className={styles.selectAllTextContainer}>
+                    <h6>{selectedContacts.length === contacts.length ? 'Unselect All' : 'Select All'}</h6>
+                  </div>
+                  {/* ICONS */}
+                  <div
+                    className={styles.icon}
+                    onClick={() => {
+                      if (selectedContacts.length === contacts.length) {
+                        setSelectedContacts([])
+                      } else {
+                        setSelectedContacts(contacts)
+                      }
+                    }}
+                  >
+                    {selectedContacts.length === contacts.length ? (
+                      <BsCheckCircleFill className={styles.checked} />
+                    ) : (
+                      <GoPrimitiveDot className={styles.unchecked} />
+                    )}
+                  </div>
+                </div>
+              )}
 
               {filteredData.map((contact) => (
                 <div className={styles.data_row_container} key={nanoid()}>

@@ -37,6 +37,11 @@ const Home = () => {
     setImportContactDialog(false);
   };
 
+  const openCreateNFTPopup = () => {
+    setShowContactListPopup(false);
+    dispatch({ type: "createnft__open" });
+  };
+
   const importContact = (data) => {
     if (data) {
       setAllContacts(data);
@@ -71,14 +76,9 @@ const Home = () => {
     } else {
       toast.success(`Your contacts were successfully imported from ${source}`);
       HandleDialogClose();
-      setShowContactListPopup(true);
-      // openCreateNFTPopup();
+      // setShowContactListPopup(true);
+      openCreateNFTPopup();
     }
-  };
-
-  const openCreateNFTPopup = () => {
-    setShowContactListPopup(false);
-    dispatch({ type: "createnft__open" });
   };
 
   return (

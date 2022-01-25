@@ -12,6 +12,7 @@ import { API_BASE_URL } from "../../../Utils/config";
 import { isValidFullName, mapUserSession } from "../../../Utils/utils";
 import AppLoader from "../../Generic/AppLoader";
 import styles from "./CreateAnAccount.module.css";
+import TooltipButton from "../../../common/components/TooltipButton";
 
 const CreateAnAccount = () => {
   const dispatch = useDispatch();
@@ -66,7 +67,7 @@ const CreateAnAccount = () => {
 
   useEffect(() => {
     if (signupEmail === "" && signupPhone === "") {
-      HandleClick();
+      // HandleClick();
     }
   }, [info]);
 
@@ -85,12 +86,6 @@ const CreateAnAccount = () => {
   }, [signupEmail, signupPhone]);
 
   // HandleClick for cancel button
-
-  // HandleLogin
-  const HandleLogin = () => {
-    // window.open(`${API_BASE_URL}/near_login/login.html`, "_self");
-    navigate("/signin");
-  };
 
   // HandleFocus for input
   const HandleFocus = (ClickedInput) => {
@@ -128,9 +123,6 @@ const CreateAnAccount = () => {
   };
 
   const handleSignup = async () => {
-    if (!isValidFullName) {
-      toast.error("Please enter a valid name.")
-    }
     // validate account id
     if (!doesAccountIdHaveValidLength(accountId)) {
       toast.warn("Please enter an account ID of between 2 and 56 characters.");
@@ -186,16 +178,11 @@ const CreateAnAccount = () => {
       });
   };
 
-  const isFullNameValid = (fullname) => {
-    const format = /^[a-z ,.'-]+$/i;
-    return format.test(fullname);
-  };
-
   const isFormValid = () => {
     let returnVal = true;
     if (fullname === "") {
       returnVal = false;
-    } else if (!isFullNameValid(fullname)) {
+    } else if (!isValidFullName(fullname)) {
       returnVal = false;
     } else if (
       accountId === ""
@@ -337,16 +324,9 @@ const CreateAnAccount = () => {
 
         {!accId && (
           <>
-            <h6 className={styles.link}>Already have Near Account?</h6>
+            <h6 className={styles.link}>Already have a NearApps ID?</h6>
 
-            <button className={styles.primary_button} onClick={HandleLogin}>
-              Launch
-              {
-                <span>
-                  <IoIosArrowForward />
-                </span>
-              }
-            </button>
+            <TooltipButton tooltipText="Coming soon..." buttonText="Login with NEAR" buttonStyle={`${styles.comingSoonBtn}`} />
           </>
         )}
       </div>
