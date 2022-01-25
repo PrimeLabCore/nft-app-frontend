@@ -9,7 +9,7 @@ export default function useRedirectIfUserLoggedIn() {
 
   useEffect(() => {
     if (user) {
-      if (location.pathname === '/signup') {
+      if (/(\/signup)(\/)?$/.test(location.pathname)) {
         navigate('/signup/create-account', { replace: true });
       } else {
         navigate('/', { replace: true });
