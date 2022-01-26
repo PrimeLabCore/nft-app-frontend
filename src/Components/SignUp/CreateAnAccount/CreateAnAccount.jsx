@@ -9,10 +9,10 @@ import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import TextFieldComponent from "../../../Assets/FrequentlUsedComponents/TextFieldComponent";
 import { API_BASE_URL } from "../../../Utils/config";
-import { mapUserSession } from "../../../Utils/utils";
+import { isValidFullName, mapUserSession } from "../../../Utils/utils";
 import AppLoader from "../../Generic/AppLoader";
 import styles from "./CreateAnAccount.module.css";
-import { SET_SESSION } from "../../../Reducers/ActionTypes";
+import TooltipButton from "../../../common/components/TooltipButton";
 
 const CreateAnAccount = () => {
   const dispatch = useDispatch();
@@ -67,7 +67,7 @@ const CreateAnAccount = () => {
 
   useEffect(() => {
     if (signupEmail === "" && signupPhone === "") {
-      HandleClick();
+      // HandleClick();
     }
   }, [info]);
 
@@ -86,12 +86,6 @@ const CreateAnAccount = () => {
   }, [signupEmail, signupPhone]);
 
   // HandleClick for cancel button
-
-  // HandleLogin
-  const HandleLogin = () => {
-    // window.open(`${API_BASE_URL}/near_login/login.html`, "_self");
-    navigate("/signin");
-  };
 
   // HandleFocus for input
   const HandleFocus = (ClickedInput) => {
@@ -112,8 +106,8 @@ const CreateAnAccount = () => {
   const onAccountChange = (e) => {
     const { value } = e.target;
 
-    if (!value || doesAccountStringHaveValidCharacters(value.toLowerCase())) {
-      if (value.length <= 56) setAccountId(value.toLowerCase());
+    if (!value || doesAccountStringHaveValidCharacters(value)) {
+      if (value.length <= 56) setAccountId(value);
     }
 
     // setDetails((preValue) => {
@@ -159,7 +153,7 @@ const CreateAnAccount = () => {
         const actionPayload = mapUserSession(response.data);
         if (actionPayload) {
           dispatch({
-            type: SET_SESSION,
+            type: "auth/set_session",
             payload: actionPayload
           });
         }
@@ -184,16 +178,11 @@ const CreateAnAccount = () => {
       });
   };
 
-  const isFullNameValid = (fullname) => {
-    const format = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
-    return format.test(fullname);
-  };
-
   const isFormValid = () => {
     let returnVal = true;
     if (fullname === "") {
       returnVal = false;
-    } else if (isFullNameValid(fullname)) {
+    } else if (!isValidFullName(fullname)) {
       returnVal = false;
     } else if (
       accountId === ""
@@ -335,16 +324,9 @@ const CreateAnAccount = () => {
 
         {!accId && (
           <>
-            <h6 className={styles.link}>Already have Near Account?</h6>
+            <h6 className={styles.link}>Already have a NearApps ID?</h6>
 
-            <button className={styles.primary_button} onClick={HandleLogin}>
-              Launch
-              {
-                <span>
-                  <IoIosArrowForward />
-                </span>
-              }
-            </button>
+            <TooltipButton tooltipText="Coming soon..." buttonText="Login with NEAR" buttonStyle={`${styles.comingSoonBtn}`} />
           </>
         )}
       </div>

@@ -5,6 +5,7 @@ import {
   IoMdMap,
   IoMdPhonePortrait,
 } from "react-icons/io";
+import { useSelector } from 'react-redux';
 import { Link, useNavigate } from "react-router-dom";
 import HomeCard1 from "../../Assets/Images/home-card-1.svg";
 import HomeCard2 from "../../Assets/Images/home-card-2.svg";
@@ -15,10 +16,15 @@ import GetStartedButton from "./components/GetStartedButton";
 
 const HomePage = (props) => {
   const navigate = useNavigate();
+  const { user } = useSelector((state) => state.authReducer);
 
   const HandleLoginWithNear = () => {
     // window.open(`${API_BASE_URL}/near_login/login.html`, "_self");
-    navigate("/signin");
+    if (user) {
+      navigate('/', { replace: true });
+    } else {
+      navigate("/signin");
+    }
   };
 
   const pageName = props.pageName || "home";
@@ -35,7 +41,7 @@ const HomePage = (props) => {
         </h3>
         <li className={styles.loginButton}>
           <button onClick={HandleLoginWithNear}>
-            Launch
+            {user ? 'Dashboard' : 'Launch'}
             <span>
               <IoIosArrowForward />
             </span>
@@ -61,7 +67,7 @@ const HomePage = (props) => {
             </li>
             <li className={styles.menuLoginButton}>
               <button onClick={HandleLoginWithNear}>
-                Launch
+                {user ? 'Dashboard' : 'Launch'}
                 <span>
                   <IoIosArrowForward />
                 </span>
@@ -75,7 +81,7 @@ const HomePage = (props) => {
             <h2>NFT Maker App</h2>
 
             <div className={`${styles.getStartedBtn} ${styles.onlyOnMobile}`}>
-              <GetStartedButton />
+              {!user && <GetStartedButton />}
             </div>
 
             <p className={styles.nftMakerAppDesc}>
@@ -108,7 +114,7 @@ const HomePage = (props) => {
                 </ul>
                 </div> */}
             <div className={`${styles.getStartedBtn} ${styles.onlyOnDesktop}`}>
-              <GetStartedButton />
+              {!user && <GetStartedButton />}
             </div>
           </>
           )}
@@ -131,7 +137,7 @@ const HomePage = (props) => {
               </ul>
             </div>
             <div className={styles.getStartedBtn}>
-              <GetStartedButton />
+              {!user && <GetStartedButton />}
             </div>
           </>
           )}
@@ -174,7 +180,7 @@ const HomePage = (props) => {
               </ul>
             </div>
             <div className={styles.getStartedBtn}>
-              <GetStartedButton />
+              {!user && <GetStartedButton />}
               {/* <Link to="/signup">
                     <button>
                       Get Started

@@ -49,6 +49,10 @@ const checkAllContacts = (data) =>
 //   return false;
 // };
 
+const getValidUnsendNFTs = (sentIds, nfts) => nfts?.filter(
+  item => !sentIds.includes(item?.nft_id)
+)
+
 function SendNft() {
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.authReducer);
@@ -69,8 +73,15 @@ function SendNft() {
 
   const sendnft__popup = useSelector((state) => state.sendnft__popup);
   const { nfts } = useSelector((state) => state.home__allnft);
+
+  // get all the unique NFT id that is being send to someone.
+  const allClaimedNftIds = useSelector(
+    (state) => [...new Set(state.transactionsReducer.allTransactions
+      .filter(item => item.type !== 'unclaimed')
+      .map(item => item.transaction_item_id))]
+  );
   const [importContactDialog, setimportContactDialog] = useState(false);
-  const [displayNfts, setDisplayNfts] = useState(nfts);
+  const [displayNfts, setDisplayNfts] = useState(getValidUnsendNFTs(allClaimedNftIds, nfts));
   const firstImport = localStorage.getItem("firstImport");
   const closeSendNft = () => {
     dispatch({ type: "sendnft__close" });
@@ -105,7 +116,7 @@ function SendNft() {
     }
   };
   useEffect(() => {
-    setDisplayNfts(nfts.reverse());
+    setDisplayNfts(getValidUnsendNFTs(allClaimedNftIds, nfts.reverse()));
   }, [nfts]);
   useEffect(() => {
     if (giftNFT__contactData) {
@@ -146,7 +157,7 @@ function SendNft() {
         displayNFTsArray.unshift(nfts[index]);
       }
       // console.log(nft, selected);
-      setDisplayNfts(displayNFTsArray)
+      setDisplayNfts(getValidUnsendNFTs(allClaimedNftIds, displayNFTsArray))
     }
   }, [nft, nfts]);
 
@@ -446,7 +457,7 @@ function SendNft() {
                 {fileType.toLowerCase() === "mp4" ? (
                   <video
                     style={{ width: "100%", borderRadius: "8px" }}
-                    src={selected?.file_url}
+                    src={selected?.file_url || selected?.image}
                   />
                 ) : fileType.toLowerCase() === "mp3" ? (
                   <div style={{ width: "100%", padding: "0 2px" }}>

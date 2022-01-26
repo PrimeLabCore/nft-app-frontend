@@ -182,7 +182,7 @@ function TransactionHistory() {
                             //   rel="noreferrer"
                       className={styles.transaction__name}
                     >
-                      {data.counterparty?.email}
+                      {data.counterparty?.[0]?.email}
                     </span>
                   </h6>
                 </div>

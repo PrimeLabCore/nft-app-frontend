@@ -133,9 +133,9 @@ const Verification = () => {
 
       <div className={styles.childContainer}>
         <p>
-          We&apos;ve sent a 6-digit verification code on your
+          Check your&nbsp;
           {otp_medium}
-          .
+          &nbsp;and enter your 6 Digit One-time passcode.
         </p>
 
         <div className={styles.verficationContainer}>
