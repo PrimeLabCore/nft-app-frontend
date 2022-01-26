@@ -1,7 +1,7 @@
 import React from "react";
 // import PhoneInput from "react-phone-input-2";
 // import "react-phone-input-2/lib/style.css";
-import PhoneInput from 'react-phone-number-input'
+import PhoneInput, { getCountryCallingCode } from 'react-phone-number-input'
 import 'react-phone-number-input/style.css'
 import { makeStyles } from '@material-ui/core/styles'
 
@@ -26,6 +26,23 @@ const useCustomPhoneInputStyle = makeStyles({
   }
 })
 
+const CountrySelect = ({ iconComponent, options, ...props }) => {
+  const IconComponent = iconComponent
+  return (
+    <div className="PhoneInputCountry">
+      <select className="PhoneInputCountrySelect" {...props} onChange={(e) => props.onChange(e.target.value)}>
+        {options.map(item => (
+          <option key={item.value} value={item.value}>
+            {`${item.label}  +${getCountryCallingCode(item.value)}`}
+          </option>
+        ))}
+      </select>
+      <IconComponent country={props.value} label={props.value} />
+      <div className="PhoneInputCountrySelectArrow" />
+    </div>
+  )
+}
+
 function CustomPhoneInput({
   placeholder,
   HandelKeyPress,
@@ -49,6 +66,7 @@ function CustomPhoneInput({
       countryCallingCodeEditable={false}
       value={value}
       limitMaxLength
+      countrySelectComponent={CountrySelect}
       numberInputProps={{ style: { height: height || '42px' } }}
       className={`${className} ${classes.baseInput} form-control`}
       onChange={handleChange}
