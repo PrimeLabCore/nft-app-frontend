@@ -16,7 +16,7 @@
 .button {
   @include defaultButton($primary__color);
   color: #828282;
-  margin: 0px 5px;
+  margin: 0 5px;
   &:focus {
     outline: none;
   }
@@ -33,7 +33,7 @@
 .mainContainer {
   @include HorizontalAndVerticalCenter;
   flex-direction: column;
-  padding: 30px 0px;
+  padding: 30px 0;
   min-width: 60%;
   p {
     text-align: center;
@@ -88,7 +88,7 @@
 
 @media screen and (max-width: 800px) {
   .mainContainer {
-    padding: 0px;
+    padding: 0;
   }
   .half_container {
     position: absolute;
@@ -111,4 +111,27 @@
   .home_page_text {
     max-width: 100%;
   }
+}
+
+.comingSoonBtn {
+  margin: 15px 5px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #fff;
+  background-color: #bdbdbd;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-size: 17px;
+  cursor: pointer;
+  border: none;
+}
+
+
+
+.heading {
+  font-size: 21px;
+  display: inline-block;
+  margin: 25px auto 15px;
+  font-weight: 600;
 }

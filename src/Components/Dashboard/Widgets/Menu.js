@@ -1,48 +1,41 @@
 import React, { useRef } from "react";
 import { Overlay, Tooltip } from "react-bootstrap";
-// import {BiHomeAlt} from "react-icons/bi"
 import { AiFillPlusCircle } from "react-icons/ai";
-// import {BsArrowUpRight} from "react-icons/bs"
-// import {IoIosAdd} from "react-icons/io"
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
+import Analytics from "../../../Utils/Analytics";
 import create__icon from "../../../Assets/Images/icons/create.png";
 import home__icon from "../../../Assets/Images/icons/home.png";
 import send__icon from "../../../Assets/Images/icons/send.png";
 import transaction__icon from "../../../Assets/Images/icons/transaction.png";
-import styles from "./menu.module.css";
-import "./tooltip.css";
+import styles from "./menu.module.scss";
+import "./tooltip.scss";
+import { actionAppStateSetDynamic } from "../../../Store/AppState/actions";
 
 function Menu() {
   const dispatch = useDispatch();
-  const tooltip_show = useSelector((state) => state.menu__tooltip); // Defined in reducer function
+  const menuTooltipIsOpen = useSelector((state) => state.appState.menuTooltipIsOpen);
 
   const target = useRef(null);
 
   const createNftModal = () => {
-    dispatch({ type: "createnft__open" });
-    dispatch({ type: "handleTooltipClick__close" });
-    window.dataLayer.push({
-      event: "event",
-      eventProps: {
-        category: "Menu",
-        action: "Create NFT Modal Opened",
-        label: "Menu",
-        value: "Menu",
-      },
+    dispatch(actionAppStateSetDynamic("createNFTPopupIsOpen", true));
+    dispatch(actionAppStateSetDynamic("menuTooltipIsOpen", false));
+    Analytics.pushEvent("event", {
+      category: "Menu",
+      action: "Create NFT Modal Opened",
+      label: "Menu",
+      value: "Menu",
     });
   };
   const sendNftModal = () => {
-    dispatch({ type: "sendnft__open" });
-    dispatch({ type: "handleTooltipClick__close" });
-    window.dataLayer.push({
-      event: "event",
-      eventProps: {
-        category: "Menu",
-        action: "Send NFT Modal Opened",
-        label: "Menu",
-        value: "Menu",
-      },
+    dispatch(actionAppStateSetDynamic("sendNFTPopupIsOpen", true));
+    dispatch(actionAppStateSetDynamic("menuTooltipIsOpen", false));
+    Analytics.pushEvent("event", {
+      category: "Menu",
+      action: "Send NFT Modal Opened",
+      label: "Menu",
+      value: "Menu",
     });
   };
   return (
@@ -56,8 +49,8 @@ function Menu() {
         </NavLink>
         <button
           ref={target}
-          className={`${tooltip_show ? styles.active : ""}`}
-          onClick={() => dispatch({ type: "toggle" })}
+          className={`${menuTooltipIsOpen ? styles.active : ""}`}
+          onClick={() => dispatch(actionAppStateSetDynamic("menuTooltipIsOpen", true))}
         >
           <AiFillPlusCircle />
         </button>
@@ -69,7 +62,7 @@ function Menu() {
         </NavLink>
       </div>
 
-      <Overlay target={target.current} show={tooltip_show} placement="top">
+      <Overlay target={target.current} show={menuTooltipIsOpen} placement="top">
         {(props) => (
           <Tooltip
             id="tooltip-top"

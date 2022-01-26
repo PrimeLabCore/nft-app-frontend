@@ -4,16 +4,17 @@ import { IoIosArrowForward } from "react-icons/io";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import muiDialogCallbackStatuses from "../../../constants/muiDialogCallbackStatuses";
-import styles from "./Home.module.css";
 
 import create_nft_left from "../../../Assets/Images/create-nft-left.png";
 import create_nft_right from "../../../Assets/Images/create-nft-right.png";
 
 import MyNFT from "./MyNft";
-import Transactions from "./RecentTransactions";
+import RecentTransactions from "./RecentTransactions";
 import HomeHeader from "./HomeHeader";
 import ImportContactsDialog from "../../ImportContactsDialog/ImportContactsDialog";
 import ContactPopup from "../../../common/components/ContactPopup";
+import styles from "./Home.module.scss";
+import { actionAppStateGoogleContacts, actionAppStateSetDynamic } from "../../../Store/AppState/actions";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -39,17 +40,13 @@ const Home = () => {
 
   const openCreateNFTPopup = () => {
     setShowContactListPopup(false);
-    dispatch({ type: "createnft__open" });
+    dispatch(actionAppStateSetDynamic("createNFTPopupIsOpen", true));
   };
 
   const importContact = (data) => {
     if (data) {
       setAllContacts(data);
-      // console.log("data", data);
-      dispatch({
-        type: "getGoogleContactData",
-        payload: data,
-      });
+      dispatch(actionAppStateGoogleContacts(data));
     }
   };
 
@@ -59,8 +56,8 @@ const Home = () => {
     // Handling clicks outside the import dialog box
     if (muiDialogCallbackStatuses.includes(source)) {
       localStorage.removeItem("welcome")
-      localStorage.setItem("contactImport", true)
-      dispatch({ type: "createnft__open" });
+      localStorage.setItem("contactImport", "true")
+      dispatch(actionAppStateSetDynamic("createNFTPopupIsOpen", true));
       const all = document.getElementsByClassName("contactDialogBack");
       for (let i = 0; i < all.length; i++) {
         all[i].style.visibility = "hidden";
@@ -72,7 +69,7 @@ const Home = () => {
       if (!muiDialogCallbackStatuses.includes(source)) {
         toast.error(`Something Went Wrong Fetching Contacts From ${source}`);
       }
-      dispatch({ type: "createnft__open" });
+      dispatch(actionAppStateSetDynamic("createNFTPopupIsOpen", true));
     } else {
       toast.success(`Your contacts were successfully imported from ${source}`);
       HandleDialogClose();
@@ -125,7 +122,7 @@ const Home = () => {
               </h1>
               <div className={styles.btn__wrapper}>
                 <button onClick={() => {
-                  dispatch({ type: "createnft__open" })
+                  dispatch(actionAppStateSetDynamic("createNFTPopupIsOpen", true));
                   localStorage.removeItem("firstImport")
                 }}
                 >
@@ -151,7 +148,7 @@ const Home = () => {
         </div>
 
         <MyNFT isLink />
-        <Transactions />
+        <RecentTransactions />
       </Container>
     </div>
   );

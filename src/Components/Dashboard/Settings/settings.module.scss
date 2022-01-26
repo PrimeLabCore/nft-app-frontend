@@ -2,185 +2,212 @@
 @import "../../../Assets/Styles/partials";
 
 .settings__header__top {
-    background: white;
-    padding: 15px 0px;
-    .backArrow {
-        position: absolute;
-        left: 5px;
-        button {
-            background-color: transparent;
-            border: none;
-            &:focus {
-                outline: none;
-            }
-            svg {
-                color: $primary__color;
-                font-size: 22px;
-            }
-        }
+  background: white;
+  padding: 15px 0;
+
+  .backArrow {
+    position: absolute;
+    left: 5px;
+
+    button {
+      background-color: transparent;
+      border: none;
+
+      &:focus {
+        outline: none;
+      }
+
+      svg {
+        color: $primary__color;
+        font-size: 22px;
+      }
     }
-    h1 {
-        text-align: center;
-        font-weight: 500;
-        font-size: 21px;
-        margin-bottom: 0px;
-    }
+  }
+
+  h1 {
+    text-align: center;
+    font-weight: 500;
+    font-size: 21px;
+    margin-bottom: 0;
+  }
 }
 
 .settings__wrapper {
-    .settings__acc__wrapper {
-        margin: 50px 0px;
-        .settings__acc__inner {
-            margin-bottom: 20px;
-            h5 {
-                color: #808080;
-                margin-bottom: 0px;
-                padding-bottom: 12px;
-                font-weight: 500;
-                font-size: 16px;
-            }
-            .settings__acc {
-                display: flex;
-                justify-content: space-between;
-                background: #ffffff;
-                border: 1px solid #dedede;
-                border-radius: 8px;
-                padding: 25px 22px;
-                cursor: pointer;
-                .settings__name__info {
-                    display: flex;
-                    align-items: center;
-                    img {
-                        margin-right: 13px;
-                    }
-                    h6 {
-                        margin-bottom: 0px;
-                        font-weight: 600;
-                        font-size: 16px;
-                    }
-                }
-                .personal__settings {
-                    p {
-                        margin-bottom: 0px;
-                        color: #808080;
-                        font-weight: normal;
-                        font-size: 12px;
-                        padding-bottom: 5px;
-                        position: relative;
-                    }
-                    h6 {
-                        margin-bottom: 0px;
-                        font-weight: 600;
-                        font-size: 16px;
-                        max-width: 400px;
-                        overflow: hidden;
-                        text-overflow: ellipsis;
-                    }
-                }
-                button {
-                    border: none;
-                    background-color: transparent;
-                    &:focus {
-                        outline: none;
-                    }
-                    svg {
-                        color: #808080;
-                    }
-                }
-                .settings__acc__content {
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    width: 100%;
-                    margin-bottom: 20px;
-                    &:nth-last-child(1) {
-                        margin-bottom: 0px;
-                    }
-                }
-            }
-        }
-    }
-}
-.connection__modal {
-    .modal__header {
-        h2 {
-            font-size: 24px;
-            text-transform: capitalize;
-        }
-    }
-    .modal__body__wrapper {
-        margin: 25px 40px 40px 40px;
-        .name__wrapper {
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            padding-bottom: 20px;
-            margin-bottom: 20px;
-            border-bottom: 1.2px solid #dedede;
-            span {
-                max-width: 80%;
-                font-weight: 600;
+  .settings__acc__wrapper {
+    margin: 50px 0;
 
-                font-size: 19.2px;
-                word-break: break-all;
-            }
-            .checked {
-                background: #2f80ed;
-                border-radius: 50%;
-                width: 28px;
-                height: 28px;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                svg {
-                    color: white;
-                }
-            }
-            &:nth-last-child(1) {
-                padding-bottom: 0px;
-                border: none;
-            }
-        }
-    }
-    .btn__wrapper {
+    .settings__acc__inner {
+      margin-bottom: 20px;
+
+      h5 {
+        color: #808080;
+        margin-bottom: 0;
+        padding-bottom: 12px;
+        font-weight: 500;
+        font-size: 16px;
+      }
+
+      .settings__acc {
         display: flex;
-        margin: 5px 0px;
-        margin-top: 40px;
-        .next__btn {
-            @include defaultButton($primary__color);
-            width: 100%;
-            justify-content: center !important;
+        justify-content: space-between;
+        background: #ffffff;
+        border: 1px solid #dedede;
+        border-radius: 8px;
+        padding: 25px 22px;
+        cursor: pointer;
+
+        .settings__name__info {
+          display: flex;
+          align-items: center;
+
+          img {
+            margin-right: 13px;
+          }
+
+          h6 {
+            margin-bottom: 0;
+            font-weight: 600;
+            font-size: 16px;
+          }
         }
+
+        .personal__settings {
+          p {
+            margin-bottom: 0;
+            color: #808080;
+            font-weight: normal;
+            font-size: 12px;
+            padding-bottom: 5px;
+            position: relative;
+          }
+
+          h6 {
+            margin-bottom: 0;
+            font-weight: 600;
+            font-size: 16px;
+            max-width: 400px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+        }
+
+        button {
+          border: none;
+          background-color: transparent;
+
+          &:focus {
+            outline: none;
+          }
+
+          svg {
+            color: #808080;
+          }
+        }
+
+        .settings__acc__content {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          width: 100%;
+          margin-bottom: 20px;
+
+          &:nth-last-child(1) {
+            margin-bottom: 0;
+          }
+        }
+      }
     }
+  }
+}
+
+.connection__modal {
+  .modal__header {
+    h2 {
+      font-size: 24px;
+      text-transform: capitalize;
+    }
+  }
+
+  .modal__body__wrapper {
+    margin: 25px 40px 40px 40px;
+
+    .name__wrapper {
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      padding-bottom: 20px;
+      margin-bottom: 20px;
+      border-bottom: 1.2px solid #dedede;
+
+      span {
+        max-width: 80%;
+        font-weight: 600;
+
+        font-size: 19.2px;
+        word-break: break-all;
+      }
+
+      .checked {
+        background: #2f80ed;
+        border-radius: 50%;
+        width: 28px;
+        height: 28px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        svg {
+          color: white;
+        }
+      }
+
+      &:nth-last-child(1) {
+        padding-bottom: 0;
+        border: none;
+      }
+    }
+  }
+
+  .btn__wrapper {
+    display: flex;
+    margin: 40px 0 5px;
+
+    .next__btn {
+      @include defaultButton($primary__color);
+      width: 100%;
+      justify-content: center !important;
+    }
+  }
 }
 
 .defaultAuthenticMethod {
-    font-size: 22px;
-    position: absolute;
-    right: 14px;
-    top: -2px;
-    color: #03a9f4;
-    font-weight: 600;
+  font-size: 22px;
+  position: absolute;
+  right: 14px;
+  top: -2px;
+  color: #03a9f4;
+  font-weight: 600;
 }
 
-@media only screen and (max-width: "767px") {
-    .connection__modal {
-        .modal__body__wrapper {
-            margin: auto;
-            padding: 20px 10px;
-            .name__wrapper {
-                span {
-                    max-width: 260px;
-                    text-overflow: ellipsis;
-                    overflow: hidden;
-                    word-break: break-all;
-                }
-            }
+@media only screen and (max-width: 767px) {
+  .connection__modal {
+    .modal__body__wrapper {
+      margin: auto;
+      padding: 20px 10px;
+
+      .name__wrapper {
+        span {
+          max-width: 260px;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          word-break: break-all;
         }
+      }
     }
-    .personal__settings {
-        h6 {
-            max-width: 250px;
-        }
+  }
+  .personal__settings {
+    h6 {
+      max-width: 250px;
     }
+  }
 }

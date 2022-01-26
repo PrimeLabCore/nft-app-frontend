@@ -11,14 +11,15 @@ import { AiOutlinePlus } from "react-icons/ai";
 import Carousel from "react-multi-carousel";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-import axios from "axios";
 import { nanoid } from "nanoid";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router";
-import styles from "./Home.module.css";
 import { mapNftDetails } from "../../../Utils/utils";
 import { LoaderIconBlue } from "../../Generic/icons";
-import { API_BASE_URL } from "../../../Utils/config";
+import styles from "./Home.module.scss";
+import { actionAppStateSetDynamic } from "../../../Store/AppState/actions";
+import { actionNFTFetchList, actionNFTSetCurrent } from "../../../Store/NFT/actions";
+import { getNFTListByOwnerId } from "../../../api/nft";
 
 const responsive = {
   superLargeDesktop: {
@@ -44,16 +45,10 @@ const MyNft = ({ isLink }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch(); // Direct assigning right now
   const [windowstate, setWindow] = useState(window.innerWidth < 767);
-  const nfts = useSelector((state) => state.home__allnft.nfts);
-  const { user } = useSelector((state) => state.authReducer);
-  const [alldata, setAlldata] = useState([]);
+  const nftList = useSelector(state => state.nft.nftList);
+  const user = useSelector(state => state.authReducer.user);
 
   const [isLoading, setIsloading] = useState(false);
-
-  // effect for keeping track of nfts change
-  useEffect(() => {
-    setAlldata([...nfts])
-  }, [nfts])
 
   useEffect(() => {
     window.addEventListener(
@@ -66,19 +61,13 @@ const MyNft = ({ isLink }) => {
     );
   }, [windowstate]);
 
-  // fetch all the nfts of the user
+  // fetch all the nftList of the user
   useEffect(() => {
     setIsloading(true);
 
-    // Ajax Request to create user
-    axios
-      .get(`${API_BASE_URL}/nfts/list?owner_id=${user?.user_id}`)
-      .then((response) => {
-        // save user details
-        const tempNfts = response.data.data;
-        // console.log("data nfts", tempNfts);
-        setAlldata(tempNfts);
-        dispatch({ type: "update_nfts", payload: tempNfts });
+    getNFTListByOwnerId(user?.user_id)
+      .then(response => {
+        dispatch(actionNFTFetchList(response.data.data));
       })
       .catch((error) => {
         if (error?.response?.data) {
@@ -91,11 +80,11 @@ const MyNft = ({ isLink }) => {
   }, []);
 
   const handleChange = () => {
-    dispatch({ type: "createnft__open" });
+    dispatch(actionAppStateSetDynamic("createNFTPopupIsOpen", true));
   };
 
   const detailPage = (data) => {
-    dispatch({ type: "nft__detail", payload: mapNftDetails(data) });
+    dispatch(actionNFTSetCurrent(mapNftDetails(data)));
     navigate(`/nft/${data.nft_id}`);
   };
 
@@ -138,7 +127,7 @@ const MyNft = ({ isLink }) => {
               swipeable
               draggable
             >
-              {alldata
+              {nftList
                 .filter(filterEmpty)
                 .map(data => {
                   const urlArray = data?.file_url?.split(".");
@@ -195,7 +184,7 @@ const MyNft = ({ isLink }) => {
             </Carousel>
           ) : (
             <Row>
-              {alldata
+              {nftList
                 .filter(filterEmpty)
                 .map((data) => {
                   const urlArray = data?.file_url?.split(".");

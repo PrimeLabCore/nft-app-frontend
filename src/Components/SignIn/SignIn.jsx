@@ -10,7 +10,8 @@ import TextFieldComponent from "../../Assets/FrequentlUsedComponents/TextFieldCo
 import useRedirectIfUserLoggedIn from '../../common/hooks/useRedirectIfUserLoggedIn';
 import { API_BASE_URL } from "../../Utils/config";
 import AppLoader from "../Generic/AppLoader";
-import styles from "./SignIn.module.css";
+import styles from "./SignIn.module.scss";
+import { actionSetDynamic } from "../../Store/Auth/actions";
 import TooltipButton from '../../common/components/TooltipButton';
 
 const SignIn = () => {
@@ -54,7 +55,7 @@ const SignIn = () => {
           : `${accountId}.near`,
       })
       .then((response) => {
-        dispatch({ type: "set_otp_medium", payload: response.data.type });
+        dispatch(actionSetDynamic("otp_medium", response.data.type));
         navigate(`/signin/authentication/${accountId}`);
       })
       .catch(() => {
@@ -64,8 +65,6 @@ const SignIn = () => {
             toast.dismiss()
           }
         });
-      })
-      .finally(() => {
         setIsloading(false);
       });
   };

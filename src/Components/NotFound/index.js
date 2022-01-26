@@ -2,10 +2,10 @@ import React from "react"
 import { useNavigate } from "react-router-dom"
 import { IoIosArrowBack } from "react-icons/io"
 import { Container } from "react-bootstrap"
-import styles from "./notfound.module.css"
 
 import create_nft_left from "../../Assets/Images/create-nft-left.png"
 import create_nft_right from "../../Assets/Images/create-nft-right.png"
+import styles from "./notfound.module.scss"
 
 function NotFound() {
   const navigate = useNavigate();

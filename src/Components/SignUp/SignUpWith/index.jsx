@@ -5,81 +5,39 @@ import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { isPossiblePhoneNumber } from 'react-phone-number-input'
+import Analytics from "../../../Utils/Analytics";
 import TextFieldComponent from "../../../Assets/FrequentlUsedComponents/TextFieldComponent";
 import CustomPhoneInput from "../../../common/components/CustomPhoneInput/CustomPhoneInput";
-import { API_BASE_URL } from "../../../Utils/config";
-import styles from "./index.module.css";
+import parseParams from "../../../Services/parseParams";
+import styles from "./index.module.scss";
+import { actionSetDynamic, actionSuccessfulLogin } from "../../../Store/Auth/actions";
+import { actionAppStateSetLoginFormMethod } from "../../../Store/AppState/actions";
+import { isValidateEmail, isValidPhoneNumber } from "../../../Utils/utils";
+import { checkAccount, signupRequest, userLoginRequest } from "../../../api/user";
 import TooltipButton from "../../../common/components/TooltipButton";
-
-const validateEmail = (email) => {
-  const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  const splitEmail = email.split("@");
-
-  if (splitEmail.length > 2) return false;
-
-  const t = /[ `!@#$%^&*()+\=\[\]{};':"\\|,<>\/?~]/;
-
-  return re.test(email) && !t.test(splitEmail[0]);
-};
-
-// Date : Jan 4 2021, 09:27 AM IST, Rohit Yadav
-// Added phone number validation.
-// Valid formats:
-
-// (123) 456-7890
-// (123)456-7890
-// 123-456-7890
-// 123.456.7890
-// 1234567890
-// +31636363634
-// 075-63546725
-
-const validatePhone = (phone) =>
-  /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im.test(phone);
 
 const SignUpWith = () => {
   const dispatch = useDispatch();
-  const loginForm = useSelector((state) => state.LoginFormMethod);
+  const loginFormMethod = useSelector((state) => state.appState.loginFormMethod);
   const [inputFields, setinputFields] = useState({ email: "", phone: "" });
-  // const [loginFields, setLoginFields] = useState({ username: "" });
   const loginFields = { username: "" };
-  // const [validateUserLoading, setValidateUserLoading] = useState(true);
-  // const [isUserIDAvailable, setIsUserIDAvailable] = useState(false);
   const { redirectUrl } = useSelector((state) => state.authReducer);
 
-  const [errors, setErrors] = useState({});
+  const [, setErrors] = useState({});
   const navigate = useNavigate();
   // HANDLE CHANGE
 
   const { search } = useLocation();
 
   const handleClick = (e) => {
-    dispatch({ type: e.target.value, payload: e.target.value });
-  };
-
-  const parseParams = (querystring) => {
-    // parse query string
-    const params = new URLSearchParams(querystring);
-
-    const obj = {};
-
-    // iterate over all keys
-    for (const key of params.keys()) {
-      if (params.getAll(key).length > 1) {
-        obj[key] = params.getAll(key);
-      } else {
-        obj[key] = params.get(key);
-      }
-    }
-
-    return obj;
+    dispatch(actionAppStateSetLoginFormMethod(e.target.value))
   };
 
   const par = parseParams(search);
 
   const handleSignup = async (params) => {
     const fd = new FormData();
-    if (loginForm === "email") {
+    if (loginFormMethod === "email") {
       fd.append("user[email]", params.email);
       fd.append(
         "user[account_id]",
@@ -95,7 +53,7 @@ const SignUpWith = () => {
       );
     }
 
-    const response = await axios.post(`${API_BASE_URL}/signup`, fd);
+    const response = await signupRequest(fd);
     const { status } = response;
 
     if (status === 200 || status === 201) {
@@ -110,31 +68,17 @@ const SignUpWith = () => {
 
         return config;
       });
-      dispatch({
-        type: "login_Successfully",
-        payload: { ...data, token: authorization }
-      });
-      // localStorage.setItem(
-      //   "user",
-      //   JSON.stringify({ ...data, token: authorization })
-      // );
+      dispatch(actionSuccessfulLogin({ ...data, token: authorization }));
       navigate(redirectUrl ? redirectUrl : "/");
     }
-
-    // else {
-    //   navigate("verification");
-    // }
   };
 
   const handleLogin = async (email) => {
     const fd = new FormData();
-    if (!email) {
-      fd.append("user[email]", loginFields.username);
-    } else {
-      fd.append("user[phone]", loginFields.username);
-    }
+    const fieldName = !email ? "email" : "phone";
+    fd.append(`user[${fieldName}]`, loginFields.username);
 
-    const response = await axios.post(`${API_BASE_URL}/login`, fd);
+    const response = await userLoginRequest(fd);
     const { status } = response;
 
     if (status === 200 || status === 201) {
@@ -149,17 +93,7 @@ const SignUpWith = () => {
 
         return config;
       });
-      dispatch({
-        type: "login_Successfully",
-        payload: { ...data, token: authorization }
-      });
-      // localStorage.setItem(
-      //   "user",
-      //   JSON.stringify({ ...data, token: authorization })
-      // );
-      // navigate(redirectUrl ? redirectUrl : "/");
-    } else {
-      // navigate("verification");
+      dispatch(actionSuccessfulLogin({ ...data, token: authorization }));
     }
   };
 
@@ -167,9 +101,7 @@ const SignUpWith = () => {
     par.email = "zeeshan@gmail.com";
 
     const validate = async () => {
-      const response = await axios.get(
-        `${API_BASE_URL}/check_account_id?account_id=${par.account_id}`
-      );
+      const response = await checkAccount(par.account_id);
 
       const { success } = response.data;
       if (success) {
@@ -184,50 +116,10 @@ const SignUpWith = () => {
     }
   }, []);
 
-  useEffect(() => 0, [errors]);
-
-  // useEffect(() => {
-  //   // If searchCity is 2 letters or more
-
-  //   if (!par?.account_id && loginForm === "email") {
-  //     const validate = async () => {
-  //       const response = await axios.get(
-  //         `${API_BASE_URL}/check_account_id?account_id=${inputFields.email?.replace(
-  //           ".",
-  //           ""
-  //         )}.near`
-  //       );
-
-  //       console.log(`response`, response.data);
-  //       const { success } = response.data;
-  //       setIsUserIDAvailable(success);
-  //     };
-  //     if (inputFields.email.length > 1) {
-  //       setValidateUserLoading(true);
-  //       validate();
-  //     }
-  //   }
-  // }, [inputFields.email]);
-
-  // const handleOnChange = (e) => {
-  //   e.preventDefault()
-  //   setSearchCity(e.target.value)
-  // }
-
-  // HandleLogin
-  // const HandleLoginWithNear = () => {
-  //   // navigate("/signin");
-  //   window.open(`${API_BASE_URL}/near_login/login.html`, "_self");
-  // };
-
-  // const SignIn = () => {
-  //   navigate("/signin");
-  // };
-
   const handleValidation = () => {
     const errors = {};
     let formIsValid = true;
-    if (!validateEmail(inputFields.email)) {
+    if (!isValidateEmail(inputFields.email)) {
       formIsValid = false;
       errors.email = "Email is not valid";
     }
@@ -241,7 +133,7 @@ const SignUpWith = () => {
   const handlePhoneValidation = () => {
     const errors = {};
     let formIsValid = true;
-    if (!validatePhone(inputFields.phone)) {
+    if (!isValidPhoneNumber(inputFields.phone)) {
       formIsValid = false;
       errors.email = "Phone is not valid";
     }
@@ -258,25 +150,16 @@ const SignUpWith = () => {
     if (!handleValidation()) {
       return toast.error("Email is not valid");
     }
-    loginForm === "email"
-      ? dispatch({ type: "set_signup_email", payload: inputFields.email })
-      : dispatch({ type: "set_signup_phone", payload: inputFields.phone });
-    window.dataLayer.push({
-      event: "event",
-      // eventProps: {
-      //   category: "Signup",
-      //   action: "Signed Up",
-      //   label: "Signup",
-      //   value: "Signup",
-      // },
-      eventProps: {
-        category: "Signup",
-        action: "User Verified",
-        label: "Signup",
-        value: "Signup"
-      }
+
+    loginFormMethod === "email"
+      ? dispatch(actionSetDynamic("signupEmail", inputFields.email))
+      : dispatch(actionSetDynamic("signupPhone", inputFields.phone));
+    Analytics.pushEvent("event", {
+      category: "Signup",
+      action: "User Verified",
+      label: "Signup",
+      value: "Signup"
     });
-    // navigate("verification");
     navigate("/signup/create-account");
     return 0;
   };
@@ -291,22 +174,12 @@ const SignUpWith = () => {
     if (!handlePhoneValidation()) {
       return toast.error("Phone is not valid");
     }
-
-    dispatch({ type: "set_signup_phone", payload: inputFields.phone });
-    window.dataLayer.push({
-      event: "event",
-      // eventProps: {
-      //   category: "Signup",
-      //   action: "Signed Up",
-      //   label: "Signup",
-      //   value: "Signup",
-      // },
-      eventProps: {
-        category: "Signup",
-        action: "User Verified",
-        label: "Signup",
-        value: "Signup"
-      }
+    dispatch(actionSetDynamic("signupPhone", inputFields.phone));
+    Analytics.pushEvent("event", {
+      category: "Signup",
+      action: "User Verified",
+      label: "Signup",
+      value: "Signup"
     });
 
     // navigate("verification");
@@ -325,7 +198,7 @@ const SignUpWith = () => {
 
   const CheckAndSubmitForm = (e) => {
     if (e.which === 13) {
-      loginForm === "email" ? oldHandleSignup() : phoneNumberSignUp();
+      loginFormMethod === "email" ? oldHandleSignup() : phoneNumberSignUp();
     }
   };
 
@@ -342,11 +215,12 @@ const SignUpWith = () => {
       <div className={styles.buttonContainer} onClick={handleClick}>
         <button
           onClick={() => {
+            dispatch(actionAppStateSetLoginFormMethod("email"));
             clearFieldData("phone");
           }}
           value="email"
           className={`${styles.button} ${styles.secondary} ${
-            loginForm === "email" ? styles.active : ""
+            loginFormMethod === "email" ? styles.active : ""
           }`}
         >
           Email
@@ -354,10 +228,11 @@ const SignUpWith = () => {
         <button
           value="phone"
           onClick={() => {
+            dispatch(actionAppStateSetLoginFormMethod("phone"));
             clearFieldData("email");
           }}
           className={`${styles.button} ${styles.secondary} ${
-            loginForm === "phone" ? styles.active : ""
+            loginFormMethod === "phone" ? styles.active : ""
           }`}
         >
           Phone
@@ -366,7 +241,7 @@ const SignUpWith = () => {
 
       <div className={styles.mainContainer}>
         {/* LOGIN WITH PHONE */}
-        {loginForm === "phone" && (
+        {loginFormMethod === "phone" && (
           <CustomPhoneInput
             placeholder="Ex. (373) 378 8383"
             value={inputFields.phone}
@@ -378,7 +253,7 @@ const SignUpWith = () => {
         )}
 
         {/* LOGIN WITH EMAIL */}
-        {loginForm === "email" && (
+        {loginFormMethod === "email" && (
           <TextFieldComponent
             variant="outlined"
             placeholder="Ex. johdoe@gmail.com"
@@ -404,14 +279,14 @@ const SignUpWith = () => {
         <button
           //   onClick={handleSignup}
           onClick={() =>
-            loginForm === "email" ? oldHandleSignup() : phoneNumberSignUp()}
+            loginFormMethod === "email" ? oldHandleSignup() : phoneNumberSignUp()}
           className={`${styles.button} ${
             inputFields.email || isPossiblePhoneNumber(inputFields.phone)
               ? styles.primaryColor
               : styles.secondaryColor
           }`}
           disabled={
-            loginForm === "email"
+            loginFormMethod === "email"
               ? inputFields.email?.length === 0
               : !isPossiblePhoneNumber(inputFields.phone)
           }

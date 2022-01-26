@@ -10,29 +10,33 @@ import {
   Route, Routes, useLocation, useNavigate
 } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
+import Analytics from "./Utils/Analytics";
 import "react-toastify/dist/ReactToastify.css";
-import "./Assets/Styles/filepond.css";
-import "./Assets/Styles/modal.css";
+import parseParams from "./Services/parseParams";
+import "./Assets/Styles/filepond.scss";
+import "./Assets/Styles/modal.scss";
 import Settings from "./Components/Dashboard/Settings";
 import GiftAnNftDialog from "./Components/GiftAnNftDialog/GiftAnNft";
-import HomePage from "./Components/Home/index";
+import HomePage from "./Components/Home";
 import SignIn from "./Components/SignIn/SignIn";
 import CreateAnAccount from "./Components/SignUp/CreateAnAccount/CreateAnAccount";
 import Verification from "./Components/SignUp/Verification";
-import "./Components/SignUp/Verification/verificationCode.css";
+import "./Components/SignUp/Verification/verificationCode.scss";
 import DetailRoute from "./layout/DetailRoute";
 import PrivateRoute from "./layout/PrivateRoute";
 import PublicRoute from "./layout/PublicRoute";
 import AllNft from "./Pages/AllNft";
 import Dashboard from "./Pages/Dashboard";
 import NFTClaim from "./Pages/NftClaim";
-// import GiftAnNft from "./Components/GiftAnNft/GiftAnNft";
 import NFTDetail from "./Pages/NftDetail";
 import Notfound from "./Pages/NotFound";
 // Pages
 import SignUp from "./Pages/SignUp";
 import Transactions from "./Pages/Transactions";
-import { API_BASE_URL } from "./Utils/config";
+import { actionSuccessfulLogin } from "./Store/Auth/actions";
+import { actionAppStateSetDynamic } from "./Store/AppState/actions";
+import { actionNFTSetTracker } from "./Store/NFT/actions";
+import { getUserDetails } from "./api/user";
 
 const tagManagerArgs = {
   gtmId: "GTM-TJSWG5R",
@@ -44,24 +48,6 @@ function App() {
   const navigate = useNavigate();
   const { search } = useLocation();
   const loading = false;
-
-  const parseParams = (querystring) => {
-    // parse query string
-    const params = new URLSearchParams(querystring);
-
-    const obj = {};
-
-    // iterate over all keys
-    for (const key of params.keys()) {
-      if (params.getAll(key).length > 1) {
-        obj[key] = params.getAll(key);
-      } else {
-        obj[key] = params.get(key);
-      }
-    }
-
-    return obj;
-  };
 
   const urlParams = parseParams(search);
 
@@ -78,7 +64,7 @@ function App() {
     const { transaction_id } = urlParams;
 
     if (transaction_id) {
-      dispatch({ type: 'nft/set-tracker', payload: urlParams })
+      dispatch(actionNFTSetTracker(urlParams));
 
       setTransactionId(transaction_id);
     }
@@ -89,17 +75,16 @@ function App() {
       axios.interceptors.request.use((config) => {
         // const token = store.getState().session.token;
         config.headers.Authorization = urlParams?.token;
-
         return config;
       });
 
-      const response = await axios.get(`${API_BASE_URL}/users/details`);
+      const response = await getUserDetails();
       const { success, data } = response.data;
       if (success) {
-        dispatch({
-          type: "login_Successfully",
-          payload: { ...data, token: urlParams?.token },
-        });
+        dispatch(actionSuccessfulLogin({
+          ...data,
+          token: urlParams?.token
+        }));
         navigate("/");
       } else {
         navigate("/signup");
@@ -108,36 +93,16 @@ function App() {
     if (urlParams?.token) {
       fetchDetail();
     }
-
-    // let data = JSON.parse(localStorage.getItem("user"));
-    // console.log(`data`, data);
-    // if (data) {
-    //   axios.interceptors.request.use(function (config) {
-    //     // const token = store.getState().session.token;
-    //     config.headers.Authorization = data.token;
-
-    //     return config;
-    //   });
-    //   dispatch({
-    //     type: "login_Successfully",
-    //     payload: data,
-    //   });
-    //   setLoading(false);
-    //   // navigate("/");
-    // } else setLoading(false);
   }, []);
 
   useEffect(() => {}, []);
 
-  window.dataLayer.push({
-    event: "pageview",
-  });
+  Analytics.pushEvent("pageview")
 
   const giftSent = () => {
-    dispatch({ type: "createnft__open" });
+    dispatch(actionAppStateSetDynamic("createNFTPopupIsOpen", true));
     navigate("/");
   };
-  // const nft__detail = useSelector((state) => state.nft__detail); // Single Nft Data
 
   if (loading) {
     return "Loading...";
@@ -212,14 +177,12 @@ function App() {
             path=":nftId"
             element={
               <NFTDetail />
-              // nft__detail.image ? <NFTDetail /> : <Navigate replace to="/" />
             }
           />
           <Route
             path="detail/claim/:nftId"
             element={
               <NFTClaim />
-              // nft__detail.image ? <NFTClaim /> : <Navigate replace to="/" />
             }
             // render={props => <NFTClaim {...props} />}
           />

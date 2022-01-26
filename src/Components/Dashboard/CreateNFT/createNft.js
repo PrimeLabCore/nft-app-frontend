@@ -1,17 +1,20 @@
-import axios from "axios";
 import { nanoid } from "nanoid";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Modal, ProgressBar } from "react-bootstrap";
 import { AiOutlinePlus } from "react-icons/ai";
 import { IoIosArrowForward } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import Analytics from "../../../Utils/Analytics";
 import fileHelper from "../../../Services/fileHelper";
-import { API_BASE_URL } from "../../../Utils/config";
 import { isEmpty, mapNftDetails } from "../../../Utils/utils";
-import styles from "./createNft.module.css";
 import LoaderIcon from '../../Generic/AppLoader';
+import styles from "./createNft.module.scss";
+import { actionSetDynamic } from "../../../Store/Auth/actions";
+import { actionAppStateSetDynamic } from "../../../Store/AppState/actions";
+import { actionNFTFetchList, actionNFTSetCurrent } from "../../../Store/NFT/actions";
+import { createNFTRequest, getNFTListByOwnerId, postNFTRequest } from "../../../api/nft";
 
 const audioRegex = /(audio)(\/\w+)+/g;
 const videoRegex = /(video)(\/\w+)+/g;
@@ -49,23 +52,21 @@ function CreateNft(props) {
   const { transactionId } = props;
 
   const [selectedFile, setSelectedFile] = useState("");
-  const [selectedFileType, setSelectedFileType] = useState("image");
+  const [, setSelectedFileType] = useState("image");
 
   const [loading, setLoading] = useState(false);
   const [corruptedFile, setCorruptedFile] = useState(false);
   const [createNftResponse, setCreateNftResponse] = useState({
     name: "",
   });
-  const { user } = useSelector((state) => state.authReducer);
-  const { adTracker } = useSelector((state) => state.nftReducer);
+  const user = useSelector(state => state.authReducer.user);
+  const adTracker = useSelector(state => state.nft.adTracker);
 
   // getting all NFT detail
 
   const [details, setDetails] = useState(nftDetailDefaultValue);
 
   const [formValues, setFormValues] = useState([nftDefaultProperties]);
-
-  useEffect(() => 0, [selectedFileType]);
 
   const formInfo = {
     selectedFile,
@@ -92,33 +93,19 @@ function CreateNft(props) {
     ]);
   };
 
-  // const allNft = () => {
-  //   dispatch({ type: "createnft__close" });
-  //   setNftForm(false);
-  //   setNftPreview(false);
-  //   setNftMint(false);
-  //   navigate("/all-nft");
-  // };
-
   const dispatch = useDispatch();
 
   const openNftDetail = () => {
-    // navigate(`/nft/${nanoid()}`);
-    dispatch({
-      type: "nft__detail",
-      payload: mapNftDetails(createNftResponse),
-    });
+    dispatch(actionNFTSetCurrent(mapNftDetails(createNftResponse)));
     navigate(`/nft/${createNftResponse.nft_id}`);
   };
 
   const removeFormFields = (i) => {
-    const newFormValues = [...formValues];
-    newFormValues.splice(i, 1);
-    setFormValues(newFormValues);
+    setFormValues(formValues.filter((item, index) => index !== i));
   };
 
   // Defined in reducer function
-  const createnft__popup = useSelector((state) => state.createnft__popup);
+  const createNFTPopupIsOpen = useSelector(state => state.appState.createNFTPopupIsOpen);
 
   const inputEvent = (e) => {
     const { name, value } = e.target;
@@ -129,16 +116,14 @@ function CreateNft(props) {
   };
 
   const sendNftModal = () => {
-    dispatch({ type: "sendnft__open" });
-    dispatch({ type: "handleTooltipClick__close" });
-    window.dataLayer.push({
-      event: "event",
-      eventProps: {
-        category: "Menu",
-        action: "Send NFT Modal Opened",
-        label: "Menu",
-        value: "Menu",
-      },
+    dispatch(actionAppStateSetDynamic("sendNFTPopupIsOpen", true));
+    dispatch(actionAppStateSetDynamic("menuTooltipIsOpen", false));
+
+    Analytics.pushEvent("event", {
+      category: "Menu",
+      action: "Send NFT Modal Opened",
+      label: "Menu",
+      value: "Menu",
     });
   };
   // Rest Of the Modals
@@ -148,7 +133,7 @@ function CreateNft(props) {
 
   const handleNftForm = () => {
     if (selectedFile) {
-      dispatch({ type: "createnft__close" });
+      dispatch(actionAppStateSetDynamic("createNFTPopupIsOpen", false));
       setNftForm(true);
       setNftPreview(false);
       setNftMint(false);
@@ -166,40 +151,28 @@ function CreateNft(props) {
     } else if (details.description.length > 500) {
       toast.error("Description character length should be less than 500");
     } else {
-      dispatch({ type: "createnft__close" });
+      dispatch(actionAppStateSetDynamic("createNFTPopupIsOpen", false));
       setNftForm(false);
       setNftPreview(true);
       setNftMint(false);
     }
   };
 
-  const trackConversion = async (user, transactionId, details) => {
-    const requestBody = {
-      transaction_id: transactionId,
-      userWallet: user.user_id,
-      details,
-    };
-
-    const conversionURL = "https://fcnefunrz6.execute-api.us-east-1.amazonaws.com/test/conversion";
-    return axios.post(
-      conversionURL,
-      // TODO: Populate conversionURL with the production
-      // version of the endpoint, something like below:
-      // `${API_BASE_URL}/api/v1/conversion`,
-      requestBody
-    );
-  };
+  const trackConversion = async (user, transactionId, details) => createNFTRequest({
+    transaction_id: transactionId,
+    userWallet: user.user_id,
+    details,
+  });
 
   const mineNft = async (type) => {
     setLoading(true);
     const nftDetail = { ...details };
-    const properties = [...formValues]
+    nftDetail.attributes = [...formValues]
       .filter(item => item.attr_name !== "")
       .map((item) => {
         delete item.id
         return item;
       });
-    nftDetail.attributes = properties;
     nftDetail.owner_id = user.user_id;
     nftDetail.tracker = adTracker;
 
@@ -211,17 +184,9 @@ function CreateNft(props) {
     nftData.append("file", selectedFile);
     nftData.append("data", JSON.stringify(nftDetail));
 
-    axios
-      .post(`${API_BASE_URL}/nfts`, nftData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      })
+    postNFTRequest(nftData)
       .then((response) => {
-        dispatch({
-          type: "current_selected_nft",
-          payload: response.data?.data,
-        });
+        dispatch(actionSetDynamic("nft", response.data?.data));
         setCreateNftResponse(response.data?.data);
 
         toast.success(
@@ -230,14 +195,12 @@ function CreateNft(props) {
           }.`
         );
 
-        axios
-          .get(`${API_BASE_URL}/nfts/list?owner_id=${user?.user_id}`)
-          .then((response) => {
-            const tempNfts = response.data.data;
-            dispatch({ type: "update_nfts", payload: tempNfts });
+        getNFTListByOwnerId(user?.user_id)
+          .then(response => {
+            dispatch(actionNFTFetchList(response.data.data));
           });
 
-        dispatch({ type: "createnft__close" });
+        dispatch(actionAppStateSetDynamic("createNFTPopupIsOpen", false));
         setNftForm(false);
         setNftPreview(false);
 
@@ -276,12 +239,12 @@ function CreateNft(props) {
     setCorruptedFile(false);
 
     if (modalName === "initalForm") {
-      dispatch({ type: "createnft__open" });
+      dispatch(actionSetDynamic("createNFTPopupIsOpen", true));
       setNftForm(false);
       setNftPreview(false);
       setNftMint(false);
     } else if (modalName === "nftForm") {
-      dispatch({ type: "createnft__close" });
+      dispatch(actionSetDynamic("createNFTPopupIsOpen", false));
       setNftForm(true);
       setNftPreview(false);
       setNftMint(false);
@@ -348,9 +311,9 @@ function CreateNft(props) {
       {/* Initial Modal  */}
       <Modal
         className={`${styles.initial__nft__modal} ${styles.nft__mobile__modal} initial__modal`}
-        show={createnft__popup}
+        show={createNFTPopupIsOpen}
         onHide={() => {
-          dispatch({ type: "createnft__close" });
+          dispatch(actionAppStateSetDynamic("createNFTPopupIsOpen", false));
           setDetails({ title: "", description: "", category: "Digital Arts" });
           setSelectedFile("");
           setFormValues([{}]);
@@ -384,8 +347,8 @@ function CreateNft(props) {
                 id="files"
                 name="file"
                 data-testid="file-uploader"
-                onChange={(e) => handleNewFileUpload(e.target.files)}
-                onClick={(e) => {
+                onChange={e => handleNewFileUpload(e.target.files)}
+                onClick={e => {
                   e.target.value = null;
                 }}
                 accept={requiredFileExtensions.join(", ")}
@@ -493,7 +456,6 @@ function CreateNft(props) {
                 </label>
                 <textarea
                   rows={1}
-                  type="text"
                   name="title"
                   data-testid="nft-title"
                   value={details.title}
@@ -609,7 +571,7 @@ function CreateNft(props) {
           setNftPreview(false);
           setDetails({ title: "", description: "", category: "Digital Arts" });
           setSelectedFile("");
-          setFormValues([{}]);
+          setFormValues([]);
         }}
         backdrop="static"
         keyboard={false}

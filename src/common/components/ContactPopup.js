@@ -10,7 +10,7 @@ import { IoIosArrowForward } from "react-icons/io";
 import "react-phone-input-2/lib/style.css";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import styles from "../../Components/Dashboard/SendNFT/sendNft.module.css";
+import styles from "../../Components/Dashboard/SendNFT/sendNft.module.scss";
 import { LoaderIconBlue } from "../../Components/Generic/icons";
 import ImportContactsDialog from "../../Components/ImportContactsDialog/ImportContactsDialog";
 import { API_BASE_URL } from "../../Utils/config";
@@ -21,6 +21,7 @@ import {
   isValidPhoneNumber
 } from "../../Utils/utils";
 import ManualContactPopup from "./ManualContactPopup";
+import { actionSetDynamic } from "../../Store/Auth/actions";
 
 const contactFormFields = {
   email: "",
@@ -96,15 +97,12 @@ function ContactPopup({
                   uniqueEmails.push(emailObj.address);
                 }
               }
-              if (emailExists) {
-                return false;
-              }
-              return true;
+              return !emailExists;
             }
             return true;
           });
           setIsloading(true);
-          dispatch({ type: "update_contacts", payload: uniqueContacts });
+          dispatch(actionSetDynamic("contacts", uniqueContacts));
         })
         .catch((error) => {
           if (error?.response?.data) {
@@ -227,15 +225,11 @@ function ContactPopup({
     }
   };
 
-  const getSearchResult = (text) => {
-    let result = [];
-    result = contacts.filter(
-      (data) => getFulllName(data).toLowerCase().search(text) !== -1
-      || getPrimaryEmail(data).toLowerCase().search(text) !== -1
-      || getPrimaryPhone(data).toLowerCase().search(text) !== -1
-    );
-    return result;
-  };
+  const getSearchResult = text => contacts.filter(
+    data => getFulllName(data).toLowerCase().search(text) !== -1
+    || getPrimaryEmail(data).toLowerCase().search(text) !== -1
+    || getPrimaryPhone(data).toLowerCase().search(text) !== -1
+  );
 
   const handleSearch = (event) => {
     const value = event.target.value.toLowerCase();
@@ -251,16 +245,22 @@ function ContactPopup({
     const result = getSearchResult(value);
     if (result.length === 0) {
       if (isValidateEmail(value)) {
-        setInputField({ email: value });
+        setInputField({
+          email: value
+        });
       } else if (isValidPhoneNumber(value)) {
-        setInputField({ phone: value });
+        setInputField({
+          phone: value
+        });
       } else if (isValidFullName(value)) {
         setInputField({
           first_name: value.split(" ")[0] || "",
           last_name: value.split(" ")[1] || ""
         });
       } else if (isOnlyNumber(value)) {
-        setInputField({ phone: value });
+        setInputField({
+          phone: value
+        });
       }
       setManualContactOpen(true);
     }
@@ -315,7 +315,7 @@ function ContactPopup({
                     placeholder="Search Existing & Add New Contacts"
                     onChange={handleSearch}
                     onKeyPress={(event) => {
-                      if (event.which === 13) {
+                      if (event.key === "Enter") {
                         addManualContact(event);
                       }
                     }}

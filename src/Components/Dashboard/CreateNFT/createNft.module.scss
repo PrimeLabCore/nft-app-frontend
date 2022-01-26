@@ -9,12 +9,15 @@
           width: 100%;
           margin-bottom: 5px;
         }
+
         input:nth-child(odd) {
           margin-right: 5px;
         }
+
         input:nth-child(even) {
           margin-left: 5px;
         }
+
         .remove__btn {
           right: 55px !important;
         }
@@ -29,69 +32,87 @@
       outline: none;
     }
   }
+
   .modal__header__wrapper {
     border-bottom: none !important;
+
     .modal__header {
       border: none;
+
       h2 {
         font-weight: 600;
         font-size: 21px;
-        margin-bottom: 0px;
+        margin-bottom: 0;
       }
     }
   }
+
   .progress {
     div {
       height: 0.2rem;
     }
   }
+
   .modal__header__bottom {
-    padding-bottom: 0px !important;
+    padding-bottom: 0 !important;
   }
+
   .modal__body__top {
-    padding-top: 0px !important;
+    padding-top: 0 !important;
+
     .modal__body__wrapper {
-      margin-top: 0px !important;
+      margin-top: 0 !important;
     }
   }
+
   .modal__body__wrapper {
-    margin: 100px 0px;
+    margin: 100px 0;
+
     h3 {
       font-weight: bold;
       font-size: 16.8px;
-      margin-bottom: 0px;
+      margin-bottom: 0;
       padding-bottom: 10px;
       text-align: center;
     }
   }
+
   .next__btn__wrapper {
     display: flex;
     justify-content: center;
-    margin: 15px 0px;
+    margin: 15px 0;
+
     .next__btn {
       @include defaultButton($primary__color);
     }
+
     .back__btn {
       @include defaultButton($primary__color);
     }
   }
+
   .multiple__btn__wrapper {
     display: flex;
     justify-content: space-around;
-    margin: 15px 0px;
+    margin: 15px 0;
+
     .next__btn {
       @include defaultButton($primary__color);
     }
+
     .back__btn {
       @include defaultButton($primary__color);
+
       span {
         padding-right: 10px;
-        padding-left: 0px !important;
+        padding-left: 0 !important;
       }
     }
   }
+
   .last__modal__btn {
     display: flex;
+
     .next__btn {
       width: 100%;
       justify-content: center !important;
@@ -101,7 +122,8 @@
 
 .nft__form__modal {
   .modal__body__wrapper {
-    margin: 25px 0px !important;
+    margin: 25px 0 !important;
+
     h6 {
       font-weight: normal;
       font-size: 19.2px;
@@ -109,18 +131,21 @@
       color: #808080;
       text-align: center;
     }
+
     form {
       .form__group {
         display: flex;
         flex-direction: column;
         margin-bottom: 15px;
+
         label {
           color: #808080;
           font-weight: normal;
           font-size: 14.4px;
           padding-bottom: 12px;
-          margin-bottom: 0px;
+          margin-bottom: 0;
         }
+
         input,
         textarea,
         select {
@@ -129,21 +154,25 @@
           border: 1.2px solid #cfcfcf;
           border-radius: 7.2px;
           transition: 0.4s;
+
           &:focus {
             outline: none;
             border: 2.4px solid $primary__color;
           }
         }
+
         select {
           width: 250px;
           font-weight: 600;
           font-size: 16.8px;
           border: none !important;
         }
+
         .form__group__inner {
           margin-bottom: 10px;
           display: flex;
           justify-content: space-between;
+
           .remove__btn {
             background-color: #f0f1f3;
             padding: 7px;
@@ -157,15 +186,18 @@
             width: 28px;
             height: 28px;
             border: none;
+
             &:focus {
               outline: none;
             }
           }
+
           input {
             width: 100%;
             margin: 5px;
           }
         }
+
         .addFieldsBtn {
           background-color: transparent;
           border: none;
@@ -173,29 +205,35 @@
           display: flex;
           align-items: center;
           width: fit-content;
+
           span {
             display: flex;
             padding-right: 10px;
           }
         }
-        .descriptionCounter{
+
+        .descriptionCounter {
           text-align: right;
           font-size: 12px;
           color: #808080;
         }
       }
     }
+
     .mynft__box {
-      box-shadow: 0px 4.8px 4.8px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 4.8px 4.8px rgba(0, 0, 0, 0.1);
       border-radius: 12px;
       background-color: #fff;
       margin-bottom: 10px;
       overflow: hidden;
+
       .mynft__box__image__wrapper {
         position: relative;
+
         img {
           width: 100%;
         }
+
         .mynft__box__image {
           img {
             width: 100%;
@@ -203,41 +241,48 @@
             border-top-left-radius: 12px;
           }
         }
+
         .mynft__box__cat {
           position: absolute;
           left: 20px;
           top: 15px;
           background-color: #fff;
           border-radius: 10px;
+
           h6 {
             font-size: 16.8px;
             font-weight: 600;
             padding: 6px 10px;
-            margin-bottom: 0px;
+            margin-bottom: 0;
             color: black !important;
           }
         }
       }
+
       .mynft__box__description__wrapper {
         padding: 25px 20px;
+
         h2 {
           font-size: 19.2px;
-          margin-bottom: 0px;
+          margin-bottom: 0;
           padding-bottom: 5px;
           padding-top: 10px;
-         
+
         }
+
         p {
           font-size: 16.8px;
           color: #808080;
           font-weight: normal;
-          margin-bottom: 0px;
+          margin-bottom: 0;
           word-break: break-word;
         }
+
         .mynft__box__profile__info {
           margin-top: 15px;
           display: flex;
           align-items: center;
+
           .details__profile__picture {
             background-image: url("../../../Assets/Images/placeholder.png");
             background-repeat: no-repeat;
@@ -249,44 +294,51 @@
             width: 48px;
             margin-right: 10px;
           }
+
           .details__user__info {
             max-width: 80%;
+
             p {
-              margin-bottom: 0px;
+              margin-bottom: 0;
               font-weight: normal;
               font-size: 14.4px;
               color: #808080;
               padding-bottom: 2px;
             }
+
             h6 {
-              margin-bottom: 0px;
+              margin-bottom: 0;
               font-weight: 600;
               font-size: 16.8px;
               color: black;
-              padding-bottom: 0px;
+              padding-bottom: 0;
               word-wrap: break-word;
             }
           }
         }
       }
     }
+
     .mint__info__wrapper {
       .mint__image {
         display: flex;
         margin-bottom: 10px;
         justify-content: center;
+
         img {
           width: 50%;
           border-radius: 25px;
-          box-shadow: 0px 0px 5px 0px;
+          box-shadow: 0 0 5px 0;
         }
       }
+
       h1 {
         text-align: center;
         font-weight: 500;
         font-size: 24px;
         word-break: break-word;
       }
+
       h6 {
         font-size: 16.8px;
       }

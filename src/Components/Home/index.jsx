@@ -1,18 +1,13 @@
 import React from "react";
-import {
-  IoIosArrowForward,
-  IoMdMail,
-  IoMdMap,
-  IoMdPhonePortrait,
-} from "react-icons/io";
+import { IoIosArrowForward } from "react-icons/io";
 import { useSelector } from 'react-redux';
 import { Link, useNavigate } from "react-router-dom";
-import HomeCard1 from "../../Assets/Images/home-card-1.svg";
-import HomeCard2 from "../../Assets/Images/home-card-2.svg";
 import Logo from "../../Assets/Images/prime-lab-logo.png";
 import styles from "./index.module.scss";
 
-import GetStartedButton from "./components/GetStartedButton";
+import AboutUS from "./components/AboutUS";
+import ContactUS from "./components/ContactUS";
+import Home from "./components/Home";
 
 const HomePage = (props) => {
   const navigate = useNavigate();
@@ -76,122 +71,9 @@ const HomePage = (props) => {
           </ul>
         </div>
         <div className={styles.rightSideBody}>
-          {pageName === "home" && (
-          <>
-            <h2>NFT Maker App</h2>
-
-            <div className={`${styles.getStartedBtn} ${styles.onlyOnMobile}`}>
-              {!user && <GetStartedButton />}
-            </div>
-
-            <p className={styles.nftMakerAppDesc}>
-              The easiest way to Create NFTs and share them others. Start
-              minting NFTs in NEAR&apos;s rapidly expanding ecosystem
-            </p>
-
-            <div className={styles.imageContainer}>
-              <img src={HomeCard2} alt="home-card-2" className={styles.image1st} />
-              <img src={HomeCard1} alt="home-card-1" className={styles.image2nd} />
-            </div>
-            <div className={styles.nftAboutFeatureList}>
-              <ul>
-                <li>Create NFTs</li>
-                <li>Share with Friends</li>
-                <li>Explore Blockchain</li>
-              </ul>
-            </div>
-            {/* <div className={styles.nftAboutFeatureList}>
-                <ul>
-                  <li>
-                    Create NFTs
-                  </li>
-                  <li>
-                    Share with Friends
-                  </li>
-                  <li>
-                    Explore Blockchain
-                  </li>
-                </ul>
-                </div> */}
-            <div className={`${styles.getStartedBtn} ${styles.onlyOnDesktop}`}>
-              {!user && <GetStartedButton />}
-            </div>
-          </>
-          )}
-
-          {pageName === "about-us" && (
-          <>
-            <h2>About NFT Maker App</h2>
-            <div className={styles.pageContent}>
-              <p>
-                The easiest way to Create NFTs and share them others. Start
-                minting NFTs in NEAR&apos;s rapidly expanding ecosystem
-              </p>
-              <p>
-                <b>Features</b>
-              </p>
-              <ul>
-                <li>Create NFTs</li>
-                <li>Share with Friends</li>
-                <li>Explore Blockchain</li>
-              </ul>
-            </div>
-            <div className={styles.getStartedBtn}>
-              {!user && <GetStartedButton />}
-            </div>
-          </>
-          )}
-
-          {pageName === "contact-us" && (
-          <>
-            <h2>Contact Us</h2>
-            <div className={styles.pageContent}>
-              <ul className={styles.contactList}>
-                <li className={styles.listItem}>
-                  <span>
-                    <IoMdMap className={styles.addressIcons} />
-                  </span>
-                  <span className={`${styles.contactText} ${styles.place}`}>
-                    Growth Lab, Inc. 1209 Orange Street, Wilmington Delaware
-                  </span>
-                </li>
-
-                <li className={styles.listItem}>
-                  <span>
-                    <IoMdPhonePortrait className={styles.addressIcons} />
-                  </span>
-                  <span className={`${styles.contactText} ${styles.phone}`}>
-                    <a href="tel:+1 984-230-3429" title="">
-                      +1 984-230-3429
-                    </a>
-                  </span>
-                </li>
-
-                <li className={styles.listItem}>
-                  <span>
-                    <IoMdMail className={styles.addressIcons} />
-                  </span>
-                  <span className={`${styles.contactText} ${styles.gmail}`}>
-                    <a href="mailto:support@nftmakerapp.io" title="">
-                      support@nftmakerapp.io
-                    </a>
-                  </span>
-                </li>
-              </ul>
-            </div>
-            <div className={styles.getStartedBtn}>
-              {!user && <GetStartedButton />}
-              {/* <Link to="/signup">
-                    <button>
-                      Get Started
-                      <span>
-                        <IoIosArrowForward />
-                      </span>
-                    </button>
-                  </Link> */}
-            </div>
-          </>
-          )}
+          {pageName === "home" && <Home />}
+          {pageName === "about-us" && <AboutUS />}
+          {pageName === "contact-us" && <ContactUS />}
 
           <div className={styles.privacyPolicyTC}>
             <ul>

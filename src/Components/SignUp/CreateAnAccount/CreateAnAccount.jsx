@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { InputAdornment } from "@material-ui/core";
-import axios from "axios";
 import { ProgressBar } from "react-bootstrap";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { IoIosArrowForward } from "react-icons/io";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import TextFieldComponent from "../../../Assets/FrequentlUsedComponents/TextFieldComponent";
-import { API_BASE_URL } from "../../../Utils/config";
 import { isValidFullName, mapUserSession } from "../../../Utils/utils";
 import AppLoader from "../../Generic/AppLoader";
-import styles from "./CreateAnAccount.module.css";
+
+import styles from "./CreateAnAccount.module.scss";
+import { actionSetSession } from "../../../Store/Auth/actions";
+import { createUserRequest } from "../../../api/user";
 import TooltipButton from "../../../common/components/TooltipButton";
 
 const CreateAnAccount = () => {
@@ -23,19 +24,14 @@ const CreateAnAccount = () => {
   );
   const [isLoading, setIsloading] = useState(false);
 
-  // const loginForm = useSelector((state) => state.LoginFormMethod);
-
-  const { LoginFormMethod } = useSelector((state) => state);
+  const loginFormMethod = useSelector(state => state.appState.loginFormMethod);
 
   const { accId } = useParams();
 
   const navigate = useNavigate();
-  // const [details, setDetails] = useState({
-  //   id: `${accId ? accId : ""}`,
-  // });
-  const [fullname, setFullname] = useState("");
+  const [fullName, setFullName] = useState("");
   const [accountId, setAccountId] = useState("");
-  const [windowstate, setWindow] = useState(window.innerWidth < 767);
+  const [windowState, setWindowState] = useState(window.innerWidth < 767);
   const { redirectUrl } = useSelector((state) => state.authReducer);
 
   useEffect(() => {
@@ -43,12 +39,12 @@ const CreateAnAccount = () => {
       "resize",
       () => {
         const ismobile = window.innerWidth < 767;
-        if (ismobile !== windowstate) setWindow(ismobile);
+        if (ismobile !== windowState) setWindowState(ismobile);
       },
       false
     );
-  }, [windowstate]);
-  // const dispatch = useDispatch()
+  }, [windowState]);
+
   const [info, setinfo] = useState("");
 
   const HandleClick = () => {
@@ -61,7 +57,7 @@ const CreateAnAccount = () => {
 
   useEffect(() => {
     if (location) {
-      setFullname(location?.state?.user?.full_name)
+      setFullName(location?.state?.user?.full_name)
     }
   }, [location])
 
@@ -72,7 +68,7 @@ const CreateAnAccount = () => {
   }, [info]);
 
   useEffect(() => {
-    if (LoginFormMethod === "email") {
+    if (loginFormMethod === "email") {
       setAccountId(
         location?.state?.user ? "" : signupEmail?.split("@")[0]?.replaceAll(".", "")
         // + ".near"
@@ -89,7 +85,6 @@ const CreateAnAccount = () => {
 
   // HandleFocus for input
   const HandleFocus = (ClickedInput) => {
-    // console.log('i m focused', ClickedInput)
     setinfo(ClickedInput);
   };
 
@@ -119,7 +114,7 @@ const CreateAnAccount = () => {
   };
 
   const onNameChange = (e) => {
-    setFullname(e?.target?.value);
+    setFullName(e?.target?.value);
   };
 
   const handleSignup = async () => {
@@ -131,7 +126,7 @@ const CreateAnAccount = () => {
 
     // signup body
     const user = {
-      fullName: fullname.trim(),
+      fullName: fullName.trim(),
       walletName: accountId.includes(".near") ? accountId : `${accountId}.near`,
       email: location?.state?.user ? location?.state?.user?.email : signupEmail,
       phone: signupPhone
@@ -147,15 +142,11 @@ const CreateAnAccount = () => {
     setIsloading(true);
 
     // Ajax Request to create user
-    axios
-      .post(`${API_BASE_URL}/user/create`, user)
-      .then((response) => {
+    createUserRequest(user)
+      .then(response => {
         const actionPayload = mapUserSession(response.data);
         if (actionPayload) {
-          dispatch({
-            type: "auth/set_session",
-            payload: actionPayload
-          });
+          dispatch(actionSetSession(actionPayload));
         }
 
         // @ToDo
@@ -163,26 +154,24 @@ const CreateAnAccount = () => {
         localStorage.setItem("user", JSON.stringify(response.data));
 
         // cloudsponge import on signup
-        localStorage.setItem("welcome", true);
-        localStorage.setItem("firstImport", true);
+        localStorage.setItem("welcome", "true");
+        localStorage.setItem("firstImport", "true");
 
         navigate(redirectUrl ? redirectUrl : "/");
       })
-      .catch((error) => {
+      .catch(error => {
+        setIsloading(false);
         if (error.response.data) {
           toast.error(error.response.data.message);
         }
-      })
-      .finally(() => {
-        setIsloading(false);
       });
   };
 
   const isFormValid = () => {
     let returnVal = true;
-    if (fullname === "") {
+    if (fullName === "") {
       returnVal = false;
-    } else if (!isValidFullName(fullname)) {
+    } else if (!isValidFullName(fullName)) {
       returnVal = false;
     } else if (
       accountId === ""
@@ -206,7 +195,7 @@ const CreateAnAccount = () => {
       <AiFillCloseCircle className={styles.cross} onClick={HandleClick} />
       <div className={styles.account__wrapper}>
         <span className={styles.createAnAccount}>Create an NFT account</span>
-        {windowstate && (
+        {windowState && (
           <div className={styles.progress}>
             <ProgressBar now={(2 / 3) * 100} />
           </div>
@@ -230,7 +219,7 @@ const CreateAnAccount = () => {
             label="FULL NAME"
             variant="outlined"
             placeholder="Ex John Doe"
-            InputValue={fullname}
+            InputValue={fullName}
             type="text"
             HandleInputChange={onNameChange}
             HandleFocus={() => HandleFocus("name")}
@@ -282,19 +271,6 @@ const CreateAnAccount = () => {
             <IoIosArrowForward />
           </span>
         </button>
-        {/* <button onClick={createAccount} className={styles.createAccountButton}>
-          <a
-            href={`https://accounts.google.com/o/oauth2/auth?response_type=code&redirect_uri=${googleRedirectUrl}&scope=https://www.googleapis.com/auth/contacts&client_id=${googleClientId}&access_type=offline&prompt=consent`}
-            className={`${styles.secondary_button}`}
-          >
-            Create an account
-            {
-              <span>
-                <IoIosArrowForward />
-              </span>
-            }
-          </a>
-        </button> */}
 
         <p>
           By creating a NEAR account, you agree to the&nbsp;

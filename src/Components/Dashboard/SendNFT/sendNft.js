@@ -1,7 +1,6 @@
-import axios from "axios";
+import React, { Fragment, useEffect, useState } from "react";
 import { isEmpty } from "lodash";
 import { nanoid } from "nanoid";
-import React, { Fragment, useEffect, useState } from "react";
 import { Modal } from "react-bootstrap";
 import { AiOutlineCheck } from "react-icons/ai";
 import { IoIosArrowForward } from "react-icons/io";
@@ -10,12 +9,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import ContactPopup from "../../../common/components/ContactPopup";
-import { API_BASE_URL } from "../../../Utils/config";
 import { getFileExtension } from "../../../Utils/utils";
 import AppLoader from "../../Generic/AppLoader";
 import { LoaderIconBlue } from "../../Generic/icons";
 import ImportContactsDialog from "../../ImportContactsDialog/ImportContactsDialog";
-import styles from "./sendNft.module.css";
+import styles from "./sendNft.module.scss";
+import { actionAppStateSetDynamic } from "../../../Store/AppState/actions";
+import { actionNFTFetchList } from "../../../Store/NFT/actions";
+import { getNFTListByOwnerId } from "../../../api/nft";
+import { createTransactionRequest } from "../../../api/transactions";
 
 const responsive = {
   superLargeDesktop: {
@@ -43,24 +45,16 @@ const checkAllContacts = (data) =>
     email: item.primary_email
   }));
 
-// const findIfChecked = (email, array) => {
-//   const foundItem = array.find((item) => item.email === email);
-//   if (foundItem) return foundItem.checked;
-//   return false;
-// };
-
 const getValidUnsendNFTs = (sentIds, nfts) => nfts?.filter(
   item => !sentIds.includes(item?.nft_id)
 )
 
 function SendNft() {
   const navigate = useNavigate();
-  const { user } = useSelector((state) => state.authReducer);
   const dispatch = useDispatch();
-  const { nft } = useSelector((state) => state.authReducer);
-  const giftNFT__contactData = useSelector(
-    (state) => state.giftNFT__contactData
-  );
+  const user = useSelector(state => state.authReducer.user);
+  const nft = useSelector(state => state.authReducer.nft);
+  const googleContactData = useSelector(state => state.appState.googleContactData);
 
   const [filteredData, setFilteredData] = useState([]);
 
@@ -68,73 +62,58 @@ function SendNft() {
   const [openGift, setOpenGift] = useState(false);
   const [selected, setSelected] = useState(nft || "");
 
-  // const [sendGiftEmail, setSendGiftEmail] = useState("");
   const [isLoading, setIsloading] = useState(false);
 
-  const sendnft__popup = useSelector((state) => state.sendnft__popup);
-  const { nfts } = useSelector((state) => state.home__allnft);
+  const sendNFTPopupIsOpen = useSelector((state) => state.appState.sendNFTPopupIsOpen);
+  const nftList = useSelector((state) => state.nft.nftList);
+  const [importContactDialog, setimportContactDialog] = useState(false);
+  const [displayNfts, setDisplayNfts] = useState(nftList);
+  const firstImport = localStorage.getItem("firstImport");
 
   // get all the unique NFT id that is being send to someone.
   const allClaimedNftIds = useSelector(
-    (state) => [...new Set(state.transactionsReducer.allTransactions
+    (state) => [...new Set(state.transactions.allTransactions
       .filter(item => item.type !== 'unclaimed')
       .map(item => item.transaction_item_id))]
   );
-  const [importContactDialog, setimportContactDialog] = useState(false);
-  const [displayNfts, setDisplayNfts] = useState(getValidUnsendNFTs(allClaimedNftIds, nfts));
-  const firstImport = localStorage.getItem("firstImport");
+
   const closeSendNft = () => {
-    dispatch({ type: "sendnft__close" });
+    dispatch(actionAppStateSetDynamic("sendNFTPopupIsOpen", false));
     setOpenPreview(false);
   };
-  const [checkedState, setCheckedState] = useState(
-    checkAllContacts(giftNFT__contactData || [])
+  const [, setCheckedState] = useState(
+    checkAllContacts(googleContactData)
   );
-
-  // for checked and unchecked items
-  // const HandleClick = (email) => {
-  //   const updatedCheckedState = checkedState.map((item) =>
-  //     item.email === email
-  //       ? { ...item, checked: !item.checked }
-  //       : { ...item, checked: item.checked }
-  //   );
-  //   setCheckedState(updatedCheckedState);
-  // };
 
   useEffect(() => {
     setSelected(nft);
   }, [nft]);
 
-  useEffect(() => 0, [checkedState]);
-
-  const closegiftNft = () => {
-    if (isEmpty(nfts)) {
+  const closeGiftNft = () => {
+    if (isEmpty(nftList)) {
       setOpenGift(false);
-      dispatch({ type: "createnft__open" });
+      dispatch(actionAppStateSetDynamic("createNFTPopupIsOpen", true));
     } else {
       setOpenGift(false);
     }
   };
   useEffect(() => {
-    setDisplayNfts(getValidUnsendNFTs(allClaimedNftIds, nfts.reverse()));
-  }, [nfts]);
-  useEffect(() => {
-    if (giftNFT__contactData) {
-      setFilteredData(giftNFT__contactData);
-    } else {
-      // console.log("empty dataaa.................");
-    }
-  }, [giftNFT__contactData]);
+    setDisplayNfts(getValidUnsendNFTs(allClaimedNftIds, nftList.reverse()));
+  }, [nftList]);
 
-  // fetch all the nfts of the user - in future use pagination
+  useEffect(() => {
+    if (googleContactData.length) {
+      setFilteredData(googleContactData);
+    }
+  }, [googleContactData]);
+
+  // fetch all the nftList of the user - in future use pagination
   useEffect(() => {
     setIsloading(true);
 
-    axios
-      .get(`${API_BASE_URL}/nfts/list?owner_id=${user?.user_id}`)
-      .then((response) => {
-        const tempNfts = response.data?.data;
-        dispatch({ type: "update_nfts", payload: tempNfts });
+    getNFTListByOwnerId(user?.user_id)
+      .then(response => {
+        dispatch(actionNFTFetchList(Array.isArray(response.data?.data) ? response.data?.data : []));
       })
       .catch((error) => {
         if (error?.response?.data) {
@@ -148,21 +127,21 @@ function SendNft() {
 
   useEffect(() => {
     if (nft) {
-      const displayNFTsArray = [...nfts];
-      const index = nfts.findIndex(x => x.nft_id === nft.nftid);
+      const displayNFTsArray = [...nftList];
+      const index = nftList.findIndex(x => x.nft_id === nft.nftid);
 
       if (index > 0) {
         if (nft?.id !== selected?.id) setSelected(displayNFTsArray[index]);
         displayNFTsArray.splice(index, 1);
-        displayNFTsArray.unshift(nfts[index]);
+        displayNFTsArray.unshift(nftList[index]);
       }
       // console.log(nft, selected);
       setDisplayNfts(getValidUnsendNFTs(allClaimedNftIds, displayNFTsArray))
     }
-  }, [nft, nfts]);
+  }, [nft, nftList]);
 
   const handleNftGift = () => {
-    dispatch({ type: "sendnft__close" });
+    dispatch(actionAppStateSetDynamic("sendNFTPopupIsOpen", false));
 
     setOpenPreview(false);
     if (localStorage.getItem("contactImport") === "true") {
@@ -171,7 +150,8 @@ function SendNft() {
       setOpenGift(true);
     }
   };
-  const handleNftPreview = async (selectedContacts) => {
+
+  const handleNftPreview = selectedContacts => {
     if (selectedContacts && selectedContacts.length > 0) {
       setFilteredData(selectedContacts.map((contact) => contact.contact_id));
       const nftDetail = {
@@ -185,14 +165,13 @@ function SendNft() {
       };
       setIsloading(true)
 
-      axios
-        .post(`${API_BASE_URL}/transactions`, nftDetail)
-        .then((response) => {
+      createTransactionRequest(nftDetail)
+        .then(response => {
           // console.log(response.data);
           toast.success(response.data.message);
 
-          dispatch({ type: "sendnft__close" });
-          dispatch({ type: "close_dialog_gift_nft" });
+          dispatch(actionAppStateSetDynamic("sendNFTPopupIsOpen", false));
+          dispatch(actionAppStateSetDynamic("giftNFTPopupIsOpen", false));
           setOpenGift(false);
           setOpenPreview(true);
         })
@@ -210,7 +189,7 @@ function SendNft() {
   };
 
   const openInitialSendNft = () => {
-    dispatch({ type: "sendnft__open" });
+    dispatch(actionAppStateSetDynamic("sendNFTPopupIsOpen", true));
     setOpenGift(false);
     setOpenPreview(false);
   };
@@ -225,7 +204,7 @@ function SendNft() {
   };
 
   useEffect(() => {
-    dispatch({ type: "close_dialog_gift_nft" });
+    dispatch(actionAppStateSetDynamic("giftNFTPopupIsOpen", false));
   }, []);
 
   const HandleDialogClose = () => {
@@ -255,6 +234,15 @@ function SendNft() {
     }
   };
 
+  const handleClickContactPopupButton = (selectedContacts) => {
+    if (firstImport) {
+      dispatch(actionAppStateSetDynamic("createNFTPopupIsOpen", true));
+      setOpenGift(false);
+    } else {
+      handleNftPreview(selectedContacts);
+    }
+  };
+
   // const HandleDialogOpen = () => {
   //   setimportContactDialog(true);
   // };
@@ -270,7 +258,6 @@ function SendNft() {
     }
   }, []);
 
-  // console.log(nfts.sort(function(x,y)
   // { return x.nft_id === selected.nft_id ?
   // -1 : y.nft_id === selected.nft_id ? 1 : 0; }))
   return (
@@ -278,7 +265,7 @@ function SendNft() {
       {/* NFT Selection Modal */}
       <Modal
         className={`${styles.initial__nft__modal} initial__modal`}
-        show={sendnft__popup}
+        show={sendNFTPopupIsOpen}
         onHide={closeSendNft}
         backdrop="static"
         // size="lg"
@@ -356,8 +343,8 @@ function SendNft() {
                             </div>
                           </div>
 
-                          {selected?.nft_id === data?.nft_id
-                            || selected?.nftid === data?.nft_id ? (
+                          {selected?.nft_id === data?.nft_id || selected?.nftid === data?.nft_id
+                            ? (
                               <div
                                 className={
                                   styles.selected__mynft__box__description__wrapper
@@ -365,11 +352,7 @@ function SendNft() {
                               >
                                 <div className={styles.mynft__box__description}>
                                   <h2>{data?.title}</h2>
-                                  <span
-                                    className={
-                                      styles.mynft__box__description__text
-                                    }
-                                  >
+                                  <span className={styles.mynft__box__description__text}>
                                     {data?.nft_id}
                                   </span>
                                 </div>
@@ -377,7 +360,8 @@ function SendNft() {
                                   <AiOutlineCheck />
                                 </div>
                               </div>
-                            ) : (
+                            )
+                            : (
                               <div
                                 className={
                                   styles.mynft__box__description__wrapper
@@ -414,8 +398,8 @@ function SendNft() {
       </Modal>
 
       {/* NFT Sender Modal */}
-      {/* {openGift && <GiftAnNft dashboard={true} closebutton={true}
-      sendGiftButton={handleNftPreview}/>} */}
+      {/* {openGift && <GiftAnNft dashboard={true} closeButton={true}
+      sendGiftButton={handleNftPreview} />} */}
 
       <ImportContactsDialog
         onImport={importContact}
@@ -429,14 +413,11 @@ function SendNft() {
         <ContactPopup
           displayImportContact={false}
           show={openGift}
-          onClose={closegiftNft}
+          onClose={closeGiftNft}
           onBack={openInitialSendNft}
           title="Send NFT"
           btnText={firstImport ? "Gift NFT" : "Send Gift"}
-          handleBtnClick={(selectedContacts) =>
-            firstImport
-              ? (dispatch({ type: "createnft__open" }), setOpenGift(false))
-              : handleNftPreview(selectedContacts)}
+          handleBtnClick={handleClickContactPopupButton}
         />
       )}
 
@@ -495,4 +476,5 @@ function SendNft() {
     </>
   );
 }
+
 export default SendNft;

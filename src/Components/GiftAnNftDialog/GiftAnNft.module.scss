@@ -59,10 +59,7 @@
     }
   }
   .icon {
-    margin-left: auto;
-    margin-right: 13px;
-    margin-bottom: 20px;
-    margin-top: 10px;
+    margin: 10px 13px 20px auto;
     cursor: pointer;
   }
   .checked {
@@ -79,7 +76,7 @@
 .primary_button {
   @include defaultButton($primary__color);
   color: white;
-  margin: 0px 5px;
+  margin: 0 5px;
 }
 
 .footer {
@@ -89,9 +86,9 @@
   flex-direction: column;
   p {
     color: $primary__color;
-    padding: 5px 0px;
+    padding: 5px 0;
     cursor: pointer;
-    margin-bottom: 0px;
+    margin-bottom: 0;
   }
 }
 

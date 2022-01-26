@@ -14,7 +14,7 @@
       h2 {
         font-weight: 600;
         font-size: 21px;
-        margin-bottom: 0px;
+        margin-bottom: 0;
       }
     }
   }
@@ -23,7 +23,7 @@
     h3 {
       font-weight: bold;
       font-size: 16.8px;
-      margin-bottom: 0px;
+      margin-bottom: 0;
       padding-bottom: 10px;
       text-align: center;
     }
@@ -49,7 +49,7 @@
         .searchIcon {
           color: #818c99;
           display: flex;
-          padding: 0px 16px;
+          padding: 0 16px;
           z-index: 20;
           position: absolute;
           pointer-events: none;
@@ -68,7 +68,7 @@
         .send_nft__plus___icon {
           color: #2f80ed;
           display: flex;
-          padding: 0px 16px;
+          padding: 0 16px;
           z-index: 20;
           position: absolute;
           justify-content: center;
@@ -85,13 +85,11 @@
           align-items: center;
           width: 100%;
           input {
-            padding: 10px;
             z-index: 1;
             max-width: 400px;
             background: #ebedf0;
             transition: width 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
-            padding-left: calc(1em + 32px);
-            padding-right: calc(1em + 32px);
+            padding: 10px calc(1em + 32px);
             border-radius: 12px;
             border: none;
             min-width: 100%;
@@ -115,9 +113,6 @@
       }
     }
     .data__wrapper {
-      // margin: 15px auto;
-      // overflow: scroll;
-      // overflow-x: hidden;
 
       .data_row_container {
         display: flex;
@@ -174,10 +169,7 @@
           }
         }
         .icon {
-          margin-left: auto;
-          margin-right: 13px;
-          margin-bottom: 20px;
-          margin-top: 10px;
+          margin: 10px 13px 20px auto;
           cursor: pointer;
         }
         .checked {
@@ -214,7 +206,7 @@
   .next__btn__wrapper {
     display: flex;
     justify-content: center;
-    margin: 15px 0px;
+    margin: 15px 0;
     .next__btn {
       @include defaultButton($primary__color);
     }
@@ -222,7 +214,7 @@
   .multiple__btn__wrapper {
     display: flex;
     justify-content: space-around;
-    margin: 15px 0px;
+    margin: 15px 0;
     .next__btn {
       @include defaultButton($primary__color);
     }
@@ -230,7 +222,7 @@
       @include defaultButton($primary__color);
       span {
         padding-right: 10px;
-        padding-left: 0px !important;
+        padding-left: 0 !important;
       }
     }
   }
@@ -245,11 +237,11 @@
 
 .mynft__box__wrapper {
   .mynft__box {
-    box-shadow: 0px 4.8px 4.8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4.8px 4.8px rgba(0, 0, 0, 0.1);
     border-radius: 12px;
     background-color: #fff;
     cursor: pointer;
-    margin: 0px 10px 10px 10px;
+    margin: 0 10px 10px 10px;
     .mynft__box__image__wrapper {
       position: relative;
       .mynft__box__image {
@@ -270,7 +262,7 @@
           font-size: 16.8px;
           font-weight: 600;
           padding: 6px 10px;
-          margin-bottom: 0px;
+          margin-bottom: 0;
         }
       }
     }
@@ -278,14 +270,14 @@
       padding: 25px 20px;
       h2 {
         font-size: 19.2px;
-        margin-bottom: 0px;
+        margin-bottom: 0;
         padding-bottom: 10px;
         word-break: break-word;
       }
       p {
         font-size: 16.8px;
         color: #808080;
-        margin-bottom: 0px;
+        margin-bottom: 0;
       }
     }
     .selected__mynft__box__description__wrapper {
@@ -297,14 +289,14 @@
         max-width: 80%;
         h2 {
           font-size: 19.2px;
-          margin-bottom: 0px;
+          margin-bottom: 0;
           padding-bottom: 10px;
           word-break: break-word;
         }
         span {
           font-size: 16.8px;
           color: #808080;
-          margin-bottom: 0px;
+          margin-bottom: 0;
           word-break: break-word;
         }
       }
@@ -328,7 +320,7 @@
   }
 }
 
-@media only screen and (max-width: "767px") {
+@media only screen and (max-width: 767px) {
   .search__wrapper {
     display: flex;
     flex-direction: column;
@@ -362,7 +354,7 @@
   }
   .initial__nft__modal {
     .modal__body__wrapper {
-      margin: 0px auto;
+      margin: 0 auto;
     }
   }
   .textContainer {
@@ -379,7 +371,7 @@
 //   .sendNft_mynft__box__description__text__3VK3J {
 //     font-size: 16.8px;
 //     color: #808080;
-//     margin-bottom: 0px;
+//     margin-bottom: 0;
 //     word-wrap: break-word;
 //   }
 // }
@@ -398,7 +390,7 @@
       h2 {
         font-weight: 600;
         font-size: 21px;
-        margin-bottom: 0px;
+        margin-bottom: 0;
       }
     }
   }
@@ -407,7 +399,7 @@
     h3 {
       font-weight: bold;
       font-size: 16.8px;
-      margin-bottom: 0px;
+      margin-bottom: 0;
       padding-bottom: 10px;
       text-align: center;
     }
@@ -427,7 +419,7 @@
         .searchIcon {
           color: #818c99;
           display: flex;
-          padding: 0px 16px;
+          padding: 0 16px;
           z-index: 20;
           position: absolute;
           pointer-events: none;
@@ -446,7 +438,7 @@
         .send_nft__plus___icon {
           color: #2f80ed;
           display: flex;
-          padding: 0px 16px;
+          padding: 0 16px;
           z-index: 20;
           position: absolute;
           justify-content: center;
@@ -463,13 +455,11 @@
           align-items: center;
           width: 100%;
           input {
-            padding: 10px;
             z-index: 1;
             max-width: 400px;
             background: #ebedf0;
             transition: width 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
-            padding-left: calc(1em + 32px);
-            padding-right: calc(1em + 32px);
+            padding: 10px calc(1em + 32px);
             border-radius: 12px;
             border: none;
             min-width: 100%;
@@ -539,10 +529,7 @@
           }
         }
         .icon {
-          margin-left: auto;
-          margin-right: 13px;
-          margin-bottom: 20px;
-          margin-top: 10px;
+          margin: 10px 13px 20px auto;
           cursor: pointer;
         }
         .checked {
@@ -579,7 +566,7 @@
   .next__btn__wrapper {
     display: flex;
     justify-content: center;
-    margin: 15px 0px;
+    margin: 15px 0;
     .next__btn {
       @include defaultButton($primary__color);
     }
@@ -587,7 +574,7 @@
   .multiple__btn__wrapper {
     display: flex;
     justify-content: space-around;
-    margin: 15px 0px;
+    margin: 15px 0;
     .next__btn {
       @include defaultButton($primary__color);
     }
@@ -595,7 +582,7 @@
       @include defaultButton($primary__color);
       span {
         padding-right: 10px;
-        padding-left: 0px !important;
+        padding-left: 0 !important;
       }
     }
   }
@@ -610,11 +597,11 @@
 
 .mynft__box__wrapper {
   .mynft__box {
-    box-shadow: 0px 4.8px 4.8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4.8px 4.8px rgba(0, 0, 0, 0.1);
     border-radius: 12px;
     background-color: #fff;
     cursor: pointer;
-    margin: 0px 10px 10px 10px;
+    margin: 0 10px 10px 10px;
     .mynft__box__image__wrapper {
       position: relative;
       .mynft__box__image {
@@ -636,7 +623,7 @@
           font-size: 16.8px;
           font-weight: 600;
           padding: 6px 10px;
-          margin-bottom: 0px;
+          margin-bottom: 0;
         }
       }
     }
@@ -644,13 +631,13 @@
       padding: 25px 20px;
       h2 {
         font-size: 19.2px;
-        margin-bottom: 0px;
+        margin-bottom: 0;
         padding-bottom: 10px;
       }
       p {
         font-size: 16.8px;
         color: #808080;
-        margin-bottom: 0px;
+        margin-bottom: 0;
         overflow-wrap: break-word;
       }
     }
@@ -663,13 +650,13 @@
         max-width: 80%;
         h2 {
           font-size: 19.2px;
-          margin-bottom: 0px;
+          margin-bottom: 0;
           padding-bottom: 10px;
         }
         span {
           font-size: 16.8px;
           color: #808080;
-          margin-bottom: 0px;
+          margin-bottom: 0;
           word-wrap: break-word;
         }
       }
@@ -693,7 +680,7 @@
   }
 }
 
-@media only screen and (max-width: "767px") {
+@media only screen and (max-width: 767px) {
   .mynft__box__wrapper {
     .selected__mynft__box__description__wrapper {
       .checked {
@@ -705,7 +692,7 @@
   }
   .initial__nft__modal {
     .modal__body__wrapper {
-      margin: 0px auto;
+      margin: 0 auto;
     }
   }
   .textContainer {
