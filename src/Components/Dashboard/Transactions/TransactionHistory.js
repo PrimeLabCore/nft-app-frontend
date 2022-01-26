@@ -1,7 +1,7 @@
-import { sortBy } from 'lodash';
 import React, {
   memo, useState, useEffect
 } from "react";
+import { sortBy } from 'lodash';
 import { useDispatch, useSelector } from "react-redux";
 import { nanoid } from "nanoid";
 import { BsArrowUpRight } from "react-icons/bs";
@@ -65,6 +65,7 @@ function TransactionHistory() {
       : tabs === "received"
         ? !data.sender
         : data));
+
   return (
     <div className={styles.transaction__wrapper}>
       <div className={styles.transaction__header}>

@@ -97,7 +97,9 @@ export default function Transaction({ data, user }) {
               target="_blank"
               className={styles.transaction__name}
             >
-              {data.counterparty?.[0]?.email}
+              {data.counterparty?.[0]?.email
+                ? data.counterparty?.[0]?.email
+                : data.counterparty?.[0]?.phone}
             </a>
           </h6>
         );

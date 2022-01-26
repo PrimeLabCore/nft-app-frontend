@@ -1,12 +1,16 @@
 import Dialog from "@material-ui/core/Dialog";
 import Slide from "@material-ui/core/Slide";
+import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import React, { useEffect } from "react";
 import { FcGoogle } from "react-icons/fc";
-import { IoLogoApple, IoLogoMicrosoft } from "react-icons/io5";
+// import { IoLogoApple, IoLogoMicrosoft } from "react-icons/io5";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { toast } from "react-toastify";
+import CancelRoundedIcon from "@material-ui/icons/CancelRounded";
+import { IconButton } from '@mui/material';
+import { blur, removeBlur } from '../../Utils/utils';
 import { API_BASE_URL } from "../../Utils/config";
 
 const Transition = React.forwardRef((props, ref) => <Slide direction="up" ref={ref} {...props} />);
@@ -53,10 +57,16 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ImportContactsDialog = ({
-  status, callback, onImport, setStatus
+  status, callback, onImport, setStatus, setImportContactDialog, setShowSignoutModal
 }) => {
   const classes = useStyles();
   const { user, contacts } = useSelector((state) => state.authReducer);
+
+  const handleDialogueClose = () => {
+    if (setImportContactDialog) setImportContactDialog(false);
+    if (setStatus) setStatus(false);
+    if (setShowSignoutModal) setShowSignoutModal(true);
+  }
 
   const PostContactToBackend = async (contacts, source) => {
     // add owner infor to contacts
@@ -75,6 +85,7 @@ const ImportContactsDialog = ({
       .then(() => {
         // disable contact import dialog on login/signup
         localStorage.removeItem("welcome");
+        removeBlur();
       })
       .catch((error) => {
         if (error.response.data) {
@@ -136,7 +147,7 @@ const ImportContactsDialog = ({
 
             // call callback functions
             onImport(contacts);
-            setStatus(false);
+            if (setStatus) setStatus(false);
 
             return false;
           },
@@ -180,6 +191,11 @@ const ImportContactsDialog = ({
     });
   }, [status]);
 
+  useEffect(() => {
+    if (localStorage.getItem("welcome") === "true") {
+      blur("10px");
+    }
+  }, []);
   return (
     <div>
       <div id="cloudsponge-widget-container" />
@@ -195,6 +211,27 @@ const ImportContactsDialog = ({
         className="contactDialogBack"
         onClose={contacts.length > 0 ? callback : null}
       >
+        <div style={{ paddingBottom: "1rem" }}>
+          <IconButton
+            aria-label="close"
+            onClick={() => {
+              handleDialogueClose();
+            }}
+            sx={{
+              position: 'absolute',
+              right: 8,
+              top: 8,
+              color: (theme) => theme.palette.grey[500],
+            }}
+          >
+            <CancelRoundedIcon />
+          </IconButton>
+        </div>
+
+        <Typography variant="h6" className={`text-center mb-3 ${classes.note}`}>
+          Import your contacts to generate & share your free NFT
+        </Typography>
+
         <button
           className={`${classes.mainContainer} cloudsponge-launch`}
           data-cloudsponge-source="gmail"
@@ -203,7 +240,7 @@ const ImportContactsDialog = ({
           <p> Sign in with Google</p>
         </button>
 
-        <button
+        {/* <button
           className={`${classes.mainContainer} cloudsponge-launch`}
           data-cloudsponge-source="icloud"
         >
@@ -217,7 +254,7 @@ const ImportContactsDialog = ({
         >
           <IoLogoMicrosoft className={classes.microsofticon} />
           <p> Connect Microsoft 365 Contacts</p>
-        </button>
+        </button> */}
       </Dialog>
     </div>
   );
