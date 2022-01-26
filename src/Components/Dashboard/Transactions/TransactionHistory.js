@@ -54,6 +54,7 @@ function TransactionHistory() {
       transactions = transactions.filter((item) => item.type === 'unclaimed');
     }
     if (tab === 'received') {
+      console.log(transactions);
       transactions = transactions.filter((item) => item.type === 'transfer_nft');
     }
     setTransactions(transactions);
@@ -65,13 +66,6 @@ function TransactionHistory() {
   const SendNft = () => {
     dispatch({ type: 'sendnft__open' });
   };
-
-  const displayTransaction = transactions
-    .filter((data) => (tab === 'sent'
-      ? !!data.sender
-      : tab === 'received'
-        ? !data.sender
-        : data));
 
   return (
     <div className={styles.transaction__wrapper}>
@@ -111,7 +105,7 @@ function TransactionHistory() {
               Send NFT
             </button>
           ) : (
-            <div style={{ width: '128px' }}></div>
+            <div style={{ width: '128px' }} />
           )}
         </div>
       </div>
@@ -142,10 +136,10 @@ function TransactionHistory() {
           </div>
         </div>
       )}
-      {displayTransaction?.length
+      {transactions?.length
         ? (
           <div className={styles.transaction__list__wrapper}>
-            {displayTransaction.map((data) => (
+            {transactions.map((data) => (
               <Transaction key={nanoid()} data={data} user={user} />
             ))}
           </div>
