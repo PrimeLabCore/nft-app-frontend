@@ -7,8 +7,8 @@ import { IoLogoApple, IoLogoMicrosoft } from "react-icons/io5";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { toast } from "react-toastify";
-import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
-import IconButton from '@mui/material/IconButton';
+import { CancelRoundedIcon } from '@mui/icons-material';
+import { IconButton } from '@mui/material';
 import { blur, removeBlur } from '../../Utils/utils';
 import { API_BASE_URL } from "../../Utils/config";
 
