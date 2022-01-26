@@ -316,7 +316,13 @@ const SignUpWith = () => {
 
   // HandleInputChange for text field component
   const HandleInputChange = (field) => (e) => {
-    setinputFields({ ...inputFields, [field]: e.target.value });
+    if (field === "email") {
+      const { value } = e.target;
+
+      if (value.length <= 64) setinputFields({ ...inputFields, [field]: e.target.value });
+    } else {
+      setinputFields({ ...inputFields, [field]: e.target.value });
+    }
   };
 
   // const handleInputUserName = (e) => {

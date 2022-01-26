@@ -56,7 +56,7 @@ const TextFieldComponent = ({
   InputProps,
   HandelKeyUp,
   HandelKeyPress,
-  autoFocus
+  autoFocus,
 }) => {
   const classes = useStyles();
   return (
