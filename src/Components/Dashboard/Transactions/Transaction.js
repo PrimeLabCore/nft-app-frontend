@@ -28,6 +28,7 @@ export default function Transaction({ data, user }) {
           </h6>
         );
       case 'mine_nft':
+      case 'create_nft_series':
         return (
           <h6>
             <span>{user.wallet_id}</span>
