@@ -54,6 +54,9 @@ const useStyles = makeStyles((theme) => ({
     color: "#dc3e15",
     fontSize: "30px",
   },
+  note: {
+    cursor: "default"
+  }
 }));
 
 const ImportContactsDialog = ({
