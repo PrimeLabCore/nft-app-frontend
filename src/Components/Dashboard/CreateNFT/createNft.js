@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import fileHelper from "../../../Services/fileHelper";
 import { API_BASE_URL } from "../../../Utils/config";
-import { isEmpty, mapNftDetails } from "../../../Utils/utils";
+import { isEmpty, isTextEmpty, mapNftDetails } from "../../../Utils/utils";
 import styles from "./createNft.module.css";
 import LoaderIcon from '../../Generic/AppLoader';
 
@@ -64,6 +64,7 @@ function CreateNft(props) {
   const [details, setDetails] = useState(nftDetailDefaultValue);
 
   const [formValues, setFormValues] = useState([nftDefaultProperties]);
+  const [formValuesError, setFormValuesError] = useState(false);
 
   useEffect(() => 0, [selectedFileType]);
 
@@ -74,22 +75,36 @@ function CreateNft(props) {
   };
 
   const handleChange = (index, clikedInput) => (e) => {
+    if (formValues.length > 1) {
+      if (formValues.every(item => !isTextEmpty(item.attr_value) && !isTextEmpty(item.attr_name))) {
+        setFormValuesError(false)
+      } else if (!formValuesError) {
+        setFormValuesError(true)
+      }
+    }
     formValues[index] = {
       ...formValues[index],
       [`${clikedInput}`]: e.target.value,
     };
+
     setFormValues([...formValues]);
   };
 
   const addFormFields = () => {
-    setFormValues([
-      ...formValues,
-      {
-        attr_name: "",
-        attr_value: "",
-        id: nanoid()
-      },
-    ]);
+    // const lastElement = formValues.slice(-1)[0];
+    if (formValues.every(item => !isTextEmpty(item.attr_value) && !isTextEmpty(item.attr_name))) {
+      setFormValues([
+        ...formValues,
+        {
+          attr_name: "",
+          attr_value: "",
+          id: nanoid()
+        },
+      ]);
+      setFormValuesError(false);
+    } else {
+      setFormValuesError(true);
+    }
   };
 
   // const allNft = () => {
@@ -342,7 +357,7 @@ function CreateNft(props) {
   }
 
   if (loading) return <LoaderIcon />
-
+  console.log(formValuesError)
   return (
     <>
       {/* Initial Modal  */}
@@ -491,8 +506,7 @@ function CreateNft(props) {
                   TITLE
                   <span className="requiredIndicator">*</span>
                 </label>
-                <textarea
-                  rows={1}
+                <input
                   type="text"
                   name="title"
                   data-testid="nft-title"
@@ -520,6 +534,7 @@ function CreateNft(props) {
                   onChange={inputEvent}
                   placeholder="Ex. Redeemable Art"
                   required
+                  style={{ resize: "none" }}
                   maxLength={500}
                   data-testid="nft-description"
                 />
@@ -537,14 +552,15 @@ function CreateNft(props) {
                       value={val.attr_name}
                       placeholder="Tag"
                       maxLength={30}
+                      className={isTextEmpty(val.attr_name) && formValuesError ? "formError" : ""}
                       onChange={handleChange(index, "attr_name")}
                     />
-
                     <input
                       type="text"
                       value={val.attr_value}
                       placeholder="Value"
                       maxLength={30}
+                      className={isTextEmpty(val.attr_value) && formValuesError ? "formError" : ""}
                       onChange={handleChange(index, "attr_value")}
                     />
 

@@ -103,3 +103,5 @@ export const removeBlur = () => {
   const root = document.getElementById("root");
   root.removeAttribute("style");
 }
+
+export const isTextEmpty = (text) => (text === null || text.match(/^ *$/) !== null);
