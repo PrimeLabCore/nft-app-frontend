@@ -33,7 +33,7 @@ function SignoutDialogue({ show, setShowSignoutModal, setImportContactDialogue }
           <Modal.Title>
             <div className={styles.modal__header}>
               <h2>
-                Do you want to signout?
+                Logout & Start Over?
               </h2>
             </div>
           </Modal.Title>
@@ -42,11 +42,11 @@ function SignoutDialogue({ show, setShowSignoutModal, setImportContactDialogue }
       <Modal.Body>
         <div className={styles.btn__wrapper}>
           <button onClick={() => { setImportContactDialogue(true); setShowSignoutModal(false) }} className={`${styles.next__btn} ${styles.cancel__btn}`}>
-            Cancel
+            Stay
           </button>
 
           <button onClick={SignOut} className={`${styles.next__btn} ${styles.confirm__btn}`}>
-            Confirm
+            Logout
           </button>
         </div>
       </Modal.Body>
