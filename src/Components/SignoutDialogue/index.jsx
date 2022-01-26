@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from "react-router-dom";
 import { LOGOUT } from "../../Reducers/ActionTypes";
 import styles from './styles.module.css';
+import { blur } from '../../Utils/utils';
 
 function SignoutDialogue({ show, setShowSignoutModal, setImportContactDialogue }) {
   const navigate = useNavigate();
@@ -12,6 +13,7 @@ function SignoutDialogue({ show, setShowSignoutModal, setImportContactDialogue }
   const SignOut = () => {
     dispatch({ type: LOGOUT });
     localStorage.removeItem("user");
+    blur("0px");
     navigate("/");
   };
 
