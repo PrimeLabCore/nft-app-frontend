@@ -7,9 +7,6 @@ import { IoLogoApple, IoLogoMicrosoft } from "react-icons/io5";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { toast } from "react-toastify";
-import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
-import IconButton from '@mui/material/IconButton';
-import { blur, removeBlur } from '../../Utils/utils';
 import { API_BASE_URL } from "../../Utils/config";
 
 const Transition = React.forwardRef((props, ref) => <Slide direction="up" ref={ref} {...props} />);
@@ -56,16 +53,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ImportContactsDialog = ({
-  status, callback, onImport, setStatus, setImportContactDialog, setShowSignoutModal
+  status, callback, onImport, setStatus
 }) => {
   const classes = useStyles();
   const { user, contacts } = useSelector((state) => state.authReducer);
-
-  const handleDialogueClose = () => {
-    if (setImportContactDialog) setImportContactDialog(false);
-    if (setStatus) setStatus(false);
-    if (setShowSignoutModal) setShowSignoutModal(true);
-  }
 
   const PostContactToBackend = async (contacts, source) => {
     // add owner infor to contacts
@@ -84,7 +75,6 @@ const ImportContactsDialog = ({
       .then(() => {
         // disable contact import dialog on login/signup
         localStorage.removeItem("welcome");
-        removeBlur();
       })
       .catch((error) => {
         if (error.response.data) {
@@ -190,11 +180,6 @@ const ImportContactsDialog = ({
     });
   }, [status]);
 
-  useEffect(() => {
-    if (localStorage.getItem("welcome") === "true") {
-      blur("10px");
-    }
-  }, []);
   return (
     <div>
       <div id="cloudsponge-widget-container" />
@@ -210,23 +195,6 @@ const ImportContactsDialog = ({
         className="contactDialogBack"
         onClose={contacts.length > 0 ? callback : null}
       >
-        <div style={{ paddingBottom: "1rem" }}>
-          <IconButton
-            aria-label="close"
-            onClick={() => {
-              handleDialogueClose();
-            }}
-            sx={{
-              position: 'absolute',
-              right: 8,
-              top: 8,
-              color: (theme) => theme.palette.grey[500],
-            }}
-          >
-            <CancelRoundedIcon />
-          </IconButton>
-        </div>
-
         <button
           className={`${classes.mainContainer} cloudsponge-launch`}
           data-cloudsponge-source="gmail"
