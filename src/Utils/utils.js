@@ -105,3 +105,4 @@ export const removeBlur = () => {
 }
 
 export const isTextEmpty = (text) => (text === null || text.match(/^ *$/) !== null);
+

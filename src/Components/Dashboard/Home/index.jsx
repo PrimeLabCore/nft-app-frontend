@@ -14,14 +14,12 @@ import Transactions from "./RecentTransactions";
 import HomeHeader from "./HomeHeader";
 import ImportContactsDialog from "../../ImportContactsDialog/ImportContactsDialog";
 import ContactPopup from "../../../common/components/ContactPopup";
-import SignoutDialogue from "../../SignoutDialogue";
 
 const Home = () => {
   const dispatch = useDispatch();
   const [importContactDialog, setImportContactDialog] = useState(false);
   const [showContactListPopup, setShowContactListPopup] = useState(false);
   const [allContacts, setAllContacts] = useState([]);
-  const [signoutModal, setShowSignoutModal] = useState(false);
 
   const firstImport = localStorage.getItem("firstImport")
 
@@ -89,18 +87,10 @@ const Home = () => {
         {/* Home Header  */}
         <HomeHeader />
 
-        <SignoutDialogue
-          setImportContactDialogue={setImportContactDialog}
-          show={signoutModal}
-          setShowSignoutModal={setShowSignoutModal}
-        />
-
         <ImportContactsDialog
           onImport={importContact}
           status={importContactDialog}
           callback={contactImportCallback}
-          setImportContactDialog={setImportContactDialog}
-          setShowSignoutModal={setShowSignoutModal}
           setStatus={setImportContactDialog}
         />
 
