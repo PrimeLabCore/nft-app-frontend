@@ -114,15 +114,24 @@
 }
 
 .comingSoonBtn {
-  background-color: #bdbdbd;
+  margin: 15px 5px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   color: #fff;
+  background-color: #bdbdbd;
   padding: 10px 20px;
   border-radius: 10px;
   font-size: 17px;
   cursor: pointer;
   border: none;
-  margin: 0 5px;
+}
+
+
+
+.heading {
+  font-size: 21px;
+  display: inline-block;
+  margin: 25px auto 15px;
+  font-weight: 600;
 }
