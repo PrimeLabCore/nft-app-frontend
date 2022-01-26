@@ -169,6 +169,12 @@ const ImportContactsDialog = ({
                 : "Google";
             callback(!success, source_title);
           },
+          afterClosing() {
+            const all = document.getElementsByClassName("contactDialogBack");
+            for (let i = 0; i < all.length; i++) {
+              all[i].style.visibility = "hidden";
+            }
+          }
         });
       }
     });
