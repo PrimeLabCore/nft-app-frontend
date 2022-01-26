@@ -74,6 +74,14 @@ function TransactionHistory() {
       : tabs === "received"
         ? !data.sender
         : data));
+
+  const getReveiverIdToShow = (contact) => {
+    let returnVal = "";
+    if (contact && contact[0]) {
+      returnVal = contact[0].email ? contact[0].email : contact[0].phone
+    }
+    return returnVal;
+  }
   return (
     <div className={styles.transaction__wrapper}>
       <div className={styles.transaction__header}>
@@ -182,7 +190,7 @@ function TransactionHistory() {
                             //   rel="noreferrer"
                       className={styles.transaction__name}
                     >
-                      {data.counterparty?.[0]?.email}
+                      { getReveiverIdToShow(data.counterparty) }
                     </span>
                   </h6>
                 </div>

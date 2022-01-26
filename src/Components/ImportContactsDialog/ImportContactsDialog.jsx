@@ -1,9 +1,10 @@
 import Dialog from "@material-ui/core/Dialog";
 import Slide from "@material-ui/core/Slide";
+import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import React, { useEffect } from "react";
 import { FcGoogle } from "react-icons/fc";
-import { IoLogoApple, IoLogoMicrosoft } from "react-icons/io5";
+// import { IoLogoApple, IoLogoMicrosoft } from "react-icons/io5";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -146,7 +147,7 @@ const ImportContactsDialog = ({
 
             // call callback functions
             onImport(contacts);
-            setStatus(false);
+            if (setStatus) setStatus(false);
 
             return false;
           },
@@ -227,6 +228,10 @@ const ImportContactsDialog = ({
           </IconButton>
         </div>
 
+        <Typography variant="h6" className={`text-center mb-3 ${classes.note}`}>
+          Import your contacts to generate & share your free NFT
+        </Typography>
+
         <button
           className={`${classes.mainContainer} cloudsponge-launch`}
           data-cloudsponge-source="gmail"
@@ -235,7 +240,7 @@ const ImportContactsDialog = ({
           <p> Sign in with Google</p>
         </button>
 
-        <button
+        {/* <button
           className={`${classes.mainContainer} cloudsponge-launch`}
           data-cloudsponge-source="icloud"
         >
@@ -249,7 +254,7 @@ const ImportContactsDialog = ({
         >
           <IoLogoMicrosoft className={classes.microsofticon} />
           <p> Connect Microsoft 365 Contacts</p>
-        </button>
+        </button> */}
       </Dialog>
     </div>
   );
