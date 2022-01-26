@@ -91,6 +91,7 @@ const Home = () => {
           onImport={importContact}
           status={importContactDialog}
           callback={contactImportCallback}
+          setImportContactDialog={setImportContactDialog}
           setStatus={setImportContactDialog}
         />
 

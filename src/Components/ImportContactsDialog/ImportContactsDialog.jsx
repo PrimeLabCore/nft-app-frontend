@@ -7,6 +7,8 @@ import { IoLogoApple, IoLogoMicrosoft } from "react-icons/io5";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { toast } from "react-toastify";
+import IconButton from '@mui/material/IconButton';
+import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
 import { API_BASE_URL } from "../../Utils/config";
 
 const Transition = React.forwardRef((props, ref) => <Slide direction="up" ref={ref} {...props} />);
@@ -53,10 +55,14 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ImportContactsDialog = ({
-  status, callback, onImport, setStatus
+  status, callback, onImport, setStatus, setImportContactDialog
 }) => {
   const classes = useStyles();
   const { user, contacts } = useSelector((state) => state.authReducer);
+
+  const handleDialogueClose = () => {
+    setImportContactDialog(false);
+  }
 
   const PostContactToBackend = async (contacts, source) => {
     // add owner infor to contacts
@@ -195,6 +201,19 @@ const ImportContactsDialog = ({
         className="contactDialogBack"
         onClose={contacts.length > 0 ? callback : null}
       >
+        <IconButton
+          aria-label="close"
+          onClick={handleDialogueClose}
+          sx={{
+            position: 'absolute',
+            right: 8,
+            top: 8,
+            color: (theme) => theme.palette.grey[500],
+          }}
+        >
+          <CancelRoundedIcon />
+        </IconButton>
+
         <button
           className={`${classes.mainContainer} cloudsponge-launch`}
           data-cloudsponge-source="gmail"
