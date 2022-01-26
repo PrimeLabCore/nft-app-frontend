@@ -1,13 +1,12 @@
+import { sortBy } from 'lodash';
 import React, {
-  memo, Fragment, useState, useEffect
+  memo, useState, useEffect
 } from "react";
-// import {Link} from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux";
 import { nanoid } from "nanoid";
-import { BsArrowUpRight, BsArrowDownLeft } from "react-icons/bs";
+import { BsArrowUpRight } from "react-icons/bs";
 import axios from "axios";
-import moment from "moment";
-import { useNavigate } from "react-router-dom";
+import Transaction from './Transaction';
 import styles from "./transactions.module.css";
 import { API_BASE_URL } from "../../../Utils/config";
 
@@ -17,7 +16,6 @@ function TransactionHistory() {
   const [windowstate, setWindow] = useState(window.innerWidth < 767);
   const [transactions, setTransactions] = useState([]);
   const { allTransactions } = useSelector((state) => state.transactionsReducer);
-  const navigate = useNavigate();
   const { user } = useSelector((state) => state.authReducer);
 
   useEffect(() => {
@@ -40,7 +38,6 @@ function TransactionHistory() {
       const fetchedTransactions = response.data?.data;
 
       if (fetchedTransactions) {
-        setTransactions(fetchedTransactions);
         dispatch({
           type: "fetch_transactions",
           payload: fetchedTransactions,
@@ -52,7 +49,7 @@ function TransactionHistory() {
   }, [user]);
 
   useEffect(() => {
-    setTransactions(allTransactions);
+    setTransactions(sortBy(allTransactions, (item) => item.updated).reverse());
   }, [allTransactions]);
 
   const handleTabClick = (e) => {
@@ -60,12 +57,6 @@ function TransactionHistory() {
   };
   const SendNft = () => {
     dispatch({ type: "sendnft__open" });
-  };
-
-  const openClaim = (data) => {
-    // navigate("/nft/claim");
-    dispatch({ type: "nft__detail", payload: data });
-    navigate("/nft/detail/claim");
   };
 
   const displayTransaction = transactions
@@ -146,58 +137,7 @@ function TransactionHistory() {
       {displayTransaction?.length ? (
         <div className={styles.transaction__list__wrapper}>
           {displayTransaction.map((data) => (
-            <Fragment key={nanoid()}>
-              <div
-                className={styles.transaction__list}
-                style={{
-                  cursor: data.sender ? "pointer" : null,
-                }}
-                onClick={() => !data.sender && openClaim(data)}
-              >
-                <div className={styles.transaction__action}>
-                  <div className={styles.icon__wrapper}>
-                    {data.sender ? (
-                      <BsArrowUpRight />
-                    ) : (
-                      <BsArrowDownLeft />
-                    )}
-                  </div>
-                  <h6>
-                    <span>{user.wallet_id}</span>
-                    {' '}
-                    <br />
-                    {data.sender ? "Sent to" : "Received from"}
-                    {" "}
-                    {/* <a
-                          href="https://explorer.near.org/"
-                          target="_blank"
-                          rel="noreferrer"
-                          className={styles.transaction__name}
-                        >
-                          {data.receiver.email}
-                        </a> */}
-                    <span
-                            //   href="https://explorer.near.org/"
-                            //   target="_blank"
-                            //   rel="noreferrer"
-                      className={styles.transaction__name}
-                    >
-                      {data.counterparty?.[0]?.email}
-                    </span>
-                  </h6>
-                </div>
-                <div className={styles.transaction__time}>
-                  {/* <p>{data.time}</p> */}
-                  <p>
-                    {moment
-                      .utc(data.created)
-                      .local()
-                      .startOf("seconds")
-                      .fromNow()}
-                  </p>
-                </div>
-              </div>
-            </Fragment>
+            <Transaction key={nanoid()} data={data} user={user} />
           ))}
         </div>
       )

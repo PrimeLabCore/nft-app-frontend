@@ -726,6 +726,7 @@
   font-weight: normal;
   color: #2f80ed;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .transaction__wrapper .transaction__list__wrapper .transaction__list .transaction__time p {
