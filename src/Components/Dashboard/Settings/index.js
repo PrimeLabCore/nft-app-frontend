@@ -16,13 +16,13 @@ import CustomPhoneInput from "../../../common/components/CustomPhoneInput/Custom
 import { API_BASE_URL } from "../../../Utils/config";
 import AppLoader from "../../Generic/AppLoader";
 import { isValidFullName } from "../../../Utils/utils";
-import { LOGOUT } from "../../../Reducers/ActionTypes";
+import { LOGOUT, SET_SESSION } from "../../../Reducers/ActionTypes";
 
 const labels = {
   email: "Email Address",
   phone: "Phone Number",
   full_name: "Full Name",
-}
+};
 
 function Settings() {
   const navigate = useNavigate();
@@ -30,20 +30,20 @@ function Settings() {
   const [connectedModal, setConnectedModal] = useState(false);
   const [changeInfo, setChangeInfo] = useState(false);
   const [details, setDetails] = useState("");
-  const [checked, setChecked] = useState(0);
+  // const [checked, setChecked] = useState(0);
   // const [enable2fa, setEnable2fa] = useState(false);
   const [info, setinfo] = useState("");
   const { user } = useSelector((state) => state.authReducer);
   const [isLoading, setIsloading] = useState(false);
 
   const [inputFields, setinputFields] = useState({
-    email: user.email,
-    phone: user.phone,
-    full_name: user.full_name,
+    email: user?.email,
+    phone: user?.phone,
+    full_name: user?.full_name,
   });
 
   useEffect(() => 0, [info]);
-
+  const allWallets = JSON.parse(localStorage.getItem("allWallets") || []);
   const closeChangeInfo = () => {
     setinputFields({ ...inputFields, [details]: details !== 'phone' ? user.email : user.phone })
     setChangeInfo(false);
@@ -53,6 +53,9 @@ function Settings() {
     setDetails(infovalue);
   };
 
+  // useEffect(() => {
+  //   console.log(user);
+  // }, [user]);
   const validateEmail = (email) => String(email)
     .toLowerCase()
     .match(
@@ -177,21 +180,34 @@ function Settings() {
       state: { user }
     });
   };
-  const check = (i) => {
-    if (checked !== i) {
-      setChecked(i);
-      setConnectedModal(false);
-    }
+  const check = (data) => {
+    localStorage.setItem("user", JSON.stringify(data));
+    setConnectedModal(false);
+    dispatch({
+      type: SET_SESSION,
+      payload: { user: data },
+    });
+    navigate("/");
   };
 
-  const SignOut = () => {
+  const SignOutAll = () => {
     dispatch({ type: LOGOUT });
     localStorage.removeItem("user");
     localStorage.removeItem("welcome")
     localStorage.removeItem("firstImport")
+    localStorage.removeItem("allWallets")
     navigate("/");
   };
-
+  const SignOut = () => {
+    const wallets = [...allWallets];
+    const index = allWallets.findIndex(wallet => wallet?.user_info?.user_id === user?.user_id);
+    if (index > -1) {
+      wallets.splice(index, 1);
+      localStorage.setItem("allWallets", JSON.stringify(wallets));
+      localStorage.setItem("user", JSON.stringify(wallets[0]));
+      navigate("/");
+    }
+  };
   const HandleInputChange = (field) => e => {
     if (details === "email" && e.target.value.length > 64) {
       return false;
@@ -282,18 +298,45 @@ function Settings() {
                           <IoIosArrowForward />
                         </button>
                       </div>
-
+                      {allWallets.length > 1 && (
                       <div
                         className={styles.settings__acc__content}
                         onClick={() => SignOut()}
                       >
                         <div className={styles.personal__settings}>
-                          <p>Sign Out</p>
+                          <p>
+                            Sign Out
+                            <b>
+                              {" "}
+                              {user?.full_name}
+                            </b>
+                          </p>
                         </div>
                         <button>
                           <IoIosLogOut />
                         </button>
                       </div>
+                      )}
+                      <div
+                        className={styles.settings__acc__content}
+                        onClick={() => SignOutAll()}
+                      >
+                        <div className={styles.personal__settings}>
+                          <p>
+                            Sign Out
+                            {allWallets.length > 1 && (
+                            <b>
+                              {" "}
+                              All Accounts
+                            </b>
+                            )}
+                          </p>
+                        </div>
+                        <button>
+                          <IoIosLogOut />
+                        </button>
+                      </div>
+
                     </div>
                   </div>
                 </div>
@@ -325,15 +368,25 @@ function Settings() {
           </Modal.Header>
           <Modal.Body>
             <div className={styles.modal__body__wrapper}>
-              <div className={styles.name__wrapper} onClick={() => check(0)}>
-                {/* <h6>{user?.email?.split("@")[0] + ".near"}</h6> */}
-                <span>{user?.wallet_id}</span>
-                {checked === 0 && (
-                  <div className={styles.checked}>
-                    <AiOutlineCheck />
+              {
+                allWallets.map((wallet) => (
+                  <div
+                    key={wallet?.user_info?.wallet_id}
+                    className={styles.name__wrapper}
+                    onClick={() => check(wallet)}
+                  >
+                    {/* <h6>{user?.email?.split("@")[0] + ".near"}</h6> */}
+                    <span>{wallet?.user_info?.wallet_id}</span>
+                    {wallet?.user_info?.user_id === user?.user_id
+                      ? (
+                        <div className={styles.checked}>
+                          <AiOutlineCheck />
+                        </div>
+                      )
+                      : <div className={styles.unChecked} />}
                   </div>
-                )}
-              </div>
+                ))
+              }
               {/* <div className={styles.name__wrapper} onClick={() => check(1)}>
                 <h6>demo.near</h6>
                 {checked === 1 && (

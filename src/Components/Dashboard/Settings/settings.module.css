@@ -155,7 +155,22 @@
   font-size: 19.2px;
   word-break: break-all;
 }
-
+.connection__modal .modal__body__wrapper .name__wrapper .unChecked {
+  background: #FFFFFF;
+  border-radius: 50%;
+  border:2px solid #b7b7b7;
+  width: 28px;
+  height: 28px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
 .connection__modal .modal__body__wrapper .name__wrapper .checked {
   background: #2f80ed;
   border-radius: 50%;

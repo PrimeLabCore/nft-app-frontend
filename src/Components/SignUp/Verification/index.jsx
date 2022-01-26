@@ -82,7 +82,8 @@ const Verification = () => {
         // @ToDo
         // save user details
         localStorage.setItem("user", JSON.stringify(response.data));
-
+        const allWallets = localStorage.getItem("allWallets") || [];
+        localStorage.setItem("allWallets", JSON.stringify([...allWallets, JSON.stringify(response.data)]));
         navigate(redirectUrl ? redirectUrl : "/");
       })
       .catch((error) => {

@@ -59,7 +59,11 @@ const PrivateRoute = (props) => {
   // @ToDo
   const user = JSON.parse(localStorage.getItem("user"));
   const isAuthenticated = user ? true : false;
-
+  // console.log(user);
+  // dispatch({
+  //   type: "auth/set_session",
+  //   payload: user,
+  // });
   if (isAuthenticated) {
     // save user details in redux state
     dispatch({ type: "login_Successfully", payload: user.user_info });

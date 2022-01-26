@@ -161,6 +161,8 @@ const CreateAnAccount = () => {
         // @ToDo
         // save user details
         localStorage.setItem("user", JSON.stringify(response.data));
+        const allWallets = JSON.parse(localStorage.getItem("allWallets")) || [];
+        localStorage.setItem("allWallets", JSON.stringify([...allWallets, response.data]));
 
         // cloudsponge import on signup
         localStorage.setItem("welcome", true);
