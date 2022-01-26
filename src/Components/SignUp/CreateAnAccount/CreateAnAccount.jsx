@@ -119,7 +119,9 @@ const CreateAnAccount = () => {
   };
 
   const onNameChange = (e) => {
-    setFullname(e?.target?.value);
+    const { value } = e.target;
+
+    if (value.length <= 64) setFullname(value);
   };
 
   const handleSignup = async () => {

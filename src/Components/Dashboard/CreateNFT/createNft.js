@@ -351,9 +351,9 @@ function CreateNft(props) {
         show={createnft__popup}
         onHide={() => {
           dispatch({ type: "createnft__close" });
-          setDetails({ title: "", description: "", category: "Digital Arts" });
           setSelectedFile("");
-          setFormValues([{}]);
+          setDetails(nftDetailDefaultValue);
+          setFormValues([nftDefaultProperties]);
         }}
         centered
         backdrop="static"
@@ -607,9 +607,9 @@ function CreateNft(props) {
         show={nftPreview}
         onHide={() => {
           setNftPreview(false);
-          setDetails({ title: "", description: "", category: "Digital Arts" });
           setSelectedFile("");
-          setFormValues([{}]);
+          setDetails(nftDetailDefaultValue);
+          setFormValues([nftDefaultProperties]);
         }}
         backdrop="static"
         keyboard={false}
