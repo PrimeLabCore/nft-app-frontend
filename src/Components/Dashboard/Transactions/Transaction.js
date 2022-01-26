@@ -60,7 +60,9 @@ export default function Transaction({ data, user }) {
             <span
               className={styles.transaction__name}
             >
-              {data.counterparty[0].email}
+              {data.counterparty?.[0]?.email
+                ? data.counterparty?.[0]?.email
+                : data.counterparty?.[0]?.phone}
             </span>
           </h6>
         );
@@ -81,7 +83,9 @@ export default function Transaction({ data, user }) {
             <span
               className={styles.transaction__name}
             >
-              {data.counterparty[0].email}
+              {data.counterparty?.[0]?.email
+                ? data.counterparty?.[0]?.email
+                : data.counterparty?.[0]?.phone}
             </span>
           </h6>
         );
