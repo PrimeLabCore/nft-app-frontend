@@ -54,7 +54,6 @@ function TransactionHistory() {
       transactions = transactions.filter((item) => item.type === 'unclaimed');
     }
     if (tab === 'received') {
-      console.log(transactions);
       transactions = transactions.filter((item) => item.type === 'transfer_nft');
     }
     setTransactions(transactions);
