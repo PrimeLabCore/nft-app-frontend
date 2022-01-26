@@ -55,7 +55,7 @@ export default function Transaction({ data, user }) {
               {`# ${data.transaction_item_id}`}
             </a>
             <br />
-            {' to account '}
+            {' to '}
             <span
               className={styles.transaction__name}
             >
@@ -76,7 +76,7 @@ export default function Transaction({ data, user }) {
               {`# ${data.transaction_item_id}`}
             </a>
             <br />
-            {' from account '}
+            {' from '}
             <span
               className={styles.transaction__name}
             >
