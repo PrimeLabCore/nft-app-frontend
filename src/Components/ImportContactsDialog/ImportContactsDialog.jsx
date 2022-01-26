@@ -9,7 +9,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
 import IconButton from '@mui/material/IconButton';
-import { blur } from '../../Utils/utils';
+import { blur, removeBlur } from '../../Utils/utils';
 import { API_BASE_URL } from "../../Utils/config";
 
 const Transition = React.forwardRef((props, ref) => <Slide direction="up" ref={ref} {...props} />);
@@ -84,7 +84,7 @@ const ImportContactsDialog = ({
       .then(() => {
         // disable contact import dialog on login/signup
         localStorage.removeItem("welcome");
-        blur("0px");
+        removeBlur();
       })
       .catch((error) => {
         if (error.response.data) {

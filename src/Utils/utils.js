@@ -98,3 +98,8 @@ export const blur = (value) => {
   const root = document.getElementById('root');
   root.style.filter = `blur(${value})`;
 }
+
+export const removeBlur = () => {
+  const root = document.getElementById("root");
+  root.removeAttribute("style");
+}
