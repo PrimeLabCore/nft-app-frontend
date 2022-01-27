@@ -95,14 +95,12 @@ export const getFileExtension = (url) => {
 }
 
 export const blur = (value) => {
-  const root = document.getElementById('root');
+  const root = document.getElementsByTagName('main')[0];
   root.style.filter = `blur(${value})`;
 }
 
 export const removeBlur = () => {
-  const root = document.getElementById("root");
+  const root = document.getElementsByTagName("main")[0];
   root.removeAttribute("style");
 }
-
 export const isTextEmpty = (text) => (text === null || text.match(/^ *$/) !== null);
-

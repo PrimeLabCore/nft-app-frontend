@@ -50,7 +50,16 @@ function ManualContactPopup({
   }, [inputField])
 
   const HandleInputChange = (field) => (e) => {
-    setinputFields({ ...inputFields, [field]: e.target.value });
+    const { value } = e.target;
+    if (field === "first_name") {
+      if (value.length <= 46) setinputFields({ ...inputFields, [field]: value });
+    } else if (field === "last_name") {
+      if (value.length <= 25) setinputFields({ ...inputFields, [field]: value });
+    } else if (field === "email") {
+      if (value.length <= 64) setinputFields({ ...inputFields, [field]: value });
+    } else if (field === 'phone') {
+      setinputFields({ ...inputFields, [field]: value });
+    }
   };
 
   const storeManualContact = (newContact) => {

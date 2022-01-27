@@ -70,6 +70,7 @@ function SendNft() {
 
   // const [sendGiftEmail, setSendGiftEmail] = useState("");
   const [isLoading, setIsloading] = useState(false);
+  const [success, setSuccess] = useState(false);
 
   const sendnft__popup = useSelector((state) => state.sendnft__popup);
   const { nfts } = useSelector((state) => state.home__allnft);
@@ -161,6 +162,25 @@ function SendNft() {
     }
   }, [nft, nfts]);
 
+  useEffect(() => {
+    async function fetchTransactions() {
+      const response = await axios.get(
+        `${API_BASE_URL}/transactions/list/${user?.user_id}`,
+      );
+
+      const fetchedTransactions = response.data?.data;
+
+      if (fetchedTransactions) {
+        dispatch({
+          type: 'fetch_transactions',
+          payload: fetchedTransactions,
+        });
+      }
+    }
+
+    if (success) fetchTransactions();
+  }, [success]);
+
   const handleNftGift = () => {
     dispatch({ type: "sendnft__close" });
 
@@ -195,6 +215,7 @@ function SendNft() {
           dispatch({ type: "close_dialog_gift_nft" });
           setOpenGift(false);
           setOpenPreview(true);
+          setSuccess(true)
         })
         .catch((error) => {
           if (error.response.data) {

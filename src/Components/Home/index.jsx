@@ -36,7 +36,7 @@ const HomePage = (props) => {
           <img src={Logo} className={styles.logo} alt="Brand Logo" />
         </Link>
         <h3 className={styles.leftSideMainText}>
-          The easiest way to Create NFTs and share them others. Start minting
+          The easiest way to Create NFTs and share them with others. Start minting
           NFTs in NEAR&apos;s rapidly expanding ecosystem
         </h3>
         <li className={styles.loginButton}>
@@ -85,7 +85,7 @@ const HomePage = (props) => {
             </div>
 
             <p className={styles.nftMakerAppDesc}>
-              The easiest way to Create NFTs and share them others. Start
+              The easiest way to Create NFTs and share them with others. Start
               minting NFTs in NEAR&apos;s rapidly expanding ecosystem
             </p>
 
@@ -124,7 +124,7 @@ const HomePage = (props) => {
             <h2>About NFT Maker App</h2>
             <div className={styles.pageContent}>
               <p>
-                The easiest way to Create NFTs and share them others. Start
+                The easiest way to Create NFTs and share them with others. Start
                 minting NFTs in NEAR&apos;s rapidly expanding ecosystem
               </p>
               <p>

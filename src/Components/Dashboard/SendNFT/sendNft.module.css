@@ -472,7 +472,8 @@
   font-size: 19.2px;
   margin-bottom: 0px;
   padding-bottom: 10px;
-  word-break: break-word;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .mynft__box__wrapper .mynft__box .mynft__box__description__wrapper p {
@@ -502,7 +503,8 @@
   font-size: 19.2px;
   margin-bottom: 0px;
   padding-bottom: 10px;
-  word-break: break-word;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .mynft__box__wrapper .mynft__box .selected__mynft__box__description__wrapper .mynft__box__description span {
@@ -990,10 +992,14 @@
   background-color: #fff;
   cursor: pointer;
   margin: 0px 10px 10px 10px;
+  height: 300px;
+  overflow: hidden;
 }
 
 .mynft__box__wrapper .mynft__box .mynft__box__image__wrapper {
+  overflow: hidden;
   position: relative;
+  height: 50%;
 }
 
 .mynft__box__wrapper .mynft__box .mynft__box__image__wrapper .mynft__box__image img {
@@ -1027,13 +1033,19 @@
   font-size: 19.2px;
   margin-bottom: 0px;
   padding-bottom: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .mynft__box__wrapper .mynft__box .mynft__box__description__wrapper p {
   font-size: 16.8px;
   color: #808080;
   margin-bottom: 0px;
-  overflow-wrap: break-word;
+  word-wrap: break-word;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
 
 .mynft__box__wrapper .mynft__box .selected__mynft__box__description__wrapper {
@@ -1057,6 +1069,8 @@
   font-size: 19.2px;
   margin-bottom: 0px;
   padding-bottom: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .mynft__box__wrapper .mynft__box .selected__mynft__box__description__wrapper .mynft__box__description span {
@@ -1064,6 +1078,10 @@
   color: #808080;
   margin-bottom: 0px;
   word-wrap: break-word;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
 
 .mynft__box__wrapper .mynft__box .selected__mynft__box__description__wrapper .checked {

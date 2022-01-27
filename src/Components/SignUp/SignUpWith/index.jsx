@@ -316,7 +316,12 @@ const SignUpWith = () => {
 
   // HandleInputChange for text field component
   const HandleInputChange = (field) => (e) => {
-    setinputFields({ ...inputFields, [field]: e.target.value });
+    const { value } = e.target;
+    if (field === "email") {
+      if (value.length <= 64) setinputFields({ ...inputFields, [field]: value });
+    } else {
+      setinputFields({ ...inputFields, [field]: value });
+    }
   };
 
   // const handleInputUserName = (e) => {
@@ -457,7 +462,7 @@ const SignUpWith = () => {
       </div>
 
       <div className={styles.home_page_text}>
-        The easiest way to Create NFTs and share them others. Start minting NFTs
+        The easiest way to Create NFTs and share them with others. Start minting NFTs
         in NEAR&apos;s rapidly expanding ecosystem
       </div>
     </div>
