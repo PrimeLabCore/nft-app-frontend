@@ -11,7 +11,7 @@ import useRedirectIfUserLoggedIn from '../../common/hooks/useRedirectIfUserLogge
 import { API_BASE_URL } from "../../Utils/config";
 import AppLoader from "../Generic/AppLoader";
 import styles from "./SignIn.module.css";
-import TooltipButton from '../../common/components/TooltipButton';
+// import TooltipButton from '../../common/components/TooltipButton';
 
 const SignIn = () => {
   const navigate = useNavigate();
@@ -132,9 +132,13 @@ const SignIn = () => {
 
         </div>
 
-        <div className={styles.loginWithNearContainer}>
-          <TooltipButton tooltipText="Coming soon..." buttonText="Login with NEAR" buttonStyle={`${styles.comingSoonBtn}`} />
-        </div>
+        {/* <div className={styles.loginWithNearContainer}>
+          <TooltipButton
+            tooltipText="Coming soon..."
+            buttonText="Login with NEAR"
+            buttonStyle={`${styles.comingSoonBtn}`}
+          />
+        </div> */}
 
       </div>
     </div>
