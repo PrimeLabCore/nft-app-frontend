@@ -10,7 +10,7 @@ import axios from "axios";
 import styles from "./index.module.css";
 import AppLoader from "../../Generic/AppLoader";
 import { API_BASE_URL } from "../../../Utils/config";
-import { mapUserSession } from "../../../Utils/utils";
+import { mapUserSession, isOnlyNumber } from "../../../Utils/utils";
 import { SET_SESSION } from "../../../Reducers/ActionTypes";
 
 const Verification = () => {
@@ -44,10 +44,14 @@ const Verification = () => {
 
   const inputEvent = (e) => {
     const { name, value } = e.target;
-    setDetails((preValue) => ({
-      ...preValue,
-      [name]: value.slice(0, 6),
-    }));
+    if (value.length && !isOnlyNumber(value)) {
+      e.preventDefault();
+    } else {
+      setDetails((preValue) => ({
+        ...preValue,
+        [name]: value.slice(0, 6),
+      }));
+    }
   };
 
   useEffect(() => {
