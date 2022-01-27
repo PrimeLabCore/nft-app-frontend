@@ -42,7 +42,11 @@ const Transactions = () => {
   }, [user]);
 
   useEffect(() => {
-    setTransactions(sortBy(allTransactions, (item) => item.updated).reverse());
+    setTransactions(
+      sortBy(allTransactions, (item) => item.created)
+        .reverse()
+        .filter(t => ['create_wallet', 'mine_nft', 'unclaimed', 'transfer_nft'].includes(t.type))
+    );
     // setTransactions(sortBy(allTransactions, (item) => item.date));
   }, [allTransactions]);
 
