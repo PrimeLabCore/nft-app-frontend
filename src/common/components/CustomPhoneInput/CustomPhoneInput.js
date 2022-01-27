@@ -54,7 +54,7 @@ function CustomPhoneInput({
 }) {
   const classes = useCustomPhoneInputStyle();
   const handleChange = fieldValue => {
-    onChange && onChange({ target: { value: fieldValue ?? value } });
+    onChange && onChange({ target: { value: fieldValue ?? "" } });
   }
 
   return (
