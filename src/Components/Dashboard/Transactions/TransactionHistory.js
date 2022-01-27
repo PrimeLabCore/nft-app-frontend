@@ -50,6 +50,7 @@ function TransactionHistory() {
 
   useEffect(() => {
     let transactions = sortBy(allTransactions, (item) => item.updated).reverse();
+    transactions = transactions.filter((item) => item.type !== "create_nft_series");
     if (tab === 'sent') {
       transactions = transactions.filter((item) => item.type === 'unclaimed');
     }

@@ -65,6 +65,29 @@ export default function Transaction({ data, user }) {
             </span>
           </h6>
         );
+      case 'gift':
+        return (
+          <h6>
+            <span>{user.wallet_id}</span>
+            <br />
+            {'sent an NFT - '}
+            <a
+              href={`/nft/${data.transaction_item_id}`}
+              className={styles.transaction__name}
+            >
+              {`#${data.transaction_item_id}`}
+            </a>
+            <br />
+            {' to '}
+            <span
+              className={styles.transaction__name}
+            >
+              {data.counterparty?.[0]?.full_name
+                ? data.counterparty?.[0]?.full_name
+                : data.counterparty?.[0]?.email}
+            </span>
+          </h6>
+        );
       case 'transfer_nft':
         return (
           <h6>
