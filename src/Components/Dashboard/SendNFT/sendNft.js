@@ -195,6 +195,7 @@ function SendNft() {
           dispatch({ type: "close_dialog_gift_nft" });
           setOpenGift(false);
           setOpenPreview(true);
+          navigate("/transactions");
         })
         .catch((error) => {
           if (error.response.data) {
@@ -217,7 +218,7 @@ function SendNft() {
 
   const openHistory = () => {
     closeSendNft();
-    navigate("/transactions");
+    // navigate("/transactions");
   };
 
   const nftClicked = (data) => {
