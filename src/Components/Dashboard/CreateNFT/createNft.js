@@ -242,7 +242,7 @@ function CreateNft(props) {
 
         toast.success(
           `NFT ${details.title} was successfully ${
-            type === "mint" ? "mined" : "created"
+            type === "mint" ? "minted" : "created"
           }.`
         );
 
@@ -358,7 +358,6 @@ function CreateNft(props) {
   }
 
   if (loading) return <LoaderIcon />
-  console.log(formValuesError)
   return (
     <>
       {/* Initial Modal  */}
