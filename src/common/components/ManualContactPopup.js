@@ -51,6 +51,7 @@ function ManualContactPopup({
 
   const HandleInputChange = (field) => (e) => {
     const { value } = e.target;
+    console.log(value);
     if (field === "first_name") {
       if (value.length <= 46) setinputFields({ ...inputFields, [field]: value });
     } else if (field === "last_name") {
