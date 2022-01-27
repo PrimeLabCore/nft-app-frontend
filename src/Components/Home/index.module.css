@@ -418,4 +418,34 @@
     padding-bottom: 0;
   }
 }
+
+@media screen and (min-width: 991px) {
+  .logo {
+    padding-top: 6%;
+  }
+}
+
+@media screen and (min-width: 1300px) {
+  .logo {
+    padding-top: 5%;
+  }
+}
+
+@media screen and (min-width: 1600px) {
+  .logo {
+    padding-top: 4%;
+  }
+}
+
+@media screen and (min-width: 1800px) {
+  .logo {
+    padding-top: 3.5%;
+  }
+}
+
+@media screen and (min-width: 2000px) {
+  .logo {
+    padding-top: 3%;
+  }
+}
 /*# sourceMappingURL=index.module.css.map */
