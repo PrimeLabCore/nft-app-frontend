@@ -462,7 +462,7 @@ const SignUpWith = () => {
       </div>
 
       <div className={styles.home_page_text}>
-        The easiest way to Create NFTs and share them others. Start minting NFTs
+        The easiest way to Create NFTs and share them with others. Start minting NFTs
         in NEAR&apos;s rapidly expanding ecosystem
       </div>
     </div>
