@@ -1,7 +1,7 @@
 import React from "react";
 // import PhoneInput from "react-phone-input-2";
 // import "react-phone-input-2/lib/style.css";
-import PhoneInput, { getCountryCallingCode } from 'react-phone-number-input'
+import PhoneInput, { getCountryCallingCode, isValidPhoneNumber } from 'react-phone-number-input'
 import 'react-phone-number-input/style.css'
 import { makeStyles } from '@material-ui/core/styles'
 
@@ -43,6 +43,16 @@ const CountrySelect = ({ iconComponent, options, ...props }) => {
   )
 }
 
+const NumberInput = React.forwardRef(({ onChange, ...props }, ref) => {
+  const handleChange = e => {
+    !isValidPhoneNumber(props.value) && onChange(e)
+  }
+
+  return (
+    <input ref={ref} onChange={handleChange} {...props} />
+  )
+})
+
 function CustomPhoneInput({
   placeholder,
   HandelKeyPress,
@@ -70,6 +80,7 @@ function CustomPhoneInput({
       numberInputProps={{ style: { height: height || '42px' } }}
       className={`${className} ${classes.baseInput} form-control`}
       onChange={handleChange}
+      inputComponent={NumberInput}
       onKeyDown={HandelKeyPress}
     />
   );
