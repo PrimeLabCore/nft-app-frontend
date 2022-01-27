@@ -88,6 +88,7 @@ const ImportContactsDialog = ({
       .then(() => {
         // disable contact import dialog on login/signup
         localStorage.removeItem("welcome");
+        onImport(contacts);
         removeBlur();
       })
       .catch((error) => {
@@ -149,7 +150,6 @@ const ImportContactsDialog = ({
             PostContactToBackend(contacts, source_title);
 
             // call callback functions
-            onImport(contacts);
             if (setStatus) setStatus(false);
 
             return false;
