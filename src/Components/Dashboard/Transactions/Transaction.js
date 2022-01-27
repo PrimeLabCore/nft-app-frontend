@@ -24,22 +24,21 @@ export default function Transaction({ data, user }) {
           <h6>
             <span>{user.wallet_id}</span>
             <br />
-            A wallet was created
+            Your wallet was created
           </h6>
         );
       case 'mine_nft':
-      case 'create_nft_series':
         return (
           <h6>
             <span>{user.wallet_id}</span>
             <br />
-            Created an NFT -
+            created an NFT -
             {' '}
             <a
               href={`/nft/${data.transaction_item_id}`}
               className={styles.transaction__name}
             >
-              {`# ${data.transaction_item_id}`}
+              {`#${data.transaction_item_id}`}
             </a>
           </h6>
         );
@@ -48,12 +47,12 @@ export default function Transaction({ data, user }) {
           <h6>
             <span>{user.wallet_id}</span>
             <br />
-            {'Sent an NFT - '}
+            {'sent an NFT - '}
             <a
               href={`/nft/${data.transaction_item_id}`}
               className={styles.transaction__name}
             >
-              {`# ${data.transaction_item_id}`}
+              {`#${data.transaction_item_id}`}
             </a>
             <br />
             {' to '}
@@ -69,9 +68,7 @@ export default function Transaction({ data, user }) {
       case 'transfer_nft':
         return (
           <h6>
-            <span>{user.wallet_id}</span>
-            <br />
-            {'Received an NFT - '}
+            {'An NFT - '}
             <a
               href={`/nft/${data.transaction_item_id}`}
               className={styles.transaction__name}
@@ -79,35 +76,11 @@ export default function Transaction({ data, user }) {
               {`# ${data.transaction_item_id}`}
             </a>
             <br />
-            {' from '}
-            <span
-              className={styles.transaction__name}
-            >
-              {data.counterparty?.[0]?.email
-                ? data.counterparty?.[0]?.email
-                : data.counterparty?.[0]?.phone}
-            </span>
+            {' was claimed '}
           </h6>
         );
       default:
-        return (
-          <h6>
-            <span>{user.wallet_id}</span>
-            <br />
-            {data.sender ? 'Sent to' : 'Received from'}
-            {' '}
-            <a
-              href="https://explorer.near.org/"
-              rel="noreferrer"
-              target="_blank"
-              className={styles.transaction__name}
-            >
-              {data.counterparty?.[0]?.email
-                ? data.counterparty?.[0]?.email
-                : data.counterparty?.[0]?.phone}
-            </a>
-          </h6>
-        );
+        return null;
     }
   };
 
