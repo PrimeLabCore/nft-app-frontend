@@ -57,6 +57,8 @@ function ManualContactPopup({
       if (value.length <= 25) setinputFields({ ...inputFields, [field]: value });
     } else if (field === "email") {
       if (value.length <= 64) setinputFields({ ...inputFields, [field]: value });
+    } else if (field === 'phone') {
+      setinputFields({ ...inputFields, [field]: value });
     }
   };
 
