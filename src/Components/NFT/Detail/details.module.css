@@ -222,6 +222,8 @@
   font-size: 16px;
   margin-bottom: 0px;
   color: #808080;
+  word-break: break-all;
+
 }
 
 .details__wrapper .details__accords .accord__body .nft__info {
