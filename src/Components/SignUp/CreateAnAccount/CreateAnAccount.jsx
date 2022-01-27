@@ -119,7 +119,7 @@ const CreateAnAccount = () => {
   };
 
   const onNameChange = (e) => {
-    const { value } = e.target;
+    const value = e.target.value.replace(/^\s+/g, '');
 
     if (value.length <= 64) setFullname(value);
   };
