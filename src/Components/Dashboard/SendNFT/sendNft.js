@@ -78,7 +78,7 @@ function SendNft() {
   // get all the unique NFT id that is being send to someone.
   const allClaimedNftIds = useSelector(
     (state) => [...new Set(state.transactionsReducer.allTransactions
-      .filter(item => item.type !== 'unclaimed')
+      .filter(item => item.status === 'claimed')
       .map(item => item.transaction_item_id))]
   );
   const [importContactDialog, setimportContactDialog] = useState(false);
