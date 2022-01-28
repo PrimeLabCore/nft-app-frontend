@@ -49,10 +49,6 @@ const checkAllContacts = (data) =>
 //   return false;
 // };
 
-const getValidUnsendNFTs = (sentIds, nfts) => nfts?.filter(
-  item => !sentIds.includes(item?.nft_id)
-)
-
 function SendNft() {
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.authReducer);
@@ -61,7 +57,6 @@ function SendNft() {
   const giftNFT__contactData = useSelector(
     (state) => state.giftNFT__contactData
   );
-
   const [filteredData, setFilteredData] = useState([]);
 
   const [openPreview, setOpenPreview] = useState(false);
@@ -75,14 +70,8 @@ function SendNft() {
   const sendnft__popup = useSelector((state) => state.sendnft__popup);
   const { nfts } = useSelector((state) => state.home__allnft);
 
-  // get all the unique NFT id that is being send to someone.
-  const allClaimedNftIds = useSelector(
-    (state) => [...new Set(state.transactionsReducer.allTransactions
-      .filter(item => item.type !== 'unclaimed')
-      .map(item => item.transaction_item_id))]
-  );
   const [importContactDialog, setimportContactDialog] = useState(false);
-  const [displayNfts, setDisplayNfts] = useState(getValidUnsendNFTs(allClaimedNftIds, nfts));
+  const [displayNfts, setDisplayNfts] = useState(nfts);
   const firstImport = localStorage.getItem("firstImport");
   const closeSendNft = () => {
     dispatch({ type: "sendnft__close" });
@@ -102,10 +91,6 @@ function SendNft() {
   //   setCheckedState(updatedCheckedState);
   // };
 
-  useEffect(() => {
-    setSelected(nft);
-  }, [nft]);
-
   useEffect(() => 0, [checkedState]);
 
   const closegiftNft = () => {
@@ -116,14 +101,10 @@ function SendNft() {
       setOpenGift(false);
     }
   };
-  useEffect(() => {
-    setDisplayNfts(getValidUnsendNFTs(allClaimedNftIds, nfts.reverse()));
-  }, [nfts]);
+
   useEffect(() => {
     if (giftNFT__contactData) {
       setFilteredData(giftNFT__contactData);
-    } else {
-      // console.log("empty dataaa.................");
     }
   }, [giftNFT__contactData]);
 
@@ -148,7 +129,11 @@ function SendNft() {
   }, []);
 
   useEffect(() => {
+    if (nfts) {
+      setDisplayNfts(nfts.reverse());
+    }
     if (nft) {
+      setSelected(nft);
       const displayNFTsArray = [...nfts];
       const index = nfts.findIndex(x => x.nft_id === nft.nftid);
 
@@ -157,8 +142,7 @@ function SendNft() {
         displayNFTsArray.splice(index, 1);
         displayNFTsArray.unshift(nfts[index]);
       }
-      // console.log(nft, selected);
-      setDisplayNfts(getValidUnsendNFTs(allClaimedNftIds, displayNFTsArray))
+      setDisplayNfts(displayNFTsArray)
     }
   }, [nft, nfts]);
 
@@ -208,7 +192,6 @@ function SendNft() {
       axios
         .post(`${API_BASE_URL}/transactions`, nftDetail)
         .then((response) => {
-          // console.log(response.data);
           toast.success(response.data.message);
 
           dispatch({ type: "sendnft__close" });
@@ -291,7 +274,6 @@ function SendNft() {
     }
   }, []);
 
-  // console.log(nfts.sort(function(x,y)
   // { return x.nft_id === selected.nft_id ?
   // -1 : y.nft_id === selected.nft_id ? 1 : 0; }))
   return (
@@ -493,7 +475,7 @@ function SendNft() {
                   <img src={selected?.file_url || selected?.image} alt={selected.title} />
                 )}
               </div>
-              <h1>
+              <h1 title={selected.title}>
                 {selected.title}
                 <br />
                 &nbsp;sent successfully to
