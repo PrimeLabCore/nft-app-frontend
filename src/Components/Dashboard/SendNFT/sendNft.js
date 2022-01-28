@@ -61,7 +61,6 @@ function SendNft() {
   const giftNFT__contactData = useSelector(
     (state) => state.giftNFT__contactData
   );
-
   const [filteredData, setFilteredData] = useState([]);
 
   const [openPreview, setOpenPreview] = useState(false);
@@ -78,7 +77,7 @@ function SendNft() {
   // get all the unique NFT id that is being send to someone.
   const allClaimedNftIds = useSelector(
     (state) => [...new Set(state.transactionsReducer.allTransactions
-      .filter(item => item.type !== 'unclaimed')
+      .filter(item => item.type === 'claimed')
       .map(item => item.transaction_item_id))]
   );
   const [importContactDialog, setimportContactDialog] = useState(false);
@@ -294,6 +293,7 @@ function SendNft() {
   // console.log(nfts.sort(function(x,y)
   // { return x.nft_id === selected.nft_id ?
   // -1 : y.nft_id === selected.nft_id ? 1 : 0; }))
+  console.log(displayNfts);
   return (
     <>
       {/* NFT Selection Modal */}
