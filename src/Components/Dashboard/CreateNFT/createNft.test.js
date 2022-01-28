@@ -111,8 +111,8 @@ describe("createNft", () => {
     expect(successModalBody).toBeInTheDocument();
 
     // Check for success toast
-    await waitFor(() => getByText('NFT test title was successfully mined.'));
-    expect(getByText('NFT test title was successfully mined.')).toBeInTheDocument();
+    await waitFor(() => getByText('NFT test title was successfully minted.'));
+    expect(getByText('NFT test title was successfully minted.')).toBeInTheDocument();
   });
 
   test("NFT was failed to mint", async () => {

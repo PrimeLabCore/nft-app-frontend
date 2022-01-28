@@ -45,7 +45,7 @@ const Transactions = () => {
     setTransactions(
       sortBy(allTransactions, (item) => item.created)
         .reverse()
-        .filter(t => ['create_wallet', 'mine_nft', 'unclaimed', 'transfer_nft'].includes(t.type))
+        .filter(t => ['create_wallet', 'mine_nft', 'unclaimed', 'transfer_nft', 'gift'].includes(t.type))
     );
     // setTransactions(sortBy(allTransactions, (item) => item.date));
   }, [allTransactions]);

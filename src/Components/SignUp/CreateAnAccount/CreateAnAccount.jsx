@@ -185,19 +185,16 @@ const CreateAnAccount = () => {
   };
 
   const isFormValid = () => {
-    let returnVal = true;
-    if (fullname === undefined || fullname === "") {
-      returnVal = false;
-    } else if (!isValidFullName(fullname)) {
-      returnVal = false;
-    } else if (
-      accountId === ""
-      || !doesAccountStringHaveValidCharacters(accountId)
+    if (
+      fullname !== ""
+      && fullname !== undefined
+      && isValidFullName(fullname)
+      && accountId !== ""
+      && doesAccountStringHaveValidCharacters(accountId)
     ) {
-      returnVal = false;
+      return true;
     }
-    // console.log("isFormValid=>", returnVal);
-    return returnVal;
+    return false;
   };
 
   const CheckAndSubmitForm = (e) => {
@@ -281,7 +278,7 @@ const CreateAnAccount = () => {
           className={`${styles.secondary_button} ${
             isFormValid() ? styles.active_button : ""
           }`}
-          disabled={!isFormValid()}
+          disabled={isFormValid()}
         >
           Create an account
           <span>
@@ -332,7 +329,11 @@ const CreateAnAccount = () => {
           <>
             <h6 className={styles.link}>Already have a NearApps ID?</h6>
 
-            <TooltipButton tooltipText="Coming soon..." buttonText="Login with NEAR" buttonStyle={`${styles.comingSoonBtn}`} />
+            <TooltipButton
+              tooltipText="Coming soon..."
+              buttonText="Login with NEAR"
+              buttonStyle={`${styles.comingSoonBtn}`}
+            />
           </>
         )}
       </div>

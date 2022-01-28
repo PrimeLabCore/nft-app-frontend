@@ -45,7 +45,10 @@ function Settings() {
   useEffect(() => 0, [info]);
 
   const closeChangeInfo = () => {
-    setinputFields({ ...inputFields, [details]: details !== 'phone' ? user.email : user.phone })
+    setinputFields({
+      ...inputFields,
+      [details]: details === 'phone' ? user.phone : details === 'email' ? user.email : user.full_name
+    })
     setChangeInfo(false);
   };
   const openChangeInfo = (infovalue) => {
