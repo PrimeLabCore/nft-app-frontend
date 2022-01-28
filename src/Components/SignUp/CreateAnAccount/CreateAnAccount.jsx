@@ -188,9 +188,9 @@ const CreateAnAccount = () => {
       && accountId !== ""
       && doesAccountStringHaveValidCharacters(accountId)
     ) {
-      return false;
+      return true;
     }
-    return true;
+    return false;
   };
 
   const CheckAndSubmitForm = (e) => {
@@ -272,7 +272,7 @@ const CreateAnAccount = () => {
         <button
           onClick={handleSignup} // createAccount
           className={`${styles.secondary_button} ${
-            isFormValid() ? "" : styles.active_button
+            isFormValid() ? styles.active_button : ""
           }`}
           disabled={isFormValid()}
         >
