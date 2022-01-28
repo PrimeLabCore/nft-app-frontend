@@ -493,7 +493,7 @@ function SendNft() {
                   <img src={selected?.file_url || selected?.image} alt={selected.title} />
                 )}
               </div>
-              <h1>
+              <h1 title={selected.title}>
                 {selected.title}
                 <br />
                 &nbsp;sent successfully to
