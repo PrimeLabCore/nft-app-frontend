@@ -129,8 +129,11 @@ function SendNft() {
   }, []);
 
   useEffect(() => {
-    setSelected(nft);
+    if (nfts) {
+      setDisplayNfts(nfts.reverse());
+    }
     if (nft) {
+      setSelected(nft);
       const displayNFTsArray = [...nfts];
       const index = nfts.findIndex(x => x.nft_id === nft.nftid);
 
