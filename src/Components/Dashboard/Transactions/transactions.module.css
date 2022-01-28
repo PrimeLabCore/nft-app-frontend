@@ -34,7 +34,8 @@
 .transaction__wrapper .transaction__header h5 {
   font-weight: bold;
   font-size: 22px;
-  margin-bottom: 0px;
+  margin-bottom: 0;
+  min-width: 129px;
 }
 
 .transaction__wrapper .transaction__header .transaction__tab button {
