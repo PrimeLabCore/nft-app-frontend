@@ -282,8 +282,9 @@
 .nft__form__modal .modal__body__wrapper form .form__group input:focus,
 .nft__form__modal .modal__body__wrapper form .form__group textarea:focus,
 .nft__form__modal .modal__body__wrapper form .form__group select:focus {
-  outline: none;
-  border: 2.4px solid #2f80ed;
+  outline-color: #2f80ed;
+  outline-width: 2.4px;
+  outline-style: solid;
 }
 
 .nft__form__modal .modal__body__wrapper form .form__group select {
