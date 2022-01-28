@@ -84,7 +84,7 @@ export default function Transaction({ data, user }) {
             >
               {data.counterparty?.[0]?.email
                 ? data.counterparty?.[0]?.email
-                : data.counterparty?.[0]?.full_name}
+                : data.counterparty?.[0]?.phone}
             </span>
           </h6>
         );
