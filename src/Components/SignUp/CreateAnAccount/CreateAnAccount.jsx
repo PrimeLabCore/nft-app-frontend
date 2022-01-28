@@ -39,7 +39,7 @@ const CreateAnAccount = () => {
   const { redirectUrl } = useSelector((state) => state.authReducer);
 
   if (!signupEmail && !signupPhone) {
-    navigate("/");
+    navigate("/signup");
   }
 
   useEffect(() => {
