@@ -71,7 +71,6 @@ function SendNft() {
   const sendnft__popup = useSelector((state) => state.sendnft__popup);
   const { nfts } = useSelector((state) => state.home__allnft);
 
-
   const [importContactDialog, setimportContactDialog] = useState(false);
   const [displayNfts, setDisplayNfts] = useState(nfts);
   const firstImport = localStorage.getItem("firstImport");
