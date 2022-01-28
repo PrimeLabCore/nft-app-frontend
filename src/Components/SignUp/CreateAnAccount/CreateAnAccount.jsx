@@ -38,6 +38,10 @@ const CreateAnAccount = () => {
   const [windowstate, setWindow] = useState(window.innerWidth < 767);
   const { redirectUrl } = useSelector((state) => state.authReducer);
 
+  if (!signupEmail && !signupPhone) {
+    navigate("/signup");
+  }
+
   useEffect(() => {
     window.addEventListener(
       "resize",
