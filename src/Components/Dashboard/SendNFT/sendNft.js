@@ -91,10 +91,6 @@ function SendNft() {
   //   setCheckedState(updatedCheckedState);
   // };
 
-  useEffect(() => {
-    setSelected(nft);
-  }, [nft]);
-
   useEffect(() => 0, [checkedState]);
 
   const closegiftNft = () => {
@@ -109,8 +105,6 @@ function SendNft() {
   useEffect(() => {
     if (giftNFT__contactData) {
       setFilteredData(giftNFT__contactData);
-    } else {
-      // console.log("empty dataaa.................");
     }
   }, [giftNFT__contactData]);
 
@@ -135,6 +129,7 @@ function SendNft() {
   }, []);
 
   useEffect(() => {
+    setSelected(nft);
     if (nft) {
       const displayNFTsArray = [...nfts];
       const index = nfts.findIndex(x => x.nft_id === nft.nftid);
@@ -144,7 +139,6 @@ function SendNft() {
         displayNFTsArray.splice(index, 1);
         displayNFTsArray.unshift(nfts[index]);
       }
-      // console.log(nft, selected);
       setDisplayNfts(displayNFTsArray)
     }
   }, [nft, nfts]);
@@ -195,7 +189,6 @@ function SendNft() {
       axios
         .post(`${API_BASE_URL}/transactions`, nftDetail)
         .then((response) => {
-          // console.log(response.data);
           toast.success(response.data.message);
 
           dispatch({ type: "sendnft__close" });
@@ -278,10 +271,8 @@ function SendNft() {
     }
   }, []);
 
-  // console.log(nfts.sort(function(x,y)
   // { return x.nft_id === selected.nft_id ?
   // -1 : y.nft_id === selected.nft_id ? 1 : 0; }))
-  console.log(displayNfts);
   return (
     <>
       {/* NFT Selection Modal */}
