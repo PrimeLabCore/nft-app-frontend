@@ -274,7 +274,7 @@ const CreateAnAccount = () => {
           className={`${styles.secondary_button} ${
             isFormValid() ? styles.active_button : ""
           }`}
-          disabled={isFormValid()}
+          disabled={!isFormValid()}
         >
           Create an account
           <span>
