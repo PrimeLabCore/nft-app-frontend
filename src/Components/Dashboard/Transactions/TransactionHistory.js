@@ -49,9 +49,12 @@ function TransactionHistory() {
   }, [user]);
 
   useEffect(() => {
-    let transactions = sortBy(allTransactions, (item) => item.updated).reverse();
+    let transactions = sortBy(allTransactions, (item) => item.updated)
+      .reverse()
+      .filter(t => ['create_wallet', 'mine_nft', 'unclaimed', 'transfer_nft', 'gift'].includes(t.type));
+
     if (tab === 'sent') {
-      transactions = transactions.filter((item) => item.type === 'unclaimed');
+      transactions = transactions.filter((item) => ['unclaimed', 'gift'].includes(item.type));
     }
     if (tab === 'received') {
       transactions = transactions.filter((item) => item.type === 'transfer_nft');

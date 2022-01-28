@@ -281,6 +281,8 @@
   text-align: center;
   font-weight: 500;
   font-size: 24px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .initial__nft__modal .modal__body__wrapper .mint__info__wrapper h6 {
