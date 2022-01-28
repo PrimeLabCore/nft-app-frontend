@@ -38,6 +38,10 @@ const CreateAnAccount = () => {
   const [windowstate, setWindow] = useState(window.innerWidth < 767);
   const { redirectUrl } = useSelector((state) => state.authReducer);
 
+  if (!signupEmail && !signupPhone) {
+    navigate("/");
+  }
+
   useEffect(() => {
     window.addEventListener(
       "resize",
@@ -182,7 +186,7 @@ const CreateAnAccount = () => {
 
   const isFormValid = () => {
     let returnVal = true;
-    if (fullname === "") {
+    if (fullname === undefined || fullname === "") {
       returnVal = false;
     } else if (!isValidFullName(fullname)) {
       returnVal = false;
