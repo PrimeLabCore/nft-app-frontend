@@ -82,9 +82,9 @@ export default function Transaction({ data, user }) {
             <span
               className={styles.transaction__name}
             >
-              {data.counterparty?.[0]?.full_name
-                ? data.counterparty?.[0]?.full_name
-                : data.counterparty?.[0]?.email}
+              {data.counterparty?.[0]?.email
+                ? data.counterparty?.[0]?.email
+                : data.counterparty?.[0]?.full_name}
             </span>
           </h6>
         );

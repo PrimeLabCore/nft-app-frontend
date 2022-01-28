@@ -52,7 +52,7 @@ function TransactionHistory() {
     let transactions = sortBy(allTransactions, (item) => item.updated).reverse();
     transactions = transactions.filter((item) => item.type !== "create_nft_series");
     if (tab === 'sent') {
-      transactions = transactions.filter((item) => item.type === 'unclaimed');
+      transactions = transactions.filter((item) => ['unclaimed', 'gift'].includes(item.type));
     }
     if (tab === 'received') {
       transactions = transactions.filter((item) => item.type === 'transfer_nft');
