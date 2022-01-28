@@ -149,7 +149,7 @@ function Claim() {
         <Accordion>
           <div className={styles.accord}>
             <Accordion.Item eventKey="0">
-              <Accordion.Header>Descriptions</Accordion.Header>
+              <Accordion.Header>Description</Accordion.Header>
               <Accordion.Body className={styles.accord__body}>
                 <p>{nftDetail?.description}</p>
               </Accordion.Body>
