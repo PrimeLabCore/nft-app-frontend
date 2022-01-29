@@ -36,7 +36,7 @@
         width: 100%;
       }
 
-      ::after {
+      ::before {
         content: "";
         background: rgb(0 0 0 / 37%);
         position: absolute;
@@ -44,7 +44,6 @@
         left: 0;
         right: 0;
         bottom: 0;
-        z-index: -1;
       }
     }
   }
