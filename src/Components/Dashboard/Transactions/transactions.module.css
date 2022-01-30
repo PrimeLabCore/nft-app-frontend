@@ -195,6 +195,10 @@
   font-weight: normal;
   color: #2f80ed;
   text-decoration: none;
+  display: inline-block;
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .transaction__wrapper .transaction__list__wrapper .transaction__list .transaction__time p {
