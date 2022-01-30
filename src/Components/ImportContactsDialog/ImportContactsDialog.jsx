@@ -66,9 +66,13 @@ const ImportContactsDialog = ({
   const { user, contacts } = useSelector((state) => state.authReducer);
 
   const handleDialogueClose = () => {
-    if (setImportContactDialog) setImportContactDialog(false);
-    if (setStatus) setStatus(false);
-    if (setShowSignoutModal) setShowSignoutModal(true);
+    try {
+      if (setImportContactDialog) setImportContactDialog(false);
+      if (setStatus) setStatus(false);
+      if (setShowSignoutModal) setShowSignoutModal(true);
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   const PostContactToBackend = async (contacts, source) => {
@@ -155,26 +159,30 @@ const ImportContactsDialog = ({
             return false;
           },
           beforeLaunch() {
-            const all = document.getElementsByClassName("contactDialogBack");
-            for (let i = 0; i < all.length; i++) {
-              all[i].style.visibility = "hidden";
-            }
+            // const all = document.getElementsByClassName("contactDialogBack");
+            // for (let i = 0; i < all.length; i++) {
+            //   all[i].style.visibility = "hidden";
+            // }
             const all1 = document.getElementsByClassName("initial__modal");
             for (let i = 0; i < all1.length; i++) {
               all1[i].style.display = "none";
             }
           },
           beforeClosing() {
-            const all = document.getElementsByClassName("contactDialogBack");
-            for (let i = 0; i < all.length; i++) {
-              all[i].style.visibility = "inherit";
-            }
+            // const all = document.getElementsByClassName("contactDialogBack");
+            // for (let i = 0; i < all.length; i++) {
+            //   all[i].style.visibility = "inherit";
+            // }
             const all1 = document.getElementsByClassName("initial__modal");
             for (let i = 0; i < all1.length; i++) {
               all1[i].style.display = "block";
             }
           },
           afterImport(source, success) {
+            const all = document.getElementsByClassName("contactDialogBack");
+            for (let i = 0; i < all.length; i++) {
+              all[i].style.visibility = "hidden";
+            }
             localStorage.removeItem("contactImport")
             const source_title = source === "office365"
               ? "Microsoft 365"
@@ -184,11 +192,11 @@ const ImportContactsDialog = ({
             callback(!success, source_title);
           },
           afterClosing() {
-            const all = document.getElementsByClassName("contactDialogBack");
-            for (let i = 0; i < all.length; i++) {
-              all[i].style.visibility = "hidden";
-            }
-          }
+            // const all = document.getElementsByClassName("contactDialogBack");
+            // for (let i = 0; i < all.length; i++) {
+            //   all[i].style.visibility = "hidden";
+            // }
+          },
         });
       }
     });

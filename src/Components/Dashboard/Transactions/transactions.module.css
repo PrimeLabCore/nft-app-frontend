@@ -16,7 +16,13 @@
 .transaction__wrapper {
   margin-bottom: 25px;
 }
-
+.no__transactions{
+  height: 60vh; 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
 .transaction__wrapper .transaction__header {
   height: 32px;
   display: -webkit-box;

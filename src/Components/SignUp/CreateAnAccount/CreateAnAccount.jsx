@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { InputAdornment } from "@material-ui/core";
 import axios from "axios";
@@ -37,6 +37,10 @@ const CreateAnAccount = () => {
   const [accountId, setAccountId] = useState("");
   const [windowstate, setWindow] = useState(window.innerWidth < 767);
   const { redirectUrl } = useSelector((state) => state.authReducer);
+
+  if (!signupEmail && !signupPhone) {
+    navigate("/signup");
+  }
 
   useEffect(() => {
     window.addEventListener(
@@ -180,7 +184,7 @@ const CreateAnAccount = () => {
       });
   };
 
-  const isFormValid = () => {
+  const isFormValid = useCallback(() => {
     if (
       fullname !== ""
       && fullname !== undefined
@@ -191,7 +195,7 @@ const CreateAnAccount = () => {
       return true;
     }
     return false;
-  };
+  }, [fullname, accountId]);
 
   const CheckAndSubmitForm = (e) => {
     if (e.which === 13 && isFormValid()) {
@@ -274,7 +278,7 @@ const CreateAnAccount = () => {
           className={`${styles.secondary_button} ${
             isFormValid() ? styles.active_button : ""
           }`}
-          disabled={isFormValid()}
+          disabled={!isFormValid()}
         >
           Create an account
           <span>

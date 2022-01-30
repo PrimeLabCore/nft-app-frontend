@@ -11,7 +11,7 @@ import { setupHttpClient } from './Services/httpClient';
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['authReducer'] // which reducer want to store
+  whitelist: ['authReducer', 'LoginFormMethod'] // which reducer want to store
 };
 
 let composeEnhancers = compose;
