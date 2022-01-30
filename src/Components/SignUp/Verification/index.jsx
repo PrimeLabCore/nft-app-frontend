@@ -91,7 +91,7 @@ const Verification = () => {
       })
       .catch((error) => {
         if (error.response.data) {
-          toast.error(error.response.data.message);
+          toast.error("Incorrect code. Please try again.");
         }
       })
       .finally(() => {
