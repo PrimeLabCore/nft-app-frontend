@@ -104,3 +104,6 @@ export const removeBlur = () => {
   root.removeAttribute("style");
 }
 export const isTextEmpty = (text) => (text === null || text.match(/^ *$/) !== null);
+
+export const uniqueArray = (array) =>
+  array.filter((value, index, self) => self.indexOf(value) === index)

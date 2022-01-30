@@ -85,22 +85,107 @@ const ImportContactsDialog = ({
       dob: "",
       source,
     }));
-
-    // Ajax Request to create user
     axios
-      .post(`${API_BASE_URL}/contacts/import`, newcontacts)
-      .then(() => {
-        // disable contact import dialog on login/signup
-        localStorage.removeItem("welcome");
-        onImport(contacts);
-        removeBlur();
+      .get(`${API_BASE_URL}/contacts/list/${user?.user_id}`)
+      .then((response) => {
+        // save user details
+        // before saving contacts to the reducer make all the emails unique
+        const {
+          data: { data: contacts = [] }
+        } = response;
+        const uniqueEmails = [];
+        // console.log(`Got ${contacts.length} contacts from server`);
+        const allContacts = [...contacts, ...newcontacts];
+        let uniqueContacts = allContacts.filter((contactObj) => {
+          if (contactObj.email && contactObj.email.length) {
+            let emailExists = false;
+            for (let i = 0; i < contactObj.email.length; i++) {
+              const emailObj = { ...contactObj.email[i] };
+              if (
+                emailObj && emailObj.address && uniqueEmails.indexOf(emailObj.address) !== -1
+              ) {
+                emailExists = true;
+                break;
+              } else {
+                uniqueEmails.push(emailObj.address);
+              }
+            }
+            if (emailExists) {
+              return false;
+            }
+            return true;
+          }
+          return true;
+        });
+        uniqueContacts = uniqueContacts.filter((contactObj) => {
+          if (contactObj.phone && contactObj.phone.length) {
+            let phoneExists = false;
+            for (let i = 0; i < contactObj.phone.length; i++) {
+              const phoneObj = { ...contactObj.phone[i] };
+              const emailObj = { ...contactObj.email[i] };
+              if (
+                phoneObj && phoneObj.number && uniqueEmails.indexOf(phoneObj.number) !== -1
+                    && uniqueEmails.indexOf(emailObj.address) === -1
+              ) {
+                phoneExists = true;
+                break;
+              } else {
+                uniqueEmails.push(phoneObj.number);
+              }
+            }
+            if (phoneExists) {
+              return false;
+            }
+            return true;
+          }
+          return true;
+        });
+        // const uniqueContacts2 = allContacts.filter((contactObj) => {
+        //   if (contactObj.phone && contactObj.phone.length) {
+        //     let phoneExists = false;
+        //     for (let i = 0; i < contactObj.phone.length; i++) {
+        //       const phoneObj = { ...contactObj.phone[i] };
+        //       if (
+        //         phoneObj && phoneObj.number && uniqueEmails.indexOf(phoneObj.number) !== -1
+        //       ) {
+        //         phoneExists = true;
+        //         break;
+        //       } else {
+        //         uniqueEmails.push(phoneObj.number);
+        //       }
+        //     }
+        //     if (phoneExists) {
+        //       return false;
+        //     }
+        //     return true;
+        //   }
+        //   return true;
+        // });
+        // Ajax Request to create user;
+        axios
+          .post(`${API_BASE_URL}/contacts/import`, uniqueContacts)
+          .then(() => {
+            // disable contact import dialog on login/signup
+            localStorage.removeItem("welcome");
+            onImport(uniqueContacts);
+            removeBlur();
+          })
+          .catch((error) => {
+            if (error.response.data) {
+              toast.error(error.response.data.message);
+            }
+          })
+          .finally(() => { });
       })
       .catch((error) => {
-        if (error.response.data) {
+        if (error?.response?.data) {
           toast.error(error.response.data.message);
+        } else {
+          toast.error('Failed to Load Contacts');
         }
       })
-      .finally(() => { });
+      .finally(() => {
+      });
   };
 
   const LoadCloudSponge = (callback) => {

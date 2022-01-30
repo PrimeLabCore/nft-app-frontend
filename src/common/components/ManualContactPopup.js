@@ -90,6 +90,9 @@ function ManualContactPopup({
   }
 
   const validateAndSubmit = () => {
+    const isEmailExist = !!contacts.find(item => !!item.email.find(email =>
+      email?.address === inputFields.email));
+    const isPhoneNumberExist = !!contacts.find(item => !!item.phone.find(phone => phone?.number.replace(/\D+/g, "") === inputFields.phone.replace(/\D+/g, "")));
     if (!isEmpty(inputFields.first_name) && !isValidName(inputFields.first_name)) {
       toast.error("Please enter a valid first name");
     } else if (!isEmpty(inputFields.last_name) && !isValidName(inputFields.last_name)) {
@@ -100,6 +103,10 @@ function ManualContactPopup({
       toast.error(`Please enter a valid email`)
     } else if (!isEmpty(inputFields.phone) && !isValidPhoneNumber(inputFields.phone)) {
       toast.error(`Please enter a valid phone number`)
+    } else if (isPhoneNumberExist) {
+      toast.error(`Phone number already exist`)
+    } else if (isEmailExist) {
+      toast.error(`Email already exist`)
     } else {
       storeManualContact(mapContact({ ...inputFields }));
       setManualContactOpen(false)

@@ -80,31 +80,32 @@ function ContactPopup({
           const {
             data: { data: contacts = [] }
           } = response;
-          const uniqueEmails = [];
-          // console.log(`Got ${contacts.length} contacts from server`);
-          const uniqueContacts = contacts.filter((contactObj) => {
-            if (contactObj.email && contactObj.email.length) {
-              let emailExists = false;
-              for (let i = 0; i < contactObj.email.length; i++) {
-                const emailObj = { ...contactObj.email[i] };
-                if (
-                  emailObj && emailObj.address && uniqueEmails.indexOf(emailObj.address) !== -1
-                ) {
-                  emailExists = true;
-                  break;
-                } else {
-                  uniqueEmails.push(emailObj.address);
-                }
-              }
-              if (emailExists) {
-                return false;
-              }
-              return true;
-            }
-            return true;
-          });
-          setIsloading(true);
-          dispatch({ type: "update_contacts", payload: uniqueContacts });
+          // const uniqueEmails = [];
+          // // console.log(`Got ${contacts.length} contacts from server`);
+          // const uniqueContacts = contacts.filter((contactObj) => {
+          //   if (contactObj.email && contactObj.email.length) {
+          //     let emailExists = false;
+          //     for (let i = 0; i < contactObj.email.length; i++) {
+          //       const emailObj = { ...contactObj.email[i] };
+          //       if (
+          //         emailObj && emailObj.address && uniqueEmails.indexOf(emailObj.address) !== -1
+          //       ) {
+          //         emailExists = true;
+          //         break;
+          //       } else {
+          //         uniqueEmails.push(emailObj.address);
+          //       }
+          //     }
+          //     if (emailExists) {
+          //       return false;
+          //     }
+          //     return true;
+          //   }
+          //   return true;
+          // });
+          // setIsloading(true);
+          // dispatch({ type: "update_contacts", payload: uniqueContacts });
+          dispatch({ type: "update_contacts", payload: contacts });
         })
         .catch((error) => {
           if (error?.response?.data) {
@@ -166,33 +167,58 @@ function ContactPopup({
           const {
             data: { data: contacts = [] }
           } = response;
-          const uniqueEmails = [];
-          // console.log(`Got ${contacts.length} contacts from server`);
-          const uniqueContacts = contacts.filter((contactObj) => {
-            if (contactObj.email && contactObj.email.length) {
-              let emailExists = false;
-              for (let i = 0; i < contactObj.email.length; i++) {
-                const emailObj = { ...contactObj.email[i] };
-                if (
-                  emailObj && emailObj.address && uniqueEmails.indexOf(emailObj.address) !== -1
-                ) {
-                  emailExists = true;
-                  break;
-                } else {
-                  uniqueEmails.push(emailObj.address);
-                }
-              }
-              if (emailExists) {
-                return false;
-              }
-              return true;
-            }
-            return true;
-          });
-          checkAllContacts(uniqueContacts);
+          console.log(data);
+          // const uniqueEmails = [];
+          // // console.log(`Got ${contacts.length} contacts from server`);
+          // let uniqueContacts = contacts.filter((contactObj) => {
+          //   if (contactObj.email && contactObj.email.length) {
+          //     let emailExists = false;
+          //     for (let i = 0; i < contactObj.email.length; i++) {
+          //       const emailObj = { ...contactObj.email[i] };
+          //       if (
+          //         emailObj && emailObj.address && uniqueEmails.indexOf(emailObj.address) !== -1
+          //       ) {
+          //         emailExists = true;
+          //         break;
+          //       } else {
+          //         uniqueEmails.push(emailObj.address);
+          //       }
+          //     }
+          //     if (emailExists) {
+          //       return false;
+          //     }
+          //     return true;
+          //   }
+          //   return true;
+          // });
+          // uniqueContacts = uniqueContacts.filter((contactObj) => {
+          //   if (contactObj.phone && contactObj.phone.length) {
+          //     let phoneExists = false;
+          //     for (let i = 0; i < contactObj.phone.length; i++) {
+          //       const phoneObj = { ...contactObj.phone[i] };
+          //       const emailObj = { ...contactObj.email[i] };
+          //       if (
+          //         phoneObj && phoneObj.number && uniqueEmails.indexOf(phoneObj.number) !== -1
+          //           && uniqueEmails.indexOf(emailObj.address) === -1
+          //       ) {
+          //         phoneExists = true;
+          //         break;
+          //       } else {
+          //         uniqueEmails.push(phoneObj.number);
+          //       }
+          //     }
+          //     if (phoneExists) {
+          //       return false;
+          //     }
+          //     return true;
+          //   }
+          //   return true;
+          // });
+          checkAllContacts(contacts);
           setimportContactDialog(false);
-          setFilteredData(uniqueContacts);
-          dispatch({ type: "update_contacts", payload: uniqueContacts });
+          setFilteredData(contacts);
+          console.log(contacts);
+          dispatch({ type: "update_contacts", payload: contacts });
         })
         .catch((error) => {
           if (error?.response?.data) {
