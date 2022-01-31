@@ -26,8 +26,12 @@ const NFTCard = (props) => {
         </div>
       </div>
       <div className={styles.card_description_wrapper}>
-        <h2 className={styles.text__ellipsis}>{data?.title}</h2>
-        <p className={styles.text__ellipsis}>{data?.nft_id}</p>
+        <h2 className={styles.text__ellipsis} title={data?.title}>
+          {data?.title}
+        </h2>
+        <p className={styles.text__ellipsis} title={data?.nft_id}>
+          {data?.nft_id}
+        </p>
       </div>
     </div>
   );
