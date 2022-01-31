@@ -246,6 +246,12 @@
     }
   }
 
+.text__ellipsis {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .home__main__wrapper{
 
     padding-bottom: 75px;
