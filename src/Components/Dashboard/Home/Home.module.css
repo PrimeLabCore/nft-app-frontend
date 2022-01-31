@@ -586,6 +586,16 @@
   .mynft__wrapper .mynft__box__wrapper .mynft__box .mynft__box__image__wrapper .mynft__box__image {
     height: 100%;
   }
+  .transaction__wrapper .transaction__list__wrapper .transaction__list .transaction__action h6 .transaction__name {
+    font-weight: normal;
+    color: #2f80ed;
+    text-decoration: none;
+    cursor: pointer;
+    display: inline-block;
+    max-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 }
 
 .mynft__wrapper .mynft__box__wrapper .mynft__box .mynft__box__image__wrapper .mynft__box__cat {
@@ -759,6 +769,7 @@
   text-decoration: none;
   cursor: pointer;
 }
+
 
 .transaction__wrapper .transaction__list__wrapper .transaction__list .transaction__time p {
   font-weight: normal;
