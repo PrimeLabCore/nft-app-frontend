@@ -45,6 +45,7 @@ const Layout = ({ children }) => {
               <video
                 style={{ width: "100%", borderRadius: "8px" }}
                 src={nft__detail?.image}
+                controls
               />
             ) : fileType.toLowerCase() === "mp3" ? (
               <div style={{ width: "100%", padding: "0 2px" }}>

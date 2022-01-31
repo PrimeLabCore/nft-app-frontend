@@ -761,7 +761,7 @@ function CreateNft(props) {
                 Successfully Minted
               </h1>
               <h6>
-                NFT ID
+                NFT ID &nbsp;
                 {createNftResponse?.nft_id}
               </h6>
             </div>

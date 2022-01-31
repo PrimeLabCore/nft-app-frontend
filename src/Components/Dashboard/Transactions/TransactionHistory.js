@@ -146,7 +146,7 @@ function TransactionHistory() {
             ))}
           </div>
         )
-        : <div align="center">Transactions not available</div>}
+        : <div className={styles.no__transactions}>No transactions available</div>}
     </div>
   );
 }
