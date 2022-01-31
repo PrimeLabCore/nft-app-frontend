@@ -47,7 +47,6 @@ const CountrySelect = ({ iconComponent, options, ...props }) => {
 const NumberInput = React.forwardRef(({ onChange, value, ...props }, ref) => {
   const isValidGotten = useRef(false)
   const handleChange = e => {
-    console.log({ value: e.target.value })
     const isNumValid = isValidPhoneNumber(e.target.value)
     if (isNumValid) {
       onChange(e)
