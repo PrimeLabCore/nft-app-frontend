@@ -93,3 +93,14 @@ export const getFileExtension = (url) => {
   const regx = /\#|\?/;
   return url?.split('.').pop().split(regx)[0] || "";
 }
+
+export const blur = (value) => {
+  const root = document.getElementsByTagName('main')[0];
+  root.style.filter = `blur(${value})`;
+}
+
+export const removeBlur = () => {
+  const root = document.getElementsByTagName("main")[0];
+  root.removeAttribute("style");
+}
+export const isTextEmpty = (text) => (text === null || text.match(/^ *$/) !== null);

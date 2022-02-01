@@ -549,16 +549,53 @@
   border-radius: 12px;
   background-color: #fff;
   cursor: pointer;
+  overflow: hidden;
+  height: 300px;
 }
 
 .mynft__wrapper .mynft__box__wrapper .mynft__box .mynft__box__image__wrapper {
+  overflow: hidden;
   position: relative;
+  height: 60%;
 }
 
-.mynft__wrapper .mynft__box__wrapper .mynft__box .mynft__box__image__wrapper .mynft__box__image img {
+.mynft__wrapper .mynft__box__wrapper .mynft__box .mynft__box__image__wrapper .mynft__box__image {
   width: 100%;
+  height: 100%;
   border-top-right-radius: 12px;
   border-top-left-radius: 12px;
+}
+
+.text__ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media screen and (max-width: 992px) {
+  .mynft__wrapper .mynft__box__wrapper .mynft__box .mynft__box__image__wrapper .mynft__box__image {
+    height: 100%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .mynft__wrapper .mynft__box__wrapper .mynft__box {    
+    height: 250px;
+  }
+
+  .mynft__wrapper .mynft__box__wrapper .mynft__box .mynft__box__image__wrapper .mynft__box__image {
+    height: 100%;
+  }
+  .transaction__wrapper .transaction__list__wrapper .transaction__list .transaction__action h6 .transaction__name {
+    font-weight: normal;
+    color: #2f80ed;
+    text-decoration: none;
+    cursor: pointer;
+    display: inline-block;
+    max-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 }
 
 .mynft__wrapper .mynft__box__wrapper .mynft__box .mynft__box__image__wrapper .mynft__box__cat {
@@ -584,14 +621,18 @@
   font-size: 19.2px;
   margin-bottom: 0px;
   padding-bottom: 10px;
-  word-break: break-word;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .mynft__wrapper .mynft__box__wrapper .mynft__box .mynft__box__description__wrapper p {
   font-size: 16.8px;
   color: #808080;
   margin-bottom: 0px;
-  word-break: break-word;
+  word-wrap: break-word;
+  overflow: hidden;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
 
 .mynft__wrapper .mynft__box__wrapper .mynft__small__screen {
@@ -726,7 +767,9 @@
   font-weight: normal;
   color: #2f80ed;
   text-decoration: none;
+  cursor: pointer;
 }
+
 
 .transaction__wrapper .transaction__list__wrapper .transaction__list .transaction__time p {
   font-weight: normal;

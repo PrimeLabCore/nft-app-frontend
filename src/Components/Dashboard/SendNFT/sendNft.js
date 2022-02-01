@@ -12,6 +12,7 @@ import { toast } from "react-toastify";
 import ContactPopup from "../../../common/components/ContactPopup";
 import { API_BASE_URL } from "../../../Utils/config";
 import { getFileExtension } from "../../../Utils/utils";
+import AppLoader from "../../Generic/AppLoader";
 import { LoaderIconBlue } from "../../Generic/icons";
 import ImportContactsDialog from "../../ImportContactsDialog/ImportContactsDialog";
 import styles from "./sendNft.module.css";
@@ -56,7 +57,6 @@ function SendNft() {
   const giftNFT__contactData = useSelector(
     (state) => state.giftNFT__contactData
   );
-
   const [filteredData, setFilteredData] = useState([]);
 
   const [openPreview, setOpenPreview] = useState(false);
@@ -66,9 +66,11 @@ function SendNft() {
 
   // const [sendGiftEmail, setSendGiftEmail] = useState("");
   const [isLoading, setIsloading] = useState(false);
+  const [success, setSuccess] = useState(false);
 
   const sendnft__popup = useSelector((state) => state.sendnft__popup);
   const { nfts } = useSelector((state) => state.home__allnft);
+
   const [importContactDialog, setimportContactDialog] = useState(false);
   const [displayNfts, setDisplayNfts] = useState(nfts);
   const firstImport = localStorage.getItem("firstImport");
@@ -90,10 +92,6 @@ function SendNft() {
   //   setCheckedState(updatedCheckedState);
   // };
 
-  useEffect(() => {
-    setSelected(nft);
-  }, [nft]);
-
   useEffect(() => 0, [checkedState]);
 
   const closegiftNft = () => {
@@ -104,15 +102,14 @@ function SendNft() {
       setOpenGift(false);
     }
   };
+
   useEffect(() => {
-    setDisplayNfts(nfts.reverse());
+    // setDisplayNfts(nfts.reverse());
     if (nfts?.length && nfts?.length > 1 && !onlyOneContactShare) dispatch({ type: "onlyOneContactShare" });
   }, [nfts]);
   useEffect(() => {
     if (giftNFT__contactData) {
       setFilteredData(giftNFT__contactData);
-    } else {
-      // console.log("empty dataaa.................");
     }
   }, [giftNFT__contactData]);
 
@@ -137,7 +134,11 @@ function SendNft() {
   }, []);
 
   useEffect(() => {
+    if (nfts) {
+      setDisplayNfts(nfts.reverse());
+    }
     if (nft) {
+      setSelected(nft);
       const displayNFTsArray = [...nfts];
       const index = nfts.findIndex(x => x.nft_id === nft.nftid);
 
@@ -146,10 +147,28 @@ function SendNft() {
         displayNFTsArray.splice(index, 1);
         displayNFTsArray.unshift(nfts[index]);
       }
-      // console.log(nft, selected);
       setDisplayNfts(displayNFTsArray)
     }
   }, [nft, nfts]);
+
+  useEffect(() => {
+    async function fetchTransactions() {
+      const response = await axios.get(
+        `${API_BASE_URL}/transactions/list/${user?.user_id}`,
+      );
+
+      const fetchedTransactions = response.data?.data;
+
+      if (fetchedTransactions) {
+        dispatch({
+          type: 'fetch_transactions',
+          payload: fetchedTransactions,
+        });
+      }
+    }
+
+    if (success) fetchTransactions();
+  }, [success]);
 
   const handleNftGift = () => {
     dispatch({ type: "sendnft__close" });
@@ -173,24 +192,27 @@ function SendNft() {
         transaction_value: "NA",
         type: "gift"
       };
+      setIsloading(true)
 
       axios
         .post(`${API_BASE_URL}/transactions`, nftDetail)
         .then((response) => {
-          // console.log(response.data);
           toast.success(response.data.message);
 
           dispatch({ type: "sendnft__close" });
           dispatch({ type: "close_dialog_gift_nft" });
           setOpenGift(false);
           setOpenPreview(true);
+          setSuccess(true)
         })
         .catch((error) => {
           if (error.response.data) {
             toast.error(error.response.data.message);
           }
         })
-        .finally(() => { });
+        .finally(() => {
+          setIsloading(false)
+        });
     } else {
       toast.error("Please select some contact!");
     }
@@ -248,7 +270,6 @@ function SendNft() {
 
   const urlArray = (selected?.file_url || selected?.image)?.split(".");
   const fileType = urlArray?.length ? urlArray[urlArray.length - 1] : "";
-
   useEffect(() => {
     if (localStorage.getItem("sendNftId")) {
       setSelected(JSON.parse(localStorage.getItem("sendNftId")));
@@ -258,7 +279,6 @@ function SendNft() {
     }
   }, []);
 
-  // console.log(nfts.sort(function(x,y)
   // { return x.nft_id === selected.nft_id ?
   // -1 : y.nft_id === selected.nft_id ? 1 : 0; }))
   return (
@@ -411,18 +431,22 @@ function SendNft() {
         callback={contactImportCallback}
       />
 
-      <ContactPopup
-        displayImportContact={false}
-        show={openGift}
-        onClose={closegiftNft}
-        onBack={openInitialSendNft}
-        title="Send NFT"
-        btnText={firstImport ? "Gift NFT" : "Send Gift"}
-        handleBtnClick={(selectedContacts) =>
-          firstImport
-            ? (dispatch({ type: "createnft__open" }), setOpenGift(false))
-            : handleNftPreview(selectedContacts)}
-      />
+      {isLoading ? (
+        <AppLoader />
+      ) : (
+        <ContactPopup
+          displayImportContact={false}
+          show={openGift}
+          onClose={closegiftNft}
+          onBack={openInitialSendNft}
+          title="Send NFT"
+          btnText={firstImport ? "Gift NFT" : "Send Gift"}
+          handleBtnClick={(selectedContacts) =>
+            firstImport
+              ? (dispatch({ type: "createnft__open" }), setOpenGift(false))
+              : handleNftPreview(selectedContacts)}
+        />
+      )}
 
       {/* NFT Preview Modal */}
       <Modal
@@ -441,7 +465,7 @@ function SendNft() {
                 {fileType.toLowerCase() === "mp4" ? (
                   <video
                     style={{ width: "100%", borderRadius: "8px" }}
-                    src={selected?.file_url}
+                    src={selected?.file_url || selected?.image}
                   />
                 ) : fileType.toLowerCase() === "mp3" ? (
                   <div style={{ width: "100%", padding: "0 2px" }}>
@@ -456,8 +480,8 @@ function SendNft() {
                   <img src={selected?.file_url || selected?.image} alt={selected?.title} />
                 )}
               </div>
-              <h1>
-                {selected?.title}
+              <h1 title={selected.title}>
+                {selected.title}
                 <br />
                 &nbsp;sent successfully to
               </h1>

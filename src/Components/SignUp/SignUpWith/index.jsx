@@ -4,10 +4,12 @@ import { IoIosArrowForward } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { isPossiblePhoneNumber } from 'react-phone-number-input'
 import TextFieldComponent from "../../../Assets/FrequentlUsedComponents/TextFieldComponent";
 import CustomPhoneInput from "../../../common/components/CustomPhoneInput/CustomPhoneInput";
 import { API_BASE_URL } from "../../../Utils/config";
 import styles from "./index.module.css";
+import TooltipButton from "../../../common/components/TooltipButton";
 
 const validateEmail = (email) => {
   const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -43,7 +45,6 @@ const SignUpWith = () => {
   const loginFields = { username: "" };
   // const [validateUserLoading, setValidateUserLoading] = useState(true);
   // const [isUserIDAvailable, setIsUserIDAvailable] = useState(false);
-  const [countryValue, setCountry] = useState({});
   const { redirectUrl } = useSelector((state) => state.authReducer);
 
   const [errors, setErrors] = useState({});
@@ -219,9 +220,9 @@ const SignUpWith = () => {
   //   window.open(`${API_BASE_URL}/near_login/login.html`, "_self");
   // };
 
-  const SignIn = () => {
-    navigate("/signin");
-  };
+  // const SignIn = () => {
+  //   navigate("/signin");
+  // };
 
   const handleValidation = () => {
     const errors = {};
@@ -315,7 +316,12 @@ const SignUpWith = () => {
 
   // HandleInputChange for text field component
   const HandleInputChange = (field) => (e) => {
-    setinputFields({ ...inputFields, [field]: e.target.value });
+    const { value } = e.target;
+    if (field === "email") {
+      if (value.length <= 64) setinputFields({ ...inputFields, [field]: value });
+    } else {
+      setinputFields({ ...inputFields, [field]: value });
+    }
   };
 
   // const handleInputUserName = (e) => {
@@ -335,6 +341,9 @@ const SignUpWith = () => {
   return (
     <div className={styles.half_container}>
       {/* EMAIL AND PHONE SIGNUP CONATINER */}
+      <div className={styles.heading}>
+        Create NearApps ID
+      </div>
       <div className={styles.buttonContainer} onClick={handleClick}>
         <button
           onClick={() => {
@@ -364,19 +373,12 @@ const SignUpWith = () => {
         {/* LOGIN WITH PHONE */}
         {loginForm === "phone" && (
           <CustomPhoneInput
-            variant="outlined"
-            setCountry={setCountry}
-            countryValue={countryValue}
             placeholder="Ex. (373) 378 8383"
-            containerStyle={{ margin: "10px 0px" }}
-            type={"tel"}
             value={inputFields.phone}
             onChange={HandleInputChange("phone")}
             HandelKeyPress={(e) => {
               CheckAndSubmitForm(e);
             }}
-            setinputFields={setinputFields}
-            signUp
           />
         )}
 
@@ -409,14 +411,14 @@ const SignUpWith = () => {
           onClick={() =>
             loginForm === "email" ? oldHandleSignup() : phoneNumberSignUp()}
           className={`${styles.button} ${
-            inputFields.email || inputFields.phone
+            inputFields.email || isPossiblePhoneNumber(inputFields.phone)
               ? styles.primaryColor
               : styles.secondaryColor
           }`}
           disabled={
             loginForm === "email"
               ? inputFields.email?.length === 0
-              : inputFields.phone?.length < 2
+              : !isPossiblePhoneNumber(inputFields.phone)
           }
         >
           Continue
@@ -456,18 +458,11 @@ const SignUpWith = () => {
 
         <h6 className={styles.link}>Already have Near Account?</h6>
 
-        <button className={styles.button} onClick={SignIn}>
-          Launch
-          {
-            <span>
-              <IoIosArrowForward />
-            </span>
-          }
-        </button>
+        <TooltipButton tooltipText="Coming soon..." buttonText="Login with NEAR" buttonStyle={`${styles.button} ${styles.comingSoonBtn}`} />
       </div>
 
       <div className={styles.home_page_text}>
-        The easiest way to Create NFTs and share them others. Start minting NFTs
+        The easiest way to Create NFTs and share them with others. Start minting NFTs
         in NEAR&apos;s rapidly expanding ecosystem
       </div>
     </div>

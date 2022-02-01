@@ -5,18 +5,26 @@ import {
   IoMdMap,
   IoMdPhonePortrait,
 } from "react-icons/io";
+import { useSelector } from 'react-redux';
 import { Link, useNavigate } from "react-router-dom";
 import HomeCard1 from "../../Assets/Images/home-card-1.svg";
 import HomeCard2 from "../../Assets/Images/home-card-2.svg";
-import Logo from "../../Assets/Images/logo.png";
-import styles from "./index.module.css";
+import Logo from "../../Assets/Images/prime-lab-logo.png";
+import styles from "./index.module.scss";
+
+import GetStartedButton from "./components/GetStartedButton";
 
 const HomePage = (props) => {
   const navigate = useNavigate();
+  const { user } = useSelector((state) => state.authReducer);
 
   const HandleLoginWithNear = () => {
     // window.open(`${API_BASE_URL}/near_login/login.html`, "_self");
-    navigate("/signin");
+    if (user) {
+      navigate('/', { replace: true });
+    } else {
+      navigate("/signin");
+    }
   };
 
   const pageName = props.pageName || "home";
@@ -28,12 +36,12 @@ const HomePage = (props) => {
           <img src={Logo} className={styles.logo} alt="Brand Logo" />
         </Link>
         <h3 className={styles.leftSideMainText}>
-          The easiest way to Create NFTs and share them others. Start minting
+          The easiest way to Create NFTs and share them with others. Start minting
           NFTs in NEAR&apos;s rapidly expanding ecosystem
         </h3>
         <li className={styles.loginButton}>
           <button onClick={HandleLoginWithNear}>
-            Launch
+            {user ? 'Dashboard' : 'Launch'}
             <span>
               <IoIosArrowForward />
             </span>
@@ -57,19 +65,9 @@ const HomePage = (props) => {
             <li className={pageName === "contact-us" ? styles.is_selected : ""}>
               <Link to="/contact-us">Contact Us</Link>
             </li>
-            {/* <li className={`${styles.onlyOnDesktop}`}>
-                <Link to="/signup">
-                  <button>
-                    Get Started
-                    <span>
-                      <IoIosArrowForward />
-                    </span>
-                  </button>
-                </Link>
-              </li> */}
             <li className={styles.menuLoginButton}>
               <button onClick={HandleLoginWithNear}>
-                Launch
+                {user ? 'Dashboard' : 'Launch'}
                 <span>
                   <IoIosArrowForward />
                 </span>
@@ -82,21 +80,12 @@ const HomePage = (props) => {
           <>
             <h2>NFT Maker App</h2>
 
-            <div
-              className={`${styles.getStartedBtn} ${styles.onlyOnMobile}`}
-            >
-              <Link to="/signup">
-                <button>
-                  Get Started
-                  <span>
-                    <IoIosArrowForward />
-                  </span>
-                </button>
-              </Link>
+            <div className={`${styles.getStartedBtn} ${styles.onlyOnMobile}`}>
+              {!user && <GetStartedButton />}
             </div>
 
             <p className={styles.nftMakerAppDesc}>
-              The easiest way to Create NFTs and share them others. Start
+              The easiest way to Create NFTs and share them with others. Start
               minting NFTs in NEAR&apos;s rapidly expanding ecosystem
             </p>
 
@@ -124,15 +113,8 @@ const HomePage = (props) => {
                   </li>
                 </ul>
                 </div> */}
-            <div className={styles.getStartedBtn}>
-              <Link to="/signup">
-                <button>
-                  Get Started
-                  <span>
-                    <IoIosArrowForward />
-                  </span>
-                </button>
-              </Link>
+            <div className={`${styles.getStartedBtn} ${styles.onlyOnDesktop}`}>
+              {!user && <GetStartedButton />}
             </div>
           </>
           )}
@@ -142,7 +124,7 @@ const HomePage = (props) => {
             <h2>About NFT Maker App</h2>
             <div className={styles.pageContent}>
               <p>
-                The easiest way to Create NFTs and share them others. Start
+                The easiest way to Create NFTs and share them with others. Start
                 minting NFTs in NEAR&apos;s rapidly expanding ecosystem
               </p>
               <p>
@@ -155,14 +137,7 @@ const HomePage = (props) => {
               </ul>
             </div>
             <div className={styles.getStartedBtn}>
-              <Link to="/signup">
-                <button>
-                  Get Started
-                  <span>
-                    <IoIosArrowForward />
-                  </span>
-                </button>
-              </Link>
+              {!user && <GetStartedButton />}
             </div>
           </>
           )}
@@ -205,14 +180,7 @@ const HomePage = (props) => {
               </ul>
             </div>
             <div className={styles.getStartedBtn}>
-              <Link to="/signup">
-                <button>
-                  Get Started
-                  <span>
-                    <IoIosArrowForward />
-                  </span>
-                </button>
-              </Link>
+              {!user && <GetStartedButton />}
               {/* <Link to="/signup">
                     <button>
                       Get Started
@@ -240,7 +208,7 @@ const HomePage = (props) => {
             {' '}
             {new Date().getFullYear()}
             {' '}
-            Near Labs.
+            Prime Lab.
           </div>
         </div>
       </div>

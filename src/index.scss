@@ -46,3 +46,8 @@ body {
 .requiredIndicator {
   color: red;
 }
+
+.formError{
+  border-color: red !important;
+  background-color: #ffefef !important;
+}

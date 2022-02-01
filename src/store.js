@@ -3,6 +3,7 @@ import { persistStore, persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 import thunk from "redux-thunk";
 import { createLogger } from 'redux-logger';
+import { LOGOUT } from "./Reducers/ActionTypes";
 
 import rootReducer from "./Reducers";
 import { setupHttpClient } from './Services/httpClient';
@@ -10,7 +11,7 @@ import { setupHttpClient } from './Services/httpClient';
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['authReducer'] // which reducer want to store
+  whitelist: ['authReducer', 'LoginFormMethod'] // which reducer want to store
 };
 
 let composeEnhancers = compose;
@@ -37,7 +38,11 @@ export const store = createStore(
 
 const dispatch = store.dispatch;
 const onUnauthorizedCallback = () => {
-  dispatch({ type: "auth/logout" });
+  dispatch({ type: LOGOUT });
+  localStorage.removeItem("user");
+  localStorage.removeItem("welcome")
+  localStorage.removeItem("firstImport")
+  window.location.href = "/";
 };
 
 export const persistor = persistStore(store);

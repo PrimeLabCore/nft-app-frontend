@@ -8,6 +8,34 @@
     width: 40px !important;
     height: 40px !important;
   }
+  .transaction__wrapper .transaction__list__wrapper .transaction__list .transaction__action h6 .transaction__name {
+    font-weight: normal;
+    color: #2f80ed;
+    text-decoration: none;
+    display: inline-block;
+    max-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .mynft__wrapper .mynft__box__wrapper .mynft__box {    
+    height: 250px;
+  }
+
+  .mynft__wrapper .mynft__box__wrapper .mynft__box .mynft__box__image__wrapper .mynft__box__image img {
+    height: 100%;
+  }
+  .transaction__wrapper .transaction__list__wrapper .transaction__list .transaction__action h6 .transaction__name {
+    font-weight: normal;
+    color: #2f80ed;
+    text-decoration: none;
+    display: inline-block;
+    max-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 }
 
 .transaction__list__wrapper {
@@ -16,7 +44,13 @@
 .transaction__wrapper {
   margin-bottom: 25px;
 }
-
+.no__transactions{
+  height: 60vh; 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
 .transaction__wrapper .transaction__header {
   height: 32px;
   display: -webkit-box;
@@ -34,7 +68,8 @@
 .transaction__wrapper .transaction__header h5 {
   font-weight: bold;
   font-size: 22px;
-  margin-bottom: 0px;
+  margin-bottom: 0;
+  min-width: 129px;
 }
 
 .transaction__wrapper .transaction__header .transaction__tab button {

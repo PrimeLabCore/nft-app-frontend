@@ -159,6 +159,20 @@
             font-size: 16.68px;
           }
         }
+        .selectAllTextContainer {
+          display: flex;
+          align-items: flex-start;
+          flex-direction: column;
+          justify-content: center;
+          margin-left: 2vw;
+          h6 {
+            margin: 0;
+            padding: 0;
+            color: #2f80ed;
+            font-weight: 500;
+            font-size: 16.68px;
+          }
+        }
         .icon {
           margin-left: auto;
           margin-right: 13px;

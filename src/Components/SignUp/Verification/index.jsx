@@ -10,7 +10,8 @@ import axios from "axios";
 import styles from "./index.module.css";
 import AppLoader from "../../Generic/AppLoader";
 import { API_BASE_URL } from "../../../Utils/config";
-import { mapUserSession } from "../../../Utils/utils";
+import { mapUserSession, isOnlyNumber } from "../../../Utils/utils";
+import { SET_SESSION } from "../../../Reducers/ActionTypes";
 
 const Verification = () => {
   const dispatch = useDispatch();
@@ -43,10 +44,14 @@ const Verification = () => {
 
   const inputEvent = (e) => {
     const { name, value } = e.target;
-    setDetails((preValue) => ({
-      ...preValue,
-      [name]: value.slice(0, 6),
-    }));
+    if (value.length && !isOnlyNumber(value)) {
+      e.preventDefault();
+    } else {
+      setDetails((preValue) => ({
+        ...preValue,
+        [name]: value.slice(0, 6),
+      }));
+    }
   };
 
   useEffect(() => {
@@ -73,7 +78,7 @@ const Verification = () => {
 
         if (actionPayload) {
           dispatch({
-            type: "auth/set_session",
+            type: SET_SESSION,
             payload: actionPayload,
           });
         }
@@ -122,7 +127,7 @@ const Verification = () => {
       {isLoading && <AppLoader />}
       <AiFillCloseCircle className={styles.cross} onClick={HandleClick} />
       <div className={styles.container__header}>
-        <span className={styles.verification}>Verification</span>
+        <span className={styles.verification}>Authentication</span>
         {windowstate && (
           <div className={styles.progress}>
             <ProgressBar now={(1 / 3) * 100} />
@@ -132,9 +137,9 @@ const Verification = () => {
 
       <div className={styles.childContainer}>
         <p>
-          We&apos;ve sent a 6-digit verification code on your
+          Check your&nbsp;
           {otp_medium}
-          .
+          &nbsp;and enter your 6 Digit One-time passcode.
         </p>
 
         <div className={styles.verficationContainer}>
@@ -176,9 +181,9 @@ const Verification = () => {
 
         <h4>Didn&apos;t receive your code?</h4>
 
-        <Link to="/signup" className={styles.link}>
+        {/* <Link to="/signup" className={styles.link}>
           Send to a different phone number
-        </Link>
+        </Link> */}
 
         <Link to="." onClick={() => ResendOTP()} className={styles.link}>
           Resend your code

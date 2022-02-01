@@ -3,7 +3,6 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useEffect, useState } from "react";
 import CookieConsent from "react-cookie-consent";
 // Routes
-import TagManager from "react-gtm-module";
 import "react-multi-carousel/lib/styles.css";
 import { useDispatch } from "react-redux";
 import {
@@ -33,11 +32,6 @@ import Notfound from "./Pages/NotFound";
 import SignUp from "./Pages/SignUp";
 import Transactions from "./Pages/Transactions";
 import { API_BASE_URL } from "./Utils/config";
-
-const tagManagerArgs = {
-  gtmId: "GTM-TJSWG5R",
-};
-TagManager.initialize(tagManagerArgs);
 
 function App() {
   const dispatch = useDispatch();
@@ -203,7 +197,7 @@ function App() {
         <Route path="/signin" element={<PublicRoute />}>
           {/* <Route path="/signin" element={<SignIn />} /> */}
           <Route index element={<SignIn />} />
-          <Route path="verification/:accountId" element={<Verification />} />
+          <Route path="authentication/:accountId" element={<Verification />} />
           {/* <Route path="/signin" element={<SignUp />} /> */}
         </Route>
 

@@ -9,8 +9,9 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import fileHelper from "../../../Services/fileHelper";
 import { API_BASE_URL } from "../../../Utils/config";
-import { isEmpty, mapNftDetails } from "../../../Utils/utils";
+import { isEmpty, isTextEmpty, mapNftDetails } from "../../../Utils/utils";
 import styles from "./createNft.module.css";
+import LoaderIcon from '../../Generic/AppLoader';
 
 const audioRegex = /(audio)(\/\w+)+/g;
 const videoRegex = /(video)(\/\w+)+/g;
@@ -27,9 +28,9 @@ const requiredFileExtensions = [
 ];
 const requiredFileExtensionsDescription = `${requiredFileExtensions
   .map((extension) => extension.substring(1).toUpperCase())
-  .join(", ")} or ${requiredFileExtensions[requiredFileExtensions.length - 1]
-  .substring(1)
-  .toUpperCase()}`;
+  .join(", ")
+  .replace(/, ([^,]*)$/, ' or $1')
+}`;
 
 const nftDefaultProperties = {
   attr_name: "",
@@ -49,6 +50,7 @@ function CreateNft(props) {
 
   const [selectedFile, setSelectedFile] = useState("");
   const [selectedFileType, setSelectedFileType] = useState("image");
+  const nfts = useSelector((state) => state.home__allnft.nfts);
 
   const [loading, setLoading] = useState(false);
   const [corruptedFile, setCorruptedFile] = useState(false);
@@ -59,11 +61,11 @@ function CreateNft(props) {
   const { adTracker } = useSelector((state) => state.nftReducer);
 
   // getting all NFT detail
-  const home__allnft = useSelector((state) => state.home__allnft);
 
   const [details, setDetails] = useState(nftDetailDefaultValue);
 
   const [formValues, setFormValues] = useState([nftDefaultProperties]);
+  const [formValuesError, setFormValuesError] = useState(false);
 
   useEffect(() => 0, [selectedFileType]);
 
@@ -74,22 +76,36 @@ function CreateNft(props) {
   };
 
   const handleChange = (index, clikedInput) => (e) => {
+    if (formValues.length > 1) {
+      if (formValues.every(item => !isTextEmpty(item.attr_value) && !isTextEmpty(item.attr_name))) {
+        setFormValuesError(false)
+      } else if (!formValuesError) {
+        setFormValuesError(true)
+      }
+    }
     formValues[index] = {
       ...formValues[index],
       [`${clikedInput}`]: e.target.value,
     };
+
     setFormValues([...formValues]);
   };
 
   const addFormFields = () => {
-    setFormValues([
-      ...formValues,
-      {
-        attr_name: "",
-        attr_value: "",
-        id: nanoid()
-      },
-    ]);
+    // const lastElement = formValues.slice(-1)[0];
+    if (formValues.every(item => !isTextEmpty(item.attr_value) && !isTextEmpty(item.attr_name))) {
+      setFormValues([
+        ...formValues,
+        {
+          attr_name: "",
+          attr_value: "",
+          id: nanoid()
+        },
+      ]);
+      setFormValuesError(false);
+    } else {
+      setFormValuesError(true);
+    }
   };
 
   // const allNft = () => {
@@ -226,7 +242,7 @@ function CreateNft(props) {
 
         toast.success(
           `NFT ${details.title} was successfully ${
-            type === "mint" ? "mined" : "created"
+            type === "mint" ? "minted" : "created"
           }.`
         );
 
@@ -341,6 +357,7 @@ function CreateNft(props) {
     }
   }
 
+  if (loading) return <LoaderIcon />
   return (
     <>
       {/* Initial Modal  */}
@@ -349,9 +366,9 @@ function CreateNft(props) {
         show={createnft__popup}
         onHide={() => {
           dispatch({ type: "createnft__close" });
-          setDetails({ title: "", description: "", category: "Digital Arts" });
           setSelectedFile("");
-          setFormValues([{}]);
+          setDetails(nftDetailDefaultValue);
+          setFormValues([nftDefaultProperties]);
         }}
         centered
         backdrop="static"
@@ -359,7 +376,7 @@ function CreateNft(props) {
       >
         <Modal.Header
           className={styles.modal__header__wrapper}
-          closeButton={home__allnft?.nfts.length > 0}
+          closeButton={nfts?.length > 0 ? true : false}
         >
           <div className="modal__title__wrapper">
             <Modal.Title>
@@ -465,7 +482,7 @@ function CreateNft(props) {
       >
         <Modal.Header
           className={styles.modal__header__wrapper}
-          closeButton={home__allnft?.nfts.length > 0}
+          closeButton={nfts?.length > 0 ? true : false}
         >
           <div className="modal__multiple__wrapper">
             <button onClick={() => goBack("initalForm")} className="back__btn">
@@ -489,8 +506,7 @@ function CreateNft(props) {
                   TITLE
                   <span className="requiredIndicator">*</span>
                 </label>
-                <textarea
-                  rows={1}
+                <input
                   type="text"
                   name="title"
                   data-testid="nft-title"
@@ -518,6 +534,7 @@ function CreateNft(props) {
                   onChange={inputEvent}
                   placeholder="Ex. Redeemable Art"
                   required
+                  style={{ resize: "none" }}
                   maxLength={500}
                   data-testid="nft-description"
                 />
@@ -535,14 +552,15 @@ function CreateNft(props) {
                       value={val.attr_name}
                       placeholder="Tag"
                       maxLength={30}
+                      className={isTextEmpty(val.attr_name) && formValuesError ? "formError" : ""}
                       onChange={handleChange(index, "attr_name")}
                     />
-
                     <input
                       type="text"
                       value={val.attr_value}
                       placeholder="Value"
                       maxLength={30}
+                      className={isTextEmpty(val.attr_value) && formValuesError ? "formError" : ""}
                       onChange={handleChange(index, "attr_value")}
                     />
 
@@ -605,16 +623,16 @@ function CreateNft(props) {
         show={nftPreview}
         onHide={() => {
           setNftPreview(false);
-          setDetails({ title: "", description: "", category: "Digital Arts" });
           setSelectedFile("");
-          setFormValues([{}]);
+          setDetails(nftDetailDefaultValue);
+          setFormValues([nftDefaultProperties]);
         }}
         backdrop="static"
         keyboard={false}
       >
         <Modal.Header
           className={styles.modal__header__wrapper}
-          closeButton={home__allnft?.nfts.length > 0}
+          closeButton={nfts?.length > 0 ? true : false}
         >
           <div className="modal__multiple__wrapper">
             <button onClick={() => goBack("nftForm")} className="back__btn">
@@ -721,7 +739,7 @@ function CreateNft(props) {
       >
         <Modal.Header
           className={`${styles.modal__header__wrapper}  ${styles.modal__header__bottom} last__modal__header`}
-          closeButton={home__allnft?.nfts.length > 0}
+          closeButton={nfts?.length > 0 ? true : false}
         />
         {/* <button onClick={allNft} className="btnclose">X</button> */}
         <Modal.Body className={styles.modal__body__top}>
@@ -740,10 +758,10 @@ function CreateNft(props) {
               <h1>
                 {createNftResponse.title}
                 <br />
-                Successfully Mined
+                Successfully Minted
               </h1>
               <h6>
-                NFT ID
+                NFT ID &nbsp;
                 {createNftResponse?.nft_id}
               </h6>
             </div>

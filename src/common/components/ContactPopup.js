@@ -50,7 +50,7 @@ function ContactPopup({
   const [inputField, setInputField] = useState({ ...contactFormFields });
   const [filteredData, setFilteredData] = useState(contacts);
 
-  const firstImport = localStorage.getItem("firstImport");
+  // const firstImport = localStorage.getItem("firstImport");
 
   const [searchText, setSearchText] = useState("");
 
@@ -62,9 +62,10 @@ function ContactPopup({
     if (onlyOneContactShare && selectedContacts.length !== 1) setSelectedContacts([]);
   }, [onlyOneContactShare]);
   useEffect(() => {
-    setFilteredData(contacts);
-    if (!onlyOneContactShare) checkAllContacts(contacts);
-    // else setSelectedContacts([]);
+    if (contacts && !isLoading) {
+      setFilteredData(contacts);
+      if (!onlyOneContactShare) checkAllContacts(contacts);
+    }
   }, [contacts, isLoading]);
   // get contacts
   useEffect(() => {
@@ -108,12 +109,14 @@ function ContactPopup({
         .catch((error) => {
           if (error?.response?.data) {
             toast.error(error.response.data.message);
+          } else {
+            toast.error('Failed to Load Contacts');
           }
         })
         .finally(() => {
           setIsloading(false);
         });
-    }, 1500)
+    }, 0);
   }, [show]);
 
   const getPrimaryEmail = (contact) => {
@@ -159,9 +162,52 @@ function ContactPopup({
 
   const importContact = (data) => {
     if (data) {
-      if (!onlyOneContactShare) checkAllContacts(data);
-      setimportContactDialog(false);
-      setFilteredData(data);
+      axios
+        .get(`${API_BASE_URL}/contacts/list/${user?.user_id}`)
+        .then((response) => {
+          // save user details
+          // before saving contacts to the reducer make all the emails unique
+          const {
+            data: { data: contacts = [] }
+          } = response;
+          const uniqueEmails = [];
+          // console.log(`Got ${contacts.length} contacts from server`);
+          const uniqueContacts = contacts.filter((contactObj) => {
+            if (contactObj.email && contactObj.email.length) {
+              let emailExists = false;
+              for (let i = 0; i < contactObj.email.length; i++) {
+                const emailObj = { ...contactObj.email[i] };
+                if (
+                  emailObj && emailObj.address && uniqueEmails.indexOf(emailObj.address) !== -1
+                ) {
+                  emailExists = true;
+                  break;
+                } else {
+                  uniqueEmails.push(emailObj.address);
+                }
+              }
+              if (emailExists) {
+                return false;
+              }
+              return true;
+            }
+            return true;
+          });
+          if (!onlyOneContactShare) checkAllContacts(uniqueContacts);
+          setimportContactDialog(false);
+          setFilteredData(uniqueContacts);
+          dispatch({ type: "update_contacts", payload: uniqueContacts });
+        })
+        .catch((error) => {
+          if (error?.response?.data) {
+            toast.error(error.response.data.message);
+          } else {
+            toast.error('Failed to Load Contacts');
+          }
+        })
+        .finally(() => {
+          setIsloading(false);
+        });
     }
   };
   const contactImportCallback = (error, source) => {
@@ -301,24 +347,35 @@ function ContactPopup({
                 Import
               </button>
             </div>
-            <div className={styles.search__wrapper}>
-              {!onlyOneContactShare && (
-              <button
-                className={styles.import__button}
-                onClick={() => {
-                  if (selectedContacts.length === contacts.length) {
-                    setSelectedContacts([])
-                  } else {
-                    setSelectedContacts(contacts)
-                  }
-                }}
-              >
-                {selectedContacts.length === contacts.length ? 'Unselect All' : 'Select All'}
-              </button>
-              )}
-            </div>
+
             <div className={styles.data__wrapper}>
               <div>{isLoading && <LoaderIconBlue />}</div>
+
+              {filteredData.length > 0 && !onlyOneContactShare && (
+                <div className={styles.data_row_container}>
+                  {/* TEXT */}
+                  <div className={styles.selectAllTextContainer}>
+                    <h6>{selectedContacts.length === contacts.length ? 'Unselect All' : 'Select All'}</h6>
+                  </div>
+                  {/* ICONS */}
+                  <div
+                    className={styles.icon}
+                    onClick={() => {
+                      if (selectedContacts.length === contacts.length) {
+                        setSelectedContacts([])
+                      } else {
+                        setSelectedContacts(contacts)
+                      }
+                    }}
+                  >
+                    {selectedContacts.length === contacts.length ? (
+                      <BsCheckCircleFill className={styles.checked} />
+                    ) : (
+                      <GoPrimitiveDot className={styles.unchecked} />
+                    )}
+                  </div>
+                </div>
+              )}
 
               {filteredData.map((contact) => (
                 <div className={styles.data_row_container} key={nanoid()}>
@@ -348,7 +405,7 @@ function ContactPopup({
           </div>
           <div className={styles.multiple__btn__wrapper}>
             <button
-              disabled={firstImport ? false : selectedContacts.length === 0}
+              // disabled={firstImport ? false : true}
               onClick={() => {
                 handleBtnClick(selectedContacts);
               }}

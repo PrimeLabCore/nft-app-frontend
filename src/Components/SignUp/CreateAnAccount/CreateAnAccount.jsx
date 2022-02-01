@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { InputAdornment } from "@material-ui/core";
 import axios from "axios";
@@ -9,9 +9,10 @@ import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import TextFieldComponent from "../../../Assets/FrequentlUsedComponents/TextFieldComponent";
 import { API_BASE_URL } from "../../../Utils/config";
-import { mapUserSession } from "../../../Utils/utils";
+import { isValidFullName, mapUserSession } from "../../../Utils/utils";
 import AppLoader from "../../Generic/AppLoader";
 import styles from "./CreateAnAccount.module.css";
+import TooltipButton from "../../../common/components/TooltipButton";
 
 const CreateAnAccount = () => {
   const dispatch = useDispatch();
@@ -36,6 +37,10 @@ const CreateAnAccount = () => {
   const [accountId, setAccountId] = useState("");
   const [windowstate, setWindow] = useState(window.innerWidth < 767);
   const { redirectUrl } = useSelector((state) => state.authReducer);
+
+  if (!signupEmail && !signupPhone) {
+    navigate("/signup");
+  }
 
   useEffect(() => {
     window.addEventListener(
@@ -66,7 +71,7 @@ const CreateAnAccount = () => {
 
   useEffect(() => {
     if (signupEmail === "" && signupPhone === "") {
-      HandleClick();
+      // HandleClick();
     }
   }, [info]);
 
@@ -78,19 +83,13 @@ const CreateAnAccount = () => {
       );
     } else {
       setAccountId(
-        signupPhone
+        signupPhone.replaceAll("+", "")
         //  + ".near"
       );
     }
   }, [signupEmail, signupPhone]);
 
   // HandleClick for cancel button
-
-  // HandleLogin
-  const HandleLogin = () => {
-    // window.open(`${API_BASE_URL}/near_login/login.html`, "_self");
-    navigate("/signin");
-  };
 
   // HandleFocus for input
   const HandleFocus = (ClickedInput) => {
@@ -124,7 +123,9 @@ const CreateAnAccount = () => {
   };
 
   const onNameChange = (e) => {
-    setFullname(e?.target?.value);
+    const value = e.target.value.replace(/^\s+/g, '');
+
+    if (value.length <= 64) setFullname(value);
   };
 
   const handleSignup = async () => {
@@ -183,26 +184,18 @@ const CreateAnAccount = () => {
       });
   };
 
-  const isFullNameValid = (fullname) => {
-    const format = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
-    return format.test(fullname);
-  };
-
-  const isFormValid = () => {
-    let returnVal = true;
-    if (fullname === "") {
-      returnVal = false;
-    } else if (isFullNameValid(fullname)) {
-      returnVal = false;
-    } else if (
-      accountId === ""
-      || !doesAccountStringHaveValidCharacters(accountId)
+  const isFormValid = useCallback(() => {
+    if (
+      fullname !== ""
+      && fullname !== undefined
+      && isValidFullName(fullname)
+      && accountId !== ""
+      && doesAccountStringHaveValidCharacters(accountId)
     ) {
-      returnVal = false;
+      return true;
     }
-    // console.log("isFormValid=>", returnVal);
-    return returnVal;
-  };
+    return false;
+  }, [fullname, accountId]);
 
   const CheckAndSubmitForm = (e) => {
     if (e.which === 13 && isFormValid()) {
@@ -334,16 +327,13 @@ const CreateAnAccount = () => {
 
         {!accId && (
           <>
-            <h6 className={styles.link}>Already have Near Account?</h6>
+            <h6 className={styles.link}>Already have a NearApps ID?</h6>
 
-            <button className={styles.primary_button} onClick={HandleLogin}>
-              Launch
-              {
-                <span>
-                  <IoIosArrowForward />
-                </span>
-              }
-            </button>
+            <TooltipButton
+              tooltipText="Coming soon..."
+              buttonText="Login with NEAR"
+              buttonStyle={`${styles.comingSoonBtn}`}
+            />
           </>
         )}
       </div>

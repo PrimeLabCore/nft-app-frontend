@@ -19,6 +19,7 @@ import styles from "./Home.module.css";
 import { mapNftDetails } from "../../../Utils/utils";
 import { LoaderIconBlue } from "../../Generic/icons";
 import { API_BASE_URL } from "../../../Utils/config";
+import NFTCard from "../../NFT/Card/Card";
 
 const responsive = {
   superLargeDesktop: {
@@ -152,45 +153,7 @@ const MyNft = ({ isLink }) => {
                   }
                   return (
                     <Fragment key={nanoid()}>
-                      <div
-                        className={`${styles.mynft__box} ${styles.mynft__small__screen}`}
-                        // onClick={() => detailPage(data.nftid, i)}
-                        onClick={() => detailPage(data)}
-                      >
-                        <div className={styles.mynft__box__image__wrapper}>
-                          <div className={styles.mynft__box__image}>
-                            {fileType.toLowerCase() === "mp4" ? (
-                              <video
-                                style={{ width: "100%", borderRadius: "8px" }}
-                                src={data?.file_url}
-                              />
-                            ) : fileType.toLowerCase() === "mp3" ? (
-                              <div style={{ width: "100%", padding: "0 2px" }}>
-                                <audio
-                                  style={{
-                                    width: "inherit",
-                                    marginTop: "60px",
-                                  }}
-                                  controls
-                                >
-                                  <source src={data?.file_url} />
-                                </audio>
-                              </div>
-                            ) : (
-                              <img src={data?.file_url} alt={data.title} />
-                            )}
-                          </div>
-                          <div className={styles.mynft__box__cat}>
-                            <h6>{data?.category}</h6>
-                          </div>
-                        </div>
-                        <div
-                          className={styles.mynft__box__description__wrapper}
-                        >
-                          <h2>{data?.title}</h2>
-                          <p>{data?.nft_id}</p>
-                        </div>
-                      </div>
+                      <NFTCard fileType={fileType} data={data} detailPage={detailPage} />
                     </Fragment>
                   );
                 })}
@@ -216,51 +179,7 @@ const MyNft = ({ isLink }) => {
                       style={{ marginBottom: "15px" }}
                       key={nanoid()}
                     >
-                      <div
-                        className={styles.mynft__box}
-                        // onClick={() => detailPage(data.nftid, i)}
-                        onClick={() => detailPage(data)}
-                      >
-                        <div className={styles.mynft__box__image__wrapper}>
-                          <div className={styles.mynft__box__image}>
-                            {fileType.toLowerCase() === "mp4" ? (
-                              <video
-                                style={{ width: "100%", borderRadius: "8px" }}
-                                src={data?.file_url}
-                              />
-                            ) : fileType.toLowerCase() === "mp3" ? (
-                              <div
-                                style={{
-                                  width: "100%",
-                                  paddingRight: "10px",
-                                }}
-                              >
-                                <audio
-                                  style={{
-                                    width: "inherit",
-                                    marginTop: "60px",
-                                    marginLeft: "5px",
-                                  }}
-                                  controls
-                                >
-                                  <source src={data?.file_url} />
-                                </audio>
-                              </div>
-                            ) : (
-                              <img src={data?.file_url} alt={data.title} />
-                            )}
-                          </div>
-                          <div className={styles.mynft__box__cat}>
-                            <h6>{data?.category}</h6>
-                          </div>
-                        </div>
-                        <div
-                          className={styles.mynft__box__description__wrapper}
-                        >
-                          <h2>{data?.title}</h2>
-                          <p>{data?.nft_id}</p>
-                        </div>
-                      </div>
+                      <NFTCard fileType={fileType} data={data} detailPage={detailPage} />
                     </Col>
                   );
                 })}

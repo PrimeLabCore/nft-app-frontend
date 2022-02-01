@@ -7,15 +7,19 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import TextFieldComponent from "../../Assets/FrequentlUsedComponents/TextFieldComponent";
+import useRedirectIfUserLoggedIn from '../../common/hooks/useRedirectIfUserLoggedIn';
 import { API_BASE_URL } from "../../Utils/config";
 import AppLoader from "../Generic/AppLoader";
 import styles from "./SignIn.module.css";
+// import TooltipButton from '../../common/components/TooltipButton';
 
 const SignIn = () => {
   const navigate = useNavigate();
   const [accountId, setAccountId] = useState("");
   const dispatch = useDispatch();
   const [isLoading, setIsloading] = useState(false);
+
+  useRedirectIfUserLoggedIn();
 
   const doesAccountStringHaveValidCharacters = (accountString) => {
     const matchesCharacterRequirements = /^[a-z_0-9-]+$/i.test(accountString);
@@ -51,7 +55,7 @@ const SignIn = () => {
       })
       .then((response) => {
         dispatch({ type: "set_otp_medium", payload: response.data.type });
-        navigate(`/signin/verification/${accountId}`);
+        navigate(`/signin/authentication/${accountId}`);
       })
       .catch(() => {
         toast.warn("This Wallet is not supported on the NFT App, please create a new one HERE", {
@@ -78,7 +82,7 @@ const SignIn = () => {
       <div className={styles.childContainer}>
         <BsArrowLeftRight className={styles.icon} />
         <div className={styles.requestText}>
-          Enter your ID to Launch the App
+          Login with your NearApps ID
         </div>
 
         <div className={styles.textField}>
@@ -125,7 +129,17 @@ const SignIn = () => {
             >
               Allow
             </Link> */}
+
         </div>
+
+        {/* <div className={styles.loginWithNearContainer}>
+          <TooltipButton
+            tooltipText="Coming soon..."
+            buttonText="Login with NEAR"
+            buttonStyle={`${styles.comingSoonBtn}`}
+          />
+        </div> */}
+
       </div>
     </div>
   );

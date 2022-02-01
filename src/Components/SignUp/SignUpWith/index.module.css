@@ -18,6 +18,14 @@
           flex-direction: column;
 }
 
+.heading {
+  font-size: 21px;
+  display: inline-block;
+  margin: 15px auto;
+  margin-top: 25px;
+  font-weight: 600;
+}
+
 .buttonContainer {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -185,8 +193,9 @@
   }
   .half_container {
     position: absolute;
-    top: 47vh;
+    top: 20vh;
     max-width: 100%;
+    xheight: 100%;
     min-height: 56vh;
     margin-left: 0;
     right: 0;
@@ -202,5 +211,13 @@
   .home_page_text {
     max-width: 100%;
   }
+}
+
+.comingSoonBtn {
+  background-color: #bdbdbd;
+}
+
+.comingSoonBtn:hover {
+  background-color: #bdbdbd;
 }
 /*# sourceMappingURL=index.module.css.map */

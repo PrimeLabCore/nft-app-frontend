@@ -16,6 +16,7 @@ import CustomPhoneInput from "../../../common/components/CustomPhoneInput/Custom
 import { API_BASE_URL } from "../../../Utils/config";
 import AppLoader from "../../Generic/AppLoader";
 import { isValidFullName } from "../../../Utils/utils";
+import { LOGOUT } from "../../../Reducers/ActionTypes";
 
 const labels = {
   email: "Email Address",
@@ -44,6 +45,10 @@ function Settings() {
   useEffect(() => 0, [info]);
 
   const closeChangeInfo = () => {
+    setinputFields({
+      ...inputFields,
+      [details]: details === 'phone' ? user.phone : details === 'email' ? user.email : user.full_name
+    })
     setChangeInfo(false);
   };
   const openChangeInfo = (infovalue) => {
@@ -183,7 +188,7 @@ function Settings() {
   };
 
   const SignOut = () => {
-    dispatch({ type: "auth/logout" });
+    dispatch({ type: LOGOUT });
     localStorage.removeItem("user");
     localStorage.removeItem("welcome")
     localStorage.removeItem("firstImport")
@@ -366,6 +371,7 @@ function Settings() {
                 <div className={styles.modal__header}>
                   <h2>
                     Change
+                    {" "}
                     {labels[details]}
                   </h2>
                 </div>
@@ -385,7 +391,6 @@ function Settings() {
                 />
               ) : (
                 <CustomPhoneInput
-                  setinputFields={setinputFields}
                   value={inputFields.phone}
                   onFocus={() => HandleFocus("name")}
                   placeholder="Phone Number"
