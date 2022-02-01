@@ -36,6 +36,7 @@ const Transactions = () => {
           payload: fetchedTransactions,
         });
       }
+      if (fetchedTransactions?.length > 2) dispatch({ type: "onlyOneContactShare" });
     }
 
     fetchTransactions();
