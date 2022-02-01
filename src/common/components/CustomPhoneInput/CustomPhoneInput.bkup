@@ -1,0 +1,296 @@
+import React from "react";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
+
+function CustomPhoneInput({
+  setCountry,
+  setinputFields,
+  countryValue,
+  signUp,
+  placeholder,
+  HandelKeyPress,
+  value,
+  height,
+  onFocus,
+  onChange,
+  className,
+  containerStyle = {}
+}) {
+  return (
+    <PhoneInput
+      onFocus={onFocus}
+      onChange={(fieldValue, country) => {
+        signUp && setCountry(country);
+
+        if (countryValue && country?.name !== countryValue?.name) {
+          setinputFields({ phone: `+${country?.dialCode}` });
+        }
+        onChange && onChange({ target: { value: fieldValue } });
+      }}
+      value={value}
+      placeholder={placeholder}
+      containerStyle={{
+        height: height || "56px",
+        borderRadius: "10px",
+        backgroundColor: "#f7f7f7",
+        ...containerStyle
+      }}
+      enableSearch
+      onKeyDown={HandelKeyPress}
+      buttonStyle={{ borderRadius: " 10px 0 0 10px " }}
+      inputStyle={{
+        width: "100%",
+        height: "56px",
+        borderRadius: "10px",
+        backgroundColor: "#f7f7f7"
+      }}
+      containerClass={className}
+      country="us"
+    />
+  );
+}
+export default CustomPhoneInput;
+// import React, { useState } from "react";
+// // import PhoneInput from "react-phone-input-2";
+// // import "react-phone-input-2/lib/style.css";
+// import PhoneInput, { getCountryCallingCode, isValidPhoneNumber } from 'react-phone-number-input'
+// // import Autocomplete from '@mui/material/Autocomplete'
+// import 'react-phone-number-input/style.css'
+// import { makeStyles } from '@material-ui/core/styles'
+// import TextField from "@mui/material/TextField";
+// import { Menu, MenuItem } from "@mui/material";
+
+// const useCustomPhoneInputStyle = makeStyles({
+//   baseInput: {
+//     borderRadius: 10,
+//     margin: '10px 0',
+//     background: 'rgba(0, 0, 0, 0.03)',
+//     border: '1px solid #BDBDBD',
+//     '& input': {
+//       border: 'none',
+//       outline: 'none',
+//       background: 'rgba(0, 0, 0, 0)',
+//       '&:focus, &:active, &:hover': {
+//         border: 'none',
+//         outline: 'none',
+//         paddingLeft: 5,
+//         borderLeft: '1px solid #BDBDBD'
+//       },
+//       paddingLeft: 5,
+//       borderLeft: '1px solid #BDBDBD'
+//     },
+//     '& legend': {
+//       width: 0
+//     },
+//     '& .MuiPaper-root': {
+//       maxHeight: '350px !important'
+//     },
+//     '& .search-input': {
+//       paddingLeft: 15,
+//       paddingRight: 15,
+//       '& input': {
+//         borderLeft: 'none',
+//         '&:focus, &:active, &:hover': {
+//           borderLeft: 'none'
+//         },
+//       }
+//     }
+//   }
+// })
+
+// const CountrySelect = ({ iconComponent, options, ...props }) => {
+//   const [anchorEl, setAnchorEl] = useState(null);
+//   const [filteredOptions, setFilteredOptions] = useState(options);
+//   const open = Boolean(anchorEl);
+//   const IconComponent = iconComponent
+//   const handleClick = (value) => () => {
+//     setAnchorEl(null)
+//     props.onChange(value)
+//     setAnchorEl(null)
+//   }
+//   const handleSearch = e => {
+//     setFilteredOptions(
+//       options.filter(
+//         item => `+${getCountryCallingCode(item.value)}`.includes(e.target.value) || item.label.includes(e.target.value)
+//       )
+//     )
+//   }
+//   return (
+//     <div onClick={(e) => setAnchorEl(e.currentTarget)} className="PhoneInputCountry">
+//       <Menu
+//         anchorEl={anchorEl}
+//         open={open}
+//         onClose={() => setAnchorEl(null)}
+//         anchorOrigin={{
+//           vertical: 'bottom',
+//           horizontal: 'left',
+//         }}
+//         keepMounted
+//       >
+//         <div>
+//           <TextField
+//             fullWidth
+//             className="search-input"
+//             onChange={handleSearch}
+//           />
+//           {filteredOptions.map(item => (
+//             <MenuItem onClick={handleClick(item.value)} key={item.value}>
+//               {item.label}
+//               {" "}
+//               +
+//               {getCountryCallingCode(item.value)}
+//             </MenuItem>
+//           ))}
+//         </div>
+//       </Menu>
+//       {/* <Autocomplete
+//         disablePortal
+//         popupIcon={null}
+//         options={options}
+//         autoHighlight
+//         open={open}
+//         onClose={() => setOpen(false)}
+//         clearIcon={null}
+//         getOptionLabel={(option) => `${option.label} +${getCountryCallingCode(option.value)}`}
+//         renderInput={(params) => <TextField {...params} />}
+//       /> */}
+//       <IconComponent country={props.value} label={props.value} />
+//       <div className="PhoneInputCountrySelectArrow" />
+//     </div>
+//   )
+// }
+
+// const NumberInput = React.forwardRef(({ onChange, value, ...props }, ref) => {
+//   const handleChange = e => {
+//     if (!isValidPhoneNumber(value)) {
+//       onChange(e)
+//     } else {
+//       return false
+//     }
+//   }
+
+//   const handlePaste = e => {
+//     const clipboardNumber = e.clipboardData.getData('Text')
+//     const number = e.target.value + clipboardNumber
+//     isValidPhoneNumber(number) || isValidPhoneNumber(clipboardNumber) ? null : e.preventDefault()
+//   }
+
+//   return (
+//     <input
+//       ref={ref}
+//       onChange={handleChange}
+//       value={value}
+//       onPaste={handlePaste}
+//       {...props}
+//     />
+//   )
+// })
+
+// function CustomPhoneInput({
+//   placeholder,
+//   HandelKeyPress,
+//   value,
+//   height,
+//   onFocus,
+//   onChange,
+//   className,
+// }) {
+//   const classes = useCustomPhoneInputStyle();
+//   const handleChange = fieldValue => {
+//     onChange && onChange({ target: { value: fieldValue ?? "" } });
+//   }
+
+//   return (
+//     <PhoneInput
+//       international
+//       onFocus={onFocus}
+//       defaultCountry="US"
+//       placeholder={placeholder}
+//       countryCallingCodeEditable={false}
+//       value={value}
+//       limitMaxLength
+//       countrySelectComponent={CountrySelect}
+//       numberInputProps={{ style: { height: height || '42px' } }}
+//       className={`${className} ${classes.baseInput} form-control`}
+//       onChange={handleChange}
+//       inputComponent={NumberInput}
+//       onKeyDown={HandelKeyPress}
+//     />
+//   );
+// }
+// export default CustomPhoneInput;
+
+
+import React from "react";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
+import { isValidPhoneNumber } from 'react-phone-number-input'
+import { makeStyles } from "@material-ui/core/styles";
+
+const useCustomPhoneInputStyle = makeStyles({
+  baseContainer: {
+    '& .flag-dropdown .selected-flag, & .flag-dropdown .open': {
+      backgroundColor: 'transparent !important',
+      '&:hover, &:active, &:focus': {
+        backgroundColor: 'transparent'
+      }
+    }
+  }
+})
+
+function CustomPhoneInput({
+  setCountry,
+  setinputFields,
+  countryValue,
+  signUp,
+  placeholder,
+  HandelKeyPress,
+  value,
+  height,
+  onFocus,
+  onChange,
+  className,
+  containerStyle = {}
+}) {
+  const classes = useCustomPhoneInputStyle();
+  return (
+    <PhoneInput
+      onFocus={onFocus}
+      onChange={(fieldValue, country) => {
+        signUp && setCountry(country);
+
+        if (countryValue && country?.name !== countryValue?.name) {
+          setinputFields({ phone: `+${country?.dialCode}` });
+        }
+        console.log(isValidPhoneNumber(`+${value}`), `+${value}`)
+        onChange && !isValidPhoneNumber(`+${value}`) && onChange({ target: { value: fieldValue } });
+      }}
+      value={value}
+      inputProps={(props) => ({
+        onChange: () => {
+          console.log(props)
+          isValidPhoneNumber(`+${value}`) && true
+        }
+      })}
+      placeholder={placeholder}
+      containerStyle={{
+        height: height || "56px",
+        borderRadius: "10px",
+        backgroundColor: "transparent",
+        ...containerStyle
+      }}
+      enableSearch
+      onKeyDown={HandelKeyPress}
+      buttonStyle={{ borderRadius: " 10px 0 0 10px " }}
+      inputStyle={{
+        width: "100%",
+        height: "56px",
+        borderRadius: "10px",
+        backgroundColor: "#f7f7f7"
+      }}
+      containerClass={`${classes.baseContainer} ${className}`}
+      country="bd"
+    />
+  );
+}
+export default CustomPhoneInput;
