@@ -556,17 +556,24 @@
 .mynft__wrapper .mynft__box__wrapper .mynft__box .mynft__box__image__wrapper {
   overflow: hidden;
   position: relative;
-  height: 50%;
+  height: 60%;
 }
 
-.mynft__wrapper .mynft__box__wrapper .mynft__box .mynft__box__image__wrapper .mynft__box__image img {
+.mynft__wrapper .mynft__box__wrapper .mynft__box .mynft__box__image__wrapper .mynft__box__image {
   width: 100%;
+  height: 100%;
   border-top-right-radius: 12px;
   border-top-left-radius: 12px;
 }
 
+.text__ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 @media screen and (max-width: 992px) {
-  .mynft__wrapper .mynft__box__wrapper .mynft__box .mynft__box__image__wrapper .mynft__box__image img {
+  .mynft__wrapper .mynft__box__wrapper .mynft__box .mynft__box__image__wrapper .mynft__box__image {
     height: 100%;
   }
 }
@@ -576,8 +583,18 @@
     height: 250px;
   }
 
-  .mynft__wrapper .mynft__box__wrapper .mynft__box .mynft__box__image__wrapper .mynft__box__image img {
+  .mynft__wrapper .mynft__box__wrapper .mynft__box .mynft__box__image__wrapper .mynft__box__image {
     height: 100%;
+  }
+  .transaction__wrapper .transaction__list__wrapper .transaction__list .transaction__action h6 .transaction__name {
+    font-weight: normal;
+    color: #2f80ed;
+    text-decoration: none;
+    cursor: pointer;
+    display: inline-block;
+    max-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }
 
@@ -614,7 +631,6 @@
   margin-bottom: 0px;
   word-wrap: break-word;
   overflow: hidden;
-  display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
 }
@@ -753,6 +769,7 @@
   text-decoration: none;
   cursor: pointer;
 }
+
 
 .transaction__wrapper .transaction__list__wrapper .transaction__list .transaction__time p {
   font-weight: normal;

@@ -1,0 +1,66 @@
+.card_container {
+  -webkit-box-shadow: 0px 4.8px 4.8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 4.8px 4.8px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  background-color: #fff;
+  cursor: pointer;
+  overflow: hidden;
+  height: 300px;
+}
+
+.card_image_wrapper {
+  overflow: hidden;
+  position: relative;
+  height: 60%;
+}
+
+.card_category_box {
+  position: absolute;
+  left: 20px;
+  top: 15px;
+  background-color: #fff;
+  border-radius: 10px;
+}
+
+.card_category_box h6 {
+  font-size: 16.8px;
+  font-weight: 600;
+  padding: 6px 10px;
+  margin-bottom: 0;
+}
+
+.card_image {
+  width: 100%;
+  height: 100%;
+  border-top-right-radius: 12px;
+  border-top-left-radius: 12px;
+}
+
+.card_description_wrapper {
+  padding: 25px 20px;
+}
+
+.card_description_wrapper h2 {
+  font-size: 19.2px;
+  margin-bottom: 0;
+  padding-bottom: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card_description_wrapper p {
+  font-size: 16.8px;
+  color: grey;
+  margin-bottom: 0;
+  word-wrap: break-word;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.text__ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

@@ -192,7 +192,7 @@ function CreateNft(props) {
   const trackConversion = async (user, transactionId, details) => {
     const requestBody = {
       transaction_id: transactionId,
-      userWallet: user.user_id,
+      userWallet: user?.user_id,
       details,
     };
 
@@ -761,7 +761,7 @@ function CreateNft(props) {
                 Successfully Minted
               </h1>
               <h6>
-                NFT ID
+                NFT ID &nbsp;
                 {createNftResponse?.nft_id}
               </h6>
             </div>
