@@ -48,6 +48,7 @@ const MyNft = ({ isLink }) => {
   const nfts = useSelector((state) => state.home__allnft.nfts);
   const { user } = useSelector((state) => state.authReducer);
   const [alldata, setAlldata] = useState([]);
+  const { onlyOneContactShare } = useSelector((state) => state.home__allnft);
 
   const [isLoading, setIsloading] = useState(false);
 
@@ -79,6 +80,7 @@ const MyNft = ({ isLink }) => {
         const tempNfts = response.data.data;
         // console.log("data nfts", tempNfts);
         setAlldata(tempNfts);
+        if (tempNfts?.length && tempNfts?.length > 1 && onlyOneContactShare) dispatch({ type: "onlyOneContactShare" });
         dispatch({ type: "update_nfts", payload: tempNfts });
       })
       .catch((error) => {

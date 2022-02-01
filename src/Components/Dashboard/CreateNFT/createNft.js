@@ -192,7 +192,7 @@ function CreateNft(props) {
   const trackConversion = async (user, transactionId, details) => {
     const requestBody = {
       transaction_id: transactionId,
-      userWallet: user.user_id,
+      userWallet: user?.user_id,
       details,
     };
 
