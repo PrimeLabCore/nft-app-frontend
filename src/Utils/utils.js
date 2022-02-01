@@ -85,7 +85,7 @@ export const isOnlyNumber = (number) => {
 }
 
 export const isValidFullName = (text) => {
-  const regularExp = /^[a-z ,.'\s-]+$/i
+  const regularExp = /^[a-z,.'\s-]+$/i
   return regularExp.test(text);
 }
 
