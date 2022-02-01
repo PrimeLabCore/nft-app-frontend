@@ -224,6 +224,12 @@ const SignUpWith = () => {
   //   navigate("/signin");
   // };
 
+  const doesAccountStringHaveValidCharacters = (accountString) => {
+    const hasUppercaseLetter = /[A-Z]+?/.test(accountString);
+
+    return !hasUppercaseLetter;
+  };
+
   const handleValidation = () => {
     const errors = {};
     let formIsValid = true;
@@ -318,7 +324,9 @@ const SignUpWith = () => {
   const HandleInputChange = (field) => (e) => {
     const { value } = e.target;
     if (field === "email") {
-      if (value.length <= 64) setinputFields({ ...inputFields, [field]: value });
+      if (doesAccountStringHaveValidCharacters(value)) {
+        if (value.length <= 64) setinputFields({ ...inputFields, [field]: value });
+      }
     } else {
       setinputFields({ ...inputFields, [field]: value });
     }
