@@ -71,7 +71,7 @@ const ImportContactsDialog = ({
       if (setStatus) setStatus(false);
       if (setShowSignoutModal) setShowSignoutModal(true);
     } catch (e) {
-      console.log(e)
+      // console.log(e)
     }
   }
 

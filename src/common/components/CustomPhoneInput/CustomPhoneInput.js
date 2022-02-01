@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 // import PhoneInput from "react-phone-input-2";
 // import "react-phone-input-2/lib/style.css";
 import PhoneInput, { getCountryCallingCode, isValidPhoneNumber } from 'react-phone-number-input'
@@ -14,6 +14,7 @@ const useCustomPhoneInputStyle = makeStyles({
     '& input': {
       border: 'none',
       outline: 'none',
+      background: 'rgba(0, 0, 0, 0)',
       '&:focus, &:active, &:hover': {
         border: 'none',
         outline: 'none',
@@ -43,13 +44,35 @@ const CountrySelect = ({ iconComponent, options, ...props }) => {
   )
 }
 
-const NumberInput = React.forwardRef(({ onChange, ...props }, ref) => {
+const NumberInput = React.forwardRef(({ onChange, value, ...props }, ref) => {
+  const isValidGotten = useRef(false)
   const handleChange = e => {
-    !isValidPhoneNumber(props.value) && onChange(e)
+    const isNumValid = isValidPhoneNumber(e.target.value)
+    if (isNumValid) {
+      onChange(e)
+      isValidGotten.current = true
+    } else if (!isValidGotten.current && !isNumValid) {
+      onChange(e)
+    } else {
+      isValidGotten.current = isValidPhoneNumber(value)
+      return false
+    }
+  }
+
+  const handlePaste = e => {
+    const clipboardNumber = e.clipboardData.getData('Text')
+    const number = e.target.value + clipboardNumber
+    isValidPhoneNumber(number) || isValidPhoneNumber(clipboardNumber) ? null : e.preventDefault()
   }
 
   return (
-    <input ref={ref} onChange={handleChange} {...props} />
+    <input
+      ref={ref}
+      onChange={handleChange}
+      value={value}
+      onPaste={handlePaste}
+      {...props}
+    />
   )
 })
 

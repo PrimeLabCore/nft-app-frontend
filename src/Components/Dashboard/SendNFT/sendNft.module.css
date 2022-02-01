@@ -208,7 +208,7 @@
 .initial__nft__modal .modal__body__wrapper .data__wrapper .data_row_container .textContainer p {
   margin: 0;
   padding: 0;
-  max-width: 350px;
+  max-width: 200px;
   text-overflow: ellipsis;
   overflow: hidden;
 }
