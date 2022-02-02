@@ -63,8 +63,6 @@ function SendNft() {
   const [openGift, setOpenGift] = useState(false);
   const [selected, setSelected] = useState(nft || "");
   const { onlyOneContactShare } = useSelector((state) => state.home__allnft);
-
-  // const [sendGiftEmail, setSendGiftEmail] = useState("");
   const [isLoading, setIsloading] = useState(false);
   const [success, setSuccess] = useState(false);
 
@@ -82,16 +80,6 @@ function SendNft() {
     checkAllContacts(giftNFT__contactData || [])
   );
 
-  // for checked and unchecked items
-  // const HandleClick = (email) => {
-  //   const updatedCheckedState = checkedState.map((item) =>
-  //     item.email === email
-  //       ? { ...item, checked: !item.checked }
-  //       : { ...item, checked: item.checked }
-  //   );
-  //   setCheckedState(updatedCheckedState);
-  // };
-
   useEffect(() => 0, [checkedState]);
 
   const closegiftNft = () => {
@@ -104,7 +92,6 @@ function SendNft() {
   };
 
   useEffect(() => {
-    // setDisplayNfts(nfts.reverse());
     if (nfts?.length && nfts?.length > 1 && !onlyOneContactShare) dispatch({ type: "onlyOneContactShare" });
   }, [nfts]);
   useEffect(() => {
@@ -264,10 +251,6 @@ function SendNft() {
     }
   };
 
-  // const HandleDialogOpen = () => {
-  //   setimportContactDialog(true);
-  // };
-
   const urlArray = (selected?.file_url || selected?.image)?.split(".");
   const fileType = urlArray?.length ? urlArray[urlArray.length - 1] : "";
   useEffect(() => {
@@ -279,8 +262,6 @@ function SendNft() {
     }
   }, []);
 
-  // { return x.nft_id === selected.nft_id ?
-  // -1 : y.nft_id === selected.nft_id ? 1 : 0; }))
   return (
     <>
       {/* NFT Selection Modal */}
@@ -289,7 +270,6 @@ function SendNft() {
         show={sendnft__popup}
         onHide={closeSendNft}
         backdrop="static"
-        // size="lg"
         centered
         keyboard={false}
       >
@@ -420,10 +400,6 @@ function SendNft() {
           </div>
         </Modal.Body>
       </Modal>
-
-      {/* NFT Sender Modal */}
-      {/* {openGift && <GiftAnNft dashboard={true} closebutton={true}
-      sendGiftButton={handleNftPreview}/>} */}
 
       <ImportContactsDialog
         onImport={importContact}
