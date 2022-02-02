@@ -34,6 +34,8 @@ const useCustomPhoneInputStyle = makeStyles({
       padding: '0 8px'
     },
     "& .MuiAutocomplete-popper": {
+      inset: '0px auto auto 0px !important',
+      transform: 'translate(8px, 66px) !important',
       '& .MuiPaper-root': {
         boxShadow: 'none',
       }
