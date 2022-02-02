@@ -91,8 +91,6 @@ function Settings() {
           toast.error(error.response.data.message);
         }
       })
-      .finally(() => {
-      });
   };
 
   const validatePersonalInfo = () => {
