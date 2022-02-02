@@ -62,6 +62,7 @@ function SendNft() {
   const [openPreview, setOpenPreview] = useState(false);
   const [openGift, setOpenGift] = useState(false);
   const [selected, setSelected] = useState(nft || "");
+  const { onlyOneContactShare } = useSelector((state) => state.home__allnft);
 
   // const [sendGiftEmail, setSendGiftEmail] = useState("");
   const [isLoading, setIsloading] = useState(false);
@@ -102,6 +103,10 @@ function SendNft() {
     }
   };
 
+  useEffect(() => {
+    // setDisplayNfts(nfts.reverse());
+    if (nfts?.length && nfts?.length > 1 && !onlyOneContactShare) dispatch({ type: "onlyOneContactShare" });
+  }, [nfts]);
   useEffect(() => {
     if (giftNFT__contactData) {
       setFilteredData(giftNFT__contactData);
@@ -472,7 +477,7 @@ function SendNft() {
                     </audio>
                   </div>
                 ) : (
-                  <img src={selected?.file_url || selected?.image} alt={selected.title} />
+                  <img src={selected?.file_url || selected?.image} alt={selected?.title} />
                 )}
               </div>
               <h1 title={selected.title}>

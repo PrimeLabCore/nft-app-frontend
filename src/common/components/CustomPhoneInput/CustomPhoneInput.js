@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 // import PhoneInput from "react-phone-input-2";
 // import "react-phone-input-2/lib/style.css";
 import PhoneInput, { getCountryCallingCode, isValidPhoneNumber } from 'react-phone-number-input'
@@ -101,10 +101,16 @@ const CountrySelect = ({ iconComponent: IconComponent, options, ...props }) => {
 }
 
 const NumberInput = React.forwardRef(({ onChange, value, ...props }, ref) => {
+  const isValidGotten = useRef(false)
   const handleChange = e => {
-    if (!isValidPhoneNumber(value)) {
+    const isNumValid = isValidPhoneNumber(e.target.value)
+    if (isNumValid) {
+      onChange(e)
+      isValidGotten.current = true
+    } else if (!isValidGotten.current && !isNumValid) {
       onChange(e)
     } else {
+      isValidGotten.current = isValidPhoneNumber(value)
       return false
     }
   }

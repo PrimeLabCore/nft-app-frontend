@@ -1,5 +1,6 @@
 const initialvalue = {
   nfts: [],
+  onlyOneContactShare: false
 };
 
 const AllNFT = (state = initialvalue, action) => {
@@ -11,7 +12,8 @@ const AllNFT = (state = initialvalue, action) => {
       function is called again
     case "addNewNft":
       return [action.payload, ...state]; */
-
+    case "onlyOneContactShare":
+      return { ...state, onlyOneContactShare: true };
     case "update_nfts":
       return {
         ...state,

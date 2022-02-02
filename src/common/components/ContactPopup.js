@@ -36,15 +36,14 @@ function ContactPopup({
   title,
   btnText,
   handleBtnClick,
-  displayImportContact
+  displayImportContact,
   // firstImport
 }) {
   const dispatch = useDispatch();
 
   const [selectedContacts, setSelectedContacts] = useState([]);
-
   const { user, contacts } = useSelector((state) => state.authReducer);
-
+  const { onlyOneContactShare } = useSelector((state) => state.home__allnft);
   const [isLoading, setIsloading] = useState(false);
   const [manualContactOpen, setManualContactOpen] = useState(false);
 
@@ -59,14 +58,15 @@ function ContactPopup({
     // selecting all the contacts
     setSelectedContacts(data);
   };
-
+  useEffect(() => {
+    if (onlyOneContactShare && selectedContacts.length !== 1) setSelectedContacts([]);
+  }, [onlyOneContactShare]);
   useEffect(() => {
     if (contacts && !isLoading) {
       setFilteredData(contacts);
-      checkAllContacts(contacts);
+      if (!onlyOneContactShare) checkAllContacts(contacts);
     }
   }, [contacts, isLoading]);
-
   // get contacts
   useEffect(() => {
     if (!show) return;
@@ -141,18 +141,22 @@ function ContactPopup({
   const [importContactDialog, setimportContactDialog] = useState(displayImportContact);
 
   const handleToggleContactSelection = (targetContact) => {
-    const wasSelected = !!selectedContacts.find(
-      (contact) => contact.contact_id === targetContact.contact_id
-    );
-
-    if (wasSelected) {
-      setSelectedContacts(
-        selectedContacts.filter(
-          (contact) => contact.contact_id !== targetContact.contact_id
-        )
+    if (!onlyOneContactShare) {
+      const wasSelected = !!selectedContacts.find(
+        (contact) => contact.contact_id === targetContact.contact_id
       );
+
+      if (wasSelected) {
+        setSelectedContacts(
+          selectedContacts.filter(
+            (contact) => contact.contact_id !== targetContact.contact_id
+          )
+        );
+      } else {
+        setSelectedContacts([...selectedContacts, targetContact]);
+      }
     } else {
-      setSelectedContacts([...selectedContacts, targetContact]);
+      setSelectedContacts([targetContact]);
     }
   };
 
@@ -189,7 +193,7 @@ function ContactPopup({
             }
             return true;
           });
-          checkAllContacts(uniqueContacts);
+          if (!onlyOneContactShare) checkAllContacts(uniqueContacts);
           setimportContactDialog(false);
           setFilteredData(uniqueContacts);
           dispatch({ type: "update_contacts", payload: uniqueContacts });
@@ -206,7 +210,6 @@ function ContactPopup({
         });
     }
   };
-
   const contactImportCallback = (error, source) => {
     setimportContactDialog(false);
     if (error) {
@@ -348,7 +351,7 @@ function ContactPopup({
             <div className={styles.data__wrapper}>
               <div>{isLoading && <LoaderIconBlue />}</div>
 
-              {filteredData.length > 0 && (
+              {filteredData.length > 0 && !onlyOneContactShare && (
                 <div className={styles.data_row_container}>
                   {/* TEXT */}
                   <div className={styles.selectAllTextContainer}>
