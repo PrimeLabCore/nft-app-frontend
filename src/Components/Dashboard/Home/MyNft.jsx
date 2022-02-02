@@ -78,7 +78,6 @@ const MyNft = ({ isLink }) => {
       .then((response) => {
         // save user details
         const tempNfts = response.data.data;
-        // console.log("data nfts", tempNfts);
         setAlldata(tempNfts);
         if (tempNfts?.length && tempNfts?.length > 1 && onlyOneContactShare) dispatch({ type: "onlyOneContactShare" });
         dispatch({ type: "update_nfts", payload: tempNfts });
@@ -131,7 +130,6 @@ const MyNft = ({ isLink }) => {
             <Carousel
               removeArrowOnDeviceType={[
                 "tablet",
-                // "mobile",
                 "desktop",
                 "superLargeDesktop",
               ]}
