@@ -4,8 +4,8 @@ import React, { useState } from "react";
 import PhoneInput, { getCountryCallingCode, isValidPhoneNumber } from 'react-phone-number-input'
 import { makeStyles } from '@material-ui/core/styles'
 import TextField from "@mui/material/TextField";
-// import Menu from "@mui/material/Menu";
 import Autocomplete from '@mui/material/Autocomplete'
+import ClickAwayListener from "@mui/material/ClickAwayListener";
 import 'react-phone-number-input/style.css'
 
 const useCustomPhoneInputStyle = makeStyles({
@@ -47,77 +47,55 @@ const useCustomPhoneInputStyle = makeStyles({
 })
 
 const CountrySelect = ({ iconComponent, options, ...props }) => {
-  const [anchorEl, setAnchorEl] = useState(null);
-  const open = Boolean(anchorEl);
+  const [open, setOpen] = useState(false);
   const IconComponent = iconComponent
+  const handleClick = () => {
+    setOpen(!open)
+  }
+
   return (
     <div className="PhoneInputCountry">
       <div
         style={{ display: "flex", alignItems: "center", cursor: 'pointer' }}
-        onClick={(e) => setAnchorEl(open ? null : e.currentTarget)}
       >
         <IconComponent country={props.value} label={props.value} />
         <div className="PhoneInputCountrySelectArrow" />
       </div>
-      <div
-        style={{
-          position: 'absolute',
-          top: 55,
-          left: -10,
-          width: 350,
-          height: 450,
-          background: '#fff',
-          zIndex: 99,
-          paddingTop: 10,
-          opacity: open ? 1 : 0,
-          transition: 'opacity 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
-          boxShadow: '0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%)'
-        }}
-      >
-        <Autocomplete
-          disablePortal
-          popupIcon={null}
-          options={options}
-          autoHighlight
-          open
-          value={null}
-          onChange={(e, v, r) => {
-            if (r === 'clear') return
-            props.onChange(v.value)
-            setAnchorEl(null)
+
+      <ClickAwayListener onClickAway={handleClick}>
+        <div
+          style={{
+            position: 'absolute',
+            top: 55,
+            left: -10,
+            width: 350,
+            height: 450,
+            background: '#fff',
+            zIndex: 99,
+            paddingTop: 10,
+            opacity: open ? 1 : 0,
+            transition: 'opacity 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
+            boxShadow: '0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%)'
           }}
-          clearIcon={null}
-          getOptionLabel={(option) => `${option.label} +${getCountryCallingCode(option.value)}`}
-          renderInput={(params) => <TextField {...params} />}
-        />
-      </div>
-      {/* <Menu
-        anchorEl={anchorEl}
-        open={open}
-        onClose={() => setAnchorEl(null)}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left',
-        }}
-        disablePortal
-      >
-        <div>
+        >
           <Autocomplete
             disablePortal
             popupIcon={null}
             options={options}
             autoHighlight
             open
-            onChange={(e, v) => {
+            value={null}
+            onChange={(e, v, r) => {
+              if (r === 'clear') return
               props.onChange(v.value)
-              setAnchorEl(null)
+              setOpen(false)
             }}
             clearIcon={null}
             getOptionLabel={(option) => `${option.label} +${getCountryCallingCode(option.value)}`}
             renderInput={(params) => <TextField {...params} />}
           />
         </div>
-      </Menu> */}
+      </ClickAwayListener>
     </div>
   )
 }
