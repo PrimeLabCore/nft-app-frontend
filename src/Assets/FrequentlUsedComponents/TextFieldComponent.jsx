@@ -57,6 +57,7 @@ const TextFieldComponent = ({
   HandelKeyUp,
   HandelKeyPress,
   autoFocus,
+  required
 }) => {
   const classes = useStyles();
   return (
@@ -71,7 +72,7 @@ const TextFieldComponent = ({
       className={`${classes.inputfield} ${classes.root}`}
       InputLabelProps={{
         shrink: true,
-        className: classes.formLabel
+        className: `${classes.formLabel} ${required ? "requiredLabel" : ""}`
       }}
       disabled={disabled ? disabled : false}
       name={name}

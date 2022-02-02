@@ -78,7 +78,7 @@ const CreateAnAccount = () => {
   useEffect(() => {
     if (LoginFormMethod === "email") {
       setAccountId(
-        location?.state?.user ? "" : signupEmail?.split("@")[0]?.replaceAll(".", "")
+        location?.state?.user ? "" : signupEmail?.split("@")[0]?.replaceAll(".", "").toLowerCase()
         // + ".near"
       );
     } else {
@@ -110,8 +110,8 @@ const CreateAnAccount = () => {
   const onAccountChange = (e) => {
     const { value } = e.target;
 
-    if (!value || doesAccountStringHaveValidCharacters(value)) {
-      if (value.length <= 56) setAccountId(value);
+    if (!value || doesAccountStringHaveValidCharacters(value.toLowerCase())) {
+      if (value.length <= 56) setAccountId(value.toLowerCase());
     }
 
     // setDetails((preValue) => {
@@ -240,6 +240,7 @@ const CreateAnAccount = () => {
             HandelKeyPress={(e) => {
               CheckAndSubmitForm(e);
             }}
+            required
           />
         </div>
 
@@ -269,6 +270,7 @@ const CreateAnAccount = () => {
             }}
             HandleFocus={() => HandleFocus("id")}
             // disabled
+            required
           />
         </div>
 
