@@ -30,72 +30,70 @@ const useCustomPhoneInputStyle = makeStyles({
     '& legend': {
       width: 0
     },
-    '& .MuiMenu-root>.MuiPaper-root': {
-      height: '445px !important',
-      width: '350px !important'
-    },
     "& .MuiAutocomplete-root .MuiFormControl-root": {
       padding: '0 8px'
     },
     "& .MuiAutocomplete-popper": {
-      // transform: 'translate(16px, 67px)!important',
       '& .MuiPaper-root': {
         boxShadow: 'none',
       }
+    },
+    "& .flag-wrapper": {
+      display: "flex",
+      alignItems: "center",
+      cursor: 'pointer'
+    },
+    "& .autocomplete-wrapper": {
+      position: 'absolute',
+      top: 55,
+      left: -10,
+      width: 350,
+      height: 450,
+      background: '#fff',
+      zIndex: 99,
+      paddingTop: 10,
+      boxShadow: '0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%)'
     }
   }
 })
 
-const CountrySelect = ({ iconComponent, options, ...props }) => {
+const CountrySelect = ({ iconComponent: IconComponent, options, ...props }) => {
   const [open, setOpen] = useState(false);
-  const IconComponent = iconComponent
   const handleClick = () => {
     setOpen(!open)
   }
 
+  const handleChange = (e, v, r) => {
+    if (r === 'clear') return
+    props.onChange(v.value)
+    setOpen(false)
+  }
+
   return (
     <div className="PhoneInputCountry">
-      <div
-        style={{ display: "flex", alignItems: "center", cursor: 'pointer' }}
-      >
+      <div onClick={handleClick} className="flag-wrapper">
         <IconComponent country={props.value} label={props.value} />
         <div className="PhoneInputCountrySelectArrow" />
       </div>
 
-      <ClickAwayListener onClickAway={handleClick}>
-        <div
-          style={{
-            position: 'absolute',
-            top: 55,
-            left: -10,
-            width: 350,
-            height: 450,
-            background: '#fff',
-            zIndex: 99,
-            paddingTop: 10,
-            opacity: open ? 1 : 0,
-            transition: 'opacity 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
-            boxShadow: '0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%)'
-          }}
-        >
-          <Autocomplete
-            disablePortal
-            popupIcon={null}
-            options={options}
-            autoHighlight
-            open
-            value={null}
-            onChange={(e, v, r) => {
-              if (r === 'clear') return
-              props.onChange(v.value)
-              setOpen(false)
-            }}
-            clearIcon={null}
-            getOptionLabel={(option) => `${option.label} +${getCountryCallingCode(option.value)}`}
-            renderInput={(params) => <TextField {...params} />}
-          />
-        </div>
-      </ClickAwayListener>
+      {open && (
+        <ClickAwayListener onClickAway={handleClick}>
+          <div className="autocomplete-wrapper">
+            <Autocomplete
+              open
+              autoHighlight
+              disablePortal
+              clearIcon={null}
+              popupIcon={null}
+              value={null}
+              options={options}
+              onChange={handleChange}
+              getOptionLabel={(option) => `${option.label} +${getCountryCallingCode(option.value)}`}
+              renderInput={(params) => <TextField {...params} autoFocus />}
+            />
+          </div>
+        </ClickAwayListener>
+      )}
     </div>
   )
 }
