@@ -31,7 +31,6 @@ function Settings() {
   const [changeInfo, setChangeInfo] = useState(false);
   const [details, setDetails] = useState("");
   const [checked, setChecked] = useState(0);
-  // const [enable2fa, setEnable2fa] = useState(false);
   const [info, setinfo] = useState("");
   const { user } = useSelector((state) => state.authReducer);
   const [isLoading, setIsloading] = useState(false);
@@ -93,7 +92,6 @@ function Settings() {
         }
       })
       .finally(() => {
-        // setIsloading(false);
       });
   };
 
@@ -151,12 +149,8 @@ function Settings() {
       .then((response) => {
         toast.success("Settings Saved");
         getPersonalInfo();
-        // update user details in localstorage and redux state
         const temp = JSON.parse(localStorage.getItem("user"));
         temp.user_info = response.data;
-        // localStorage.getItem("user");
-        // localStorage.setItem("user", JSON.stringify(temp));
-        // dispatch({ type: "login_Successfully", payload: response.data });
       })
       .catch((error) => {
         if (error.response.data) {
@@ -232,7 +226,6 @@ function Settings() {
                   >
                     <div className={styles.settings__name__info}>
                       <img src={user_icon} alt="User Name" />
-                      {/* <h6>{user?.email?.split("@")[0] + ".near"}</h6> */}
                       {user?.wallet_id}
                     </div>
                     <button>
@@ -253,7 +246,6 @@ function Settings() {
                       >
                         <div className={styles.personal__settings}>
                           <p>Name</p>
-                          {/* <h6>{user.email.split("@")[0]}</h6> */}
                           <h6 title={user?.full_name}>{user?.full_name}</h6>
                         </div>
                         <button>
@@ -329,7 +321,6 @@ function Settings() {
           <Modal.Body>
             <div className={styles.modal__body__wrapper}>
               <div className={styles.name__wrapper} onClick={() => check(0)}>
-                {/* <h6>{user?.email?.split("@")[0] + ".near"}</h6> */}
                 <span>{user?.wallet_id}</span>
                 {checked === 0 && (
                   <div className={styles.checked}>
@@ -337,14 +328,6 @@ function Settings() {
                   </div>
                 )}
               </div>
-              {/* <div className={styles.name__wrapper} onClick={() => check(1)}>
-                <h6>demo.near</h6>
-                {checked === 1 && (
-                  <div className={styles.checked}>
-                    <AiOutlineCheck />
-                  </div>
-                )}
-              </div> */}
             </div>
             <div className={styles.btn__wrapper}>
               <button onClick={addNewWallet} className={styles.next__btn}>
