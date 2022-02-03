@@ -18,7 +18,6 @@ function Claim() {
 
   const [claimModal, setClaimModal] = useState(false);
   const { user } = useSelector((state) => state.authReducer);
-  // const [nftDetail, setNftDetail] = useState();
   const nftDetail = useSelector((state) => state.nft__detail);
 
   const isUserLoggedIn = !!user;
@@ -30,11 +29,8 @@ function Claim() {
           data: { data },
         } = await request({ url: `/nfts/${nftId}` });
         if (data) {
-          // testing only: do not commit
-          // data.status = "unclaimed_gift";
           dispatch({ type: "nft__detail", payload: mapNftDetails(data) });
         }
-        // setNftDetail(data);
       } catch (error) {
         // console.error(error);
       }

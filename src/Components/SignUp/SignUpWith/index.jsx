@@ -22,18 +22,6 @@ const validateEmail = (email) => {
   return re.test(email) && !t.test(splitEmail[0]);
 };
 
-// Date : Jan 4 2021, 09:27 AM IST, Rohit Yadav
-// Added phone number validation.
-// Valid formats:
-
-// (123) 456-7890
-// (123)456-7890
-// 123-456-7890
-// 123.456.7890
-// 1234567890
-// +31636363634
-// 075-63546725
-
 const validatePhone = (phone) =>
   /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im.test(phone);
 
@@ -41,10 +29,7 @@ const SignUpWith = () => {
   const dispatch = useDispatch();
   const loginForm = useSelector((state) => state.LoginFormMethod);
   const [inputFields, setinputFields] = useState({ email: "", phone: "" });
-  // const [loginFields, setLoginFields] = useState({ username: "" });
   const loginFields = { username: "" };
-  // const [validateUserLoading, setValidateUserLoading] = useState(true);
-  // const [isUserIDAvailable, setIsUserIDAvailable] = useState(false);
   const { redirectUrl } = useSelector((state) => state.authReducer);
 
   const [errors, setErrors] = useState({});
@@ -84,14 +69,12 @@ const SignUpWith = () => {
       fd.append(
         "user[account_id]",
         params.account_id
-        // signupEmail?.replace(".", "") + ".near"
       );
     } else {
       fd.append("user[phone_no]", params.phone);
       fd.append(
         "user[account_id]",
         `${params.phone}.near`
-        // signupEmail?.replace(".", "") + ".near"
       );
     }
 
@@ -105,7 +88,6 @@ const SignUpWith = () => {
       } = response;
 
       axios.interceptors.request.use((config) => {
-        // const token = store.getState().session.token;
         config.headers.Authorization = authorization;
 
         return config;
@@ -114,16 +96,8 @@ const SignUpWith = () => {
         type: "login_Successfully",
         payload: { ...data, token: authorization }
       });
-      // localStorage.setItem(
-      //   "user",
-      //   JSON.stringify({ ...data, token: authorization })
-      // );
       navigate(redirectUrl ? redirectUrl : "/");
     }
-
-    // else {
-    //   navigate("verification");
-    // }
   };
 
   const handleLogin = async (email) => {
@@ -144,7 +118,6 @@ const SignUpWith = () => {
       } = response;
 
       axios.interceptors.request.use((config) => {
-        // const token = store.getState().session.token;
         config.headers.Authorization = authorization;
 
         return config;
@@ -153,11 +126,6 @@ const SignUpWith = () => {
         type: "login_Successfully",
         payload: { ...data, token: authorization }
       });
-      // localStorage.setItem(
-      //   "user",
-      //   JSON.stringify({ ...data, token: authorization })
-      // );
-      // navigate(redirectUrl ? redirectUrl : "/");
     } else {
       // navigate("verification");
     }
@@ -185,44 +153,6 @@ const SignUpWith = () => {
   }, []);
 
   useEffect(() => 0, [errors]);
-
-  // useEffect(() => {
-  //   // If searchCity is 2 letters or more
-
-  //   if (!par?.account_id && loginForm === "email") {
-  //     const validate = async () => {
-  //       const response = await axios.get(
-  //         `${API_BASE_URL}/check_account_id?account_id=${inputFields.email?.replace(
-  //           ".",
-  //           ""
-  //         )}.near`
-  //       );
-
-  //       console.log(`response`, response.data);
-  //       const { success } = response.data;
-  //       setIsUserIDAvailable(success);
-  //     };
-  //     if (inputFields.email.length > 1) {
-  //       setValidateUserLoading(true);
-  //       validate();
-  //     }
-  //   }
-  // }, [inputFields.email]);
-
-  // const handleOnChange = (e) => {
-  //   e.preventDefault()
-  //   setSearchCity(e.target.value)
-  // }
-
-  // HandleLogin
-  // const HandleLoginWithNear = () => {
-  //   // navigate("/signin");
-  //   window.open(`${API_BASE_URL}/near_login/login.html`, "_self");
-  // };
-
-  // const SignIn = () => {
-  //   navigate("/signin");
-  // };
 
   const handleValidation = () => {
     const errors = {};
@@ -263,12 +193,6 @@ const SignUpWith = () => {
       : dispatch({ type: "set_signup_phone", payload: inputFields.phone });
     window.dataLayer.push({
       event: "event",
-      // eventProps: {
-      //   category: "Signup",
-      //   action: "Signed Up",
-      //   label: "Signup",
-      //   value: "Signup",
-      // },
       eventProps: {
         category: "Signup",
         action: "User Verified",
@@ -276,7 +200,6 @@ const SignUpWith = () => {
         value: "Signup"
       }
     });
-    // navigate("verification");
     navigate("/signup/create-account");
     return 0;
   };
@@ -295,12 +218,6 @@ const SignUpWith = () => {
     dispatch({ type: "set_signup_phone", payload: inputFields.phone });
     window.dataLayer.push({
       event: "event",
-      // eventProps: {
-      //   category: "Signup",
-      //   action: "Signed Up",
-      //   label: "Signup",
-      //   value: "Signup",
-      // },
       eventProps: {
         category: "Signup",
         action: "User Verified",
@@ -308,8 +225,6 @@ const SignUpWith = () => {
         value: "Signup"
       }
     });
-
-    // navigate("verification");
     navigate("/signup/create-account");
     return 0;
   };
@@ -323,10 +238,6 @@ const SignUpWith = () => {
       setinputFields({ ...inputFields, [field]: value });
     }
   };
-
-  // const handleInputUserName = (e) => {
-  //   setLoginFields({ username: e.target.value });
-  // };
 
   const CheckAndSubmitForm = (e) => {
     if (e.which === 13) {
@@ -389,17 +300,6 @@ const SignUpWith = () => {
             placeholder="Ex. johdoe@gmail.com"
             type={"email"}
             InputValue={inputFields.email}
-            // InputProps={{
-            //   error: !!errors.email,
-            //   endAdornment: (
-            //     <InputAdornment
-            //       position="start"
-            //       className={`${styles.button} ${styles.secondary} ${styles.active}`}
-            //     >
-            //       .near
-            //     </InputAdornment>
-            //   ),
-            // }}
             HandleInputChange={HandleInputChange("email")}
             HandelKeyPress={(e) => {
               CheckAndSubmitForm(e);
@@ -407,7 +307,6 @@ const SignUpWith = () => {
           />
         )}
         <button
-          //   onClick={handleSignup}
           onClick={() =>
             loginForm === "email" ? oldHandleSignup() : phoneNumberSignUp()}
           className={`${styles.button} ${

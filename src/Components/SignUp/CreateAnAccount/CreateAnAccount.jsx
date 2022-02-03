@@ -23,16 +23,11 @@ const CreateAnAccount = () => {
   );
   const [isLoading, setIsloading] = useState(false);
 
-  // const loginForm = useSelector((state) => state.LoginFormMethod);
-
   const { LoginFormMethod } = useSelector((state) => state);
 
   const { accId } = useParams();
 
   const navigate = useNavigate();
-  // const [details, setDetails] = useState({
-  //   id: `${accId ? accId : ""}`,
-  // });
   const [fullname, setFullname] = useState("");
   const [accountId, setAccountId] = useState("");
   const [windowstate, setWindow] = useState(window.innerWidth < 767);
@@ -52,7 +47,6 @@ const CreateAnAccount = () => {
       false
     );
   }, [windowstate]);
-  // const dispatch = useDispatch()
   const [info, setinfo] = useState("");
 
   const HandleClick = () => {
@@ -79,12 +73,10 @@ const CreateAnAccount = () => {
     if (LoginFormMethod === "email") {
       setAccountId(
         location?.state?.user ? "" : signupEmail?.split("@")[0]?.replaceAll(".", "").toLowerCase()
-        // + ".near"
       );
     } else {
       setAccountId(
         signupPhone.replaceAll("+", "")
-        //  + ".near"
       );
     }
   }, [signupEmail, signupPhone]);
@@ -93,7 +85,6 @@ const CreateAnAccount = () => {
 
   // HandleFocus for input
   const HandleFocus = (ClickedInput) => {
-    // console.log('i m focused', ClickedInput)
     setinfo(ClickedInput);
   };
 
@@ -113,13 +104,6 @@ const CreateAnAccount = () => {
     if (!value || doesAccountStringHaveValidCharacters(value.toLowerCase())) {
       if (value.length <= 56) setAccountId(value.toLowerCase());
     }
-
-    // setDetails((preValue) => {
-    //   return {
-    //     ...preValue,
-    //     [name]: value,
-    //   };
-    // });
   };
 
   const onNameChange = (e) => {
@@ -249,7 +233,6 @@ const CreateAnAccount = () => {
           <TextFieldComponent
             label="ACCOUNT ID"
             variant="outlined"
-            // InputValue={details.id}
             InputValue={accountId}
             name="id"
             HandleInputChange={onAccountChange}
@@ -269,7 +252,6 @@ const CreateAnAccount = () => {
               )
             }}
             HandleFocus={() => HandleFocus("id")}
-            // disabled
             required
           />
         </div>
@@ -287,19 +269,6 @@ const CreateAnAccount = () => {
             <IoIosArrowForward />
           </span>
         </button>
-        {/* <button onClick={createAccount} className={styles.createAccountButton}>
-          <a
-            href={`https://accounts.google.com/o/oauth2/auth?response_type=code&redirect_uri=${googleRedirectUrl}&scope=https://www.googleapis.com/auth/contacts&client_id=${googleClientId}&access_type=offline&prompt=consent`}
-            className={`${styles.secondary_button}`}
-          >
-            Create an account
-            {
-              <span>
-                <IoIosArrowForward />
-              </span>
-            }
-          </a>
-        </button> */}
 
         <p>
           By creating a NEAR account, you agree to the&nbsp;

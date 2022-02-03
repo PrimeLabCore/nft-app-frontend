@@ -4,7 +4,6 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import React, { useEffect } from "react";
 import { FcGoogle } from "react-icons/fc";
-// import { IoLogoApple, IoLogoMicrosoft } from "react-icons/io5";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -22,7 +21,6 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: "10px",
     border: "none",
     display: "flex",
-    // justifyContent: "space-evenly",
     alignItems: "center",
     padding: "20px",
     marginBottom: "10px",
@@ -100,7 +98,6 @@ const ImportContactsDialog = ({
           toast.error(error.response.data.message);
         }
       })
-      .finally(() => { });
   };
 
   const LoadCloudSponge = (callback) => {
@@ -159,20 +156,12 @@ const ImportContactsDialog = ({
             return false;
           },
           beforeLaunch() {
-            // const all = document.getElementsByClassName("contactDialogBack");
-            // for (let i = 0; i < all.length; i++) {
-            //   all[i].style.visibility = "hidden";
-            // }
             const all1 = document.getElementsByClassName("initial__modal");
             for (let i = 0; i < all1.length; i++) {
               all1[i].style.display = "none";
             }
           },
           beforeClosing() {
-            // const all = document.getElementsByClassName("contactDialogBack");
-            // for (let i = 0; i < all.length; i++) {
-            //   all[i].style.visibility = "inherit";
-            // }
             const all1 = document.getElementsByClassName("initial__modal");
             for (let i = 0; i < all1.length; i++) {
               all1[i].style.display = "block";
@@ -250,22 +239,6 @@ const ImportContactsDialog = ({
           <FcGoogle className={classes.googleicon} />
           <p> Sign in with Google</p>
         </button>
-
-        {/* <button
-          className={`${classes.mainContainer} cloudsponge-launch`}
-          data-cloudsponge-source="icloud"
-        >
-          <IoLogoApple className={classes.appleicon} />
-          <p> Connect Apple Contacts (iCloud)</p>
-        </button>
-
-        <button
-          className={`${classes.mainContainer} cloudsponge-launch`}
-          data-cloudsponge-source="office365"
-        >
-          <IoLogoMicrosoft className={classes.microsofticon} />
-          <p> Connect Microsoft 365 Contacts</p>
-        </button> */}
       </Dialog>
     </div>
   );
