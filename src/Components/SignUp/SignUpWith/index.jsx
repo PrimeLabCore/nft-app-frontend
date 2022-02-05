@@ -9,7 +9,7 @@ import TextFieldComponent from "../../../Assets/FrequentlUsedComponents/TextFiel
 import CustomPhoneInput from "../../../common/components/CustomPhoneInput/CustomPhoneInput";
 import { API_BASE_URL } from "../../../Utils/config";
 import styles from "./index.module.css";
-import TooltipButton from "../../../common/components/TooltipButton";
+// import TooltipButton from "../../../common/components/TooltipButton";
 
 const validateEmail = (email) => {
   const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -355,9 +355,13 @@ const SignUpWith = () => {
         </p>
         <hr />
 
-        <h6 className={styles.link}>Already have Near Account?</h6>
+        {/* <h6 className={styles.link}>Already have Near Account?</h6> */}
 
-        <TooltipButton tooltipText="Coming soon..." buttonText="Login with NEAR" buttonStyle={`${styles.button} ${styles.comingSoonBtn}`} />
+        {/* <TooltipButton
+          tooltipText="Coming soon..."
+          buttonText="Login with NEAR"
+          buttonStyle={`${styles.button} ${styles.comingSoonBtn}`}
+        /> */}
       </div>
 
       <div className={styles.home_page_text}>
