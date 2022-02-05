@@ -37,7 +37,6 @@ function ContactPopup({
   btnText,
   handleBtnClick,
   displayImportContact,
-  // firstImport
 }) {
   const dispatch = useDispatch();
 
@@ -49,8 +48,6 @@ function ContactPopup({
 
   const [inputField, setInputField] = useState({ ...contactFormFields });
   const [filteredData, setFilteredData] = useState(contacts);
-
-  // const firstImport = localStorage.getItem("firstImport");
 
   const [searchText, setSearchText] = useState("");
 
@@ -81,7 +78,6 @@ function ContactPopup({
             data: { data: contacts = [] }
           } = response;
           const uniqueEmails = [];
-          // console.log(`Got ${contacts.length} contacts from server`);
           const uniqueContacts = contacts.filter((contactObj) => {
             if (contactObj.email && contactObj.email.length) {
               let emailExists = false;
@@ -171,7 +167,6 @@ function ContactPopup({
             data: { data: contacts = [] }
           } = response;
           const uniqueEmails = [];
-          // console.log(`Got ${contacts.length} contacts from server`);
           const uniqueContacts = contacts.filter((contactObj) => {
             if (contactObj.email && contactObj.email.length) {
               let emailExists = false;
@@ -405,7 +400,6 @@ function ContactPopup({
           </div>
           <div className={styles.multiple__btn__wrapper}>
             <button
-              // disabled={firstImport ? false : true}
               onClick={() => {
                 handleBtnClick(selectedContacts);
               }}
