@@ -43,12 +43,6 @@ const checkAllContacts = (data) =>
     email: item.primary_email
   }));
 
-// const findIfChecked = (email, array) => {
-//   const foundItem = array.find((item) => item.email === email);
-//   if (foundItem) return foundItem.checked;
-//   return false;
-// };
-
 function SendNft() {
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.authReducer);
