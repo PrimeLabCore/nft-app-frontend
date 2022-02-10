@@ -7,6 +7,7 @@ import { AiFillCloseCircle } from "react-icons/ai";
 import { IoIosArrowForward } from "react-icons/io";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
+import { isEmpty } from "lodash";
 import TextFieldComponent from "../../../Assets/FrequentlUsedComponents/TextFieldComponent";
 import { API_BASE_URL } from "../../../Utils/config";
 import { isValidFullName, mapUserSession } from "../../../Utils/utils";
@@ -122,10 +123,14 @@ const CreateAnAccount = () => {
     // signup body
     const user = {
       fullName: fullname.trim(),
-      walletName: accountId.includes(".near") ? accountId : `${accountId}.near`,
-      email: location?.state?.user ? location?.state?.user?.email : signupEmail,
-      phone: signupPhone
-    };
+      walletName: accountId.includes(".near") ? accountId : `${accountId}.near`
+    }
+
+    if (!isEmpty(signupPhone)) {
+      user.phone = signupPhone.replace("+", "");
+    } else {
+      user.email = location?.state?.user ? location?.state?.user?.email : signupEmail
+    }
 
     // As a workaround for the claim NFT to work, we need to pass the NFT ID along with
     // the user details in the POST /user/create request body.
