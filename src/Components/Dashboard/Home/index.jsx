@@ -47,7 +47,6 @@ const Home = () => {
   const importContact = (data) => {
     if (data) {
       setAllContacts(data);
-      // console.log("data", data);
       dispatch({
         type: "getGoogleContactData",
         payload: data,
@@ -78,7 +77,6 @@ const Home = () => {
     } else {
       toast.success(`Your contacts were successfully imported from ${source}`);
       HandleDialogClose();
-      // setShowContactListPopup(true);
       openCreateNFTPopup();
     }
   };

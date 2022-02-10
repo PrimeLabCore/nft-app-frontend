@@ -1,5 +1,4 @@
 import { InputAdornment } from "@material-ui/core";
-// import MenuItem from "@material-ui/core/MenuItem";
 import axios from "axios";
 import React, { useState } from "react";
 import { BsArrowLeftRight } from "react-icons/bs";
@@ -11,7 +10,6 @@ import useRedirectIfUserLoggedIn from '../../common/hooks/useRedirectIfUserLogge
 import { API_BASE_URL } from "../../Utils/config";
 import AppLoader from "../Generic/AppLoader";
 import styles from "./SignIn.module.css";
-// import TooltipButton from '../../common/components/TooltipButton';
 
 const SignIn = () => {
   const navigate = useNavigate();
@@ -89,7 +87,6 @@ const SignIn = () => {
           <TextFieldComponent
             label="ACCOUNT ID"
             variant="outlined"
-              // InputValue={details.id}
             InputValue={accountId}
             name="id"
             HandleInputChange={onAccountChange}
@@ -123,23 +120,7 @@ const SignIn = () => {
           <button className={styles.primary_button} onClick={handleLogin}>
             Allow
           </button>
-          {/* <Link
-              to={`/signup/create-account/${"Johndoe.near"}`}
-              className={styles.primary_button}
-            >
-              Allow
-            </Link> */}
-
         </div>
-
-        {/* <div className={styles.loginWithNearContainer}>
-          <TooltipButton
-            tooltipText="Coming soon..."
-            buttonText="Login with NEAR"
-            buttonStyle={`${styles.comingSoonBtn}`}
-          />
-        </div> */}
-
       </div>
     </div>
   );

@@ -12,7 +12,6 @@ function HomeHeader() {
       <Link to="/settings">
         <div className={styles.user__icon}>
           <img src={user_icon} alt="User Name" />
-          {/* <h6>{email?.split("@")[0] + ".near"}</h6> */}
           <h6>{user?.wallet_id}</h6>
         </div>
       </Link>

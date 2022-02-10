@@ -1,9 +1,6 @@
 import React, { useRef } from "react";
 import { Overlay, Tooltip } from "react-bootstrap";
-// import {BiHomeAlt} from "react-icons/bi"
 import { AiFillPlusCircle } from "react-icons/ai";
-// import {BsArrowUpRight} from "react-icons/bs"
-// import {IoIosAdd} from "react-icons/io"
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import create__icon from "../../../Assets/Images/icons/create.png";

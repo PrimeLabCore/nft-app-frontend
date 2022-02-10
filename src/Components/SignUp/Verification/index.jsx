@@ -181,10 +181,6 @@ const Verification = () => {
 
         <h4>Didn&apos;t receive your code?</h4>
 
-        {/* <Link to="/signup" className={styles.link}>
-          Send to a different phone number
-        </Link> */}
-
         <Link to="." onClick={() => ResendOTP()} className={styles.link}>
           Resend your code
         </Link>

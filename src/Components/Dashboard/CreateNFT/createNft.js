@@ -92,7 +92,6 @@ function CreateNft(props) {
   };
 
   const addFormFields = () => {
-    // const lastElement = formValues.slice(-1)[0];
     if (formValues.every(item => !isTextEmpty(item.attr_value) && !isTextEmpty(item.attr_name))) {
       setFormValues([
         ...formValues,
@@ -108,18 +107,9 @@ function CreateNft(props) {
     }
   };
 
-  // const allNft = () => {
-  //   dispatch({ type: "createnft__close" });
-  //   setNftForm(false);
-  //   setNftPreview(false);
-  //   setNftMint(false);
-  //   navigate("/all-nft");
-  // };
-
   const dispatch = useDispatch();
 
   const openNftDetail = () => {
-    // navigate(`/nft/${nanoid()}`);
     dispatch({
       type: "nft__detail",
       payload: mapNftDetails(createNftResponse),
@@ -308,10 +298,6 @@ function CreateNft(props) {
     toast.error("Selected file does not exist.");
     setCorruptedFile(true);
   };
-
-  // const openNftDesc = () => {
-  //   navigate("/nft-details");
-  // };
 
   /**
    * Saves new files in state, or shows error modal if error in upload
@@ -741,7 +727,6 @@ function CreateNft(props) {
           className={`${styles.modal__header__wrapper}  ${styles.modal__header__bottom} last__modal__header`}
           closeButton={nfts?.length > 0 ? true : false}
         />
-        {/* <button onClick={allNft} className="btnclose">X</button> */}
         <Modal.Body className={styles.modal__body__top}>
           <div className={`${styles.modal__body__wrapper}`} data-testid="success-modal-body">
             <div className={styles.mint__info__wrapper}>

@@ -19,7 +19,6 @@ const HomePage = (props) => {
   const { user } = useSelector((state) => state.authReducer);
 
   const HandleLoginWithNear = () => {
-    // window.open(`${API_BASE_URL}/near_login/login.html`, "_self");
     if (user) {
       navigate('/', { replace: true });
     } else {
@@ -47,13 +46,6 @@ const HomePage = (props) => {
             </span>
           </button>
         </li>
-        {/* <div className={styles.featureList}>
-            <ul>
-              <li>Create NFTs</li>
-              <li>Share with Friends</li>
-              <li>Explore Blockchain</li>
-            </ul>
-          </div> */}
       </div>
 
       <div className={styles.rightSide}>
@@ -100,19 +92,6 @@ const HomePage = (props) => {
                 <li>Explore Blockchain</li>
               </ul>
             </div>
-            {/* <div className={styles.nftAboutFeatureList}>
-                <ul>
-                  <li>
-                    Create NFTs
-                  </li>
-                  <li>
-                    Share with Friends
-                  </li>
-                  <li>
-                    Explore Blockchain
-                  </li>
-                </ul>
-                </div> */}
             <div className={`${styles.getStartedBtn} ${styles.onlyOnDesktop}`}>
               {!user && <GetStartedButton />}
             </div>
@@ -181,14 +160,6 @@ const HomePage = (props) => {
             </div>
             <div className={styles.getStartedBtn}>
               {!user && <GetStartedButton />}
-              {/* <Link to="/signup">
-                    <button>
-                      Get Started
-                      <span>
-                        <IoIosArrowForward />
-                      </span>
-                    </button>
-                  </Link> */}
             </div>
           </>
           )}

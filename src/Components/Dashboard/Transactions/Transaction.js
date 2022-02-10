@@ -123,7 +123,6 @@ export default function Transaction({ data, user }) {
         {renderByTransactionType()}
       </div>
       <div className={styles.transaction__time}>
-        {/* <p>{data.formattedtime}</p> */}
         <p>
           {moment
             .utc(data.created)
