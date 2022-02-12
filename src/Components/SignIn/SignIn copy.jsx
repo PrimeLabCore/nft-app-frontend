@@ -90,8 +90,7 @@ const SignIn = () => {
               className: classes.inputStyles,
             }}
             onChange={(e) => setemail(e.target.value)}
-          >
-          </TextField>
+          />
         </div>
 
         {/* BUTTON CONTAINER */}
