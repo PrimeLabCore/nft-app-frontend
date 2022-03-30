@@ -5,7 +5,7 @@ import axios from "axios";
 import { ProgressBar } from "react-bootstrap";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { IoIosArrowForward } from "react-icons/io";
-import { useNavigate, useParams, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import { isEmpty } from "lodash";
 import TextFieldComponent from "../../../Assets/FrequentlUsedComponents/TextFieldComponent";
@@ -13,7 +13,7 @@ import { API_BASE_URL } from "../../../Utils/config";
 import { isValidFullName, mapUserSession } from "../../../Utils/utils";
 import AppLoader from "../../Generic/AppLoader";
 import styles from "./CreateAnAccount.module.css";
-import TooltipButton from "../../../common/components/TooltipButton";
+// import TooltipButton from "../../../common/components/TooltipButton";
 
 const CreateAnAccount = () => {
   const dispatch = useDispatch();
@@ -26,7 +26,7 @@ const CreateAnAccount = () => {
 
   const { LoginFormMethod } = useSelector((state) => state);
 
-  const { accId } = useParams();
+  // const { accId } = useParams();
 
   const navigate = useNavigate();
   const [fullname, setFullname] = useState("");
@@ -301,7 +301,7 @@ const CreateAnAccount = () => {
           .
         </p>
 
-        {!accId && (
+        {/* {!accId && (
           <>
             <h6 className={styles.link}>Already have a NearApps ID?</h6>
 
@@ -311,7 +311,7 @@ const CreateAnAccount = () => {
               buttonStyle={`${styles.comingSoonBtn}`}
             />
           </>
-        )}
+        )} */}
       </div>
     </div>
   );
